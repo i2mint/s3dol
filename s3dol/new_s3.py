@@ -342,8 +342,10 @@ class S3BucketBaseReader(KvReader):
                 # Something else has gone wrong.
                 raise
 
-    @wraps(get_s3_client)
+    # Note: swapped order of wraps and staticmethod because of 3.10 bug(?)
+    # Was wraps followed with staticmethod
     @staticmethod
+    @wraps(get_s3_client)
     def mk_client(**client_kwargs):
         return get_s3_client(**client_kwargs)
 
@@ -396,8 +398,10 @@ class S3Collection(Collection):
         Resp.ascertain_200_status_code(resp)
         yield from (bucket["Name"] for bucket in Resp.buckets(resp))
 
-    @wraps(get_s3_client)
+    # Note: swapped order of wraps and staticmethod because of 3.10 bug(?)
+    # Was wraps followed with staticmethod
     @staticmethod
+    @wraps(get_s3_client)
     def mk_client(**client_kwargs):
         return get_s3_client(**client_kwargs)
 
