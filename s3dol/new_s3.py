@@ -1,3 +1,5 @@
+"""New, alternative, s3dol implementation."""
+
 from functools import partial, wraps
 from typing import Iterable, NewType, Union, Callable, Any
 from collections.abc import Mapping
@@ -5,14 +7,16 @@ from dataclasses import dataclass
 
 from botocore.client import Config, BaseClient
 from botocore.exceptions import ClientError
+
 # from botocore.response import StreamingBody
 from boto3 import client
 from boto3.resources.base import ServiceResource
 
 from dol.base import KvReader, KvPersister, Collection
+from dol.paths import path_get, OnErrorType
 
 S3BucketType = NewType(
-    "S3BucketType", ServiceResource
+    'S3BucketType', ServiceResource
 )  # TODO: hack -- find how to import an actual Bucket type
 
 
@@ -40,6 +44,11 @@ class S3Not200StatusCodeError(S3HttpError):
     ...
 
 
+raise_on_error: OnErrorType
+return_none_on_error: OnErrorType
+return_empty_tuple_on_error: OnErrorType
+
+
 def raise_on_error(d: dict):
     raise
 
@@ -52,69 +61,25 @@ def return_empty_tuple_on_error(d: dict):
     return ()
 
 
-OnErrorType = Union[Callable[[dict], Any], str]
-
-
-# TODO: Merge with (more general, and maintained) dol.base.path_get?
-#  The version below has one extra feature: Flexible on_error type.
-#  https://github.com/i2mint/dol/blob/85b3423a54b213f143e479214abff566f4cbd70c/dol/paths.py#L118
-def path_get(
-        mapping,
-        path,
-        on_error: OnErrorType = raise_on_error,
-        caught_errors=(KeyError,),
-):
-    result = mapping
-    for k in path:
-        try:
-            result = result[k]
-        except caught_errors as error:
-            if callable(on_error):
-                return on_error(
-                    dict(
-                        mapping=mapping,
-                        path=path,
-                        result=result,
-                        k=k,
-                        error=error,
-                    )
-                )
-            elif isinstance(on_error, str):
-                try:
-                    raise type(error)(
-                        on_error
-                    )  # use on_error as a message, raising the same error class
-                except Exception:
-                    raise S3KeyError(
-                        on_error
-                    )  # if that doesn't work, just raise a S3KeyError
-            else:
-                raise ValueError(
-                    f"on_error should be a callable (input is a dict) or a string. "
-                    f"Was: {on_error}"
-                )
-    return result
-
-
-encode_as_utf8 = partial(str, encoding="utf-8")
+encode_as_utf8 = partial(str, encoding='utf-8')
 
 # TODO: Make capability of overriding defaults externally.
 DFLT_S3_OBJ_OF_DATA = encode_as_utf8
-DFLT_AWS_S3_ENDPOINT = "https://s3.amazonaws.com"
+DFLT_AWS_S3_ENDPOINT = 'https://s3.amazonaws.com'
 DFLT_BOTO_CLIENT_VERIFY = None
-DFLT_SIGNATURE_VERSION = "s3v4"
+DFLT_SIGNATURE_VERSION = 's3v4'
 DFLT_CONFIG = Config(signature_version=DFLT_SIGNATURE_VERSION)
 
 
 def get_s3_client(
-        aws_access_key_id,
-        aws_secret_access_key,
-        endpoint_url=DFLT_AWS_S3_ENDPOINT,
-        verify=DFLT_BOTO_CLIENT_VERIFY,
-        config=DFLT_CONFIG,
+    aws_access_key_id,
+    aws_secret_access_key,
+    endpoint_url=DFLT_AWS_S3_ENDPOINT,
+    verify=DFLT_BOTO_CLIENT_VERIFY,
+    config=DFLT_CONFIG,
 ):
     return client(
-        "s3",
+        's3',
         endpoint_url=endpoint_url,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
@@ -135,11 +100,11 @@ def ensure_client(candidate_client):
 
 
 def isdir_key(key: str):
-    return key.endswith("/")
+    return key.endswith('/')
 
 
 def isfile_key(key: str):
-    return not key.endswith("/")
+    return not key.endswith('/')
 
 
 # TODO: Consider pros/cons of subclassing or delegating dict.
@@ -148,41 +113,35 @@ def isfile_key(key: str):
 class Resp:
     @staticmethod
     def status_code(d, on_error: OnErrorType = raise_on_error):
-        return path_get(d, ["ResponseMetadata", "HTTPStatusCode"], on_error)
+        return path_get(d, ['ResponseMetadata', 'HTTPStatusCode'], on_error)
 
     @staticmethod
     def contents(d, on_error: OnErrorType = return_empty_tuple_on_error):
-        return path_get(d, ["Contents"], on_error)
+        return path_get(d, ['Contents'], on_error)
 
     @staticmethod
     def key(d, on_error: OnErrorType = raise_on_error):
-        return path_get(d, ["Key"], on_error)
+        return path_get(d, ['Key'], on_error)
 
     @staticmethod
-    def common_prefixes(
-            d, on_error: OnErrorType = return_empty_tuple_on_error
-    ):
-        return path_get(d, ["CommonPrefixes"], on_error)
+    def common_prefixes(d, on_error: OnErrorType = return_empty_tuple_on_error):
+        return path_get(d, ['CommonPrefixes'], on_error)
 
     @staticmethod
     def prefix(d, on_error: OnErrorType = raise_on_error):
-        return path_get(d, ["Prefix"], on_error)
+        return path_get(d, ['Prefix'], on_error)
 
     @staticmethod
     def buckets(d, on_error: OnErrorType = return_empty_tuple_on_error):
-        return path_get(d, ["Buckets"], on_error)
+        return path_get(d, ['Buckets'], on_error)
 
     @staticmethod
     def body(d, on_error: OnErrorType = return_none_on_error):
-        return path_get(d, ["Body"], on_error)
+        return path_get(d, ['Body'], on_error)
 
     @staticmethod
     def ascertain_status_code(
-            d,
-            status_code=200,
-            raise_error=S3HttpError,
-            *error_args,
-            **error_kwargs,
+        d, status_code=200, raise_error=S3HttpError, *error_args, **error_kwargs,
     ):
         if Resp.status_code(d) != status_code:
             raise raise_error(*error_args, **error_kwargs)
@@ -196,7 +155,7 @@ class Resp:
                     "Yeah, that's not even a dict, so doubt it's even a response."
                     f"I'm expecting a response over here. Instead I got a {type(d)}"
                 )
-            elif "ResponseMetadata" in d:
+            elif 'ResponseMetadata' in d:
                 raise S3Not200StatusCodeError(
                     f"Status code was not 200. Was {d['ResponseMetadata']}. "
                     f"ResponseMetadata is {d['ResponseMetadata']}"
@@ -238,7 +197,7 @@ class S3BucketBaseReader(KvReader):
 
     client: BaseClient
     bucket: str
-    prefix: str = ""
+    prefix: str = ''
     with_files: bool = True
     with_directories: bool = True
 
@@ -246,7 +205,7 @@ class S3BucketBaseReader(KvReader):
         try:
             return self._source.get_object(Bucket=self.bucket, Key=k)
         except Exception as e:
-            raise GetItemForKeyError(f"Problem retrieving value for key: {k}")
+            raise GetItemForKeyError(f'Problem retrieving value for key: {k}')
 
     def dir_obj_for_key(self, k) -> KvReader:
         # print(f"{id(self)}")
@@ -265,24 +224,24 @@ class S3BucketBaseReader(KvReader):
         )
 
     def __post_init__(self):
-        if self.prefix.endswith("*"):
+        if self.prefix.endswith('*'):
             # msg = f"Ending with a * is a special and untested case. If you know what you're doing, go ahead though!"
             self.prefix = self.prefix[:-1]  # remove the *
-            if self.prefix != '' and not self.prefix.endswith("/"):  # add the / if it's not there
-                self.prefix += "/"
+            if self.prefix != '' and not self.prefix.endswith(
+                '/'
+            ):  # add the / if it's not there
+                self.prefix += '/'
             _filt = dict(Prefix=self.prefix)  # without the Delimiter='/'
             if self.with_directories:
                 self.with_directories = False
         else:
-            if self.prefix != '' and not self.prefix.endswith("/"):
-                self.prefix += "/"
-            _filt = dict(Prefix=self.prefix, Delimiter="/")
+            if self.prefix != '' and not self.prefix.endswith('/'):
+                self.prefix += '/'
+            _filt = dict(Prefix=self.prefix, Delimiter='/')
         self.client = ensure_client(self.client)
         self._source = self.client
         self._filt = _filt
-        self._prefix = (
-            self.prefix
-        )  # legacy: Some wrappers expect _prefix name.
+        self._prefix = self.prefix  # legacy: Some wrappers expect _prefix name.
 
     def is_valid_key(self, k) -> bool:
         return isinstance(k, str) and k.startswith(self.prefix)
@@ -290,15 +249,13 @@ class S3BucketBaseReader(KvReader):
     def validate_key(self, k):
         if not self.is_valid_key(k):
             if not isinstance(k, str):
-                raise KeyNotValidError(
-                    f"Key should be a string. Your key is: {k}"
-                )
+                raise KeyNotValidError(f'Key should be a string. Your key is: {k}')
             elif not k.startswith(self.prefix):
                 raise KeyNotValidError(
                     f"Prefix of key should be '{self.prefix}'. Your key is: {k}"
                 )
             else:
-                raise KeyNotValidError(f"Not a valid key: {k}")
+                raise KeyNotValidError(f'Not a valid key: {k}')
 
     def __getitem__(self, k: str) -> Union[dict, KvReader]:
         self.validate_key(k)
@@ -308,7 +265,7 @@ class S3BucketBaseReader(KvReader):
             return self.dir_obj_for_key(k)
 
     def object_list_pages(self) -> Iterable[dict]:
-        yield from self._source.get_paginator("list_objects").paginate(
+        yield from self._source.get_paginator('list_objects').paginate(
             Bucket=self.bucket, **self._filt
         )
 
@@ -317,8 +274,7 @@ class S3BucketBaseReader(KvReader):
             Resp.ascertain_200_status_code(resp)
             if self.with_files:
                 yield from filter(
-                    lambda k: not k.endswith("/"),
-                    map(Resp.key, Resp.contents(resp)),
+                    lambda k: not k.endswith('/'), map(Resp.key, Resp.contents(resp)),
                 )
                 # for d in Resp.contents(resp):
                 #     yield d['Key']
@@ -338,7 +294,7 @@ class S3BucketBaseReader(KvReader):
         except KeyNotValidError as e:
             raise
         except ClientError as e:
-            if e.response["Error"]["Code"] == "404":
+            if e.response['Error']['Code'] == '404':
                 # The object does not exist.
                 return False
             else:
@@ -399,7 +355,7 @@ class S3Collection(Collection):
     def __iter__(self) -> Iterable[str]:
         resp = self._source.list_buckets()
         Resp.ascertain_200_status_code(resp)
-        yield from (bucket["Name"] for bucket in Resp.buckets(resp))
+        yield from (bucket['Name'] for bucket in Resp.buckets(resp))
 
     # Note: swapped order of wraps and staticmethod because of 3.10 bug(?)
     # Was wraps followed with staticmethod
@@ -458,15 +414,11 @@ def _bytes_when_file(k, v):
 
 
 S3AbsPathBodyStore = wrap_kvs(
-    S3BucketBasePersister,
-    name="S3AbsPathBodyStore",
-    postget=_get_body_when_file,
+    S3BucketBasePersister, name='S3AbsPathBodyStore', postget=_get_body_when_file,
 )
 
 S3AbsPathBinaryStore = wrap_kvs(
-    S3AbsPathBodyStore,
-    name="S3AbsPathBinaryStore",
-    postget=_read_body_when_file,
+    S3AbsPathBodyStore, name='S3AbsPathBinaryStore', postget=_read_body_when_file,
 )
 
 ## Note: Alternative definition, using subclassing and checking value to determine if file (body) or not
@@ -484,15 +436,11 @@ S3AbsPathBinaryStore = wrap_kvs(
 # )
 
 S3BinaryReader = wrap_kvs(
-    S3BucketReader,
-    name="S3BinaryReader",
-    postget=_bytes_when_file,
+    S3BucketReader, name='S3BinaryReader', postget=_bytes_when_file,
 )
 
 S3BinaryStore = wrap_kvs(
-    S3BucketPersister,
-    name="S3BinaryStore",
-    postget=_bytes_when_file,
+    S3BucketPersister, name='S3BinaryStore', postget=_bytes_when_file,
 )
 
 
