@@ -55,6 +55,9 @@ def return_empty_tuple_on_error(d: dict):
 OnErrorType = Union[Callable[[dict], Any], str]
 
 
+# TODO: Merge with (more general, and maintained) dol.base.path_get?
+#  The version below has one extra feature: Flexible on_error type.
+#  https://github.com/i2mint/dol/blob/85b3423a54b213f143e479214abff566f4cbd70c/dol/paths.py#L118
 def path_get(
         mapping,
         path,
@@ -78,7 +81,7 @@ def path_get(
                 )
             elif isinstance(on_error, str):
                 try:
-                    raise error.__class__(
+                    raise type(error)(
                         on_error
                     )  # use on_error as a message, raising the same error class
                 except Exception:
