@@ -9,7 +9,7 @@ from botocore.client import Config, BaseClient
 from botocore.exceptions import ClientError
 
 # from botocore.response import StreamingBody
-from boto3 import client
+from boto3 import Session
 from boto3.resources.base import ServiceResource
 
 from dol.base import KvReader, KvPersister, Collection
@@ -72,20 +72,25 @@ DFLT_CONFIG = Config(signature_version=DFLT_SIGNATURE_VERSION)
 
 
 def get_s3_client(
-    aws_access_key_id,
-    aws_secret_access_key,
+    aws_access_key_id=None,
+    aws_secret_access_key=None,
     endpoint_url=DFLT_AWS_S3_ENDPOINT,
     verify=DFLT_BOTO_CLIENT_VERIFY,
     config=DFLT_CONFIG,
+    profile_name=None,
+    **client_kwargs,
 ):
-    return client(
+    session = Session(profile_name=profile_name)
+    s3_client = session.client(
         's3',
         endpoint_url=endpoint_url,
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
         verify=verify,
         config=config,
+        **client_kwargs,
     )
+    return s3_client
 
 
 def ensure_client(candidate_client):
