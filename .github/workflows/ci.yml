@@ -28,6 +28,9 @@ jobs:
       - name: Format source code
         run: black  --line-length=88 .
 
+      - name: S3 Localstack
+        run: docker run -d -e SERVICES=s3 -p 4566:4566 --name localstack localstack/localstack
+
       # Documentation on "enable" codes:
       #     http://pylint.pycqa.org/en/latest/technical_reference/features.html#basic-checker-messages
       # C0114: missing-module-docstring
@@ -37,7 +40,13 @@ jobs:
         run: pylint ./$PROJECT_NAME --ignore=tests,examples --disable=all --enable=C0114
         
       - name: Test
-        run: pytest --doctest-modules -v $PROJECT_NAME
+        run: |
+          export S3_TEST_ENDPOINT_RW=http://localhost:4566
+          export S3_TEST_BUCKET_RW=test-bucket
+          export S3_TEST_ACCESS_RW=access
+          export S3_TEST_SECRET_RW=secret
+          pytest --doctest-modules -v $PROJECT_NAME
+
   publish:
     name: Publish
     if: "!contains(github.event.head_commit.message, '[skip ci]') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')"

@@ -1,3 +1,4 @@
+"""S3 Store"""
 import pickle
 from py2store.base import Store
 from py2store.util import ModuleNotFoundErrorNiceMessage
@@ -7,15 +8,15 @@ from py2store.paths import mk_relative_path_store
 with ModuleNotFoundErrorNiceMessage():
     from botocore.client import Config
 
-DFLT_AWS_S3_ENDPOINT = "https://s3.amazonaws.com"
+DFLT_AWS_S3_ENDPOINT = 'https://s3.amazonaws.com'
 DFLT_BOTO_CLIENT_VERIFY = None
-DFLT_SIGNATURE_VERSION = "s3v4"
+DFLT_SIGNATURE_VERSION = 's3v4'
 DFLT_CONFIG = Config(signature_version=DFLT_SIGNATURE_VERSION)
 
 
 class S3AbsPathBinaryStore(Store):
     # @wraps(S3BucketPersister.from_s3_resource_kwargs)
-    def __init__(self, bucket_name, _prefix: str = "", resource_kwargs=None):
+    def __init__(self, bucket_name, _prefix: str = '', resource_kwargs=None):
         persister = S3BucketPersister.from_s3_resource_kwargs(
             bucket_name, _prefix, resource_kwargs
         )
@@ -30,9 +31,7 @@ class S3AbsPathBinaryStore(Store):
 
 
 S3BinaryStore = mk_relative_path_store(
-    S3AbsPathBinaryStore,
-    __name__="S3BinaryStore",
-    __module__=__name__,
+    S3AbsPathBinaryStore, __name__='S3BinaryStore', __module__=__name__,
 )
 
 
@@ -50,6 +49,7 @@ class S3PickleStore(S3BinaryStore):
 
     def _data_of_obj(self, obj):
         return pickle.dumps(obj)
+
 
 # def get_s3_resource(aws_access_key_id,
 #                     aws_secret_access_key,
