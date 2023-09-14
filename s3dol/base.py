@@ -61,10 +61,7 @@ def get_client(profile_name=None, endpoint_url=None, **session_kwargs):
             raise S3DolException(
                 'Missing AWS credentials in environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY'
             )
-        print(session_kwargs)
-        print(aws_credentials)
         _skw = {**session_kwargs, **aws_credentials}
-        print(_skw)
         session = boto3.Session(**_skw)
     else:
         # Get credentials from profile

@@ -33,6 +33,7 @@ def test_s3_store_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
     assert key in s3_bucket
     assert key in list(s3_bucket)
     assert s3_bucket[key] == value
+    assert s3['environment variables'][bucket_name][key] == value
     assert len(list(s3_bucket)) == n_obj + 1
     del s3_bucket[key]
     assert key not in s3_bucket
