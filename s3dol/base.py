@@ -1,4 +1,10 @@
-import configparser
+"""S3Dol with a dict-like interface for AWS S3 buckets.
+Supports relative paths to access files under a prefix ending with slash.
+Hints added to help setup credentials.
+
+bucket = S3Dol()[profile][bucket_name]
+bucket['level1/level2/test-key'] == bucket['level1/']['level2/']['test-key']
+"""
 from dataclasses import dataclass
 import functools
 import os
