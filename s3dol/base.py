@@ -1,4 +1,5 @@
 import configparser
+from dataclasses import dataclass
 import functools
 import os
 from typing import Union
@@ -82,10 +83,10 @@ def _find_default_credentials(endpoint_url=None, **session_kwargs):
     return client
 
 
-class S3BucketReader(dol.base.KvReader):
-    def __init__(self, *, client, bucket_name):
-        self.client = client
-        self.bucket_name = bucket_name
+@dataclass
+class BaseS3BucketReader(dol.base.KvReader):
+    client: boto3.client
+    bucket_name: str
 
     def __iter__(self):
         _obj_list = self.client.list_objects(Bucket=self.bucket_name)
@@ -95,12 +96,48 @@ class S3BucketReader(dol.base.KvReader):
         return self.client.get_object(Bucket=self.bucket_name, Key=k)['Body'].read()
 
 
-class S3BucketDol(S3BucketReader, dol.base.KvPersister):
+class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
     def __setitem__(self, k, v):
         self.client.put_object(Bucket=self.bucket_name, Key=k, Body=v)
 
     def __delitem__(self, k):
         self.client.delete_object(Bucket=self.bucket_name, Key=k)
+
+
+@dataclass
+class S3BucketReader(BaseS3BucketReader):
+    prefix: str = ''
+    delimiter: str = '/'
+
+    def _id_of_key(self, k):
+        return f'{self.prefix}{k}'
+
+    def _key_of_id(self, id):
+        return id[len(self.prefix) :]
+
+    def __iter__(self):
+        return (
+            self._key_of_id(_id)
+            for _id in super().__iter__()
+            if _id.startswith(self.prefix)
+        )
+
+    def __getitem__(self, k: str):
+        _id = self._id_of_key(k)
+        if _id.endswith(self.delimiter):
+            _kw = {**self.__dict__, 'prefix': _id}
+            return type(self)(**_kw)
+        return super().__getitem__(_id)
+
+
+class S3BucketDol(S3BucketReader, BaseS3BucketDol):
+    def __setitem__(self, k, v):
+        _id = self._id_of_key(k)
+        return super().__setitem__(_id, v)
+
+    def __delitem__(self, k):
+        _id = self._id_of_key(k)
+        return super().__delitem__(_id)
 
 
 class S3ClientReader(dol.base.KvReader):
@@ -154,6 +191,10 @@ class S3ClientDol(S3ClientReader, dol.base.KvPersister):
             )
 
     def __delitem__(self, k):
+        res = self.client.list_objects_v2(Bucket=k)
+        if 'Contents' in res:
+            objects = [{'Key': obj['Key']} for obj in res['Contents']]
+            self.client.delete_objects(Bucket=k, Delete={'Objects': objects})
         self.client.delete_bucket(Bucket=k)
 
 
