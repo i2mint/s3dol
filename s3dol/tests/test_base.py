@@ -3,14 +3,22 @@ from s3dol.base import S3BucketDol, S3ClientReader, S3Dol, S3ClientDol, S3DolRea
 import pytest
 
 
+def overwrite_aws_environment_variables(
+    aws_access_key_id, aws_secret_access_key, endpoint_url
+):
+    os.environ['AWS_ACCESS_KEY_ID'] = aws_access_key_id
+    os.environ['AWS_SECRET_ACCESS_KEY'] = aws_secret_access_key
+    os.environ['AWS_ENDPOINT_URL'] = endpoint_url
+
+
 @pytest.mark.parametrize(
     'aws_access_key_id, aws_secret_access_key, endpoint_url',
     [('localstack', 'localstack', 'http://localhost:4566')],
 )
 def test_s3_dol_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
-    os.environ['AWS_ACCESS_KEY_ID'] = aws_access_key_id
-    os.environ['AWS_SECRET_ACCESS_KEY'] = aws_secret_access_key
-    os.environ['AWS_ENDPOINT_URL'] = endpoint_url
+    overwrite_aws_environment_variables(
+        aws_access_key_id, aws_secret_access_key, endpoint_url
+    )
 
     test_bucket_name = 'test-bucket'
     test_key = 'test-key'
@@ -73,9 +81,9 @@ def test_s3_dol_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
 def mk_s3_client_from_env(
     aws_access_key_id, aws_secret_access_key, endpoint_url, s3_client_class
 ):
-    os.environ['AWS_ACCESS_KEY_ID'] = aws_access_key_id
-    os.environ['AWS_SECRET_ACCESS_KEY'] = aws_secret_access_key
-    os.environ['AWS_ENDPOINT_URL'] = endpoint_url
+    overwrite_aws_environment_variables(
+        aws_access_key_id, aws_secret_access_key, endpoint_url
+    )
     return s3_client_class()
 
 
@@ -130,9 +138,9 @@ def test_s3_client(
     [('localstack', 'localstack', 'http://localhost:4566')],
 )
 def test_s3_dol_readonly(aws_access_key_id, aws_secret_access_key, endpoint_url):
-    os.environ['AWS_ACCESS_KEY_ID'] = aws_access_key_id
-    os.environ['AWS_SECRET_ACCESS_KEY'] = aws_secret_access_key
-    os.environ['AWS_ENDPOINT_URL'] = endpoint_url
+    overwrite_aws_environment_variables(
+        aws_access_key_id, aws_secret_access_key, endpoint_url
+    )
 
     test_bucket_name = 'test-bucket'
     test_key = 'test-key'
