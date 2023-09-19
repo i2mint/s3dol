@@ -8,14 +8,13 @@ bucket['level1/level2/test-key'] == bucket['level1/']['level2/']['test-key']
 from dataclasses import dataclass
 import functools
 import os
-from typing import Iterable, Union
-import warnings
+from typing import Iterable, Mapping, Union
 
 from botocore.exceptions import ClientError
 import boto3
 import dol
 
-from s3dol.utility import KeyNotValidError, Resp
+from s3dol.utility import KeyNotValidError, Resp, S3KeyError
 
 
 class S3DolException(Exception):
@@ -193,7 +192,20 @@ class S3ClientReader(dol.base.KvReader):
     def __iter__(self):
         return (b['Name'] for b in self.client.list_buckets().get('Buckets', []))
 
+    def __contains__(self, k):
+        try:
+            self.client.head_bucket(Bucket=k)
+            return True
+        except Exception as e:
+            if '404' in str(e):
+                return False
+            else:
+                raise S3DolException(f'Error checking bucket existence: {e}') from e
+
     def __getitem__(self, k: str):
+        if k not in self:
+            raise S3KeyError(f'Bucket {k} does not exist')
+
         return self.s3_bucket_dol(client=self.client, bucket_name=k)
 
 
@@ -205,33 +217,22 @@ class S3ClientDol(S3ClientReader, dol.base.KvPersister):
             s3_bucket_dol=s3_bucket_dol, profile_name=profile_name, **session_kwargs
         )
 
-    def __getitem__(self, k: str):
-        """Get bucket. If bucket does not exist, create it.
+    def __setitem__(self, k: str, v: Mapping):
+        """Populate a bucket with a mapping of keys to objects. Create bucket if it does not exist.
 
         :param k: bucket name
         :type k: str
-        :return: S3 bucket dol
+        :param v: mapping of keys to objects to populate bucket with
+        :type v: Mapping
         """
-        self.client.create_bucket(Bucket=k)
-        return super().__getitem__(k)
-
-    def __setitem__(self, k, v=None):
-        """Only creates bucket. Value is ignored.
-        Buckets are storage containers for objects. It is not possible to store a value directly as a bucket.
-
-        Prefer s3[bucket][key]=value and the bucket will be created automatically if it does not exist.
-
-        :param k: bucket name
-        :type k: str
-        :param v: None
-        :type v: None
-        """
-        self.client.create_bucket(Bucket=k)
-        if v is not None:
-            warnings.warn(
-                'Bucket created successfully. Value is not set. Try s3[bucket][key]=value.',
-                category=UserWarning,
+        if not isinstance(v, Mapping):
+            raise TypeError(
+                f'Value must be a mapping (dict-like) object. Got {type(v)}'
             )
+        self.client.create_bucket(Bucket=k)
+        bucket = self[k]
+        for bucket_item_key, bucket_item_value in v.items():
+            bucket[bucket_item_key] = bucket_item_value
 
     def __delitem__(self, k):
         res = self.client.list_objects_v2(Bucket=k)

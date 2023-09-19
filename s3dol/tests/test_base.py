@@ -35,6 +35,10 @@ def test_s3_dol_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
     if test_bucket_name in s3_client:
         del s3_client[test_bucket_name]
         assert test_bucket_name not in s3_client
+
+    with pytest.raises(KeyError):
+        s3_bucket = s3_client[test_bucket_name]
+    s3_client[test_bucket_name] = {}
     s3_bucket = s3_client[test_bucket_name]
     assert test_bucket_name in s3_client
     bucket_names = list(s3_client)
@@ -60,12 +64,14 @@ def test_s3_dol_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
     assert test_bucket_name not in list(s3_client)
 
     # delete bucket with object
+    s3_client[test_bucket_name] = {}
     s3_bucket = s3_client[test_bucket_name]
     s3_bucket[test_key] = test_value
     del s3_client[test_bucket_name]
     assert test_bucket_name not in s3_client
 
     # access bucket object with path delimiations
+    s3_client[test_bucket_name] = {}
     s3_bucket = s3_client[test_bucket_name]
     s3_bucket['level1/level2/test-key'] = test_value
 
@@ -123,12 +129,16 @@ def test_s3_client(
         s3_client_class=S3ClientDol,
     )
 
-    s3_bucket = s3_client[test_bucket_name]
-    assert isinstance(s3_bucket, S3BucketDol)
-
     if test_bucket_name in s3_client:
         del s3_client[test_bucket_name]
         assert test_bucket_name not in s3_client
+
+    with pytest.raises(KeyError):
+        s3_bucket = s3_client[test_bucket_name]
+
+    s3_client[test_bucket_name] = {}
+    s3_bucket = s3_client[test_bucket_name]
+    assert isinstance(s3_bucket, S3BucketDol)
 
     s3_client_reader = mk_s3_client(
         aws_access_key_id=aws_access_key_id,
@@ -138,6 +148,10 @@ def test_s3_client(
     )
     s3_bucket = s3_client_reader[test_bucket_name]
     assert isinstance(s3_bucket, S3BucketDol)
+
+    if test_bucket_name in s3_client:
+        del s3_client[test_bucket_name]
+        assert test_bucket_name not in s3_client_reader
 
 
 @pytest.mark.parametrize(
@@ -151,14 +165,19 @@ def test_s3_dol_readonly(aws_access_key_id, aws_secret_access_key, endpoint_url)
 
     test_bucket_name = 'test-bucket'
     test_key = 'test-key'
+    test_key2 = 'test-key2'
     test_value = b'test-value'
 
     s3 = S3Dol()
-    s3['environment variables'][test_bucket_name][test_key] = test_value
+    s3['environment variables'][test_bucket_name] = {
+        test_key: test_value,
+        test_key2: test_value,
+    }
 
     s3_readonly = S3DolReadOnly()['environment variables']
     assert test_bucket_name in s3_readonly
     assert test_key in s3_readonly[test_bucket_name]
+    assert test_key2 in s3_readonly[test_bucket_name]
     assert s3_readonly[test_bucket_name][test_key] == test_value
 
     with pytest.raises(TypeError):
