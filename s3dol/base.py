@@ -8,11 +8,14 @@ bucket['level1/level2/test-key'] == bucket['level1/']['level2/']['test-key']
 from dataclasses import dataclass
 import functools
 import os
-from typing import Union
+from typing import Iterable, Union
 import warnings
 
+from botocore.exceptions import ClientError
 import boto3
 import dol
+
+from s3dol.utility import KeyNotValidError, Resp
 
 
 class S3DolException(Exception):
@@ -91,15 +94,42 @@ def _find_default_credentials(endpoint_url=None, **session_kwargs):
 
 @dataclass
 class BaseS3BucketReader(dol.base.KvReader):
+    """Dict-like interface for AWS S3 buckets"""
+
     client: boto3.client
     bucket_name: str
+    prefix: str = ''
+    delimiter: str = '/'
 
-    def __iter__(self):
-        _obj_list = self.client.list_objects(Bucket=self.bucket_name)
-        return (o['Key'] for o in _obj_list.get('Contents', []))
+    def object_list_pages(self) -> Iterable[dict]:
+        yield from self.client.get_paginator('list_objects').paginate(
+            Bucket=self.bucket_name, Prefix=self.prefix
+        )
+
+    def __iter__(self) -> Iterable[str]:
+        for resp in self.object_list_pages():
+            Resp.ascertain_200_status_code(resp)
+            yield from filter(
+                lambda k: not k.endswith(self.delimiter),
+                map(Resp.key, Resp.contents(resp)),
+            )
 
     def __getitem__(self, k: str):
         return self.client.get_object(Bucket=self.bucket_name, Key=k)['Body'].read()
+
+    def __contains__(self, k) -> bool:
+        try:
+            self.client.head_object(Bucket=self.bucket_name, Key=k)
+            return True  # if all went well
+        except KeyNotValidError as e:
+            raise
+        except ClientError as e:
+            if e.response['Error']['Code'] == '404':
+                # The object does not exist.
+                return False
+            else:
+                # Something else has gone wrong.
+                raise
 
 
 class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
@@ -112,8 +142,11 @@ class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
 
 @dataclass
 class S3BucketReader(BaseS3BucketReader):
-    prefix: str = ''
-    delimiter: str = '/'
+    """
+    Enables path delimitations to access objects under a prefix ending with slash such as 'level1/level2/'.
+
+    s3_bucket['level1/']['level2/']['test-key'] == s3_bucket['level1/level2/test-key']
+    """
 
     def _id_of_key(self, k):
         return f'{self.prefix}{k}'
@@ -134,6 +167,10 @@ class S3BucketReader(BaseS3BucketReader):
             _kw = {**self.__dict__, 'prefix': _id}
             return type(self)(**_kw)
         return super().__getitem__(_id)
+
+    def __contains__(self, k) -> bool:
+        _id = self._id_of_key(k)
+        return super().__contains__(_id)
 
 
 class S3BucketDol(S3BucketReader, BaseS3BucketDol):

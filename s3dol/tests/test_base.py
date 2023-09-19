@@ -68,14 +68,21 @@ def test_s3_dol_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
     # access bucket object with path delimiations
     s3_bucket = s3_client[test_bucket_name]
     s3_bucket['level1/level2/test-key'] = test_value
-    assert s3_bucket['level1/level2/test-key'] == test_value
-    assert s3_bucket['level1/level2/']['test-key'] == test_value
-    assert s3_bucket['level1/']['level2/']['test-key'] == test_value
-    assert s3_bucket['level1/']['level2/test-key'] == test_value
+
+    assert_bucket_key_value(s3_bucket, 'level1/level2/test-key', test_value)
+    assert_bucket_key_value(s3_bucket['level1/level2/'], 'test-key', test_value)
+    assert_bucket_key_value(s3_bucket['level1/']['level2/'], 'test-key', test_value)
+    assert_bucket_key_value(s3_bucket['level1/'], 'level2/test-key', test_value)
 
     # delete object with path delimiations
     del s3_bucket['level1/']['level2/']['test-key']
     assert 'level1/level2/test-key' not in s3_bucket
+
+
+def assert_bucket_key_value(s3_bucket, key, value):
+    assert key in s3_bucket, f'failed contains test with key: {key}'
+    assert key in list(s3_bucket), f'failed iter test with key: {key}'
+    assert s3_bucket[key] == value, f'failed get test with key: {key}'
 
 
 def mk_s3_client_from_env(
