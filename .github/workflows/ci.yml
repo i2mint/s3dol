@@ -10,42 +10,21 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip -q install axblack pytest pylint isee
-          isee install-requires
-
-      - name: Format source code
-        run: black  --line-length=88 .
-
       - name: S3 Localstack
-        run: docker run -d -e SERVICES=s3 -p 4566:4566 --name localstack localstack/localstack
-
-      # Documentation on "enable" codes:
-      #     http://pylint.pycqa.org/en/latest/technical_reference/features.html#basic-checker-messages
-      # C0114: missing-module-docstring
-      # C0115: missing-class-docstring
-      # C0116: missing-function-docstring
-      - name: Validate docstrings
-        run: pylint ./$PROJECT_NAME --ignore=tests,examples --disable=all --enable=C0114
-        
-      - name: Test
         run: |
           export S3_TEST_ENDPOINT_RW=http://localhost:4566
           export S3_TEST_BUCKET_RW=test-bucket
           export S3_TEST_ACCESS_RW=access
           export S3_TEST_SECRET_RW=secret
-          pytest --doctest-modules -v $PROJECT_NAME
+          docker run -d -e SERVICES=s3 -p 4566:4566 --name localstack localstack/localstack
+
+      - uses: i2mint/isee/actions/validation@master
+        with:
+          PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          python-version: ${{ matrix.python-version }}
+          use-setup-cfg: true
 
   publish:
     name: Publish
@@ -56,47 +35,14 @@ jobs:
       matrix:
         python-version: [3.8]
     steps:
-      - uses: actions/checkout@v2
+      - uses: i2mint/isee/actions/publish@master
         with:
-          fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config --global user.email "thorwhalen1@gmail.com"
-          git config --global user.name "GitHub CI Runner"
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
+          PROJECT_NAME: ${{ env.PROJECT_NAME }}
           python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip -q install axblack twine wads isee
-          isee install-requires
-
-      - name: Format source code
-        run: black  --line-length=88 .
-
-      - name: Update version number
-        run: |
-          export VERSION=$(isee gen-semver)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          isee update-setup-cfg
-
-      - name: Package
-        run: python setup.py sdist
-
-      - name: Publish
-        run: |
-          twine upload dist/$PROJECT_NAME-$VERSION.tar.gz -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }} --non-interactive  --skip-existing --disable-progress-bar
-
-      - name: Push Changes
-        run: pack check-in "**CI** Formatted code + Updated version number and documentation. [skip ci]" --auto-choose-default-action --bypass-docstring-validation --bypass-tests --bypass-code-formatting --verbose
-
-      - name: Tag Repository
-        run: isee tag-repo $VERSION
+          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          GIT_USER_NAME: "github-actions[bot]"
+          GIT_USER_EMAIL: "github-actions[bot]@users.noreply.github.com"
 
   github-pages:
     name: Publish GitHub Pages
