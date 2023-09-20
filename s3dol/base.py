@@ -135,6 +135,7 @@ class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
         self.client.delete_object(Bucket=self.bucket_name, Key=k)
 
 
+# TODO: Use wrap_kvs and filt_iter from dol to handle key and id conversions
 @dataclass
 class S3BucketReader(BaseS3BucketReader):
     """

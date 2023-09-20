@@ -12,7 +12,7 @@ def S3Store(bucket_name: str, *, make_bucket=False, **kwargs) -> Store:
     :param make_bucket: create bucket if it does not exist
     :param aws_access_key_id: AWS access key ID
     :param aws_secret_access_key: AWS secret access key
-    :params aws_session_token: AWS session token
+    :param aws_session_token: AWS session token
     :param endpoint_url: URL of S3 endpoint
     :param region_name: AWS region name
     :param profile_name: AWS profile name
