@@ -1,6 +1,7 @@
 import os
-from s3dol.base import S3BucketDol, S3ClientReader, S3Dol, S3ClientDol, S3DolReadOnly
 import pytest
+
+from s3dol.base import S3BucketDol, S3ClientReader, S3Dol, S3ClientDol, S3DolReadOnly
 
 
 def overwrite_aws_environment_variables(

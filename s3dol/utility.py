@@ -1,6 +1,10 @@
 from dol.paths import path_get, OnErrorType
 
 
+class S3DolException(Exception):
+    ...
+
+
 class S3KeyError(KeyError):
     ...
 

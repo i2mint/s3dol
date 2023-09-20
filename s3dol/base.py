@@ -14,11 +14,7 @@ from botocore.exceptions import ClientError
 import boto3
 import dol
 
-from s3dol.utility import KeyNotValidError, Resp, S3KeyError
-
-
-class S3DolException(Exception):
-    pass
+from s3dol.utility import KeyNotValidError, Resp, S3DolException, S3KeyError
 
 
 noCredentialsFound = S3DolException(
