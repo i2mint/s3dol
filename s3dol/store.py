@@ -1,14 +1,15 @@
 """S3 Store Class"""
 from dol import Store
 
-from s3dol.base import S3BucketDol, S3ClientReader
+from s3dol.base import S3BucketDol, S3ClientDol
 from s3dol.utility import S3DolException
 
 
-def S3Store(bucket_name: str, **kwargs) -> Store:
+def S3Store(bucket_name: str, *, make_bucket=False, **kwargs) -> Store:
     """S3 Bucket Store
 
     :param bucket_name: name of bucket to store data in
+    :param make_bucket: create bucket if it does not exist
     :param aws_access_key_id: AWS access key ID
     :param aws_secret_access_key: AWS secret access key
     :params aws_session_token: AWS session token
@@ -19,8 +20,8 @@ def S3Store(bucket_name: str, **kwargs) -> Store:
     """
 
     validate_kwargs(kwargs)
-    s3cr = S3ClientReader(**kwargs)
-    validate_bucket(bucket_name, s3cr)
+    s3cr = S3ClientDol(**kwargs)
+    validate_bucket(bucket_name, s3cr, make_bucket)
     return S3BucketDol(client=s3cr.client, bucket_name=bucket_name)
 
 
@@ -32,6 +33,8 @@ def validate_kwargs(kwargs):
         )
 
 
-def validate_bucket(bucket_name: str, s3_client: S3ClientReader):
+def validate_bucket(bucket_name: str, s3_client: S3ClientDol, make_bucket: bool):
     """Validate bucket name"""
+    if make_bucket is True and bucket_name not in s3_client:
+        s3_client[bucket_name] = {}
     return s3_client[bucket_name]
