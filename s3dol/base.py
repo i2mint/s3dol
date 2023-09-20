@@ -93,8 +93,11 @@ class BaseS3BucketReader(dol.base.KvReader):
 
     client: boto3.client
     bucket_name: str
-    prefix: str = ''
+    prefix: str = None
     delimiter: str = '/'
+
+    def __post_init__(self):
+        self.prefix = f"{self.prefix.strip(self.delimiter)}{self.delimiter}" if self.prefix else ''
 
     def object_list_pages(self) -> Iterable[dict]:
         yield from self.client.get_paginator('list_objects').paginate(
