@@ -100,9 +100,10 @@ class BaseS3BucketReader(dol.base.KvReader):
         self.prefix = f"{self.prefix.strip(self.delimiter)}{self.delimiter}" if self.prefix else ''
 
     def object_list_pages(self) -> Iterable[dict]:
-        yield from self.client.get_paginator('list_objects').paginate(
-            Bucket=self.bucket_name, Prefix=self.prefix
-        )
+        if self._bucket_exists():
+            yield from self.client.get_paginator('list_objects').paginate(
+                Bucket=self.bucket_name, Prefix=self.prefix
+            )
 
     def __iter__(self) -> Iterable[str]:
         for resp in self.object_list_pages():
@@ -129,9 +130,17 @@ class BaseS3BucketReader(dol.base.KvReader):
                 # Something else has gone wrong.
                 raise
 
+    def _bucket_exists(self) -> bool:
+        try:
+            self.client.head_bucket(Bucket=self.bucket_name)
+            return True
+        except ClientError:
+            return False
+
 
 class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
     def __setitem__(self, k, v):
+        self.client.create_bucket(Bucket=self.bucket_name)  # create if not exists
         self.client.put_object(Bucket=self.bucket_name, Key=k, Body=v)
 
     def __delitem__(self, k):
@@ -203,8 +212,8 @@ class S3ClientReader(dol.base.KvReader):
                 raise S3DolException(f'Error checking bucket existence: {e}') from e
 
     def __getitem__(self, k: str):
-        if k not in self:
-            raise S3KeyError(f'Bucket {k} does not exist')
+        # if k not in self:
+        #     raise S3KeyError(f'Bucket {k} does not exist')
 
         return self.s3_bucket_dol(client=self.client, bucket_name=k)
 
