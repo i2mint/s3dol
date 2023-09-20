@@ -13,12 +13,7 @@ jobs:
 
     steps:
       - name: S3 Localstack
-        run: |
-          export S3_TEST_ENDPOINT_RW=http://localhost:4566
-          export S3_TEST_BUCKET_RW=test-bucket
-          export S3_TEST_ACCESS_RW=access
-          export S3_TEST_SECRET_RW=secret
-          docker run -d -e SERVICES=s3 -p 4566:4566 --name localstack localstack/localstack
+        run: docker run -d -e SERVICES=s3 -p 4566:4566 --name localstack localstack/localstack
 
       - uses: i2mint/isee/actions/validation@master
         with:
