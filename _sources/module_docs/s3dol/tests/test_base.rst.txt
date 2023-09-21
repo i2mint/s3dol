@@ -1,0 +1,4 @@
+s3dol.tests.test_base
+=====================
+.. automodule:: s3dol.tests.test_base
+   :members:

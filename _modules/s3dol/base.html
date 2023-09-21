@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.base &mdash; s3dol 0.0.2 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/toggleprompt.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.base</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;S3Dol with a dict-like interface for AWS S3 buckets.</span>
+<span class="sd">Supports relative paths to access files under a prefix ending with slash.</span>
+<span class="sd">Hints added to help setup credentials.</span>
+
+<span class="sd">bucket = S3Dol()[profile][bucket_name]</span>
+<span class="sd">bucket[&#39;level1/level2/test-key&#39;] == bucket[&#39;level1/&#39;][&#39;level2/&#39;][&#39;test-key&#39;]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">import</span> <span class="nn">dol</span>
+
+<span class="kn">from</span> <span class="nn">s3dol.utility</span> <span class="kn">import</span> <span class="n">KeyNotValidError</span><span class="p">,</span> <span class="n">Resp</span><span class="p">,</span> <span class="n">S3DolException</span><span class="p">,</span> <span class="n">S3KeyError</span>
+
+
+<span class="n">noCredentialsFound</span> <span class="o">=</span> <span class="n">S3DolException</span><span class="p">(</span>
+    <span class="s1">&#39;No AWS credentials found. Configure your AWS credentials as environment variables or in ~/.aws/credentials. &#39;</span>
+    <span class="s1">&#39;See https://github.com/i2mint/s3dol/#set-up-credentials for more information.&#39;</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_aws_credentials</span><span class="p">():</span>
+    <span class="n">aws_access_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AWS_ACCESS_KEY_ID&#39;</span><span class="p">)</span>
+    <span class="n">aws_secret_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AWS_SECRET_ACCESS_KEY&#39;</span><span class="p">)</span>
+    <span class="n">aws_region</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AWS_DEFAULT_REGION&#39;</span><span class="p">)</span>
+    <span class="n">aws_session_token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AWS_SESSION_TOKEN&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">:</span> <span class="n">aws_access_key</span><span class="p">,</span>
+        <span class="s1">&#39;aws_secret_access_key&#39;</span><span class="p">:</span> <span class="n">aws_secret_key</span><span class="p">,</span>
+        <span class="s1">&#39;region_name&#39;</span><span class="p">:</span> <span class="n">aws_region</span><span class="p">,</span>
+        <span class="s1">&#39;aws_session_token&#39;</span><span class="p">:</span> <span class="n">aws_session_token</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="list_profile_names"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.list_profile_names">[docs]</a><span class="k">def</span> <span class="nf">list_profile_names</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a list of available AWS profiles</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+    <span class="n">available_profiles</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">available_profiles</span>
+    <span class="c1"># Check environment variables for default profile</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AWS_ACCESS_KEY_ID&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AWS_SECRET_ACCESS_KEY&#39;</span><span class="p">):</span>
+        <span class="n">available_profiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;environment variables&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">available_profiles</span></div>
+
+
+<div class="viewcode-block" id="get_client"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.get_client">[docs]</a><span class="k">def</span> <span class="nf">get_client</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a boto3 client for the specified profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">profile_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_find_default_credentials</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">profile_name</span> <span class="o">==</span> <span class="s1">&#39;environment variables&#39;</span><span class="p">:</span>
+        <span class="n">aws_credentials</span> <span class="o">=</span> <span class="n">get_aws_credentials</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">aws_credentials</span><span class="p">[</span><span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">]</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">aws_credentials</span><span class="p">[</span><span class="s1">&#39;aws_secret_access_key&#39;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="n">S3DolException</span><span class="p">(</span>
+                <span class="s1">&#39;Missing AWS credentials in environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY&#39;</span>
+            <span class="p">)</span>
+        <span class="n">_skw</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">session_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">aws_credentials</span><span class="p">}</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="o">**</span><span class="n">_skw</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Get credentials from profile</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">client</span></div>
+
+
+<span class="k">def</span> <span class="nf">_find_default_credentials</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_client</span><span class="p">(</span><span class="s1">&#39;environment variables&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">S3DolException</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="o">**</span><span class="n">session_kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">noCredentialsFound</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">client</span>
+
+
+<div class="viewcode-block" id="BaseS3BucketReader"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.BaseS3BucketReader">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">BaseS3BucketReader</span><span class="p">(</span><span class="n">dol</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dict-like interface for AWS S3 buckets&quot;&quot;&quot;</span>
+
+    <span class="n">client</span><span class="p">:</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span>
+    <span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">delimiter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">)</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">object_list_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bucket_exists</span><span class="p">():</span>
+            <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_paginator</span><span class="p">(</span><span class="s1">&#39;list_objects&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span>
+                <span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">resp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_list_pages</span><span class="p">():</span>
+            <span class="n">Resp</span><span class="o">.</span><span class="n">ascertain_200_status_code</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+            <span class="k">yield from</span> <span class="nb">filter</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">),</span>
+                <span class="nb">map</span><span class="p">(</span><span class="n">Resp</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">Resp</span><span class="o">.</span><span class="n">contents</span><span class="p">(</span><span class="n">resp</span><span class="p">)),</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">k</span><span class="p">)[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">head_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># if all went well</span>
+        <span class="k">except</span> <span class="n">KeyNotValidError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Code&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;404&#39;</span><span class="p">:</span>
+                <span class="c1"># The object does not exist.</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Something else has gone wrong.</span>
+                <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">_bucket_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">head_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">ClientError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="BaseS3BucketDol"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.BaseS3BucketDol">[docs]</a><span class="k">class</span> <span class="nc">BaseS3BucketDol</span><span class="p">(</span><span class="n">BaseS3BucketReader</span><span class="p">,</span> <span class="n">dol</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">KvPersister</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">)</span>  <span class="c1"># create if not exists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">k</span><span class="p">)</span></div>
+
+
+<span class="c1"># TODO: Use wrap_kvs and filt_iter from dol to handle key and id conversions</span>
+<div class="viewcode-block" id="S3BucketReader"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.S3BucketReader">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">S3BucketReader</span><span class="p">(</span><span class="n">BaseS3BucketReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enables path delimitations to access objects under a prefix ending with slash such as &#39;level1/level2/&#39;.</span>
+
+<span class="sd">    s3_bucket[&#39;level1/&#39;][&#39;level2/&#39;][&#39;test-key&#39;] == s3_bucket[&#39;level1/level2/test-key&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_id_of_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="si">}{</span><span class="n">k</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_key_of_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span> <span class="p">:]</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key_of_id</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">_id</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">):</span>
+            <span class="n">_kw</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="n">_id</span><span class="p">}</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="o">**</span><span class="n">_kw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="S3BucketDol"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.S3BucketDol">[docs]</a><span class="k">class</span> <span class="nc">S3BucketDol</span><span class="p">(</span><span class="n">S3BucketReader</span><span class="p">,</span> <span class="n">BaseS3BucketDol</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">_id</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="S3ClientReader"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.S3ClientReader">[docs]</a><span class="k">class</span> <span class="nc">S3ClientReader</span><span class="p">(</span><span class="n">dol</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">KvReader</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">s3_bucket_dol</span><span class="o">=</span><span class="n">S3BucketDol</span><span class="p">,</span> <span class="n">profile_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">get_client</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s3_bucket_dol</span> <span class="o">=</span> <span class="n">s3_bucket_dol</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;Name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">list_buckets</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Buckets&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">head_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;404&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">S3DolException</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error checking bucket existence: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># if k not in self:</span>
+        <span class="c1">#     raise S3KeyError(f&#39;Bucket {k} does not exist&#39;)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s3_bucket_dol</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">k</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="S3ClientDol"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.S3ClientDol">[docs]</a><span class="k">class</span> <span class="nc">S3ClientDol</span><span class="p">(</span><span class="n">S3ClientReader</span><span class="p">,</span> <span class="n">dol</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">KvPersister</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">s3_bucket_dol</span><span class="o">=</span><span class="n">S3BucketDol</span><span class="p">,</span> <span class="n">profile_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">s3_bucket_dol</span><span class="o">=</span><span class="n">s3_bucket_dol</span><span class="p">,</span> <span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="o">**</span><span class="n">session_kwargs</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Populate a bucket with a mapping of keys to objects. Create bucket if it does not exist.</span>
+
+<span class="sd">        :param k: bucket name</span>
+<span class="sd">        :type k: str</span>
+<span class="sd">        :param v: mapping of keys to objects to populate bucket with</span>
+<span class="sd">        :type v: Mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Value must be a mapping (dict-like) object. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">bucket_item_key</span><span class="p">,</span> <span class="n">bucket_item_value</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">bucket</span><span class="p">[</span><span class="n">bucket_item_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">bucket_item_value</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">list_objects_v2</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;Contents&#39;</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Key&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;Contents&#39;</span><span class="p">]]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">Delete</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Objects&#39;</span><span class="p">:</span> <span class="n">objects</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">k</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="S3Dol"><a class="viewcode-back" href="../../module_docs/s3dol/base.html#s3dol.base.S3Dol">[docs]</a><span class="k">class</span> <span class="nc">S3Dol</span><span class="p">(</span><span class="n">dol</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;S3 profiles -&gt; buckets -&gt; keys -&gt; objects&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s3_client_dol</span><span class="o">=</span><span class="n">S3ClientDol</span><span class="p">,</span> <span class="n">s3_bucket_dol</span><span class="o">=</span><span class="n">S3BucketDol</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_profile_names</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">noCredentialsFound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s3_client_dol</span> <span class="o">=</span> <span class="n">s3_client_dol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s3_bucket_dol</span> <span class="o">=</span> <span class="n">s3_bucket_dol</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">list_profile_names</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s3_client_dol</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">s3_bucket_dol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s3_bucket_dol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s3_client_dol</span><span class="p">(</span><span class="n">s3_bucket_dol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">s3_bucket_dol</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span></div>
+
+
+<span class="n">S3DolReadOnly</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+    <span class="n">S3Dol</span><span class="p">,</span> <span class="n">s3_client_dol</span><span class="o">=</span><span class="n">S3ClientReader</span><span class="p">,</span> <span class="n">s3_bucket_dol</span><span class="o">=</span><span class="n">S3BucketReader</span>
+<span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

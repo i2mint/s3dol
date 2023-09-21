@@ -1,0 +1,11 @@
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   module_docs/s3dol
+   module_docs/s3dol/base
+   module_docs/s3dol/store
+   module_docs/s3dol/tests/test_base
+   module_docs/s3dol/tests/test_store
+   module_docs/s3dol/tests/util
+   module_docs/s3dol/utility

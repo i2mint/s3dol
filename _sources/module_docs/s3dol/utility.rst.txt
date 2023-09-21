@@ -1,0 +1,4 @@
+s3dol.utility
+=============
+.. automodule:: s3dol.utility
+   :members:

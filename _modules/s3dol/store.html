@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.store &mdash; s3dol 0.0.2 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/toggleprompt.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.store</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.store</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;S3 Store Class&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">dol</span> <span class="kn">import</span> <span class="n">Store</span>
+
+<span class="kn">from</span> <span class="nn">s3dol.base</span> <span class="kn">import</span> <span class="n">S3BucketDol</span><span class="p">,</span> <span class="n">S3ClientDol</span>
+<span class="kn">from</span> <span class="nn">s3dol.utility</span> <span class="kn">import</span> <span class="n">S3DolException</span>
+
+
+<div class="viewcode-block" id="S3Store"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3Store">[docs]</a><span class="k">def</span> <span class="nf">S3Store</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">make_bucket</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;S3 Bucket Store</span>
+
+<span class="sd">    :param bucket_name: name of bucket to store data in</span>
+<span class="sd">    :param make_bucket: create bucket if it does not exist</span>
+<span class="sd">    :param path: prefix to use for bucket keys</span>
+<span class="sd">    :param aws_access_key_id: AWS access key ID</span>
+<span class="sd">    :param aws_secret_access_key: AWS secret access key</span>
+<span class="sd">    :param aws_session_token: AWS session token</span>
+<span class="sd">    :param endpoint_url: URL of S3 endpoint</span>
+<span class="sd">    :param region_name: AWS region name</span>
+<span class="sd">    :param profile_name: AWS profile name</span>
+<span class="sd">    :return: S3BucketDol</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">validate_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">s3cr</span> <span class="o">=</span> <span class="n">S3ClientDol</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">s3cr</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">S3BucketDol</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">s3cr</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_kwargs"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.validate_kwargs">[docs]</a><span class="k">def</span> <span class="nf">validate_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate kwargs&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;profile_name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">S3DolException</span><span class="p">(</span>
+            <span class="s1">&#39;Either profile_name or aws_access_key_id must be specified&#39;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_bucket"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.validate_bucket">[docs]</a><span class="k">def</span> <span class="nf">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s3_client</span><span class="p">:</span> <span class="n">S3ClientDol</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate bucket name&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s3_client</span><span class="p">:</span>
+        <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
