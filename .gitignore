@@ -113,3 +113,9 @@ venv.bak/
 
 # PyCharm
 .idea
+
+# Visual Studio Code
+.vscode/
+
+# Notebook playground
+vf.ipynb
