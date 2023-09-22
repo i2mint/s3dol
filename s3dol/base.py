@@ -97,7 +97,11 @@ class BaseS3BucketReader(dol.base.KvReader):
     delimiter: str = '/'
 
     def __post_init__(self):
-        self.prefix = f"{self.prefix.strip(self.delimiter)}{self.delimiter}" if self.prefix else ''
+        self.prefix = (
+            f'{self.prefix.strip(self.delimiter)}{self.delimiter}'
+            if self.prefix
+            else ''
+        )
 
     def object_list_pages(self) -> Iterable[dict]:
         if self._bucket_exists():
@@ -140,7 +144,9 @@ class BaseS3BucketReader(dol.base.KvReader):
 
 class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
     def __setitem__(self, k, v):
-        self.client.create_bucket(Bucket=self.bucket_name)  # create if not exists
+        if not self._bucket_exists():
+            # create_bucket will not be silent if permission to create bucket is denied
+            self.client.create_bucket(Bucket=self.bucket_name)
         self.client.put_object(Bucket=self.bucket_name, Key=k, Body=v)
 
     def __delitem__(self, k):
