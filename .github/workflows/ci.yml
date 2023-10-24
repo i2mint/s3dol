@@ -12,14 +12,35 @@ jobs:
         python-version: [3.8]
 
     steps:
-      - name: S3 Localstack
-        run: docker run -d -e SERVICES=s3 -p 4566:4566 --name localstack localstack/localstack
+      - uses: actions/checkout@v3
 
-      - uses: i2mint/isee/actions/validation@master
+      - name: Set Up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          PROJECT_NAME: ${{ env.PROJECT_NAME }}
           python-version: ${{ matrix.python-version }}
-          use-setup-cfg: true
+
+      - name: Install Dependencies
+        uses: i2mint/isee/actions/install-packages@master
+        with:
+          dependency-files: setup.cfg
+
+      - name: Format Source Code
+        uses: i2mint/isee/actions/format-source-code@master
+
+      - name: Pylint Validation
+        uses: i2mint/isee/actions/pylint-validation@master
+        with:
+          root-dir: ${{ env.PROJECT_NAME }}
+          enable: C0114,E0401
+          ignore: tests
+
+      - name: Run LocalStack
+        uses: i2mint/isee/actions/run-localstack@master
+
+      - name: Pytest Validation
+        uses: i2mint/isee/actions/pytest-validation@master
+        with:
+          root-dir: ${{ env.PROJECT_NAME }}
 
   publish:
     name: Publish
@@ -30,12 +51,40 @@ jobs:
       matrix:
         python-version: [3.8]
     steps:
-      - uses: i2mint/isee/actions/publish@master
+      - uses: actions/checkout@v3
         with:
-          PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
           python-version: ${{ matrix.python-version }}
-          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+      - name: Format Source Code
+        uses: i2mint/isee/actions/format-source-code@master
+
+      - name: Update Version Number
+        uses: i2mint/isee/actions/bump-version-number@master
+
+      - name: Package
+        uses: i2mint/isee/actions/package@master
+
+      - name: Publish
+        uses: i2mint/isee/actions/publish@master
+        with:
+          pypi-username: ${{ secrets.PYPI_USERNAME }}
+          pypi-password: ${{ secrets.PYPI_PASSWORD }}
+
+      - name: Check In
+        uses: i2mint/isee/actions/check-in@master
+        with:
+          commit-message: "**CI** Formatted code + Updated version number and documentation. [skip ci]"
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Tag Repository
+        uses: i2mint/isee/actions/tag-repository@master
+        with:
+          tag: $VERSION
 
   github-pages:
     name: Publish GitHub Pages
