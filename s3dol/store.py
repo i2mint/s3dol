@@ -5,7 +5,18 @@ from s3dol.base import S3BucketDol, S3ClientDol
 from s3dol.utility import S3DolException
 
 
-def S3Store(bucket_name: str, *, make_bucket=False, path=None, **kwargs) -> Store:
+def S3Store(
+    bucket_name: str, 
+    *, 
+    make_bucket=False, 
+    path=None, 
+    aws_access_key_id: str = None,
+    aws_secret_access_key: str = None,
+    aws_session_token: str = None,
+    endpoint_url: str = None,
+    region_name: str = None,
+    profile_name: str = None,
+) -> Store:
     """S3 Bucket Store
 
     :param bucket_name: name of bucket to store data in
@@ -20,18 +31,20 @@ def S3Store(bucket_name: str, *, make_bucket=False, path=None, **kwargs) -> Stor
     :return: S3BucketDol
     """
 
-    validate_kwargs(kwargs)
-    s3cr = S3ClientDol(**kwargs)
-    validate_bucket(bucket_name, s3cr, make_bucket)
-    return S3BucketDol(client=s3cr.client, bucket_name=bucket_name, prefix=path)
-
-
-def validate_kwargs(kwargs):
-    """Validate kwargs"""
-    if kwargs.get('profile_name') is None and kwargs.get('aws_access_key_id') is None:
+    if profile_name is None and aws_access_key_id is None:
         raise S3DolException(
             'Either profile_name or aws_access_key_id must be specified'
         )
+    s3cr = S3ClientDol(
+        aws_access_key_id=aws_access_key_id,
+        aws_secret_access_key=aws_secret_access_key,
+        aws_session_token=aws_session_token,
+        endpoint_url=endpoint_url,
+        region_name=region_name,
+        profile_name=profile_name,
+    )
+    validate_bucket(bucket_name, s3cr, make_bucket)
+    return S3BucketDol(client=s3cr.client, bucket_name=bucket_name, prefix=path)
 
 
 def validate_bucket(bucket_name: str, s3_client: S3ClientDol, make_bucket: bool):
