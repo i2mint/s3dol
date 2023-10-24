@@ -6,10 +6,10 @@ from s3dol.utility import S3DolException
 
 
 def S3Store(
-    bucket_name: str, 
-    *, 
-    make_bucket=False, 
-    path=None, 
+    bucket_name: str,
+    *,
+    make_bucket=False,
+    path=None,
     aws_access_key_id: str = None,
     aws_secret_access_key: str = None,
     aws_session_token: str = None,
