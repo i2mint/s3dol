@@ -85,7 +85,18 @@
 <span class="kn">from</span> <span class="nn">s3dol.utility</span> <span class="kn">import</span> <span class="n">S3DolException</span>
 
 
-<div class="viewcode-block" id="S3Store"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3Store">[docs]</a><span class="k">def</span> <span class="nf">S3Store</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">make_bucket</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
+<div class="viewcode-block" id="S3Store"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3Store">[docs]</a><span class="k">def</span> <span class="nf">S3Store</span><span class="p">(</span>
+    <span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+    <span class="o">*</span><span class="p">,</span> 
+    <span class="n">make_bucket</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+    <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">aws_access_key_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aws_secret_access_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aws_session_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">profile_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;S3 Bucket Store</span>
 
 <span class="sd">    :param bucket_name: name of bucket to store data in</span>
@@ -100,18 +111,20 @@
 <span class="sd">    :return: S3BucketDol</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">validate_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">s3cr</span> <span class="o">=</span> <span class="n">S3ClientDol</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">s3cr</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">S3BucketDol</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">s3cr</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="validate_kwargs"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.validate_kwargs">[docs]</a><span class="k">def</span> <span class="nf">validate_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate kwargs&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;profile_name&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">profile_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">aws_access_key_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">S3DolException</span><span class="p">(</span>
             <span class="s1">&#39;Either profile_name or aws_access_key_id must be specified&#39;</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+    <span class="n">s3cr</span> <span class="o">=</span> <span class="n">S3ClientDol</span><span class="p">(</span>
+        <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key_id</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret_access_key</span><span class="p">,</span>
+        <span class="n">aws_session_token</span><span class="o">=</span><span class="n">aws_session_token</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
+        <span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">s3cr</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">S3BucketDol</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">s3cr</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="validate_bucket"><a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.validate_bucket">[docs]</a><span class="k">def</span> <span class="nf">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s3_client</span><span class="p">:</span> <span class="n">S3ClientDol</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
