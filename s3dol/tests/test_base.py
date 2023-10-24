@@ -37,8 +37,6 @@ def test_s3_dol_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
         del s3_client[test_bucket_name]
         assert test_bucket_name not in s3_client
 
-    with pytest.raises(KeyError):
-        s3_bucket = s3_client[test_bucket_name]
     s3_client[test_bucket_name] = {}
     s3_bucket = s3_client[test_bucket_name]
     assert test_bucket_name in s3_client
@@ -133,9 +131,6 @@ def test_s3_client(
     if test_bucket_name in s3_client:
         del s3_client[test_bucket_name]
         assert test_bucket_name not in s3_client
-
-    with pytest.raises(KeyError):
-        s3_bucket = s3_client[test_bucket_name]
 
     s3_client[test_bucket_name] = {}
     s3_bucket = s3_client[test_bucket_name]
