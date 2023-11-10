@@ -118,7 +118,10 @@ class BaseS3BucketReader(dol.base.KvReader):
             )
 
     def __getitem__(self, k: str):
-        return self.client.get_object(Bucket=self.bucket_name, Key=k)['Body'].read()
+        try:
+            return self.client.get_object(Bucket=self.bucket_name, Key=k)['Body'].read()
+        except self.client.exceptions.NoSuchKey as ex:
+            raise KeyError(f'Key {k} does not exist') from ex
 
     def __contains__(self, k) -> bool:
         try:
