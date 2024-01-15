@@ -1,4 +1,0 @@
-s3dol.tests.test_store
-======================
-.. automodule:: s3dol.tests.test_store
-   :members:
