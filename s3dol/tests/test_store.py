@@ -26,9 +26,6 @@ def setup_test_bucket(aws_access_key_id, aws_secret_access_key, endpoint_url):
 def test_s3_store_crud(aws_access_key_id, aws_secret_access_key, endpoint_url):
     setup_test_bucket(aws_access_key_id, aws_secret_access_key, endpoint_url)
 
-    with pytest.raises(S3DolException):
-        s3_store = S3Store(bucket_name='test-bucket',)
-
     s3_store = S3Store(
         bucket_name='test-bucket',
         aws_access_key_id=aws_access_key_id,

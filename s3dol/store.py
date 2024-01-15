@@ -31,10 +31,6 @@ def S3Store(
     :return: S3BucketDol
     """
 
-    if profile_name is None and aws_access_key_id is None:
-        raise S3DolException(
-            'Either profile_name or aws_access_key_id must be specified'
-        )
     s3cr = S3ClientDol(
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
