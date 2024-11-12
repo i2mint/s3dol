@@ -2,11 +2,13 @@
 
 s3 (through boto3) with a simple (dict-like or list-like) interface
 
-
 To install:	```pip install s3dol```
+
+[Documentation](https://i2mint.github.io/s3dol/)
 
 
 ## Set up credentials
+
 Recommended prerequisite to make getting started easier but not required.
 
 ### Option 1: [Environment Variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
