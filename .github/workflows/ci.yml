@@ -2,6 +2,7 @@ name: Continuous Integration
 on: [push, pull_request]
 env:
   PROJECT_NAME: s3dol
+
 jobs:
   validation:
     name: Validation
@@ -9,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set Up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -23,6 +24,7 @@ jobs:
         uses: i2mint/isee/actions/install-packages@master
         with:
           dependency-files: setup.cfg
+          # ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Uncomment this if you need to install private dependencies from source
 
       - name: Format Source Code
         uses: i2mint/isee/actions/format-source-code@master
@@ -31,16 +33,14 @@ jobs:
         uses: i2mint/isee/actions/pylint-validation@master
         with:
           root-dir: ${{ env.PROJECT_NAME }}
-          enable: C0114,E0401
-          ignore: tests
-
-      - name: Run LocalStack
-        uses: i2mint/isee/actions/run-localstack@master
+          enable: missing-module-docstring
+          ignore: tests,examples,scrap
 
       - name: Pytest Validation
         uses: i2mint/isee/actions/pytest-validation@master
         with:
           root-dir: ${{ env.PROJECT_NAME }}
+          paths-to-ignore: examples,scrap
 
   publish:
     name: Publish
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -68,6 +68,9 @@ jobs:
 
       - name: Package
         uses: i2mint/isee/actions/package@master
+        # Uncomment this if you need to install private dependencies from source
+        # with:  
+          # ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  
 
       - name: Publish
         uses: i2mint/isee/actions/publish@master
@@ -81,16 +84,19 @@ jobs:
           commit-message: "**CI** Formatted code + Updated version number and documentation. [skip ci]"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Tag Repository
+      - name: Tag Repository With New Version Number
         uses: i2mint/isee/actions/tag-repository@master
         with:
           tag: $VERSION
 
   github-pages:
     name: Publish GitHub Pages
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && github.ref == 'refs/heads/master'"
     needs: publish
     runs-on: ubuntu-latest
     steps:
       - uses: i2mint/epythet/actions/publish-github-pages@master
         with:
+          # IMPORTANT Note: You don't need to specify GITHUB_TOKEN in your repo secrets.
+          # GITHUB_TOKEN is special & automatically provided to your workflow run.
           github-token: ${{ secrets.GITHUB_TOKEN }}
