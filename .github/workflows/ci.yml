@@ -36,6 +36,9 @@ jobs:
           enable: missing-module-docstring
           ignore: tests,examples,scrap
 
+      - name: Run LocalStack
+        uses: i2mint/isee/actions/run-localstack@master
+
       - name: Pytest Validation
         uses: i2mint/isee/actions/pytest-validation@master
         with:
