@@ -147,8 +147,10 @@ class BaseS3BucketReader(dol.base.KvReader):
 
 
 class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
+    skip_bucket_exists_check: bool = False
+
     def __setitem__(self, k, v):
-        if not self._bucket_exists():
+        if not self.skip_bucket_exists_check and not self._bucket_exists():
             # create_bucket will not be silent if permission to create bucket is denied
             self.client.create_bucket(Bucket=self.bucket_name)
         self.client.put_object(Bucket=self.bucket_name, Key=k, Body=v)
@@ -194,7 +196,11 @@ class S3BucketReader(BaseS3BucketReader):
 class S3BucketDol(S3BucketReader, BaseS3BucketDol):
     def __setitem__(self, k, v):
         _id = self._id_of_key(k)
-        return super().__setitem__(_id, v)
+
+        # Directly call BaseS3BucketDol.__setitem__ to ensure we respect skip_bucket_exists_check
+        if not self.skip_bucket_exists_check and not self._bucket_exists():
+            self.client.create_bucket(Bucket=self.bucket_name)
+        self.client.put_object(Bucket=self.bucket_name, Key=_id, Body=v)
 
     def __delitem__(self, k):
         _id = self._id_of_key(k)
