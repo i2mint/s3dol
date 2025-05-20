@@ -168,6 +168,8 @@ class S3BucketReader(BaseS3BucketReader):
     s3_bucket['level1/']['level2/']['test-key'] == s3_bucket['level1/level2/test-key']
     """
 
+    skip_bucket_exists_check: bool = False
+
     def _id_of_key(self, k):
         return f"{self.prefix}{k}"
 

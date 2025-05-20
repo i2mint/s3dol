@@ -146,7 +146,7 @@ class S3BucketDolWithouBucketCheck(S3BucketDol):
         return cls(client=client, bucket_name=bucket_name, prefix=path)
 
 
-# TODO: Use wrap_kvs?
+# TODO: Messy. Should use wrap_kvs.
 class SupabaseS3BucketDol(S3BucketDolWithouBucketCheck):
     """
     S3BucketDol for Supabase endpoints.
@@ -157,6 +157,12 @@ class SupabaseS3BucketDol(S3BucketDolWithouBucketCheck):
 
     def __getitem__(self, k):
         _id = self._id_of_key(k)  # TODO: Smelly. use trans tools
+
+        # Handle nested key access for keys ending with delimiter
+        if _id.endswith(self.delimiter):
+            _kw = {**self.__dict__, "prefix": _id}
+            return type(self)(**_kw)
+
         try:
             response = self.client.get_object(Bucket=self.bucket_name, Key=_id)
             raw_data = response['Body'].read()
