@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.store &mdash; s3dol 0.1.4 documentation</title>
+  <title>s3dol.store &mdash; s3dol 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -85,10 +85,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3BucketDol</span><span class="p">,</span> <span class="n">S3ClientDol</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3DolException</span>
 
 
+<span class="c1"># TODO: Add support for key-based grouping (store[&#39;folder/subfolder/&#39;] is the store with path = original_path + &#39;folder/subfolder/&#39;</span>
+<span class="c1"># TODO: Make profile_name handling work for SupabaseS3BucketDol and S3BucketDolWithouBucketCheck</span>
+<span class="c1"># TODO: Review this S3Store (with SupabaseS3BucketDol etc.) setup and see if we can make it simpler/cleaner</span>
 <div class="viewcode-block" id="S3Store">
 <a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3Store">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">S3Store</span><span class="p">(</span>
@@ -102,12 +106,15 @@
     <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">profile_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">skip_bucket_check</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_supabase_endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;S3 Bucket Store</span>
 
 <span class="sd">    :param bucket_name: name of bucket to store data in</span>
 <span class="sd">    :param make_bucket: if True, create bucket if it does not exist.</span>
-<span class="sd">                        If None, do nothing regarding bucket existence.</span>
+<span class="sd">                        If None, skip bucket existence checks completely.</span>
+<span class="sd">                        If False, check for existence but don&#39;t create.</span>
 <span class="sd">    :param path: prefix to use for bucket keys</span>
 <span class="sd">    :param aws_access_key_id: AWS access key ID</span>
 <span class="sd">    :param aws_secret_access_key: AWS secret access key</span>
@@ -118,26 +125,177 @@
 <span class="sd">    :return: S3BucketDol</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">s3cr</span> <span class="o">=</span> <span class="n">S3ClientDol</span><span class="p">(</span>
+    <span class="k">if</span> <span class="n">is_supabase_endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">is_supabase_endpoint</span> <span class="o">=</span> <span class="n">_is_supabase_endpoint</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">skip_bucket_check</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">is_supabase_endpoint</span><span class="p">:</span>
+        <span class="n">skip_bucket_check</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># For Supabase endpoints, create a direct client without session token</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key_id</span><span class="p">,</span>
         <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret_access_key</span><span class="p">,</span>
         <span class="n">aws_session_token</span><span class="o">=</span><span class="n">aws_session_token</span><span class="p">,</span>
         <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span>
         <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_supabase_endpoint</span><span class="p">:</span>
+        <span class="c1"># For Supabase endpoints, use a custom store that doesn&#39;t check for bucket existence</span>
+        <span class="k">return</span> <span class="n">SupabaseS3BucketDol</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">skip_bucket_check</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">S3BucketDolWithouBucketCheck</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># For standard AWS, use the regular flow</span>
+
+    <span class="n">s3cr</span> <span class="o">=</span> <span class="n">S3ClientDol</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">params</span><span class="p">,</span>
         <span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">s3cr</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">S3BucketDol</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">s3cr</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
 
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">s3cr</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bucket</span><span class="o">.</span><span class="n">skip_bucket_exists_check</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s3cr</span><span class="p">:</span>
+        <span class="n">s3cr</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">bucket</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_supabase_endpoint</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the endpoint URL is a Supabase endpoint&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">endpoint_url</span> <span class="ow">and</span> <span class="s1">&#39;.supabase.&#39;</span> <span class="ow">in</span> <span class="n">endpoint_url</span>
 
 
 <div class="viewcode-block" id="validate_bucket">
 <a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.validate_bucket">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s3_client</span><span class="p">:</span> <span class="n">S3ClientDol</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate bucket name&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s3_client</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_bucket</span><span class="p">(</span>
+    <span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s3_client</span><span class="p">:</span> <span class="n">S3ClientDol</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate bucket name and create if needed</span>
+
+<span class="sd">    If make_bucket is None, skip existence check entirely.</span>
+<span class="sd">    If make_bucket is True, create bucket if it doesn&#39;t exist.</span>
+<span class="sd">    If make_bucket is False, check existence but don&#39;t create.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Skip validation - just return a bucket object without checking existence</span>
+        <span class="k">return</span> <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s3_client</span><span class="p">:</span>
         <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="S3BucketDolWithouBucketCheck">
+<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3BucketDolWithouBucketCheck">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">S3BucketDolWithouBucketCheck</span><span class="p">(</span><span class="n">S3BucketDol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A S3BucketDol that completely avoids the bucket exists check.</span>
+<span class="sd">    This is needed for Supabase endpoints where the bucket is not created</span>
+<span class="sd">    until the first object is uploaded, for example.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># TODO: Smelly. use trans tools</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">_id</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bucket_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="S3BucketDolWithouBucketCheck.from_params">
+<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3BucketDolWithouBucketCheck.from_params">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_params</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">aws_access_key_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">aws_session_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a S3BucketDol without session token&quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span>
+            <span class="s1">&#39;s3&#39;</span><span class="p">,</span>
+            <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key_id</span><span class="p">,</span>
+            <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret_access_key</span><span class="p">,</span>
+            <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span>
+            <span class="n">aws_session_token</span><span class="o">=</span><span class="n">aws_session_token</span><span class="p">,</span>
+            <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># TODO: Messy. Should use wrap_kvs.</span>
+<div class="viewcode-block" id="SupabaseS3BucketDol">
+<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.SupabaseS3BucketDol">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SupabaseS3BucketDol</span><span class="p">(</span><span class="n">S3BucketDolWithouBucketCheck</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    S3BucketDol for Supabase endpoints.</span>
+<span class="sd">    Over the S3BucketDolWithouBucketCheck, it adds support to unravel the returned</span>
+<span class="sd">    content from the stuff (number of bytes, check sum, etc.) superbase adds to the</span>
+<span class="sd">    content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># TODO: Smelly. use trans tools</span>
+
+        <span class="c1"># Handle nested key access for keys ending with delimiter</span>
+        <span class="k">if</span> <span class="n">_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">):</span>
+            <span class="n">_kw</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="n">_id</span><span class="p">}</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="o">**</span><span class="n">_kw</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
+            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="c1"># Process HTTP chunked encoding directly on bytes</span>
+            <span class="c1"># Look for the pattern: [chunk size in hex]\r\n[data]\r\n0\r\n[optional headers]\r\n\r\n</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">raw_data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+                <span class="ow">or</span> <span class="p">(</span>
+                    <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+                    <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span>
+                    <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="sa">b</span><span class="s1">&#39;abcdef&#39;</span>
+                <span class="p">)</span>
+            <span class="p">):</span>
+                <span class="c1"># Find the first CRLF</span>
+                <span class="n">first_crlf_pos</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">first_crlf_pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># Extract what should be the hex chunk size</span>
+                    <span class="n">hex_size</span> <span class="o">=</span> <span class="n">raw_data</span><span class="p">[:</span><span class="n">first_crlf_pos</span><span class="p">]</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1"># Skip the chunk size and the CRLF</span>
+                        <span class="n">content_start</span> <span class="o">=</span> <span class="n">first_crlf_pos</span> <span class="o">+</span> <span class="mi">2</span>
+                        <span class="c1"># Find the end of the chunk (marked by another CRLF)</span>
+                        <span class="n">content_end</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">content_start</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">content_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                            <span class="c1"># Extract just the content between the CRLFs</span>
+                            <span class="k">return</span> <span class="n">raw_data</span><span class="p">[</span><span class="n">content_start</span><span class="p">:</span><span class="n">content_end</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="k">pass</span>  <span class="c1"># Not valid hex, continue to return raw data</span>
+
+            <span class="c1"># If we couldn&#39;t parse it as chunked encoding or any step failed,</span>
+            <span class="c1"># return the raw data as a fallback</span>
+            <span class="k">return</span> <span class="n">raw_data</span>
+
+        <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NoSuchKey</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Key </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> does not exist&#39;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span></div>
 
 </pre></div>
 
