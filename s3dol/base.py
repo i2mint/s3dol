@@ -19,22 +19,22 @@ from s3dol.utility import KeyNotValidError, Resp, S3DolException, S3KeyError
 
 
 noCredentialsFound = S3DolException(
-    'No AWS credentials found. Configure your AWS credentials as environment variables or in ~/.aws/credentials. '
-    'See https://github.com/i2mint/s3dol/#set-up-credentials for more information.'
+    "No AWS credentials found. Configure your AWS credentials as environment variables or in ~/.aws/credentials. "
+    "See https://github.com/i2mint/s3dol/#set-up-credentials for more information."
 )
 
 
 def get_aws_credentials():
-    aws_access_key = os.environ.get('AWS_ACCESS_KEY_ID')
-    aws_secret_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    aws_region = os.environ.get('AWS_DEFAULT_REGION')
-    aws_session_token = os.environ.get('AWS_SESSION_TOKEN')
+    aws_access_key = os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    aws_region = os.environ.get("AWS_DEFAULT_REGION")
+    aws_session_token = os.environ.get("AWS_SESSION_TOKEN")
 
     return {
-        'aws_access_key_id': aws_access_key,
-        'aws_secret_access_key': aws_secret_key,
-        'region_name': aws_region,
-        'aws_session_token': aws_session_token,
+        "aws_access_key_id": aws_access_key,
+        "aws_secret_access_key": aws_secret_key,
+        "region_name": aws_region,
+        "aws_session_token": aws_session_token,
     }
 
 
@@ -45,8 +45,8 @@ def list_profile_names():
     session = boto3.session.Session()
     available_profiles = session.available_profiles
     # Check environment variables for default profile
-    if os.environ.get('AWS_ACCESS_KEY_ID') and os.environ.get('AWS_SECRET_ACCESS_KEY'):
-        available_profiles.append('environment variables')
+    if os.environ.get("AWS_ACCESS_KEY_ID") and os.environ.get("AWS_SECRET_ACCESS_KEY"):
+        available_profiles.append("environment variables")
 
     return available_profiles
 
@@ -58,33 +58,33 @@ def get_client(profile_name=None, endpoint_url=None, **session_kwargs):
     if profile_name is None:
         return _find_default_credentials(endpoint_url=endpoint_url, **session_kwargs)
 
-    if profile_name == 'environment variables':
+    if profile_name == "environment variables":
         aws_credentials = get_aws_credentials()
         if (
-            not aws_credentials['aws_access_key_id']
-            or not aws_credentials['aws_secret_access_key']
+            not aws_credentials["aws_access_key_id"]
+            or not aws_credentials["aws_secret_access_key"]
         ):
             raise S3DolException(
-                'Missing AWS credentials in environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY'
+                "Missing AWS credentials in environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY"
             )
         _skw = {**session_kwargs, **aws_credentials}
         session = boto3.Session(**_skw)
     else:
         # Get credentials from profile
         session = boto3.Session(profile_name=profile_name, **session_kwargs)
-    client = session.client('s3', endpoint_url=endpoint_url)
+    client = session.client("s3", endpoint_url=endpoint_url)
     return client
 
 
 def _find_default_credentials(endpoint_url=None, **session_kwargs):
     try:
-        return get_client('environment variables', **session_kwargs)
+        return get_client("environment variables", **session_kwargs)
     except S3DolException:
         pass
     session = boto3.Session(**session_kwargs)
     if session.get_credentials() is None:
         raise noCredentialsFound
-    client = session.client('s3', endpoint_url=endpoint_url)
+    client = session.client("s3", endpoint_url=endpoint_url)
     return client
 
 
@@ -95,18 +95,18 @@ class BaseS3BucketReader(dol.base.KvReader):
     client: boto3.client
     bucket_name: str
     prefix: str = None
-    delimiter: str = '/'
+    delimiter: str = "/"
 
     def __post_init__(self):
         self.prefix = (
-            f'{self.prefix.strip(self.delimiter)}{self.delimiter}'
+            f"{self.prefix.strip(self.delimiter)}{self.delimiter}"
             if self.prefix
-            else ''
+            else ""
         )
 
     def object_list_pages(self) -> Iterable[dict]:
         if self._bucket_exists():
-            yield from self.client.get_paginator('list_objects').paginate(
+            yield from self.client.get_paginator("list_objects").paginate(
                 Bucket=self.bucket_name, Prefix=self.prefix
             )
 
@@ -120,9 +120,9 @@ class BaseS3BucketReader(dol.base.KvReader):
 
     def __getitem__(self, k: str):
         try:
-            return self.client.get_object(Bucket=self.bucket_name, Key=k)['Body'].read()
+            return self.client.get_object(Bucket=self.bucket_name, Key=k)["Body"].read()
         except self.client.exceptions.NoSuchKey as ex:
-            raise KeyError(f'Key {k} does not exist') from ex
+            raise KeyError(f"Key {k} does not exist") from ex
 
     def __contains__(self, k) -> bool:
         try:
@@ -131,7 +131,7 @@ class BaseS3BucketReader(dol.base.KvReader):
         except KeyNotValidError as e:
             raise
         except ClientError as e:
-            if e.response['Error']['Code'] == '404':
+            if e.response["Error"]["Code"] == "404":
                 # The object does not exist.
                 return False
             else:
@@ -167,7 +167,7 @@ class S3BucketReader(BaseS3BucketReader):
     """
 
     def _id_of_key(self, k):
-        return f'{self.prefix}{k}'
+        return f"{self.prefix}{k}"
 
     def _key_of_id(self, id):
         return id[len(self.prefix) :]
@@ -182,7 +182,7 @@ class S3BucketReader(BaseS3BucketReader):
     def __getitem__(self, k: str):
         _id = self._id_of_key(k)
         if _id.endswith(self.delimiter):
-            _kw = {**self.__dict__, 'prefix': _id}
+            _kw = {**self.__dict__, "prefix": _id}
             return type(self)(**_kw)
         return super().__getitem__(_id)
 
@@ -202,7 +202,7 @@ class S3BucketDol(S3BucketReader, BaseS3BucketDol):
 
 
 class S3ClientReader(dol.base.KvReader):
-    ignore_404_when_endpoint_has_substring = '.supabase.'
+    ignore_404_when_endpoint_has_substring = ".supabase."
 
     def __init__(
         self, *, s3_bucket_dol=S3BucketDol, profile_name=None, **session_kwargs
@@ -211,7 +211,7 @@ class S3ClientReader(dol.base.KvReader):
         self.s3_bucket_dol = s3_bucket_dol
 
     def __iter__(self):
-        return (b['Name'] for b in self.client.list_buckets().get('Buckets', []))
+        return (b["Name"] for b in self.client.list_buckets().get("Buckets", []))
 
     def __contains__(self, k):
         try:
@@ -220,16 +220,16 @@ class S3ClientReader(dol.base.KvReader):
         except Exception as e:
             # Check for a 400 error code in the response attributes
             if (
-                hasattr(e, 'response')
-                and e.response.get('Error', {}).get('Code') == '400'
+                hasattr(e, "response")
+                and e.response.get("Error", {}).get("Code") == "400"
             ):
                 # Use the endpoint URL to decide if it's Supabase
-                endpoint = getattr(self.client.meta, 'endpoint_url', '')
-                if 'supabase' in endpoint:
+                endpoint = getattr(self.client.meta, "endpoint_url", "")
+                if "supabase" in endpoint:
                     return True
-            elif '404' in str(e):
+            elif "404" in str(e):
                 return False
-            raise S3DolException(f'Error checking bucket existence: {e}') from e
+            raise S3DolException(f"Error checking bucket existence: {e}") from e
 
     def __getitem__(self, k: str):
         # if k not in self:
@@ -256,7 +256,7 @@ class S3ClientDol(S3ClientReader, dol.base.KvPersister):
         """
         if not isinstance(v, Mapping):
             raise TypeError(
-                f'Value must be a mapping (dict-like) object. Got {type(v)}'
+                f"Value must be a mapping (dict-like) object. Got {type(v)}"
             )
         self.client.create_bucket(Bucket=k)
         bucket = self[k]
@@ -265,9 +265,9 @@ class S3ClientDol(S3ClientReader, dol.base.KvPersister):
 
     def __delitem__(self, k):
         res = self.client.list_objects_v2(Bucket=k)
-        if 'Contents' in res:
-            objects = [{'Key': obj['Key']} for obj in res['Contents']]
-            self.client.delete_objects(Bucket=k, Delete={'Objects': objects})
+        if "Contents" in res:
+            objects = [{"Key": obj["Key"]} for obj in res["Contents"]]
+            self.client.delete_objects(Bucket=k, Delete={"Objects": objects})
         self.client.delete_bucket(Bucket=k)
 
 
