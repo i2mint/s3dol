@@ -1,4 +1,6 @@
 """S3 Store Class"""
+
+from typing import Optional
 from dol import Store
 
 from s3dol.base import S3BucketDol, S3ClientDol
@@ -8,8 +10,8 @@ from s3dol.utility import S3DolException
 def S3Store(
     bucket_name: str,
     *,
-    make_bucket=False,
-    path=None,
+    make_bucket: Optional[bool] = None,
+    path: Optional[str] = None,
     aws_access_key_id: str = None,
     aws_secret_access_key: str = None,
     aws_session_token: str = None,
@@ -20,7 +22,8 @@ def S3Store(
     """S3 Bucket Store
 
     :param bucket_name: name of bucket to store data in
-    :param make_bucket: create bucket if it does not exist
+    :param make_bucket: if True, create bucket if it does not exist.
+                        If None, do nothing regarding bucket existence.
     :param path: prefix to use for bucket keys
     :param aws_access_key_id: AWS access key ID
     :param aws_secret_access_key: AWS secret access key

@@ -5,6 +5,7 @@ Hints added to help setup credentials.
 bucket = S3Dol()[profile][bucket_name]
 bucket['level1/level2/test-key'] == bucket['level1/']['level2/']['test-key']
 """
+
 from dataclasses import dataclass
 import functools
 import os
@@ -201,6 +202,8 @@ class S3BucketDol(S3BucketReader, BaseS3BucketDol):
 
 
 class S3ClientReader(dol.base.KvReader):
+    ignore_404_when_endpoint_has_substring = '.supabase.'
+
     def __init__(
         self, *, s3_bucket_dol=S3BucketDol, profile_name=None, **session_kwargs
     ):
@@ -215,10 +218,18 @@ class S3ClientReader(dol.base.KvReader):
             self.client.head_bucket(Bucket=k)
             return True
         except Exception as e:
-            if '404' in str(e):
+            # Check for a 400 error code in the response attributes
+            if (
+                hasattr(e, 'response')
+                and e.response.get('Error', {}).get('Code') == '400'
+            ):
+                # Use the endpoint URL to decide if it's Supabase
+                endpoint = getattr(self.client.meta, 'endpoint_url', '')
+                if 'supabase' in endpoint:
+                    return True
+            elif '404' in str(e):
                 return False
-            else:
-                raise S3DolException(f'Error checking bucket existence: {e}') from e
+            raise S3DolException(f'Error checking bucket existence: {e}') from e
 
     def __getitem__(self, k: str):
         # if k not in self:
