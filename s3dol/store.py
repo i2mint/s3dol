@@ -88,7 +88,7 @@ def S3Store(
 
 def _is_supabase_endpoint(endpoint_url: str) -> bool:
     """Check if the endpoint URL is a Supabase endpoint"""
-    return endpoint_url and '.supabase.' in endpoint_url
+    return endpoint_url and ".supabase." in endpoint_url
 
 
 def validate_bucket(
@@ -135,7 +135,7 @@ class S3BucketDolWithouBucketCheck(S3BucketDol):
     ):
         """Create a S3BucketDol without session token"""
         client = boto3.client(
-            's3',
+            "s3",
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
             endpoint_url=endpoint_url,
@@ -165,21 +165,21 @@ class SupabaseS3BucketDol(S3BucketDolWithouBucketCheck):
 
         try:
             response = self.client.get_object(Bucket=self.bucket_name, Key=_id)
-            raw_data = response['Body'].read()
+            raw_data = response["Body"].read()
 
             # Process HTTP chunked encoding directly on bytes
             # Look for the pattern: [chunk size in hex]\r\n[data]\r\n0\r\n[optional headers]\r\n\r\n
             if (
-                raw_data.startswith(b'0')
+                raw_data.startswith(b"0")
                 or raw_data[0:2].isdigit()
                 or (
                     raw_data[0:1].isdigit()
                     and raw_data[1:2].isalpha()
-                    and raw_data[1:2].lower() in b'abcdef'
+                    and raw_data[1:2].lower() in b"abcdef"
                 )
             ):
                 # Find the first CRLF
-                first_crlf_pos = raw_data.find(b'\r\n')
+                first_crlf_pos = raw_data.find(b"\r\n")
                 if first_crlf_pos != -1:
                     # Extract what should be the hex chunk size
                     hex_size = raw_data[:first_crlf_pos]
@@ -187,7 +187,7 @@ class SupabaseS3BucketDol(S3BucketDolWithouBucketCheck):
                         # Skip the chunk size and the CRLF
                         content_start = first_crlf_pos + 2
                         # Find the end of the chunk (marked by another CRLF)
-                        content_end = raw_data.find(b'\r\n', content_start)
+                        content_end = raw_data.find(b"\r\n", content_start)
                         if content_end != -1:
                             # Extract just the content between the CRLFs
                             return raw_data[content_start:content_end]
@@ -199,4 +199,4 @@ class SupabaseS3BucketDol(S3BucketDolWithouBucketCheck):
             return raw_data
 
         except self.client.exceptions.NoSuchKey as ex:
-            raise KeyError(f'Key {k} does not exist') from ex
+            raise KeyError(f"Key {k} does not exist") from ex
