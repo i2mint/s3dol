@@ -6,16 +6,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>s3dol.utility &mdash; s3dol 0.1.4 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../_static/documentation_options.js?v=fd825880"></script>
-      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -107,54 +107,54 @@
 <span class="sd">- Resp.ascertain_200_status_code: Function that raises an error if the HTTP status code is not 200 and the response is not a dictionary with a &#39;ResponseMetadata&#39; key.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">dol.paths</span> <span class="kn">import</span> <span class="n">path_get</span><span class="p">,</span> <span class="n">OnErrorType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol.paths</span><span class="w"> </span><span class="kn">import</span> <span class="n">path_get</span><span class="p">,</span> <span class="n">OnErrorType</span>
 
 
 <div class="viewcode-block" id="S3DolException">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.S3DolException">[docs]</a>
-<span class="k">class</span> <span class="nc">S3DolException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S3DolException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
 
 <div class="viewcode-block" id="S3KeyError">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.S3KeyError">[docs]</a>
-<span class="k">class</span> <span class="nc">S3KeyError</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S3KeyError</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
 
 <div class="viewcode-block" id="NoSuchKeyError">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.NoSuchKeyError">[docs]</a>
-<span class="k">class</span> <span class="nc">NoSuchKeyError</span><span class="p">(</span><span class="n">S3KeyError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NoSuchKeyError</span><span class="p">(</span><span class="n">S3KeyError</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
 
 <div class="viewcode-block" id="KeyNotValidError">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.KeyNotValidError">[docs]</a>
-<span class="k">class</span> <span class="nc">KeyNotValidError</span><span class="p">(</span><span class="n">S3KeyError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">KeyNotValidError</span><span class="p">(</span><span class="n">S3KeyError</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
 
 <div class="viewcode-block" id="GetItemForKeyError">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.GetItemForKeyError">[docs]</a>
-<span class="k">class</span> <span class="nc">GetItemForKeyError</span><span class="p">(</span><span class="n">S3KeyError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GetItemForKeyError</span><span class="p">(</span><span class="n">S3KeyError</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
 
 <div class="viewcode-block" id="S3HttpError">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.S3HttpError">[docs]</a>
-<span class="k">class</span> <span class="nc">S3HttpError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S3HttpError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
 
 <div class="viewcode-block" id="S3Not200StatusCodeError">
 <a class="viewcode-back" href="../../module_docs/s3dol/utility.html#s3dol.utility.S3Not200StatusCodeError">[docs]</a>
-<span class="k">class</span> <span class="nc">S3Not200StatusCodeError</span><span class="p">(</span><span class="n">S3HttpError</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S3Not200StatusCodeError</span><span class="p">(</span><span class="n">S3HttpError</span><span class="p">):</span>
     <span class="o">...</span></div>
 
 
@@ -164,56 +164,56 @@
 <span class="n">return_empty_tuple_on_error</span><span class="p">:</span> <span class="n">OnErrorType</span>
 
 
-<span class="k">def</span> <span class="nf">raise_on_error</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">raise_on_error</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="k">raise</span>
 
 
-<span class="k">def</span> <span class="nf">return_none_on_error</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">return_none_on_error</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="k">return</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">return_empty_tuple_on_error</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">return_empty_tuple_on_error</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">Resp</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Resp</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">status_code</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">raise_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">status_code</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">raise_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;ResponseMetadata&#39;</span><span class="p">,</span> <span class="s1">&#39;HTTPStatusCode&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">contents</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_empty_tuple_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">contents</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_empty_tuple_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Contents&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">raise_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">raise_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Key&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">common_prefixes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_empty_tuple_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">common_prefixes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_empty_tuple_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;CommonPrefixes&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">prefix</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">raise_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prefix</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">raise_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Prefix&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">buckets</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_empty_tuple_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">buckets</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_empty_tuple_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Buckets&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">body</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_none_on_error</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">on_error</span><span class="p">:</span> <span class="n">OnErrorType</span> <span class="o">=</span> <span class="n">return_none_on_error</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path_get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">],</span> <span class="n">on_error</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">ascertain_status_code</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ascertain_status_code</span><span class="p">(</span>
         <span class="n">d</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="n">S3HttpError</span><span class="p">,</span> <span class="o">*</span><span class="n">error_args</span><span class="p">,</span> <span class="o">**</span><span class="n">error_kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">Resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="n">status_code</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">raise_error</span><span class="p">(</span><span class="o">*</span><span class="n">error_args</span><span class="p">,</span> <span class="o">**</span><span class="n">error_kwargs</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">ascertain_200_status_code</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ascertain_200_status_code</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
         <span class="n">status_code</span> <span class="o">=</span> <span class="n">Resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">return_none_on_error</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
