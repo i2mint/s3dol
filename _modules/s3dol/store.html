@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.store &mdash; s3dol 0.1.6 documentation</title>
+  <title>s3dol.store &mdash; s3dol 0.1.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
+      <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -173,7 +173,7 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_supabase_endpoint</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the endpoint URL is a Supabase endpoint&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">endpoint_url</span> <span class="ow">and</span> <span class="s1">&#39;.supabase.&#39;</span> <span class="ow">in</span> <span class="n">endpoint_url</span>
+    <span class="k">return</span> <span class="n">endpoint_url</span> <span class="ow">and</span> <span class="s2">&quot;.supabase.&quot;</span> <span class="ow">in</span> <span class="n">endpoint_url</span>
 
 
 <div class="viewcode-block" id="validate_bucket">
@@ -227,7 +227,7 @@
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a S3BucketDol without session token&quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span>
-            <span class="s1">&#39;s3&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
             <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key_id</span><span class="p">,</span>
             <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret_access_key</span><span class="p">,</span>
             <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span>
@@ -261,21 +261,21 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
-            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;Body&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
             <span class="c1"># Process HTTP chunked encoding directly on bytes</span>
             <span class="c1"># Look for the pattern: [chunk size in hex]\r\n[data]\r\n0\r\n[optional headers]\r\n\r\n</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="n">raw_data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+                <span class="n">raw_data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
                 <span class="ow">or</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
                 <span class="ow">or</span> <span class="p">(</span>
                     <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
                     <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span>
-                    <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="sa">b</span><span class="s1">&#39;abcdef&#39;</span>
+                    <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="sa">b</span><span class="s2">&quot;abcdef&quot;</span>
                 <span class="p">)</span>
             <span class="p">):</span>
                 <span class="c1"># Find the first CRLF</span>
-                <span class="n">first_crlf_pos</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">first_crlf_pos</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">first_crlf_pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                     <span class="c1"># Extract what should be the hex chunk size</span>
                     <span class="n">hex_size</span> <span class="o">=</span> <span class="n">raw_data</span><span class="p">[:</span><span class="n">first_crlf_pos</span><span class="p">]</span>
@@ -283,7 +283,7 @@
                         <span class="c1"># Skip the chunk size and the CRLF</span>
                         <span class="n">content_start</span> <span class="o">=</span> <span class="n">first_crlf_pos</span> <span class="o">+</span> <span class="mi">2</span>
                         <span class="c1"># Find the end of the chunk (marked by another CRLF)</span>
-                        <span class="n">content_end</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">content_start</span><span class="p">)</span>
+                        <span class="n">content_end</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">content_start</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">content_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                             <span class="c1"># Extract just the content between the CRLFs</span>
                             <span class="k">return</span> <span class="n">raw_data</span><span class="p">[</span><span class="n">content_start</span><span class="p">:</span><span class="n">content_end</span><span class="p">]</span>
@@ -295,7 +295,7 @@
             <span class="k">return</span> <span class="n">raw_data</span>
 
         <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NoSuchKey</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Key </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> does not exist&#39;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span></div>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span></div>
 
 </pre></div>
 
