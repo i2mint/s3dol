@@ -9,7 +9,8 @@ bucket['level1/level2/test-key'] == bucket['level1/']['level2/']['test-key']
 from dataclasses import dataclass
 import functools
 import os
-from typing import Iterable, Mapping, Union
+from typing import Union
+from collections.abc import Iterable, Mapping
 
 from botocore.exceptions import ClientError
 import boto3
@@ -291,7 +292,7 @@ class S3Dol(dol.base.KvReader):
     def __iter__(self):
         return iter(list_profile_names())
 
-    def __getitem__(self, k: Union[str, dict]):
+    def __getitem__(self, k: str | dict):
         if isinstance(k, str):
             return self.s3_client_dol(profile_name=k, s3_bucket_dol=self.s3_bucket_dol)
         return self.s3_client_dol(s3_bucket_dol=self.s3_bucket_dol, **k)

@@ -14,16 +14,16 @@ from s3dol.utility import S3DolException
 def S3Store(
     bucket_name: str,
     *,
-    make_bucket: Optional[bool] = None,
-    path: Optional[str] = None,
+    make_bucket: bool | None = None,
+    path: str | None = None,
     aws_access_key_id: str = None,
     aws_secret_access_key: str = None,
     aws_session_token: str = None,
     endpoint_url: str = None,
     region_name: str = None,
     profile_name: str = None,
-    skip_bucket_check: Optional[bool] = None,
-    is_supabase_endpoint: Optional[bool] = None,
+    skip_bucket_check: bool | None = None,
+    is_supabase_endpoint: bool | None = None,
 ) -> Store:
     """S3 Bucket Store
 
@@ -92,7 +92,7 @@ def _is_supabase_endpoint(endpoint_url: str) -> bool:
 
 
 def validate_bucket(
-    bucket_name: str, s3_client: S3ClientDol, make_bucket: Optional[bool]
+    bucket_name: str, s3_client: S3ClientDol, make_bucket: bool | None
 ):
     """Validate bucket name and create if needed
 
@@ -126,7 +126,7 @@ class S3BucketDolWithouBucketCheck(S3BucketDol):
         cls,
         bucket_name: str,
         *,
-        path: Optional[str] = None,
+        path: str | None = None,
         aws_access_key_id: str = None,
         aws_secret_access_key: str = None,
         aws_session_token: str = None,
