@@ -83,6 +83,13 @@ def S3Store(
     elif make_bucket is True and bucket_name not in s3cr:
         s3cr[bucket_name] = {}
 
+    if path:
+        # Apply the key prefix in the standard flow too. It was documented
+        # (":param path: prefix to use for bucket keys") but silently dropped
+        # here — only the Supabase / skip-check branches honored it. Normalize
+        # exactly as S3BucketReader.__post_init__ does. #7 follow-up.
+        bucket.prefix = f"{path.strip(bucket.delimiter)}{bucket.delimiter}"
+
     return bucket
 
 

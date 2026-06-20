@@ -146,6 +146,30 @@ class BaseS3BucketReader(dol.base.KvReader):
         except ClientError:
             return False
 
+    def url_for(
+        self,
+        k: str,
+        *,
+        expires_in: int = 3600,
+        client_method: str = "get_object",
+        **params,
+    ) -> str:
+        """Presigned URL for key ``k`` (default: a GET valid for ``expires_in``
+        seconds).
+
+        Lets a caller 302-redirect to the object store so it serves the bytes
+        (and HTTP ``Range``) directly, instead of proxy-streaming every byte
+        through the app. Works for any S3-compatible endpoint (AWS, R2, MinIO,
+        Supabase) — a pure client call, no object fetch. Extra ``params`` merge
+        into the presign ``Params`` (e.g. ``ResponseContentType='video/mp4'``).
+        See issue #7.
+        """
+        return self.client.generate_presigned_url(
+            client_method,
+            Params={"Bucket": self.bucket_name, "Key": k, **params},
+            ExpiresIn=expires_in,
+        )
+
 
 class BaseS3BucketDol(BaseS3BucketReader, dol.base.KvPersister):
     skip_bucket_exists_check: bool = False
@@ -194,6 +218,11 @@ class S3BucketReader(BaseS3BucketReader):
     def __contains__(self, k) -> bool:
         _id = self._id_of_key(k)
         return super().__contains__(_id)
+
+    def url_for(self, k: str, **kwargs) -> str:
+        """Prefix-aware presigned URL: maps ``k`` through ``_id_of_key`` (as
+        ``__getitem__`` does) so the URL points at the same object."""
+        return super().url_for(self._id_of_key(k), **kwargs)
 
 
 class S3BucketDol(S3BucketReader, BaseS3BucketDol):
