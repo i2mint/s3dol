@@ -3,9 +3,9 @@ on: [push, pull_request]
 
 # Workflow-level env vars. s3dol's integration tests talk to an S3-compatible
 # endpoint at http://localhost:4566, provided in the validation job by a free
-# LocalStack Community service container (see the `services:` block below). The
-# dummy AWS credentials satisfy boto3's credential/region resolution; the tests
-# override the key id/secret themselves but rely on a default region existing.
+# moto server container (see the `services:` block below). The dummy AWS
+# credentials satisfy boto3's credential/region resolution; the tests override
+# the key id/secret themselves but rely on a default region existing.
 env:
   PROJECT_NAME: s3dol
   AWS_ACCESS_KEY_ID: test
@@ -65,20 +65,19 @@ jobs:
       matrix:
         python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
 
-    # Free, self-contained S3 in the runner: LocalStack Community exposes an
-    # S3-compatible API on localhost:4566, exactly where the tests point. No
-    # LocalStack Pro license required (the old isee run-localstack action needed
-    # one and no longer activates). No in-container health check is declared;
-    # readiness is polled from the runner in the "Wait for LocalStack S3" step
+    # Free, self-contained S3 in the runner: the official moto server image
+    # (Apache-2.0, no license) exposes an S3-compatible API. moto_server listens
+    # on container port 5000, published to host 4566 — exactly where the tests
+    # point. This replaces the old isee run-localstack action, which needed a
+    # LocalStack Pro license that no longer activates (and even the plain
+    # localstack/localstack:latest image now refuses to boot without an auth
+    # token). Readiness is polled from the runner in the "Wait for moto S3" step
     # below, so the job never depends on which tools ship inside the image.
     services:
-      localstack:
-        image: localstack/localstack:latest
+      moto:
+        image: motoserver/moto:latest
         ports:
-          - 4566:4566
-        env:
-          SERVICES: s3
-          EAGER_SERVICE_LOADING: "1"
+          - 4566:5000
 
     steps:
       - uses: actions/checkout@v6
@@ -113,20 +112,20 @@ jobs:
         if: needs.setup.outputs.mypy-enabled == 'true'
         run: uvx mypy ${{ needs.setup.outputs.project-name }}
 
-      - name: Wait for LocalStack S3
+      - name: Wait for moto S3
         run: |
-          echo "Waiting for LocalStack S3 at http://localhost:4566 ..."
+          echo "Waiting for moto S3 server at http://localhost:4566 ..."
           for i in $(seq 1 60); do
-            if curl -sf http://localhost:4566/_localstack/health 2>/dev/null | grep -q '"s3"'; then
-              echo "LocalStack S3 is ready."
-              curl -s http://localhost:4566/_localstack/health
+            # Any HTTP response (curl exit 0) means the server is accepting
+            # connections; connection-refused (exit 7) means not up yet.
+            if curl -s -o /dev/null http://localhost:4566/ 2>/dev/null; then
+              echo "moto S3 server is ready."
               exit 0
             fi
             echo "  ...not ready yet ($i)"
             sleep 2
           done
-          echo "ERROR: LocalStack did not become ready in time." >&2
-          curl -s http://localhost:4566/_localstack/health || true
+          echo "ERROR: moto server did not become ready in time." >&2
           exit 1
 
       - name: Run Tests
