@@ -98,9 +98,7 @@ def _is_supabase_endpoint(endpoint_url: str) -> bool:
     return endpoint_url and ".supabase." in endpoint_url
 
 
-def validate_bucket(
-    bucket_name: str, s3_client: S3ClientDol, make_bucket: bool | None
-):
+def validate_bucket(bucket_name: str, s3_client: S3ClientDol, make_bucket: bool | None):
     """Validate bucket name and create if needed
 
     If make_bucket is None, skip existence check entirely.
