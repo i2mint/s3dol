@@ -254,7 +254,13 @@ capability method.
 where; dol's wrapper machinery generates mapped delegates.
 ```python
 class BucketReader(...):
-    _key_methods = {'url_for': 0, 'info': 0, 'handle': 0, 'sub': 0, 'delete_many': ('iter', 0)}
+    _key_methods = {
+        "url_for": 0,
+        "info": 0,
+        "handle": 0,
+        "sub": 0,
+        "delete_many": ("iter", 0),
+    }
 ```
 *General; fixes the family at once. But a method the author forgets to declare fails the same
 silent way — mitigable with a reflective test that enumerates public methods and fails on any
@@ -378,46 +384,71 @@ interpreter may pick up an older wheel.
 ```python
 # dol prefix corruption (dol#82)
 from dol import KeyCodecs, Pipe, filt_iter
-base = {'a/b': 1, 'a/c': 2, 'z': 3, 'ab/x': 4}
-sorted(KeyCodecs.prefixed('a/')(dict(base)))                                  # ['', '/x', 'b', 'c']
-sorted(Pipe(filt_iter.prefixes('a/'), KeyCodecs.prefixed('a/'))(dict(base)))  # ['b', 'c']
+
+base = {"a/b": 1, "a/c": 2, "z": 3, "ab/x": 4}
+sorted(KeyCodecs.prefixed("a/")(dict(base)))  # ['', '/x', 'b', 'c']
+sorted(
+    Pipe(filt_iter.prefixes("a/"), KeyCodecs.prefixed("a/"))(dict(base))
+)  # ['b', 'c']
 
 # un-normalized prefix escapes the scope
-store = {'logs/2026.txt': 1, 'logs2/2026.txt': 2, 'logsX': 3}
-safe = Pipe(filt_iter.prefixes('logs'), KeyCodecs.prefixed('logs'))(store)
-safe['2/2026.txt']          # -> 2   OTHER TENANT, READ
-safe['2/hacked.txt'] = 99   # -> writes 'logs2/hacked.txt'   OTHER TENANT, WRITE
+store = {"logs/2026.txt": 1, "logs2/2026.txt": 2, "logsX": 3}
+safe = Pipe(filt_iter.prefixes("logs"), KeyCodecs.prefixed("logs"))(store)
+safe["2/2026.txt"]  # -> 2   OTHER TENANT, READ
+safe["2/hacked.txt"] = 99  # -> writes 'logs2/hacked.txt'   OTHER TENANT, WRITE
 ```
 
 ```python
 # SigV2 presigning (#10)
 import boto3
 from botocore.config import Config
+
+
 def presign(cfg=None, **kw):
-    c = boto3.client('s3', region_name=kw.pop('region', 'us-east-1'),
-                     aws_access_key_id='AK', aws_secret_access_key='SK', config=cfg, **kw)
-    u = c.generate_presigned_url('get_object',
-                                 Params={'Bucket': 'mybucket', 'Key': 'a/b'}, ExpiresIn=3600)
-    return ('SigV4' if 'X-Amz-Algorithm' in u else 'SigV2'), c.meta.config.signature_version
-presign()                                    # ('SigV2', 's3v4')   <- and it lies
-presign(Config(signature_version='s3v4'))    # ('SigV4', 's3v4')
-presign(endpoint_url='http://localhost:9000')# ('SigV2', 's3v4')   <- every MinIO user
+    c = boto3.client(
+        "s3",
+        region_name=kw.pop("region", "us-east-1"),
+        aws_access_key_id="AK",
+        aws_secret_access_key="SK",
+        config=cfg,
+        **kw,
+    )
+    u = c.generate_presigned_url(
+        "get_object", Params={"Bucket": "mybucket", "Key": "a/b"}, ExpiresIn=3600
+    )
+    return (
+        "SigV4" if "X-Amz-Algorithm" in u else "SigV2"
+    ), c.meta.config.signature_version
+
+
+presign()  # ('SigV2', 's3v4')   <- and it lies
+presign(Config(signature_version="s3v4"))  # ('SigV4', 's3v4')
+presign(endpoint_url="http://localhost:9000")  # ('SigV2', 's3v4')   <- every MinIO user
 ```
 
 ```python
 # EncodingType corruption
 import boto3
 from moto import mock_aws
-KEYS = ['plain', 'a b', 'café', 'a+b', 'a\rb', 'p/x y', 'a%20b']
+
+KEYS = ["plain", "a b", "café", "a+b", "a\rb", "p/x y", "a%20b"]
+
+
 @mock_aws
 def run(explicit):
-    c = boto3.client('s3', region_name='us-east-1'); c.create_bucket(Bucket='test-bucket')
-    for k in KEYS: c.put_object(Bucket='test-bucket', Key=k, Body=b'v')
-    kw = {'EncodingType': 'url'} if explicit else {}
-    return sorted(o['Key'] for o in
-                  c.list_objects_v2(Bucket='test-bucket', **kw).get('Contents', []))
-run(False)   # all 7 round-trip
-run(True)    # 2 of 7 — ['a%0Db','a%20b','a%2520b','a%2Bb','caf%C3%A9','p/x%20y','plain']
+    c = boto3.client("s3", region_name="us-east-1")
+    c.create_bucket(Bucket="test-bucket")
+    for k in KEYS:
+        c.put_object(Bucket="test-bucket", Key=k, Body=b"v")
+    kw = {"EncodingType": "url"} if explicit else {}
+    return sorted(
+        o["Key"]
+        for o in c.list_objects_v2(Bucket="test-bucket", **kw).get("Contents", [])
+    )
+
+
+run(False)  # all 7 round-trip
+run(True)  # 2 of 7 — ['a%0Db','a%20b','a%2520b','a%2Bb','caf%C3%A9','p/x%20y','plain']
 ```
 
 ```python
