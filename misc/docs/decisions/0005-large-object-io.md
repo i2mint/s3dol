@@ -149,9 +149,10 @@ and the `disable_getitem`/`mk_write_only` symmetry go on the dol upstream list.
 
 ```python
 BucketStore(
-    bucket, connection=conn,
-    writes=transfer_writes(multipart_threshold=64<<20, max_concurrency=8),
-    reads=bytes_reads(),            # or stream_reads() / ranged_reads()
+    bucket,
+    connection=conn,
+    writes=transfer_writes(multipart_threshold=64 << 20, max_concurrency=8),
+    reads=bytes_reads(),  # or stream_reads() / ranged_reads()
 )
 ```
 

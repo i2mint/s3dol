@@ -14,7 +14,7 @@ v0.1.x does prefix scoping by hand and unsafely:
 
 ```python
 def _key_of_id(self, id):
-    return id[len(self.prefix):]        # base.py:201 — slices even when it doesn't match
+    return id[len(self.prefix) :]  # base.py:201 — slices even when it doesn't match
 ```
 
 The natural fix is "use `dol`'s canonical mechanism". **`dol`'s mechanism has the same bug.**
@@ -48,9 +48,9 @@ writable** key `2/2026.txt` — the same boundary violation this section exists 
 character away. Verified:
 
 ```python
-safe = Pipe(filt_iter.prefixes('logs'), KeyCodecs.prefixed('logs'))(store)
-safe['2/2026.txt']         # -> 2      OTHER TENANT, READ
-safe['2/hacked.txt'] = 99  # -> writes 'logs2/hacked.txt'   OTHER TENANT, WRITE
+safe = Pipe(filt_iter.prefixes("logs"), KeyCodecs.prefixed("logs"))(store)
+safe["2/2026.txt"]  # -> 2      OTHER TENANT, READ
+safe["2/hacked.txt"] = 99  # -> writes 'logs2/hacked.txt'   OTHER TENANT, WRITE
 ```
 
 Both v0 (`base.py:100-105`) and `azuredol` (`base.py:88`) normalize. A prefix that does not
@@ -65,7 +65,7 @@ that ignores `Prefix` must not silently produce corrupt keys.
 **If you additionally stack a `dol` prefix codec**, the only safe composition is:
 
 ```python
-Pipe(filt_iter.prefixes(prefix), KeyCodecs.prefixed(prefix))   # filter FIRST
+Pipe(filt_iter.prefixes(prefix), KeyCodecs.prefixed(prefix))  # filter FIRST
 ```
 
 Bare `mk_relative_path_store` / `KeyCodecs.prefixed` / `prefixless_view` are **banned in
@@ -79,9 +79,9 @@ Related upstream bug: `dol.trans.filter_prefixes(['logs/', 'tmp/'])` compiles to
 `dol` wrappers delegate unknown attributes to the leaf **with the outer, unmapped key**:
 
 ```python
-w = KeyCodecs.prefixed('a/')(WithUrl)(...)
-w['b']            # -> 1                  correct
-w.url_for('b')    # -> https://x/b        WRONG: should be https://x/a/b
+w = KeyCodecs.prefixed("a/")(WithUrl)(...)
+w["b"]  # -> 1                  correct
+w.url_for("b")  # -> https://x/b        WRONG: should be https://x/a/b
 ```
 
 `isinstance(w, SupportsUrlFor)` stays `True` — a `@runtime_checkable` Protocol checks method

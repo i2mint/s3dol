@@ -86,12 +86,12 @@ resolution. See [decisions/0002](decisions/0002-boto3-as-engine.md) and
 ```python
 @dataclass(frozen=True)
 class S3Connection:
-    preset: str | Preset | None = None      # 'aws' | 'minio' | 'r2' | ...
+    preset: str | Preset | None = None  # 'aws' | 'minio' | 'r2' | ...
     profile_name: str | None = None
     endpoint_url: str | None = None
     region_name: str | None = None
     credentials: Credentials | None = None  # explicit; None => resolve the chain
-    anon: bool | Literal['auto'] = False
+    anon: bool | Literal["auto"] = False
     client_config: dict = field(default_factory=dict)
 ```
 

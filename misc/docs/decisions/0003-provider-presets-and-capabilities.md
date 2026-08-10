@@ -25,18 +25,18 @@ moto, and Azure Blob — produced a clear result:
 @dataclass(frozen=True)
 class Preset:
     name: str
-    endpoint_url: str | None = None       # may contain {placeholders}
+    endpoint_url: str | None = None  # may contain {placeholders}
     region_name: str | None = None
-    addressing_style: str = 'auto'        # 'auto' | 'path' | 'virtual'
-    signature_version: str = 's3v4'
-    checksum: str = 'when_supported'      # 'when_supported' | 'when_required'
+    addressing_style: str = "auto"  # 'auto' | 'path' | 'virtual'
+    signature_version: str = "s3v4"
+    checksum: str = "when_supported"  # 'when_supported' | 'when_required'
     payload_signing_enabled: bool | None = None
     capabilities: Capabilities = DEFAULT_CAPABILITIES
-    client_kwargs: tuple[tuple[str, Any], ...] = ()   # hashable: Preset must key a cache
+    client_kwargs: tuple[tuple[str, Any], ...] = ()  # hashable: Preset must key a cache
     # presign-specific overrides; default to the API values above
     presign_endpoint_url: str | None = None
     presign_addressing_style: str | None = None
-    verified: bool = False                # against a live endpoint? with a date in the row
+    verified: bool = False  # against a live endpoint? with a date in the row
 ```
 
 Adding a provider is adding a row. Open-closed. Users register their own:
@@ -86,7 +86,7 @@ class Capabilities:
     object_tagging: bool = True
     versioning: bool = True
     conditional_writes: bool = True
-    consistency: Literal['strong', 'read-after-write', 'eventual'] = 'strong'
+    consistency: Literal["strong", "read-after-write", "eventual"] = "strong"
 ```
 
 Four options were considered for handling a missing capability — silent emulation,
@@ -130,9 +130,11 @@ chunk, and it misfires on any payload whose first bytes look like hex digits.
 **The fix is configuration:**
 
 ```python
-Config(request_checksum_calculation='when_required',
-       response_checksum_validation='when_required',
-       s3={'addressing_style': 'path'})
+Config(
+    request_checksum_calculation="when_required",
+    response_checksum_validation="when_required",
+    s3={"addressing_style": "path"},
+)
 ```
 
 with **`s3transfer >= 0.11.2`** pinned — 0.11.0 unconditionally re-enabled the default

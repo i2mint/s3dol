@@ -38,8 +38,9 @@ what lets the rewrite be red/green rather than hopeful.
 ```python
 from s3dol.testing import mock_s3, conformance
 
+
 def test_my_service():
-    assert MediaService(mock_s3()).url('a')     # no network, no docker, no moto
+    assert MediaService(mock_s3()).url("a")  # no network, no docker, no moto
 ```
 
 `mock_s3()` is an in-process fake that passes **the same conformance suite** as the real
