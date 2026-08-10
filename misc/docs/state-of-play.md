@@ -109,8 +109,10 @@ join the Mapping surface at all.
 
 **[0006 — Prefix normalization, key validity, dol traps](decisions/0006-key-scoping-and-dol-fixes.md).**
 Prefix normalization is mandatory and comes first. The dol corruption table. The delegation
-trap and the `inner_most_key(wrapped_self(self), k)` form. The `EncodingType` prohibition. The
-reduced dol upstream list.
+trap — accurate on the *mechanism*, but its prescribed remedy
+(`inner_most_key(wrapped_self(self), k)`) is **retired** by ADR-0011 §D1a; take the remedy from
+there. The `EncodingType` prohibition. The dol upstream list, now including the
+`inner_most_key` export and the `content_url` fix.
 
 **[0007 — Naming and compatibility](decisions/0007-naming-and-compatibility.md).** New names;
 `s3dol.store.S3Store` as a deprecated shim removed in v2, doubling as the fix-delivery
@@ -132,15 +134,16 @@ restraint. Rule: no new `Protocol` without two implementers.
 paginates. *Amended by 0011: `delete_many` is a free function, not a store method.*
 
 **[0011 — Keyed capability surface](decisions/0011-keyed-capability-surface.md).** Resolves §7 /
-discussion #14. **Layer B gets zero key-taking public methods**: per-object capabilities live on
-`ObjectHandle` (key bound at construction, as `azuredol.BlobHandle` does) and everything else —
-`handle`, `sub`, `prefixes`, `url_for`, `info`, `delete_many` — becomes a free function taking
-the store first. One primitive, `_abs_key(store, k) = inner_most_key(store, k)`, which
-**replaces** `_id_of_key` and must never compose with it, plus a mandatory `str` check.
-Conformance test with an empty allowlist. Two findings drive it: **`azuredol` is robust because
-it has almost no keyed methods, not because its prefix lives in the leaf** (§D1), and **the
-`wrapped_self` escape is silently wrong on temporary wrappers, undetectably** (§D1a) — which is
-why free functions are the only form rather than merely the safe one.
+discussion #14. **Layer B gets no key-taking public methods.** A keyed capability becomes a
+**sibling store** keyed through `__getitem__` (`s3dol.handles(store)[k]`, `.urls`, `.info`) —
+correct *by construction*, since `__getitem__` is the one thing `dol` maps correctly at every
+depth, so no key-resolution primitive is involved at all. Non-keyed operations are free
+functions; `url_for` survives as one guarded method for `dol.SupportsUrlFor`. Three findings
+drive it: **`azuredol` is robust because it has almost no keyed methods, not because its prefix
+lives in the leaf** (§D1); **the `wrapped_self` escape is silently wrong when the wrapper is
+unreferenced** (§D1a); and **free functions are not categorically safe either** — they break on
+non-`Store` layers (§D3a). Also carries the corrected census: the family defect is
+overwhelmingly *latent*, and 12 survey claims were refuted.
 
 ## 4. Verified findings — what is actually wrong with v0.1.9
 
@@ -321,30 +324,46 @@ wrapper knows to route to.
 
 Full record: [ADR-0011](decisions/0011-keyed-capability-surface.md). Short form:
 
-**Decided.** Layer B gets **zero** key-taking public methods. Per-object capabilities move onto
-`ObjectHandle` (key bound at construction, as `azuredol.BlobHandle` does); `handle`, `sub`,
-`prefixes`, `url_for`, `info` and `delete_many` become **free functions taking the store first**
-(Option C). One primitive, `_abs_key(store, k) = inner_most_key(store, k)`, with a mandatory
-`str` check. A reflective conformance test with an *empty* allowlist instead of Option B's
-registry. Option E deferred; Option D rejected; pushdown closed.
+**Decided.** Layer B gets **no key-taking public methods**. A keyed capability becomes a
+**sibling store** over the same key space — `s3dol.handles(store)[k]`, `s3dol.urls(store)[k]`,
+`s3dol.info(store)[k]` — keyed through `__getitem__`, which is the one thing `dol` maps
+correctly at every wrapper depth. Non-keyed operations (`sub`, `prefixes`, `delete_many`,
+`delete_bucket`) are free functions taking the store first. `url_for` survives as a single
+guarded method purely to satisfy `dol.SupportsUrlFor`. Option D rejected; pushdown closed;
+Option E rejected as an *attribute* and adopted as a *store*.
 
-**Correction 0 — the biggest one, and it was found by testing the plan rather than arguing it.**
-The first draft kept `handle(k)`/`sub(prefix)` as methods hardened with
-`inner_most_key(wrapped_self(self), k)` — the form ADR-0006 §2 prescribed. That form is
-**silently wrong whenever the wrapper is a temporary**:
+This is close to the provisional lean in #14 (C + E, with B) — refined by evidence: E's value
+comes from being a **store**, not an attribute; C shrinks to the non-keyed operations; B
+contributes only its guard.
+
+**Correction 0 — two design drafts were refuted by testing rather than argument.**
+
+*Draft 1* kept `handle(k)`/`sub(prefix)` as methods hardened with
+`inner_most_key(wrapped_self(self), k)` — the form ADR-0006 §2 prescribed. That form is silently
+wrong when **nothing holds a reference to the wrapper**, because a delegated bound method holds
+none and `wrapped_self`'s weakref cleanup then removes the registry entry:
 
 ```python
-s3_store('bucket', prefix='logs/')          # named   -> correct
-KeyCodecs.prefixed('x/')(s3_store(...)).handle(k)   # temporary -> WRONG, silently
+s = KeyCodecs.prefixed('x/')(s3_store(...));  s.handle(k)   # correct
+KeyCodecs.prefixed('x/')(s3_store(...)).handle(k)           # WRONG, silently
 ```
 
-A delegated bound method holds no reference to the wrapper, so it is collected before the body
-runs; `wrapped_self`'s weakref cleanup then *removes the registry entry*, making it
-indistinguishable from "never wrapped". And because the prefix lives in the leaf, the wrong
-answer is a plausible `str`, so the type check does not catch it. Measured: free-function form
-6/6 correct across wrap × lifetime shapes, method form 2/4. That is what forces "zero methods"
-rather than "two". It also demotes `wrapped_self` from *the* escape to a best-effort guardrail,
-and adds a new upstream item against dol#18 (ADR-0011 §D9).
+Because the prefix lives in the leaf, the wrong answer is a plausible `str`, so a type check
+cannot catch it.
+
+*Draft 2* concluded from that that **free functions** were the only reliable form. An adversarial
+review refuted three of its supporting claims, all re-verified:
+
+- **"Undetectable" was false** — a guard is writable (`Store.__init__` probes the leaf with
+  `hasattr(store, 'KeysView')`, so a leaf can record that it was ever wrapped).
+- **Free functions are not categorically safe** — with a hand-rolled non-`Store` layer in the
+  chain they return a plausible wrong key in three configurations, two of which the *method*
+  form gets right. All `dol`-shipped wrappers are fine.
+- **`s3_store(...).handle(k)` is not an instance of the bug at all** — `s3_store` returns a bare
+  leaf or a *value*-codec wrap, both correct. Only a user-applied **key** codec triggers it.
+
+Sibling stores need no key-resolution primitive, so they are immune to both holes. That is what
+settled it.
 
 **Correction 1 — the provisional lean above was wrong about Option E.** It claims E works
 because key transformation "happens through the Mapping protocol the wrapper already handles
@@ -356,7 +375,7 @@ third mechanism. That removes its main claimed advantage.
 **Correction 2 — Option C's cited prior art has the bug.** `dol.content_url` resolves with a
 flat `getattr(store, 'url_for')(key)` (`dol/content.py:210-214`), so through a key wrap it
 returns a URL for the unmapped key. The idiom is prior art; the resolution is not. Fixing it is
-now a blocking upstream item (§9 of ADR-0006).
+now a blocking upstream item ([ADR-0006](decisions/0006-key-scoping-and-dol-fixes.md) §3).
 
 **Also, two things the framing above got structurally incomplete:**
 

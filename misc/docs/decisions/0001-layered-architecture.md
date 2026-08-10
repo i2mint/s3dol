@@ -115,14 +115,16 @@ over the store cannot corrupt it. `azuredol`'s only residual exposures are
 
 So `azuredol` is not safe because of where its prefix lives. It is safe because **it has almost
 no seam to get wrong.** The table above lists six methods this ADR originally proposed for
-Layer B; [ADR-0011](0011-keyed-capability-surface.md) reduces that to **zero**, moving per-object
-capabilities onto `ObjectHandle` (key bound at construction) and the rest into free functions.
+Layer B; [ADR-0011](0011-keyed-capability-surface.md) reduces that to **zero** (plus one guarded
+`url_for` shim for `dol.SupportsUrlFor`), turning keyed capabilities into **sibling stores** you
+index — `s3dol.handles(store)[k]` — and the rest into free functions.
 
-Two is not good enough, and the reason is worth knowing before you propose keeping one: the
-obvious hardening — `inner_most_key(wrapped_self(self), k)` — is **silently wrong when the
-wrapper is a temporary** (`s3_store(...).handle(k)`), because the delegated bound method holds
-no reference to the wrapper and the weakref registry entry is removed when it dies. Verified;
-see ADR-0011 §D1a.
+Before proposing that one keyed method be kept: the obvious hardening,
+`inner_most_key(wrapped_self(self), k)`, is **itself silently wrong** when nothing holds a
+reference to the wrapper, because the delegated bound method holds none and the weakref registry
+entry is removed when the wrapper dies. Sibling stores avoid the question entirely by routing
+through `__getitem__`, which `dol` maps correctly at every depth. Verified; see ADR-0011
+§D1a/§D2.
 
 The "Consequences" claim below that *"every capability method is key-correct by construction"*
 holds only for an unwrapped store. Read it as: *there is no seam **we** introduce* — a user can

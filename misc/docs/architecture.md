@@ -117,10 +117,17 @@ BucketCollection      (Collection — __iter__ over object keys)
    └── BucketReader   (+ __getitem__ -> bytes)
         └── BucketStore  (+ __setitem__ / __delitem__)
 
+BucketHandles         (KvReader — __getitem__ -> ObjectHandle)   ┐ sibling capability
+BucketUrls            (KvReader — __getitem__ -> presigned URL)  │ stores over the SAME
+BucketInfo            (KvReader — __getitem__ -> ObjectInfo)     ┘ key space
+
 EndpointCollection    (Collection — __iter__ over bucket names)
    └── EndpointReader (+ __getitem__ -> BucketReader)
         └── EndpointStore  (+ __setitem__ / __delitem__ for buckets)
 ```
+
+The four bucket-level readers share one private base holding `prefix`, connection and
+`_id_of_key`/`_key_of_id`, so the key arithmetic exists exactly once.
 
 plus `ObjectHandle` — the escape hatch for one object, which is **not** a Mapping and is
 where ranged reads, streaming, multipart, presigned URLs and object metadata live.
@@ -128,18 +135,18 @@ where ranged reads, streaming, multipart, presigned URLs and object metadata liv
 delegation trap ([ADR-0011](decisions/0011-keyed-capability-surface.md) §D1, following
 `azuredol`'s `BlobHandle`).
 
-> **Layer B has no key-taking public methods at all.** The Mapping dunders are the whole keyed
-> surface, because `dol` maps *those* correctly at any wrapper depth. Every capability —
-> `handle`, `sub`, `prefixes`, `url_for`, `info`, `delete_many` — is a **free function taking
-> the store first**.
+> **Layer B has no key-taking public methods** (one guarded exception, `url_for` — below). The
+> Mapping dunders are the whole keyed surface, because `dol` maps *those* correctly at any
+> wrapper depth. A keyed capability is a **sibling store** you index; anything non-keyed is a
+> **free function taking the store first**.
 >
 > This is not stylistic. A `dol` key wrapper hands any non-dunder method the *outer, unmapped*
-> key; and the obvious hardening (`inner_most_key(wrapped_self(self), k)`) is **silently wrong
-> when the store is a temporary**, as in `s3_store(...).handle(k)` — the wrapper is collected
-> before the method body runs, and the failure is undetectable. Free functions receive the store
-> as an argument, so it stays alive and the resolution is reliable: measured 6/6 correct versus
-> 2/4 for the method form. See [ADR-0011](decisions/0011-keyed-capability-surface.md) §D1a. A
-> reflective conformance test enforces an **empty** allowlist ([ADR-0011] §D5).
+> key — and the obvious hardening, `inner_most_key(wrapped_self(self), k)`, is **itself silently
+> wrong** when nothing holds a reference to the wrapper, returning a plausible but incorrect key.
+> Sibling stores route through `__getitem__` instead, so they are correct *by construction* with
+> no key-resolution primitive at all. See
+> [ADR-0011](decisions/0011-keyed-capability-surface.md) §D1a/§D2. A reflective conformance test
+> enforces the rule (§D5).
 
 `EndpointStore`, not `BucketsStore`: naming the *containing* resource (as `azuredol` does with
 `ContainerStore`/`AccountStore`) avoids shipping `BucketStore` and `BucketsStore` — two of the
@@ -156,16 +163,31 @@ yields a working, silently-wrong store.
 | `__len__()` | **Not implemented.** Raises `TypeError` with guidance. See [0008](decisions/0008-testing-architecture.md) §cost model. |
 | `__repr__` | bucket, prefix, endpoint host, mode. No secrets, no addresses. |
 
-The capabilities, as **free functions** ([ADR-0011](decisions/0011-keyed-capability-surface.md) §D3):
+**Keyed capabilities — sibling stores you index** ([ADR-0011](decisions/0011-keyed-capability-surface.md) §D2):
+
+| Store | `__getitem__(k)` returns |
+|---|---|
+| `BucketHandles` — `s3dol.handles(store)` | An `ObjectHandle` bound to `k`. Zero round-trips. |
+| `BucketUrls` — `s3dol.urls(store)` | A presigned URL. Zero object requests. |
+| `BucketInfo` — `s3dol.info(store)` | One `HeadObject` → `ObjectInfo`. |
+
+The `s3dol.<cap>(store)` accessors derive a sibling from an **unwrapped** store and **raise** on
+a wrapped one, naming the remedy: wrap the sibling in parallel with the same codec. s3dol will
+not guess a user's codec chain (that is dol#10).
+
+**Non-keyed operations — free functions** (§D3):
 
 | Function | Contract |
 |---|---|
-| `s3dol.handle(store, k)` | An `ObjectHandle` bound to `k`. Zero round-trips. The per-object entry point. |
-| `s3dol.sub(store, prefix)` | A store with an extended, normalized prefix, **in the caller's key space**. Zero round-trips on an unwrapped store, where it pushes down; on a wrapped store it composes `Pipe(filt_iter.prefixes(p), KeyCodecs.prefixed(p))` over the outer store and loses pushdown (§D2, §D8). |
-| `s3dol.prefixes(store)` | One `ListObjectsV2(Delimiter='/')` → `CommonPrefixes`, mapped back out to the caller's key space (§D2). |
-| `s3dol.url_for(store, k)` | `handle(store, k).url()`. |
-| `s3dol.info(store, k)` | `handle(store, k).info()`. |
-| `s3dol.delete_many(store, keys)` | See [0010](decisions/0010-bucket-and-bulk-operations.md). |
+| `s3dol.sub(store, prefix)` | A store with an extended, normalized prefix, **in the caller's key space**. Zero round-trips on an unwrapped store, where it pushes down; on a wrapped store it composes `Pipe(filt_iter.prefixes(p), KeyCodecs.prefixed(p))` over the outer store, loses pushdown (§D8), and returns a different type. |
+| `s3dol.prefixes(store)` | One `ListObjectsV2(Delimiter='/')` → `CommonPrefixes`, mapped back out to the caller's key space. |
+| `s3dol.delete_many(store, keys)` | See [0010](decisions/0010-bucket-and-bulk-operations.md) §2. |
+| `s3dol.delete_bucket(endpoint, name, force=True)` | The explicit cascading form. See [0010](decisions/0010-bucket-and-bulk-operations.md) §3. |
+
+**The one keyed method**, `BucketReader.url_for(k)`: exists only because `dol.SupportsUrlFor`
+requires a *method* and `dol.content_url` reaches it by `getattr`. Guarded so it is correct when
+unwrapped or when the wrapper is referenced, and **raises** otherwise — never silently wrong.
+`s3dol.urls(store)[k]` is the canonical form (§D3b).
 
 On `ObjectHandle` (key bound at construction, so no delegation seam — these are methods):
 
@@ -175,14 +197,13 @@ On `ObjectHandle` (key bound at construction, so no delegation seam — these ar
 | `info()` | One `HeadObject` → size, mtime, etag, content-type, storage class, restore status. |
 
 **The rule for what may join the Layer B table** (it is otherwise how a surface grows to
-twenty): **nothing that takes a key.** A method may be added iff it takes no key at all.
-Anything addressing one object belongs on `ObjectHandle`; anything else belongs in a free
-function or a recipe.
+twenty): **nothing that takes a key.** Anything addressing one object becomes a sibling
+capability store or lives on `ObjectHandle`; anything else is a free function or a recipe.
 
 The reason is mechanical, not aesthetic: `dol` hands any non-dunder method the outer, unmapped
-key when the store is key-wrapped, and the standard workaround is itself silently wrong on
-temporaries. `azuredol` — the reference implementation — has ~zero keyed methods for the same
-reason. See [ADR-0011](decisions/0011-keyed-capability-surface.md).
+key when the store is key-wrapped, and the standard workaround is itself silently wrong when the
+wrapper is unreferenced. `azuredol` — the reference implementation — has ~zero keyed methods for
+the same reason. See [ADR-0011](decisions/0011-keyed-capability-surface.md).
 
 ### Layer C — `s3dol.recipes`
 
@@ -225,10 +246,11 @@ s3dol/
   values.py       Filepath / Chunks / Streamable refs; as_fileobj singledispatch
   writes.py       write strategies (simple / transfer / multipart)
   reads.py        read strategies (bytes / stream / ranged / to-file)
-  base.py         Layer B (owns prefix). NO key-taking public methods — ADR-0011 §D1
-  capabilities.py the keyed API as free functions: handle / sub / prefixes /
-                  url_for / info / delete_many, plus _abs_key, the one
-                  key-resolution primitive (ADR-0011 §D2/§D3)
+  base.py         Layer B (owns prefix). NO key-taking public methods except the
+                  guarded url_for shim — ADR-0011 §D1/§D3b
+  capabilities.py sibling stores BucketHandles/BucketUrls/BucketInfo + their
+                  accessors; free functions sub / prefixes / delete_many /
+                  delete_bucket (ADR-0011 §D2/§D3)
   recipes.py      Layer C — s3_store(...), codec facades
   diagnose.py     s3dol.diagnose() — prints resolved endpoint/region/credential SOURCE
   store.py        COMPAT SHIM — legacy S3Store, DeprecationWarning, removed in v2
@@ -240,10 +262,11 @@ s3dol/
 `diagnose.py` is small but not optional: it is the step-0 safety mechanism for a change that
 can silently move a live data target ([ADR-0007](decisions/0007-naming-and-compatibility.md) §5).
 
-**Public API** — `s3_store`, `BucketStore`, `BucketReader`, `EndpointStore`, `ObjectHandle`,
-`S3Connection`, `Filepath`/`Chunks`/`Streamable`, the error classes, `diagnose`, and the keyed
-free functions `handle` / `sub` / `prefixes` / `url_for` / `info` / `delete_many`. Everything
-else is implementation.
+**Public API** — `s3_store`, `BucketStore`, `BucketReader`, `BucketHandles`, `BucketUrls`,
+`BucketInfo`, `EndpointStore`, `ObjectHandle`, `S3Connection`,
+`Filepath`/`Chunks`/`Streamable`, the error classes, `diagnose`, the capability accessors
+`handles` / `urls` / `info`, and the free functions `sub` / `prefixes` / `delete_many` /
+`delete_bucket`. Everything else is implementation.
 
 `store.py` must survive as an importable module: both external dependents do
 `from s3dol.store import S3Store`, not `from s3dol import S3Store`.
@@ -262,7 +285,8 @@ else is implementation.
   *parameter*; only `on_missing_bucket='raise'` performs I/O, and it says so
   ([0010](decisions/0010-bucket-and-bulk-operations.md)).
 - **Cascading deletes as a side effect.** `del endpoint[name]` refuses a non-empty bucket;
-  `endpoint.delete(name, force=True)` is the explicit form.
+  `s3dol.delete_bucket(endpoint, name, force=True)` is the explicit form — a free function, not
+  a method ([ADR-0011](decisions/0011-keyed-capability-surface.md) §D4).
 - **`__len__` on a bucket store.** Unbounded pagination cost.
 - **Silent empties.** Anywhere.
 - **Passing `EncodingType` to a list call.** botocore sets it itself *and* decodes the

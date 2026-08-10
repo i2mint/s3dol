@@ -83,8 +83,15 @@ distinguishes absent ones.
 
 ### 3. Cascading bucket deletion stays explicit
 
+> **Amended by [ADR-0011](0011-keyed-capability-surface.md) §D4: the cascading form is
+> `s3dol.delete_bucket(endpoint, name, force=True)`, a free function — not
+> `endpoint.delete(...)`.** A public, key-taking, destructive, *delegated* method is
+> structurally identical to `azuredol.AccountStore.delete`, which ADR-0011 cites as a census
+> exhibit. `del endpoint[name]` is unaffected: it is a Mapping dunder, so `dol` maps it
+> correctly.
+
 `del endpoint[name]` raises `BucketNotEmpty` if the bucket has objects.
-`endpoint.delete(name, force=True)` is the documented cascading form, and it **paginates** —
+The cascading form **paginates** —
 v0's version listed one page and deleted at most 1000 objects before failing on
 `delete_bucket`, i.e. a partial, non-idempotent destruction.
 
