@@ -53,6 +53,17 @@ ADR set exists to remove — but the README must show `on_missing_bucket='create
 
 ### 2. `delete_many(keys)`
 
+> **Amended by [ADR-0011](0011-keyed-capability-surface.md) §D4: `delete_many` is a free
+> function, `s3dol.delete_many(store, keys)`, not a store method.** The semantics below are
+> unchanged; only the surface moves.
+>
+> Reason: a keyed, destructive, *delegated* method is the exact combination that the `*dol`
+> family census found already destroying the wrong data in three sibling packages
+> (`cosmodol.CosmosItems.batch`, `cosmodol.CosmosDatabase.delete`, `azuredol.AccountStore.delete`).
+> As a method it would be handed the outer, unmapped key by any key wrap and would delete
+> objects the caller cannot see; as a free function it resolves the key through the whole
+> wrapper chain first. See [dol#83](https://github.com/i2mint/dol/issues/83).
+
 Chunks at **1000** (AWS's cap; moto accepts 1001, so tier 2 cannot catch a missing chunker),
 parses the `Errors` list out of what is an **HTTP 200** response, and on partial failure raises
 a single `S3PartialFailure(S3Error)` carrying `.succeeded: list[str]` and
@@ -72,8 +83,15 @@ distinguishes absent ones.
 
 ### 3. Cascading bucket deletion stays explicit
 
+> **Amended by [ADR-0011](0011-keyed-capability-surface.md) §D4: the cascading form is
+> `s3dol.delete_bucket(endpoint, name, force=True)`, a free function — not
+> `endpoint.delete(...)`.** A public, key-taking, destructive, *delegated* method is
+> structurally identical to `azuredol.AccountStore.delete`, which ADR-0011 cites as a census
+> exhibit. `del endpoint[name]` is unaffected: it is a Mapping dunder, so `dol` maps it
+> correctly.
+
 `del endpoint[name]` raises `BucketNotEmpty` if the bucket has objects.
-`endpoint.delete(name, force=True)` is the documented cascading form, and it **paginates** —
+The cascading form **paginates** —
 v0's version listed one page and deleted at most 1000 objects before failing on
 `delete_bucket`, i.e. a partial, non-idempotent destruction.
 

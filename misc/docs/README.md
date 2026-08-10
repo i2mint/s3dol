@@ -22,6 +22,7 @@ output; don't put prose here that a build step will overwrite.)
 | [0008](decisions/0008-testing-architecture.md) | Four tiers, shipped fake, exported conformance | writing a test |
 | [0009](decisions/0009-scope-and-deferrals.md) | v1 scope, deferrals, the `s3dol`/`botodol` line | proposing a feature |
 | [0010](decisions/0010-bucket-and-bulk-operations.md) | Bucket-existence policy, `delete_many`, cascading delete | touching bucket lifecycle or bulk ops |
+| [0011](decisions/0011-keyed-capability-surface.md) | **No key-taking methods; capabilities are sibling stores** | adding any capability, or wondering where `url_for` went |
 
 ## The five things most likely to bite you
 
@@ -37,11 +38,13 @@ output; don't put prose here that a build step will overwrite.)
    `dol` codec anyway, only `Pipe(filt_iter.prefixes(p), KeyCodecs.prefixed(p))` is safe — and
    only after normalizing `p` to end in the delimiter.
    [ADR-0006 §1](decisions/0006-key-scoping-and-dol-fixes.md).
-3. **A `dol` wrapper delegates methods with the outer, unmapped key**, so `url_for`, `sub`,
-   `handle`, `info`, `prefixes` and `delete_many` silently address the wrong object —
-   `delete_many` *destroys* it. `isinstance(store, SupportsUrlFor)` still says `True`. Use
-   `inner_most_key(wrapped_self(self), k)`; `inner_most_key(self, k)` returns `None`.
-   [ADR-0001 §Why the prefix lives in the leaf](decisions/0001-layered-architecture.md).
+3. **A `dol` wrapper delegates methods with the outer, unmapped key**, so a keyed method like
+   `url_for` silently addresses the wrong object. Capability detection can't see it, and
+   **the obvious escape is also broken**: `inner_most_key(wrapped_self(self), k)` is silently
+   wrong when nothing holds a reference to the wrapper (`inner_most_key(self, k)` returns
+   `None`, which at least fails loudly). So s3dol has **no key-taking methods**: capabilities
+   are sibling stores keyed through `__getitem__` — the one thing `dol` maps correctly at every
+   depth. [ADR-0011](decisions/0011-keyed-capability-surface.md).
 4. **botocore ≥1.36 sends checksums by default**, and several S3-compatible providers either
    reject them loudly or persist the `aws-chunked` framing *into the object body*. The fix is
    client config plus `s3transfer>=0.11.2`.

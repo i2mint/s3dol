@@ -46,11 +46,19 @@ Plus, from the "beyond blobs" analysis, the items that are **free or nearly so**
 fall out of work already being done:
 
 - **`ObjectInfo` from LIST metadata.** Every `ListObjectsV2` response already carries size,
-  mtime, ETag and storage class, and v0 throws them away. A `store.info(k)` (one HEAD) and a
-  cheap listing-derived metadata view cost almost nothing and serve nearly every use case.
+  mtime, ETag and storage class, and v0 throws them away. One HEAD, plus a cheap
+  listing-derived metadata view, costs almost nothing and serves nearly every use case.
 - **Prefix tree via `CommonPrefixes`.** `Resp.common_prefixes` has existed in `utility.py`
-  since 2023 and is **called from nowhere**. `store.prefixes()` is one LIST with a delimiter.
-- **A presigned-URL view.** `url_for` already exists; a `Mapping` face over it is trivial.
+  since 2023 and is **called from nowhere**. One LIST with a delimiter.
+- **A presigned-URL view.** The presigning logic already exists; a `Mapping` face over it is
+  trivial.
+
+> **Shapes updated by [ADR-0011](0011-keyed-capability-surface.md).** These three are no longer
+> `store.info(k)` / `store.prefixes()` / a view *attribute*. They are **sibling stores** —
+> `s3dol.info(store)[k]`, `s3dol.urls(store)[k]` — plus the free function
+> `s3dol.prefixes(store)`. That is not extra work: ADR-0011 §D2 makes all three instances of one
+> mechanism, which is why they move from "nearly free" to actually shared. The ADR-0011 note
+> that they were "deferred" is about the *attribute* form only.
 
 The multipart **parts** store (`MutableMapping[int, bytes]`, filled then committed) is built
 as an *internal mechanism* of the write strategy in v1 — it is how `s[k] = v` stays pure —

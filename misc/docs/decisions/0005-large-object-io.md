@@ -27,6 +27,14 @@ pure" was being claimed while six methods were added:
 > admitted only because the cost difference against a `__delitem__` loop is an order of
 > magnitude.
 
+> **Superseded by [ADR-0011](0011-keyed-capability-surface.md).** The rule above is now
+> stricter and simpler: **a method may be added iff it takes no key at all.** A keyed method is
+> handed the *outer, unmapped* key by any `dol` key wrapper, and the standard escape is itself
+> silently wrong when nothing references the wrapper — so `info`, `url_for`, `sub`, `handle`,
+> `prefixes` and `delete_many` are *not* admissible as methods. Capabilities become sibling
+> stores keyed through `__getitem__` (`s3dol.handles(store)[k]`) or free functions. `url_for`
+> survives as a single guarded exception, purely to satisfy `dol.SupportsUrlFor`.
+
 For calibration: `azuredol` has exactly one such method (`walk`) and pushes everything
 per-object onto `BlobHandle`. Six unexplained exceptions is how a surface grows to twenty.
 
@@ -184,7 +192,7 @@ stream raises from `botocore/httpchecksum.py` *before the request is built*, so 
 in increasing explicitness: a `reads=stream_reads()` strategy at construction (the store's
 values become chunk iterators — a **runtime** variation, *not* a static one: the class's value
 type does not change, and honest typing would need `BucketStore(Generic[VT])` plus overloaded
-construction, which v1 does not do); `store.handle(k)` for `.open()` / `.stream()` /
+construction, which v1 does not do); `s3dol.handle(store, k)` for `.open()` / `.stream()` /
 `.read(byte_range=...)`; or a `Filepath` destination for download-to-disk.
 
 `ObjectHandle` is not a Mapping and is the documented escape hatch — the same role

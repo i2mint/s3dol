@@ -3,6 +3,10 @@
 - **Status:** Accepted
 - **Date:** 2026-08-10
 - **Supersedes:** the v0.1.x `base.py` / `store.py` / `utility.py` split
+- **Amended by:** [ADR-0011](0011-keyed-capability-surface.md) — Layer B has **no** key-taking
+  public methods. `url_for`/`info` move onto `ObjectHandle` (key bound at construction);
+  `handle`, `sub`, `prefixes` and `delete_many` become free functions taking the store first.
+  See §"Prefix-in-leaf is necessary, not sufficient" below.
 
 ## Context
 
@@ -90,6 +94,41 @@ define `_id_of_key`/`_key_of_id` there, `:147`/`:171` push it into
 appears **zero times** in the package. azuredol has none of the six bugs above precisely
 because it does the thing this ADR now specifies. The lesson generalizes: **a sibling's
 design doc is a claim; its source is the evidence.**
+
+## Prefix-in-leaf is necessary, not sufficient
+
+*(Added by [ADR-0011](0011-keyed-capability-surface.md). The section above is correct about why
+the prefix must live in the leaf; it drew an incomplete lesson from `azuredol`.)*
+
+Putting the prefix in the leaf removes the key-mapping seam **for the prefix s3dol owns**. It
+does nothing for a user who wraps an s3dol store with a `dol` key codec — every capability
+method is then delegated with the outer, unmapped key again, by one of *two* routes
+(`Store.__getattr__` at `dol/base.py:742` for instance-wraps and `mk_relative_path_store`
+subclasses; `DelegatedAttribute.__get__` at `dol/base.py:279` for class-wraps).
+
+Re-reading `azuredol`'s code with that in mind gives the sharper finding: **`ContainerStore` has
+essentially no key-taking public methods at all.** The rich per-object surface lives on
+`BlobHandle` (`azuredol/base.py:233`), which binds its blob **at construction**, so a key codec
+over the store cannot corrupt it. `azuredol`'s only residual exposures are
+`ContainerCollection.walk` (`base.py:164`, leaf-keyed return) and `AccountStore.delete`
+(`base.py:460`, keyed and destructive).
+
+So `azuredol` is not safe because of where its prefix lives. It is safe because **it has almost
+no seam to get wrong.** The table above lists six methods this ADR originally proposed for
+Layer B; [ADR-0011](0011-keyed-capability-surface.md) reduces that to **zero** (plus one guarded
+`url_for` shim for `dol.SupportsUrlFor`), turning keyed capabilities into **sibling stores** you
+index — `s3dol.handles(store)[k]` — and the rest into free functions.
+
+Before proposing that one keyed method be kept: the obvious hardening,
+`inner_most_key(wrapped_self(self), k)`, is **itself silently wrong** when nothing holds a
+reference to the wrapper, because the delegated bound method holds none and the weakref registry
+entry is removed when the wrapper dies. Sibling stores avoid the question entirely by routing
+through `__getitem__`, which `dol` maps correctly at every depth. Verified; see ADR-0011
+§D1a/§D2.
+
+The "Consequences" claim below that *"every capability method is key-correct by construction"*
+holds only for an unwrapped store. Read it as: *there is no seam **we** introduce* — a user can
+still add one.
 
 Reader-only classes are **real classes**, not instances with methods deleted. `dol`'s
 `mk_read_only` is not merely bypassable — it is **non-functional on a `dol` store**: verified,
