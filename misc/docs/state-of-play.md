@@ -63,12 +63,13 @@ consumer's requirements.
 | Deferred scope | **#12** — v1.x interfaces + the `s3dol`/`botodol` line |
 | Live bug found | **#10** — `url_for` emits SigV2 |
 | Answered | **#5** (multipart / value types), **discussion #6** (extendable KeyError) |
-| Upstream blockers | **i2mint/dol#82** (prefix corruption), **i2mint/dol#83** (delegation with unmapped key) |
-| Open design questions | **§7** and **§8** of this document |
+| Upstream blockers | **i2mint/dol#82** (prefix corruption), **i2mint/dol#83** (delegation with unmapped key), plus `inner_most_key` export + `content_url` resolution (ADR-0006 §3) |
+| Resolved design question | **§7** / discussion **#14** → [ADR-0011](decisions/0011-keyed-capability-surface.md) |
+| Open design question | **§8** / discussion **#15** — credential and endpoint resolution |
 
 **Nothing has been implemented.** The repo still ships v0.1.9 unchanged.
 
-## 3. The ten ADRs, in one paragraph each
+## 3. The eleven ADRs, in one paragraph each
 
 **[0001 — Four-layer architecture](decisions/0001-layered-architecture.md).** Three layers
 (`connection` → `base` → `recipes`), mirroring `azuredol` so one adapter in the family reads
@@ -128,7 +129,18 @@ restraint. Rule: no new `Protocol` without two implementers.
 **[0010 — Bucket and bulk operations](decisions/0010-bucket-and-bulk-operations.md).**
 `on_missing_bucket='assume'` default (no probe, ever); `delete_many` chunking at 1000 with
 `S3PartialFailure` (not `ExceptionGroup` — 3.10 floor); cascading delete stays explicit and
-paginates.
+paginates. *Amended by 0011: `delete_many` is a free function, not a store method.*
+
+**[0011 — Keyed capability surface](decisions/0011-keyed-capability-surface.md).** Resolves §7 /
+discussion #14. **Layer B gets zero key-taking public methods**: per-object capabilities live on
+`ObjectHandle` (key bound at construction, as `azuredol.BlobHandle` does) and everything else —
+`handle`, `sub`, `prefixes`, `url_for`, `info`, `delete_many` — becomes a free function taking
+the store first. One primitive, `_abs_key(store, k) = inner_most_key(store, k)`, which
+**replaces** `_id_of_key` and must never compose with it, plus a mandatory `str` check.
+Conformance test with an empty allowlist. Two findings drive it: **`azuredol` is robust because
+it has almost no keyed methods, not because its prefix lives in the leaf** (§D1), and **the
+`wrapped_self` escape is silently wrong on temporary wrappers, undetectably** (§D1a) — which is
+why free functions are the only form rather than merely the safe one.
 
 ## 4. Verified findings — what is actually wrong with v0.1.9
 
@@ -193,15 +205,20 @@ own rule. Moved to the deferral list.
 **(g) An absolute `import s3dol < 30 ms` budget.** Arithmetically impossible: `dol` alone is
 ~61 ms and is a hard dependency of Layer B. Replaced by a delta budget.
 
-## 6. The two open design questions
+## 6. The design questions
 
-These are the ones worth discussing before any code is written. Each has a GitHub discussion
-with concrete options; this section is the short framing.
+- **§7 — Layered transformation and unmapped keys.** Discussion **#14** — **RESOLVED**, see
+  [ADR-0011](decisions/0011-keyed-capability-surface.md). §7 below is kept as the problem
+  statement; the answer is in the ADR and summarised at the end of the section.
+- **§8 — Credential and endpoint resolution.** Discussion **#15** — **still open**. This is the
+  one to pick up next.
 
-- **§7 — Layered transformation and unmapped keys.** Discussion: **#14**
-- **§8 — Credential and endpoint resolution.** Discussion: **#15**
+## 7. ~~Open question 1~~ RESOLVED — layered transformation and the unmapped key
 
-## 7. Open question 1 — layered transformation and the unmapped key
+> **Resolved 2026-08-10 in [ADR-0011](decisions/0011-keyed-capability-surface.md)** (discussion
+> #14). The framing below stands, with two corrections found while resolving it — see
+> §7-resolution at the end. Do not re-litigate the options without reading the ADR: three of the
+> five were eliminated by running code, not by argument.
 
 ### The problem, precisely
 
@@ -300,7 +317,59 @@ The pushdown half (failure mode 2) is separate and probably needs its own answer
 protocol (`__iter__(self, *, prefix_hint=…)`) or an explicit `iter_prefix` on the leaf that the
 wrapper knows to route to.
 
-## 8. Open question 2 — credential and endpoint resolution
+### §7-resolution — what was decided, and the two corrections
+
+Full record: [ADR-0011](decisions/0011-keyed-capability-surface.md). Short form:
+
+**Decided.** Layer B gets **zero** key-taking public methods. Per-object capabilities move onto
+`ObjectHandle` (key bound at construction, as `azuredol.BlobHandle` does); `handle`, `sub`,
+`prefixes`, `url_for`, `info` and `delete_many` become **free functions taking the store first**
+(Option C). One primitive, `_abs_key(store, k) = inner_most_key(store, k)`, with a mandatory
+`str` check. A reflective conformance test with an *empty* allowlist instead of Option B's
+registry. Option E deferred; Option D rejected; pushdown closed.
+
+**Correction 0 — the biggest one, and it was found by testing the plan rather than arguing it.**
+The first draft kept `handle(k)`/`sub(prefix)` as methods hardened with
+`inner_most_key(wrapped_self(self), k)` — the form ADR-0006 §2 prescribed. That form is
+**silently wrong whenever the wrapper is a temporary**:
+
+```python
+s3_store('bucket', prefix='logs/')          # named   -> correct
+KeyCodecs.prefixed('x/')(s3_store(...)).handle(k)   # temporary -> WRONG, silently
+```
+
+A delegated bound method holds no reference to the wrapper, so it is collected before the body
+runs; `wrapped_self`'s weakref cleanup then *removes the registry entry*, making it
+indistinguishable from "never wrapped". And because the prefix lives in the leaf, the wrong
+answer is a plausible `str`, so the type check does not catch it. Measured: free-function form
+6/6 correct across wrap × lifetime shapes, method form 2/4. That is what forces "zero methods"
+rather than "two". It also demotes `wrapped_self` from *the* escape to a best-effort guardrail,
+and adds a new upstream item against dol#18 (ADR-0011 §D9).
+
+**Correction 1 — the provisional lean above was wrong about Option E.** It claims E works
+because key transformation "happens through the Mapping protocol the wrapper already handles
+correctly". Verified false at dol 0.3.58: a wrapper does **not** re-wrap a Mapping-valued
+attribute — `store.urls` returns an inner-keyed mapping under both class- and instance-wrap. E
+needs the same `inner_most_key` call as A and C, so it is a *surface* over one mechanism, not a
+third mechanism. That removes its main claimed advantage.
+
+**Correction 2 — Option C's cited prior art has the bug.** `dol.content_url` resolves with a
+flat `getattr(store, 'url_for')(key)` (`dol/content.py:210-214`), so through a key wrap it
+returns a URL for the unmapped key. The idiom is prior art; the resolution is not. Fixing it is
+now a blocking upstream item (§9 of ADR-0006).
+
+**Also, two things the framing above got structurally incomplete:**
+
+- There are **two** delegation routes, not one — `Store.__getattr__` (`dol/base.py:742`) for
+  instance-wraps and `mk_relative_path_store` subclasses, and `DelegatedAttribute.__get__`
+  (`dol/base.py:279`) for class-wraps. A fix covering one is a silent no-op on the other.
+- **Option D was already rejected upstream** in `dol/misc/docs/dol_issue18_design.md`, with
+  better reasons than blast radius: rebinding binds to the *innermost* `Wrap`, so under a `Pipe`
+  stack it does not fix the case it exists to fix. The terminal fix is dol's **is-a wrapping**
+  (dol#18 Approach C, committed for 0.4/1.0) — which #14's option list did not contain, and
+  which is why the selection criterion became *correct on 0.3.x AND redundant under is-a*.
+
+## 8. Open question — credential and endpoint resolution
 
 ### The problem
 
@@ -460,6 +529,76 @@ run(True)  # 2 of 7 — ['a%0Db','a%20b','a%2520b','a%2Bb','caf%C3%A9','p/x%20y'
 #   moto head_object missing bucket -> Code='NoSuchBucket'; real AWS -> Code='404'
 ```
 
+```python
+# The temporary-wrapper hole in `wrapped_self` (ADR-0011 §D1a) — the finding that forced
+# "zero keyed methods". Needs only dol.
+from dol import KeyCodecs, wrapped_self
+from dol.base import KvReader
+from dol.dig import inner_most_key  # NOTE: not exported from `dol`
+
+
+class BR(KvReader):  # an s3dol-shaped leaf: it OWNS its prefix, so it has _id_of_key
+    def __init__(self, d, prefix=""):
+        self._d = d
+        self.prefix = f"{prefix.strip('/')}/" if prefix else ""
+
+    def _id_of_key(self, k):
+        return f"{self.prefix}{k}"
+
+    def _key_of_id(self, i):
+        return i[len(self.prefix) :] if self.prefix else i
+
+    def __iter__(self):
+        yield from (self._key_of_id(i) for i in self._d if i.startswith(self.prefix))
+
+    def __getitem__(self, k):
+        return self._d[self._id_of_key(k)]
+
+    def m_abs(self, k):  # METHOD form — ADR-0006 §2's original prescription
+        return inner_most_key(wrapped_self(self), k)
+
+
+def f_abs(store, k):  # FREE-FUNCTION form — ADR-0011 §D2
+    return inner_most_key(store, k)
+
+
+DATA = {"logs/x/b.txt": 2}
+mk = lambda: KeyCodecs.prefixed("x/")(BR(DATA, "logs/"))  # want 'logs/x/b.txt'
+
+s = mk()
+s.m_abs("b.txt")  # 'logs/x/b.txt'   correct   — wrapper is NAMED, so alive
+mk().m_abs("b.txt")  # 'logs/b.txt'  WRONG     — wrapper was a TEMPORARY
+#   ^ a plausible str, so an isinstance check cannot catch it;
+#     and `id(leaf) in dol.base._wrapper_backrefs` is False in BOTH the
+#     collected-temporary and never-wrapped cases, so it is undetectable.
+
+f_abs(s, "b.txt")  # 'logs/x/b.txt'  correct
+f_abs(mk(), "b.txt")  # 'logs/x/b.txt'  correct — store is an ARGUMENT, so it stays alive
+```
+
+```python
+# dol.content_url resolves with the OUTER key (ADR-0006 §3 item 6)
+from dol import KeyCodecs, content_url
+
+
+class Leaf(dict):
+    def url_for(self, k):
+        return f"s3://B/{k}"
+
+
+content_url(KeyCodecs.prefixed("a/")(Leaf)({"a/b": b"v"}), "b")
+# -> 's3://B/b'   the bytes are at 'a/b'
+
+# dol.filesys.Files.is_valid_key — confirmed live
+import os, tempfile
+from dol import Files
+
+d = tempfile.mkdtemp()
+open(os.path.join(d, "a.txt"), "w").write("x")
+list(Files(d))  # ['a.txt']
+Files(d).is_valid_key("a.txt")  # False   <- for a key that exists
+```
+
 `azuredol` is the reference implementation for the layering — read its `base.py` (not its
 `architecture.md`): normalized prefix in the leaf, `_id_of_key`/`_key_of_id` in the leaf,
 pushdown via `list_blobs(name_starts_with=…)`, prefix in `__repr__`, sub-stores via
@@ -482,10 +621,15 @@ before it can serve as the cross-repo gate ADR-0008 proposes.
 
 ## 11. Suggested next steps
 
-1. **Resolve §7 and §8** (discussions #14, #15) — both shape the module boundaries, so they
-   are worth settling before code.
+1. ~~Resolve §7~~ **done** — [ADR-0011](decisions/0011-keyed-capability-surface.md).
+   **Resolve §8** (discussion #15) — it still shapes the module boundaries, so settle it
+   before code.
 2. **#10 (SigV2)** as a standalone 0.1.x patch. Independent, strictly a fix, immediate value.
 3. **`s3dol.diagnose()`** in the same 0.1.x line, so dependents can record what their
    environment resolves to *before* the resolution order changes.
-4. **dol#82 / dol#83** — both block the implementation and benefit every `*dol` adapter.
-5. **P0 tier-1 test scaffolding**, then module-by-module per #11.
+4. **dol upstreams** — dol#82 / dol#83 benefit every `*dol` adapter; the two ADR-0011
+   dependencies (`inner_most_key` export + hardening, `content_url` chain resolution) block the
+   implementation directly. See [ADR-0006](decisions/0006-key-scoping-and-dol-fixes.md) §3.
+5. **P0 tier-1 test scaffolding**, then module-by-module per #11. The reflective
+   keyed-surface conformance test (ADR-0011 §D5) belongs in P0 — it is cheap and it is what keeps
+   the §7 decision from decaying.

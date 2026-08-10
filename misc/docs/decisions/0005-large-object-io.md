@@ -184,7 +184,7 @@ stream raises from `botocore/httpchecksum.py` *before the request is built*, so 
 in increasing explicitness: a `reads=stream_reads()` strategy at construction (the store's
 values become chunk iterators — a **runtime** variation, *not* a static one: the class's value
 type does not change, and honest typing would need `BucketStore(Generic[VT])` plus overloaded
-construction, which v1 does not do); `store.handle(k)` for `.open()` / `.stream()` /
+construction, which v1 does not do); `s3dol.handle(store, k)` for `.open()` / `.stream()` /
 `.read(byte_range=...)`; or a `Filepath` destination for download-to-disk.
 
 `ObjectHandle` is not a Mapping and is the documented escape hatch — the same role

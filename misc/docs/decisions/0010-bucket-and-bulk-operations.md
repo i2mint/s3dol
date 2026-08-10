@@ -53,6 +53,17 @@ ADR set exists to remove — but the README must show `on_missing_bucket='create
 
 ### 2. `delete_many(keys)`
 
+> **Amended by [ADR-0011](0011-keyed-capability-surface.md) §D4: `delete_many` is a free
+> function, `s3dol.delete_many(store, keys)`, not a store method.** The semantics below are
+> unchanged; only the surface moves.
+>
+> Reason: a keyed, destructive, *delegated* method is the exact combination that the `*dol`
+> family census found already destroying the wrong data in three sibling packages
+> (`cosmodol.CosmosItems.batch`, `cosmodol.CosmosDatabase.delete`, `azuredol.AccountStore.delete`).
+> As a method it would be handed the outer, unmapped key by any key wrap and would delete
+> objects the caller cannot see; as a free function it resolves the key through the whole
+> wrapper chain first. See [dol#83](https://github.com/i2mint/dol/issues/83).
+
 Chunks at **1000** (AWS's cap; moto accepts 1001, so tier 2 cannot catch a missing chunker),
 parses the `Errors` list out of what is an **HTTP 200** response, and on partial failure raises
 a single `S3PartialFailure(S3Error)` carrying `.succeeded: list[str]` and

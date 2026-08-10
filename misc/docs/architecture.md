@@ -68,9 +68,14 @@ load-bearing rather than decorative:
   > above an absolute-keyed leaf. That does not work, and the reasons are recorded in
   > [ADR-0001](decisions/0001-layered-architecture.md) §"Why the prefix lives in the leaf".
   > In short: `dol` wrappers delegate unknown attributes with the **outer, unmapped** key, so
-  > every capability method (`url_for`, `info`, `handle`, `sub`, `prefixes`, `delete_many`)
-  > silently addresses the wrong object; and there is no channel for a wrapper to push its
-  > prefix into the leaf's listing call, so every scoped listing becomes a full-bucket scan.
+  > every capability method silently addresses the wrong object; and there is no channel for a
+  > wrapper to push its prefix into the leaf's listing call, so every scoped listing becomes a
+  > full-bucket scan.
+  >
+  > **Necessary, not sufficient.** Prefix-in-leaf removes the seam *we* introduce; a user who
+  > stacks a `dol` key codec on top reintroduces it. The second half of the answer is to have
+  > almost no keyed methods to begin with —
+  > [ADR-0011](decisions/0011-keyed-capability-surface.md).
 
 - **Layer C never subclasses.** If a recipe cannot be expressed as a composition of Layer B
   plus `dol` wrappers, that is a signal the capability belongs in Layer B as a parameter,
@@ -109,8 +114,8 @@ Follows `dol.filesys`' triangle, in S3 vocabulary:
 
 ```
 BucketCollection      (Collection — __iter__ over object keys)
-   └── BucketReader   (+ __getitem__ -> bytes, url_for, info, handle, sub, prefixes)
-        └── BucketStore  (+ __setitem__ / __delitem__ / delete_many)
+   └── BucketReader   (+ __getitem__ -> bytes)
+        └── BucketStore  (+ __setitem__ / __delitem__)
 
 EndpointCollection    (Collection — __iter__ over bucket names)
    └── EndpointReader (+ __getitem__ -> BucketReader)
@@ -118,7 +123,23 @@ EndpointCollection    (Collection — __iter__ over bucket names)
 ```
 
 plus `ObjectHandle` — the escape hatch for one object, which is **not** a Mapping and is
-where ranged reads, streaming, multipart and object metadata live.
+where ranged reads, streaming, multipart, presigned URLs and object metadata live.
+`ObjectHandle` binds its key **at construction**, which is what makes it immune to the
+delegation trap ([ADR-0011](decisions/0011-keyed-capability-surface.md) §D1, following
+`azuredol`'s `BlobHandle`).
+
+> **Layer B has no key-taking public methods at all.** The Mapping dunders are the whole keyed
+> surface, because `dol` maps *those* correctly at any wrapper depth. Every capability —
+> `handle`, `sub`, `prefixes`, `url_for`, `info`, `delete_many` — is a **free function taking
+> the store first**.
+>
+> This is not stylistic. A `dol` key wrapper hands any non-dunder method the *outer, unmapped*
+> key; and the obvious hardening (`inner_most_key(wrapped_self(self), k)`) is **silently wrong
+> when the store is a temporary**, as in `s3_store(...).handle(k)` — the wrapper is collected
+> before the method body runs, and the failure is undetectable. Free functions receive the store
+> as an argument, so it stays alive and the resolution is reliable: measured 6/6 correct versus
+> 2/4 for the method form. See [ADR-0011](decisions/0011-keyed-capability-surface.md) §D1a. A
+> reflective conformance test enforces an **empty** allowlist ([ADR-0011] §D5).
 
 `EndpointStore`, not `BucketsStore`: naming the *containing* resource (as `azuredol` does with
 `ContainerStore`/`AccountStore`) avoids shipping `BucketStore` and `BucketsStore` — two of the
@@ -134,18 +155,34 @@ yields a working, silently-wrong store.
 | `__iter__()` | Lazy paginated `ListObjectsV2(Prefix=self.prefix)`. **Raises** if the bucket is missing or unlistable — never yields empty. |
 | `__len__()` | **Not implemented.** Raises `TypeError` with guidance. See [0008](decisions/0008-testing-architecture.md) §cost model. |
 | `__repr__` | bucket, prefix, endpoint host, mode. No secrets, no addresses. |
-| `url_for(k, ...)` | Presigned URL. Zero object requests. **Always SigV4** — see [0003](decisions/0003-provider-presets-and-capabilities.md) §4. **The URL cannot outlive the signing credential**: with STS/SSO/instance-profile credentials it dies with the session (default 1 h) regardless of `expires_in`. Capped at 604800 s (SigV4's limit, which botocore does not enforce); clamps and warns when the resolved credentials expire sooner. |
-| `sub(prefix)` | A `BucketReader`/`BucketStore` with an extended, normalized prefix. Zero round-trips. |
-| `info(k)` | One `HeadObject` → size, mtime, etag, content-type, storage class, restore status. |
-| `prefixes(p='')` | One `ListObjectsV2(Delimiter='/')` → `CommonPrefixes`, relative to the store's own prefix. |
-| `delete_many(keys)` | See [0010](decisions/0010-bucket-and-bulk-operations.md). |
 
-**The rule for what may join this table** (it is otherwise how a surface grows to twenty): a
-method may be added iff it takes a key and is either a pure read of metadata or an address
-(`info`, `url_for`), or returns a store or handle (`sub`, `handle`, `prefixes`). Anything that
-mutates, batches, or takes non-key arguments belongs on `ObjectHandle` or a recipe.
-`delete_many` is an explicit, named exception, admitted only because the cost difference
-against a `__delitem__` loop is an order of magnitude.
+The capabilities, as **free functions** ([ADR-0011](decisions/0011-keyed-capability-surface.md) §D3):
+
+| Function | Contract |
+|---|---|
+| `s3dol.handle(store, k)` | An `ObjectHandle` bound to `k`. Zero round-trips. The per-object entry point. |
+| `s3dol.sub(store, prefix)` | A store with an extended, normalized prefix, **in the caller's key space**. Zero round-trips on an unwrapped store, where it pushes down; on a wrapped store it composes `Pipe(filt_iter.prefixes(p), KeyCodecs.prefixed(p))` over the outer store and loses pushdown (§D2, §D8). |
+| `s3dol.prefixes(store)` | One `ListObjectsV2(Delimiter='/')` → `CommonPrefixes`, mapped back out to the caller's key space (§D2). |
+| `s3dol.url_for(store, k)` | `handle(store, k).url()`. |
+| `s3dol.info(store, k)` | `handle(store, k).info()`. |
+| `s3dol.delete_many(store, keys)` | See [0010](decisions/0010-bucket-and-bulk-operations.md). |
+
+On `ObjectHandle` (key bound at construction, so no delegation seam — these are methods):
+
+| Operation | Contract |
+|---|---|
+| `url(...)` | Presigned URL. Zero object requests. **Always SigV4** — see [0003](decisions/0003-provider-presets-and-capabilities.md) §4. **The URL cannot outlive the signing credential**: with STS/SSO/instance-profile credentials it dies with the session (default 1 h) regardless of `expires_in`. Capped at 604800 s (SigV4's limit, which botocore does not enforce); clamps and warns when the resolved credentials expire sooner. |
+| `info()` | One `HeadObject` → size, mtime, etag, content-type, storage class, restore status. |
+
+**The rule for what may join the Layer B table** (it is otherwise how a surface grows to
+twenty): **nothing that takes a key.** A method may be added iff it takes no key at all.
+Anything addressing one object belongs on `ObjectHandle`; anything else belongs in a free
+function or a recipe.
+
+The reason is mechanical, not aesthetic: `dol` hands any non-dunder method the outer, unmapped
+key when the store is key-wrapped, and the standard workaround is itself silently wrong on
+temporaries. `azuredol` — the reference implementation — has ~zero keyed methods for the same
+reason. See [ADR-0011](decisions/0011-keyed-capability-surface.md).
 
 ### Layer C — `s3dol.recipes`
 
@@ -188,7 +225,10 @@ s3dol/
   values.py       Filepath / Chunks / Streamable refs; as_fileobj singledispatch
   writes.py       write strategies (simple / transfer / multipart)
   reads.py        read strategies (bytes / stream / ranged / to-file)
-  base.py         Layer B (owns prefix)
+  base.py         Layer B (owns prefix). NO key-taking public methods — ADR-0011 §D1
+  capabilities.py the keyed API as free functions: handle / sub / prefixes /
+                  url_for / info / delete_many, plus _abs_key, the one
+                  key-resolution primitive (ADR-0011 §D2/§D3)
   recipes.py      Layer C — s3_store(...), codec facades
   diagnose.py     s3dol.diagnose() — prints resolved endpoint/region/credential SOURCE
   store.py        COMPAT SHIM — legacy S3Store, DeprecationWarning, removed in v2
@@ -201,7 +241,8 @@ s3dol/
 can silently move a live data target ([ADR-0007](decisions/0007-naming-and-compatibility.md) §5).
 
 **Public API** — `s3_store`, `BucketStore`, `BucketReader`, `EndpointStore`, `ObjectHandle`,
-`S3Connection`, `Filepath`/`Chunks`/`Streamable`, the error classes, `diagnose`. Everything
+`S3Connection`, `Filepath`/`Chunks`/`Streamable`, the error classes, `diagnose`, and the keyed
+free functions `handle` / `sub` / `prefixes` / `url_for` / `info` / `delete_many`. Everything
 else is implementation.
 
 `store.py` must survive as an importable module: both external dependents do
@@ -235,8 +276,13 @@ else is implementation.
 question **we deliberately give the same answer** — the `*dol` family's value is that one
 adapter reads like the next. Concretely inherited: the layering, the Collection→Reader→Store
 triads, the single error-translation decorator, no `__len__`, no global client cache, real
-reader classes, and the refusal to cascade-delete a container (its `design_decisions.md` §12
-cites s3dol v0 by name: *"This is convenient and dangerous. We refuse it."*).
+reader classes, the refusal to cascade-delete a container (its `design_decisions.md` §12
+cites s3dol v0 by name: *"This is convenient and dangerous. We refuse it."*), and — the one that
+took longest to see — **a container store with essentially no key-taking public methods**, with
+the rich per-object surface on a handle that binds its key at construction
+(`azuredol/base.py:233 BlobHandle`). That last property, not the prefix location, is what makes
+it robust under user-applied key codecs
+([ADR-0011](decisions/0011-keyed-capability-surface.md) §D1).
 
 **Read `azuredol`'s code, not only its docs.** Its `architecture.md` says container stores
 are wrapped with `dol`'s `mk_relative_path_store`; its actual `base.py` does prefix

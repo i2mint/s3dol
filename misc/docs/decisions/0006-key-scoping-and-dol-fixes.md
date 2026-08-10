@@ -76,7 +76,21 @@ Related upstream bug: `dol.trans.filter_prefixes(['logs/', 'tmp/'])` compiles to
 
 ### 2. The delegation trap (for anyone stacking `dol` on top)
 
-`dol` wrappers delegate unknown attributes to the leaf **with the outer, unmapped key**:
+> **Amended by [ADR-0011](0011-keyed-capability-surface.md), and the headline below is now
+> wrong.** `inner_most_key(wrapped_self(self), k)` is **not** a correct escape: it is silently
+> wrong whenever the wrapper is a temporary (§D1a), and the failure is undetectable. s3dol's
+> answer is instead to have **no key-taking methods at all** and to resolve keys in free
+> functions that receive the store as an argument. Read this section for the *mechanism* — it is
+> accurate about how the trap works — but take the remedy from ADR-0011, not from here.
+
+`dol` wrappers delegate unknown attributes to the leaf **with the outer, unmapped key**. There
+are **two** routes, and a fix that covers one is a silent no-op on the other:
+
+| route | when | site |
+|---|---|---|
+| `Store.__getattr__` | instance-wraps; `mk_relative_path_store` subclasses | `dol/base.py:742` |
+| `DelegatedAttribute.__get__` | class-wraps (one descriptor per attr of `dir(wrapped)`) | `dol/base.py:279` |
+
 
 ```python
 w = KeyCodecs.prefixed("a/")(WithUrl)(...)
@@ -89,7 +103,9 @@ w.url_for("b")  # -> https://x/b        WRONG: should be https://x/a/b
 `isinstance` uses `getattr_static`, which sees a **class**-wrapped capability but not an
 **instance**-wrapped one. Capability detection must not rely on it.)
 
-The correct escape is **`inner_most_key(wrapped_self(self), k)`**.
+The escape this ADR originally prescribed was **`inner_most_key(wrapped_self(self), k)`**.
+**Do not use it** — trap 4 below shows it is silently wrong on temporary wrappers. It is kept
+here because traps 1–3 apply to the *replacement* too, and because the reasoning matters.
 
 > `inner_most_key(self, k)` — which an earlier revision of this ADR prescribed — returns
 > **`None`**, silently: inside a delegated method `self` *is* the unwrapped leaf (dol issue
@@ -98,6 +114,61 @@ The correct escape is **`inner_most_key(wrapped_self(self), k)`**.
 `dol.wrapped_self` **already ships in dol 0.3.58**, so this is a floor bump, not an upstream
 project. `url_for` must additionally **raise** when the mapped key is not a `str`, so the
 `None` failure mode is impossible rather than merely documented.
+
+**Four things about that form, all verified, none of them obvious. The fourth retires it.**
+
+1. **`inner_most_key` is not importable from `dol`.** It lives in `dol.dig`
+   (`dol/dig.py:69`); `dol/__init__.py` exports only `trace_getitem` from that module. The
+   import is `from dol.dig import inner_most_key`. (`wrapped_self` *is* exported from `dol`.)
+   Making it public is on the upstream list in §3.
+
+2. **It REPLACES `self._id_of_key(k)`; it never composes with it.** Because §1 of this ADR puts
+   the prefix in the leaf, `inner_most_key` walks the whole chain *including the leaf's own
+   `_id_of_key`*, so it already returns the fully-prefixed absolute key. Composing them
+   double-prefixes, silently — and `self._id_of_key(k)` is exactly what a capability method's
+   author will reach for:
+
+   ```python
+   # store scoped to 'logs/', outer key 'a.txt'
+   inner_most_key(wrapped_self(self), k)                   # 'logs/a.txt'       correct
+   self._id_of_key(inner_most_key(wrapped_self(self), k))  # 'logs/logs/a.txt'  WRONG
+   ```
+
+   Verified correct in all five wrap shapes — unwrapped, `KeyCodecs.prefixed`, `filt_iter`
+   (key-identity layer), a `Pipe` stack, and a value-only `wrap_kvs`.
+
+3. **The `str` check is mandatory, not defensive.** `inner_most_key` returns `None` — silently,
+   via `last_element` over an empty generator — when no layer in the chain supplies
+   `_id_of_key`. That is what turns a wrong key into `https://…/None`, and in `dol`'s own
+   `filesys.MakeMissingDirsStoreMixin` it turns a write error into
+   `TypeError: expected str … not NoneType`.
+
+4. **It is silently wrong when the wrapper is a temporary — which retires the form.**
+   `wrapped_self` resolves through a weakref registry keyed by `id(inner)`. A delegated bound
+   method holds **no reference to the wrapper**, so in a chained expression the wrapper is freed
+   before the body runs, and `_register_wrapper_backref`'s cleanup callback *removes the
+   registry entry* — making it indistinguishable from "never wrapped":
+
+   ```python
+   s = KeyCodecs.prefixed("x/")(BucketReader(data, prefix="logs/"))
+   s.m_abs("b.txt")  # 'logs/x/b.txt'   correct  (wrapper is named, so alive)
+   KeyCodecs.prefixed("x/")(BucketReader(data, "logs/")).m_abs("b.txt")
+   # 'logs/b.txt'    WRONG, silently  (wrapper was a temporary)
+   ```
+
+   And because §1 puts the prefix in the leaf, the wrong answer is a **plausible `str`** — the
+   leaf's own `_id_of_key` still fires — so trap 3's type check does not catch it. Measured:
+   free-function form 6/6 correct across wrap × lifetime shapes; method form 2/4.
+
+   Consequence: `wrapped_self` is a **best-effort guardrail, not a correctness mechanism**
+   (dol#18's own doc: *"a guardrail, not a cure"*). s3dol therefore resolves keys in **free
+   functions that receive the store as an argument**, where the caller keeps it alive and the
+   registry is never consulted — [ADR-0011](0011-keyed-capability-surface.md) §D2/§D3. The
+   temporary-wrapper hole itself goes upstream to dol#18 (ADR-0011 §D9).
+
+`wrapped_self` does survive `pickle` and `deepcopy` (dol#18's `__setstate__` re-registration
+landed) — that part of the story is fine; it is object lifetime, not serialization, that breaks
+it.
 
 ### 3. What still goes upstream to `dol`
 
@@ -111,6 +182,33 @@ Reduced, now that prefixing lives in the leaf and `wrapped_self` turns out to ex
 3. **`_filt_iter` assigning `__len__` unconditionally** — it should not resurrect a `__len__`
    the wrapped class deliberately omits.
 4. **Document `wrapped_self` as the delegation answer**, and make the family use it.
+
+Added by [ADR-0011](0011-keyed-capability-surface.md), both **blocking for s3dol**:
+
+5. **Export `inner_most_key`** from `dol/__init__.py`, and **harden `dig.store_trans_path`** —
+   raise instead of returning `None` when no layer supplies `_id_of_key`, and fix `dol/dig.py:41`
+   hardcoding `unravel_key` for the recursive step (which is why `inner_most_val` does not do
+   what its name says — an acknowledged TODO at `dol/dig.py:71`). s3dol's `_abs_key` depends on
+   this function being both importable and non-silent.
+
+6. **Fix `dol.content_url`** (`dol/content.py:210-214`). It resolves with a flat
+   `getattr(store, 'url_for')(key)` — no chain walk — so through any key wrap it returns a URL
+   for the unmapped key. `dol/content.py`'s module docstring names an `s3dol` store as the
+   intended S3 backend and frames `url_for` as the presigned-URL seam, so this **blocks that
+   integration being correct at all**. Its existing tests are all identity-keyed, which is why
+   it was never caught.
+
+7. **Report the `wrapped_self` temporary-wrapper hole** on dol#18 (§2 trap 4). Not blocking —
+   s3dol routes around it via free functions — but dol ships `wrapped_self` as the *blessed*
+   pattern, and `xdol` and `unbox` have already adopted it, so they inherit a silent failure
+   mode. Not s3dol's to fix; s3dol's to report with the repro.
+
+Adjacent, non-blocking, and worth fixing because it is the best regression sentinel for any
+future delegation fix: **`dol.filesys.FileSysCollection.is_valid_key`/`validate_key`**
+(`dol/filesys.py:422,425`) are confirmed-live broken — `Files(d).is_valid_key(k)` is `False`
+for a key that exists, because `Files` is a `mk_relative_path_store` and the leaf's regex matches
+absolute paths. `dol/paths.py:1199-1206` already carries the hand-rolled fix for exactly this
+shape.
 
 **Policy on upstreams:** never block an s3dol release on a `dol` PR; never let a local copy
 diverge silently — raise the `dol` floor the day each lands and delete the workaround in the
@@ -150,12 +248,13 @@ it, since botocore adds it. If a provider rejects botocore's auto-`EncodingType`
 expresses that by unregistering botocore's handler pair — and s3dol then owns the decode.
 
 **The trailing-`/` overload is removed**: `store[k]` always returns bytes; sub-stores come
-from `store.sub('folder/')`. `store['folder/']` survives only on an explicitly-constructed
+from `s3dol.sub(store, 'folder/')` ([ADR-0011](0011-keyed-capability-surface.md) — a free
+function, not a method). `store['folder/']` survives only on an explicitly-constructed
 navigable reader for notebook use (`azuredol` keeps both, and so do we).
 
 One consequence to handle explicitly: a view scoped to `a/` relativizes the **exact-prefix
 marker object** `a/` to the key `''`, which this section forbids. Resolution: the scoped view
-filters out the exact-prefix marker, and `store.sub(p)` documents that the parent's own marker
+filters out the exact-prefix marker, and `s3dol.sub(store, p)` documents that the parent's own marker
 is not a key of the child. The marker stays addressable by its absolute key on an unscoped
 store. (Directory markers matter: a filesystem migration creates them for empty directories.)
 
@@ -175,3 +274,9 @@ justified only because the alternative is a key the store iterates but refuses t
 3. Never pass `EncodingType`.
 4. Never assert on a presigned URL by substring ([ADR-0008](0008-testing-architecture.md)).
 5. Never write `inner_most_key(self, k)` inside a delegated method.
+6. Never resolve a key inside a delegated method **at all** — not even with
+   `wrapped_self`. Resolve it in a free function that receives the store (§2 trap 4,
+   [ADR-0011](0011-keyed-capability-surface.md) §D1a/§D3).
+7. Never compose `inner_most_key(store, k)` with `store._id_of_key(...)`. It already includes
+   the leaf's prefix; composing double-prefixes silently (§2).
+8. Never use the result without checking it is a `str` — `None` is a legal return (§2).

@@ -109,7 +109,7 @@ These are bug fixes, and preserving them would mean preserving data-misrouting:
 | `list(store)` returns `[]` on any error | raises | no |
 | `del endpoint[name]` cascades, unpaginated | refuses non-empty; `force=True` is explicit | no |
 | `store[k] = 'a str'` accepted | `TypeError` ([ADR-0005](0005-large-object-io.md) §2) | **yes** — shim wraps with `str.encode` + `DeprecationWarning` |
-| `store['folder/']` returns a sub-store | removed; use `store.sub()` | **yes** |
+| `store['folder/']` returns a sub-store | removed; use `s3dol.sub(store, …)` ([ADR-0011](0011-keyed-capability-surface.md)) | **yes** |
 | `del store[absent]` silently succeeds | still idempotent ([ADR-0010](0010-bucket-and-bulk-operations.md)) | n/a — unchanged |
 
 The last three rows exist because `http_cosmo_prep`'s **currently-passing** tests do all
