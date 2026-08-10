@@ -48,15 +48,32 @@ and it is what makes the auth-vs-not-found distinction auditable from one file.
 permission must not look like a missing key — that is exactly the confusion that makes
 `_bucket_exists` dangerous today.
 
-### 2. Classification is a table keyed on `(code, status)`, not on exception type
+### 2. Classification is a table keyed on `(operation, code, status)`, not on exception type
 
 Because the modelled exceptions are unreliable (above), classification reads
 `ClientError.response['Error']['Code']` and the HTTP status, through two tiny predicates
 (`code_of`, `status_of`). The table is per-provider-overridable, which is how Supabase's
 400-means-404 is handled without any code branch.
 
+**The operation is part of the key because HEAD has no body.** botocore synthesizes the code
+from the HTTP status, so on real AWS `HeadObject` against a missing *key* and against a
+missing *bucket* are **both** `('404', 404)` — indistinguishable. AWS documents that the exact
+error is not retrievable for HEAD.
+
+This ambiguity must not be resolved by guessing, and moto will not warn you: moto returns an
+error **body** on HEAD where AWS returns none, so `head_object` against a missing bucket gives
+`Code='NoSuchBucket'` under moto and `Code='404'` in production. `'k' in store` against a
+typo'd bucket is therefore green in tiers 1–2 and silently **`False`** in production — the
+exact silent-empty this package bans, produced by the taxonomy itself.
+
+Resolution: on `('HeadObject', '404', 404)`, `__contains__` returns `False` only if the
+connection has already proven the bucket reachable this session; otherwise it performs one
+`HeadBucket` disambiguation, cached on the connection. Add `405` (delete-marker HEAD on a
+versioned bucket) and `301` (wrong region) to the table.
+
 Testable without a network: the classifier takes a synthesized `ClientError`, so the bulk of
-error tests are pure unit tests.
+error tests are pure unit tests — including body-less HEAD errors, **which moto cannot
+produce**.
 
 ### 3. The taxonomy
 
@@ -64,26 +81,49 @@ error tests are pure unit tests.
 |---|---|---|
 | object absent | `ObjectNotFound(KeyError)` | Mapping contract |
 | bucket absent (object op) | `BucketNotFound(KeyError)` | still a key-space problem for the caller |
-| bucket absent (bucket op) | `BucketNotFound(KeyError)` | key of the `Buckets` mapping |
+| bucket absent (bucket op) | `BucketNotFound(KeyError)` | key of the `EndpointStore` mapping |
 | key syntactically invalid | `KeyNotValid(KeyError, ValueError)` | both, deliberately — see §5 |
 | object archived (Glacier) | `ObjectArchived(KeyError)` | see §4 |
-| permission denied | `AccessDenied(S3Error)` — **not** a `KeyError` | |
+| permission denied | `AccessDenied(S3Error)` — **not** a `KeyError` | but see below |
 | credentials missing/expired | `CredentialsError(S3Error)` | |
 | operation unsupported by provider | `NotSupported(S3Error)` | names provider + operation |
 | transient / throttled | propagate (botocore retries) | |
 
 Everything derives from `S3Error(Exception)` so `except S3Error` catches the package.
 
+**403-means-absent is a real, common ambiguity and needs a stated policy.** AWS's
+`HeadObject` docs: *"If you have `s3:ListBucket` … 404. If you don't have `s3:ListBucket`,
+Amazon S3 returns 403 Forbidden."* The canonical least-privilege policy grants
+`s3:GetObject`/`s3:PutObject` on `bucket/*` and omits `s3:ListBucket` on `bucket` — so under
+the **most common production IAM policy, every miss is a 403**, which is not a `KeyError`,
+which means `store.get(k, default)` and `k in store` *raise* and a cache-lookup service 500s
+instead of taking the miss branch.
+
+Default: raise `AccessDenied`, with a message naming `s3:ListBucket` as the likely cause.
+`S3Connection(deny_means_absent=True)` opts into classifying it as `ObjectNotFound` for
+deployments that knowingly run that policy. This is a decision, not an omission.
+
 ### 4. `ObjectArchived` is a `KeyError`, deliberately and arguably
 
 A Glacier object exists but `GetObject` returns `InvalidObjectState` / 403. `k in store` must
 stay `True` — the key *does* exist, and any other answer breaks generic algorithms. But
 `store[k]` must fail, and it must fail as a `KeyError` so that `store.get(k, default)` and
-`dict(store)`-shaped code degrade to the not-available branch rather than exploding.
+`store.pop(k, default)` degrade to the not-available branch rather than exploding.
 
-So it is a `KeyError` that carries `.storage_class`, `.restore_status` and `.restore(days,
-tier)`. This is the one place we knowingly let a `KeyError` mean something other than
-"absent", and it is recorded here as a considered choice rather than an accident.
+Be precise about how far that degradation goes, because the obvious claim is wrong:
+`dict(store)`, `store.items()` and `Mapping.__eq__` still **raise** — only the defaulted
+accessors degrade. Verified.
+
+And one genuinely dangerous interaction: `MutableMapping.setdefault` is
+`try: self[k] except KeyError: self[k] = default`, so a `KeyError` here lets `setdefault`
+**overwrite the archived object with the default** — verified, silently, no exception.
+`BucketStore` therefore overrides `setdefault` and `pop(k, default)` to re-raise
+`ObjectArchived` rather than swallow it, and the conformance suite asserts that `setdefault`
+on an archived key does not mutate the object.
+
+So it is a `KeyError` carrying `.storage_class`, `.restore_status` and `.restore(days, tier)`.
+This is the one place we knowingly let a `KeyError` mean something other than "absent", and it
+is recorded here as a considered choice rather than an accident.
 
 ### 5. Two collisions to avoid
 

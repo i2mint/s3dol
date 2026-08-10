@@ -14,8 +14,21 @@ different from what `s[k]` returns?
 A tempting escape is to split the store: a write-only multipart store that is Iterable +
 Settable + Deletable but not Gettable, paired with a separate reader.
 
-The hard constraint from [ADR-0001](0001-layered-architecture.md): **base interfaces stay
-pure.** No `s.upload_multipart(...)`. Infra capability must be reachable *through* `s[k] = v`.
+The hard constraint: infra capability must be reachable *through* `s[k] = v`, not by bolting
+`s.upload_multipart(...)` onto a Mapping.
+
+State that as a rule the next contributor can actually apply, because "keep the interface
+pure" was being claimed while six methods were added:
+
+> **The Mapping protocol is closed.** A method may be added iff it takes a key and is either
+> a pure read of metadata or an address (`info`, `url_for`), or returns a store or handle
+> (`sub`, `handle`, `prefixes`). Anything that mutates, batches, or takes non-key arguments
+> belongs on `ObjectHandle` or a recipe. `delete_many` is an explicit, named exception,
+> admitted only because the cost difference against a `__delitem__` loop is an order of
+> magnitude.
+
+For calibration: `azuredol` has exactly one such method (`walk`) and pushes everything
+per-object onto `BlobHandle`. Six unexplained exceptions is how a surface grows to twenty.
 
 ## Decision
 
@@ -28,6 +41,15 @@ BytesSource = bytes | bytearray | BinaryIO | Filepath | Chunks | Streamable
 `Filepath`, `Chunks` and `Streamable` are tiny frozen dataclasses in `s3dol/values.py` — value
 *refs*, not values. Dispatch is `functools.singledispatch`, so the union is open for
 extension (users register their own ref types) and closed for modification.
+
+**Register on `io.IOBase`, never `typing.BinaryIO`.** `@register(BinaryIO)` is accepted at
+definition time and then **never fires** — `io.BytesIO` is not in `typing.BinaryIO`'s MRO, and
+`isinstance(io.BytesIO(), typing.BinaryIO)` is `False`. So the second-most obvious thing a
+user types, `s['big.mp4'] = open('big.mp4', 'rb')`, would raise `TypeError`. `io.IOBase`
+covers `BytesIO`, `BufferedReader`, `botocore.response.StreamingBody` (which the store-to-store
+streaming copy depends on), `SpooledTemporaryFile` and urllib3 responses. `BinaryIO` stays in
+the *static* union for mypy only. `memoryview` and other buffer-protocol objects are also
+accepted — `dol.Files` takes them, and the precedent table below credits it for that.
 
 ### 2. `str` is rejected, loudly
 
@@ -70,16 +92,27 @@ value is a reference to content elsewhere"*, assigned through an ordinary
 
 The law that makes it safe — three conditions, all necessary:
 
-> **N1 Canonical form.** There is a total `normalize: WriteDomain → bytes`, identity on `bytes`.
-> **N2 Stability.** Therefore `s[k] = s[k]` is a no-op and `dst.update(src)` terminates.
-> **N3 The honest invariant.** Not `s[k] = v ⟹ s[k] == v`, but **`s[k] = v ⟹ s[k] == normalize(v)`**.
+> **N1 Canonical form.** `normalize: WriteDomain → bytes` is **total on
+> `bytes | bytearray | Filepath`** and **one-shot on `BinaryIO | Chunks | Streamable`** — a
+> stream ref is consumed by its first write; assigning the same ref twice is a documented
+> error, not a second copy.
+> **N2 Stability.** For the re-readable half, `s[k] = s[k]` is a no-op and `dst.update(src)`
+> terminates.
+> **N3 The honest invariant.** Not `s[k] = v ⟹ s[k] == v`, but
+> **`s[k] = v ⟹ s[k] == normalize(v)`** — for the re-readable half.
 
-Rejecting `str` is exactly what keeps `normalize` a *function* — with `str` admitted it would
-have two candidate results, and N1 would fail. The rejection isn't fussiness; it's what makes
-the rest sound.
+Note what this correction costs the argument: `str` was **not** the only thing breaking N1.
+The single-consumption stream refs break it too (`s['a'] = f; s['b'] = f` yields `b'payload'`
+then `b''`). So "rejecting `str` is what keeps `normalize` a function" is a non-sequitur, and
+is struck. The `str` rejection stands on the **decidability** argument in §2 alone, which is
+sufficient.
 
-The residual cost is real and small: `setdefault` becomes type-unstable, `pop`/`popitem`
-become expensive. Documented, not removed.
+The residual costs, stated honestly: `setdefault` becomes type-unstable, `pop`/`popitem`
+become expensive, and — the larger loss — **refs only type-check against the concrete class**.
+Through `MutableMapping[str, bytes]`, which is how dependents actually annotate the store
+(`lacing/artifact_store.py:120`), `s[k] = Filepath(...)`, `update()` and `setdefault()` all
+fail a type checker, because `MutableMapping`'s value type is invariant. `BucketStore`
+declares an explicit `update(self, other: Mapping[str, BytesSource]) -> None` override.
 
 ### 4. Do NOT split into a write-only store
 
@@ -101,11 +134,16 @@ for Iterable+Settable+Deletable-but-not-Gettable, and cannot cheaply — `Mutabl
 inherits `__getitem__` as abstract from `Mapping`, and `pop`/`popitem`/`clear`/`setdefault`
 are all defined in terms of it; only `update` survives. `dol` has `mk_read_only` /
 `disable_setitem` / `disable_delitem` but **no `disable_getitem` and no `mk_write_only`** —
-you can take writes away but not reads. We define the `Protocol`s anyway (~15 lines, they
-document the shape and serve genuinely write-only sinks) and propose the missing dol
-symmetry upstream. Note `@runtime_checkable` checks method *presence* only, so
-`isinstance(d, WriteOnlyStore)` is `True` for a `dict`; "must not be gettable" needs an
-explicit predicate.
+you can take writes away but not reads.
+
+We **do not ship** `WriteOnlyStore` Protocols in v1. They would have zero implementers, which
+violates [ADR-0009](0009-scope-and-deferrals.md)'s own "no new `Protocol` without two
+implementers" rule, and they cannot express the constraint anyway: `@runtime_checkable` checks
+method *presence* only, so `isinstance({}, WriteOnlyStore)` is `True` and "must not be
+gettable" needs a separate predicate. (Relatedly: since Python 3.12 `isinstance` uses
+`getattr_static`, which detects a **class**-wrapped capability but not an **instance**-wrapped
+one — capability detection must never rely on it.) The shape is recorded here; the Protocols
+and the `disable_getitem`/`mk_write_only` symmetry go on the dol upstream list.
 
 ### 5. How the capability reaches through the pure interface: injected strategies
 
@@ -121,22 +159,32 @@ A strategy is a callable, injected at construction. This is the answer to "how d
 infra-specific optimization without polluting the interface": `__setitem__` stays
 `__setitem__`; *how* it uploads is a constructor parameter.
 
-Note a **structural** reason this cannot be a `dol` value codec: a codec is a pure
-`obj -> data` transformation applied by `Store.__setitem__` before the inner write. A
-multipart upload needs the *key* and the *client*, and it is a side effect, not a
-transformation. So the strategy must live in the leaf store, below `wrap_kvs`.
+Why this cannot be a `dol` value codec — the accurate version, since the obvious reason is
+wrong. It is *not* that a codec can't see the key and the store: `wrap_kvs(preset=…)` with the
+`(self, k, v)` convention **is** handed both. The real reasons are that (a) `preset`'s return
+value is still passed to the inner `__setitem__`, so it can transform the value but cannot
+*replace* the write, and (b) inside it, `self` is the unwrapped leaf. So the strategy must
+live in the leaf store, below `wrap_kvs`.
 
 Default: `transfer_writes` with boto3's threshold (8 MiB). Small writes take a single
 `PutObject`; large ones transparently go multipart. The overhead on small objects is one
 branch.
 
+Every non-`bytes` source routes through `upload_fileobj`/`TransferManager`, never
+`PutObject` — so seekability is s3transfer's problem, and the size threshold is never
+consulted for a non-seekable source (where it is undecidable anyway). `io.UnsupportedOperation`
+and `botocore.exceptions.UnseekableStreamError` are part of the error seam: a non-seekable
+stream raises from `botocore/httpchecksum.py` *before the request is built*, so a
+`translate_s3_errors` that only catches `ClientError` would never see it.
+
 ### 6. The read side, symmetrically
 
 `s[k]` returns `bytes` — always, because N1 demands it. Streaming is reached three ways,
 in increasing explicitness: a `reads=stream_reads()` strategy at construction (the store's
-values become chunk iterators — a *different store*, honestly typed); `store.handle(k)` for
-`.open()` / `.stream()` / `.read(byte_range=...)`; or a `Filepath` destination for
-download-to-disk.
+values become chunk iterators — a **runtime** variation, *not* a static one: the class's value
+type does not change, and honest typing would need `BucketStore(Generic[VT])` plus overloaded
+construction, which v1 does not do); `store.handle(k)` for `.open()` / `.stream()` /
+`.read(byte_range=...)`; or a `Filepath` destination for download-to-disk.
 
 `ObjectHandle` is not a Mapping and is the documented escape hatch — the same role
 `BlobHandle` plays in `azuredol`.

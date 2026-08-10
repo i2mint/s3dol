@@ -34,9 +34,10 @@ errors.py       one translate_s3_errors seam + the taxonomy
 values.py       Filepath / Chunks / Streamable + as_fileobj
 writes.py       write strategies (simple / transfer / multipart)
 reads.py        read strategies (bytes / stream / ranged / to-file)
-base.py         BucketCollection/Reader/Store, BucketsCollection/Reader/Buckets, ObjectHandle
-stores.py       relative-key stores + codec facades
-recipes.py      s3_store(...) and friends
+base.py         BucketCollection/Reader/Store (own the prefix),
+                EndpointCollection/Reader/Store, ObjectHandle
+recipes.py      s3_store(...) + codec facades
+diagnose.py     s3dol.diagnose() — the step-0 migration safety mechanism
 store.py        deprecated shim
 testing.py      in-memory fake + exported conformance suite
 ```
@@ -70,7 +71,8 @@ operation, so its `__delitem__` would be a lie.
    S3 feature that is a nested store rather than a flat blob store. Deferred not for design
    reasons but for two hard facts: **no S3-compatible provider implements it** (portability
    0/5), and it needs `botocore>=1.43.31`, too fresh for a storage library's hard floor.
-   Feature-detect with `hasattr(client, 'put_object_annotation')`.
+   Feature-detect with `hasattr(client, 'put_object_annotation')`. (The exact botocore floor
+   is cited from a research pass and **unverified** — confirm against PyPI before pinning it.)
 6. **fsspec adapter** (`to_fsspec` / `from_fsspec`) — one adapter buys pandas, dask, pyarrow
    and zarr-v3-via-`FsspecStore`.
 7. **`s3dol[fast]`** — obstore for the object level only, if re-measurement justifies it.
@@ -139,3 +141,6 @@ is barely exercised until the low-portability families arrive in v1.x — accept
 retrofitting capability declaration later is much worse.
 
 **Enforcement.** A line budget, and one rule: **no new `Protocol` without two implementers.**
+That rule bites immediately and correctly: an earlier draft of
+[ADR-0005](0005-large-object-io.md) §4 proposed `WriteOnlyStore` Protocols with zero
+implementers, and they are now on the deferral list rather than in v1.

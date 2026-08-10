@@ -7,7 +7,8 @@
 
 The brief asked whether s3dol should keep `boto3` or move to something lighter — `minio`,
 `s3fs`, `smart_open`, `aioboto3`, or `obstore` (Rust `object_store` bindings). The measured
-case against boto3 is real: `import s3dol` costs **172 ms**, of which **boto3 is 134 ms**.
+case against boto3 is real: `import s3dol` costs **~167 ms** cumulative — boto3 ~141 ms and
+`dol` ~61 ms (they overlap in shared stdlib), s3dol's own code ~2 ms.
 One research pass recommended making `obstore` the default engine.
 
 ## Decision
@@ -18,7 +19,7 @@ deferred behind a narrow protocol.
 ### Why
 
 1. **The alternatives cannot back the whole surface.** `obstore` has no bucket
-   create/delete/list operations at all, so the bucket level (`Buckets`, keys = bucket
+   create/delete/list operations at all, so the bucket level (`EndpointStore`, keys = bucket
    names) cannot be implemented on it. A "default engine" that can't serve a documented
    layer isn't a default.
 2. **Everything portability-related is botocore-shaped.** The checksum fix that makes
@@ -37,8 +38,15 @@ deferred behind a narrow protocol.
 
 boto3 is imported **lazily**: `from __future__ import annotations`, `if TYPE_CHECKING:` for
 types, and the client as a `functools.cached_property` on `S3Connection`. Constructing a
-store performs no import of boto3 and no I/O. Budget: **`import s3dol` < 30 ms**, enforced
-by a test.
+store performs no import of boto3 and no I/O.
+
+Budget: **`import s3dol` adds < 10 ms on top of `import dol`**, enforced by a test that
+measures the *delta*. An absolute budget is not achievable: measured cumulative import cost is
+`dol` **61 ms**, boto3 141 ms, `s3dol` 167 ms — `dol` alone is twice any sub-30 ms target, and
+it is a hard dependency of Layer B (which subclasses `dol.base.KvReader`) and of the
+module-scope `wrap_kvs` recipes. Deferring `dol` too would mean making `S3Jsons`/`S3Texts`
+`__getattr__`-lazy, which is not worth it. dol's own import cost is raised as an upstream
+issue — it benefits every `*dol` package.
 
 This is strictly better than switching engines, because it also gives us the
 lazy/picklable connection that [ADR-0003](0003-provider-presets-and-capabilities.md)

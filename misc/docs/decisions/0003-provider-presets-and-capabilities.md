@@ -32,11 +32,26 @@ class Preset:
     checksum: str = 'when_supported'      # 'when_supported' | 'when_required'
     payload_signing_enabled: bool | None = None
     capabilities: Capabilities = DEFAULT_CAPABILITIES
-    client_kwargs: Mapping = MappingProxyType({})
+    client_kwargs: tuple[tuple[str, Any], ...] = ()   # hashable: Preset must key a cache
+    # presign-specific overrides; default to the API values above
+    presign_endpoint_url: str | None = None
+    presign_addressing_style: str | None = None
+    verified: bool = False                # against a live endpoint? with a date in the row
 ```
 
 Adding a provider is adding a row. Open-closed. Users register their own:
 `s3dol.presets.register(Preset(name='mycorp', ...))`.
+
+`client_kwargs` is a hashable tuple, not a `Mapping`: a frozen dataclass holding a
+`MappingProxyType` is unhashable, so it could not key an `lru_cache` or be compared in
+`diagnose()`.
+
+**Presigning needs its own config slots** because for two providers it genuinely differs from
+the API config. Hetzner configures **path** style for normal use and documents *"uncomment
+before you create presigned URLs"* for virtual — virtual-hosted style breaks ordinary
+Get/Put there because the TLS certificate doesn't cover bucket subdomains. R2 requires
+presigning against the S3 API domain even when objects are served from a custom domain.
+`url_for` therefore builds and caches a **second client** from the merged presign config.
 
 The registry is the SSOT for a set of facts nobody should have to rediscover:
 
@@ -46,7 +61,7 @@ The registry is the SSOT for a set of facts nobody should have to rediscover:
 | minio | `http://{host}:{port}` | `us-east-1` conventional | **path** unless wildcard DNS | |
 | r2 | `https://{account_id}.r2.cloudflarestorage.com` | **`auto`** | virtual | presign only on the S3 API domain, never a custom domain |
 | scaleway | `https://s3.{region}.scw.cloud` | same string | virtual | multipart capped at **1000 parts** |
-| hetzner | `https://{loc}.your-objectstorage.com` | **must repeat `{loc}`** | virtual | needs `payload_signing_enabled=False` |
+| hetzner | `https://{loc}.your-objectstorage.com` | **must repeat `{loc}`** | **path** (presign: virtual) | needs `payload_signing_enabled=False` |
 | backblaze | `https://s3.{region}.backblazeb2.com` | same string | virtual | checksum `when_required` **mandatory** |
 | wasabi | `https://s3.{region}.wasabisys.com` | region string | path (vendor's own advice) | `GetBucketLocation` always says `us-east` |
 | gcs | `https://storage.googleapis.com` | ignored | virtual (path for dotted buckets) | **no ListObjectsV2**, no batch delete |
@@ -131,7 +146,51 @@ Two caveats we must not forget:
    that capability exists.
 2. **Fixing this does not un-corrupt already-written objects.** See Consequences.
 
-### 4. Per-vendor classes are deleted
+### 4. `signature_version` is never left to botocore — this is the single most load-bearing default in the package
+
+botocore silently **downgrades presigning to SigV2** whenever the user has not *explicitly*
+set `signature_version` (`botocore/client.py::_set_s3_presign_signature_version`). Measured:
+
+```
+no Config                        -> SigV2   (meta.config.signature_version reports 's3v4')
+Config(s3={'addressing_style':'path'})  -> SigV2   (a Config that omits signature_version does NOT help)
+Config(signature_version='s3v4') -> SigV4
+custom endpoint_url              -> SigV2   <- every MinIO / LocalStack / moto user
+us-east-1                        -> SigV2
+eu-central-1                     -> SigV4
+```
+
+AWS rejects SigV2 on any bucket created after 2020-06-24; R2, Backblaze, Scaleway and modern
+MinIO reject it outright. And `client.meta.config.signature_version` **reports `'s3v4'` while
+producing SigV2**, so introspection cannot catch it.
+
+`S3Connection` therefore always constructs a `botocore.Config` with an explicit
+`signature_version` (default `'s3v4'`), **including when `preset is None`**.
+
+This is a live bug in v0, not merely a design gap: `s3dol` today presigns with SigV2 for
+`us-east-1` and for every custom endpoint. `test_url_for.py` cannot see it because it asserts
+`"Signature" in url` — and a SigV2 URL contains `Signature=` while SigV4 contains
+`X-Amz-Signature=`. The tier-1 assertion is therefore
+`'X-Amz-Algorithm=AWS4-HMAC-SHA256' in url and 'AWSAccessKeyId' not in url`.
+
+### 5. Anonymous access
+
+`anon` is `bool | 'auto'` on the connection **and surfaced directly on `s3_store(...)`** —
+reading a public bucket must not require learning Layer A. It is translated to
+`botocore.UNSIGNED` *inside* the `cached_property` that builds the client: the singleton is
+**unpicklable**, so it must never enter the dataclass or every anonymous store would fail
+[ADR-0008](0008-testing-architecture.md)'s pickle conformance.
+
+`url_for` raises `NotSupported('url_for', reason='anonymous credentials cannot sign a URL')`
+when the resolved signer is `UNSIGNED` — botocore otherwise returns a plain unsigned URL with
+no error, which is a wrong answer under the never-silently-wrong goal.
+
+`'auto'` means *"try unsigned if no credentials resolve at all"*. It explicitly does **not**
+mean "retry unsigned after `AccessDenied`": an expired token would then silently downgrade to
+a different, public view of the data. It warns, naming what it did. Requester-pays buckets
+forbid anonymous access outright, so a silent fallback would confuse there regardless.
+
+### 6. Per-vendor classes are deleted
 
 `SupabaseS3BucketDol` → `preset='supabase'`. `S3BucketDolWithouBucketCheck` → the default
 (no probe-then-act, see [ADR-0001](0001-layered-architecture.md)). Provider detection from
