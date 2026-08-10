@@ -90,10 +90,10 @@ wrapper. So when nothing else holds the wrapper, it is freed before the method b
 registry entry is removed by the cleanup callback:
 
 ```python
-s = KeyCodecs.prefixed('x/')(BucketReader(data, prefix='logs/'))
-s.m_abs('b.txt')                                       # 'logs/x/b.txt'  correct
-KeyCodecs.prefixed('x/')(BucketReader(data, 'logs/')).m_abs('b.txt')
-                                                       # 'logs/b.txt'    WRONG, silently
+s = KeyCodecs.prefixed("x/")(BucketReader(data, prefix="logs/"))
+s.m_abs("b.txt")  # 'logs/x/b.txt'  correct
+KeyCodecs.prefixed("x/")(BucketReader(data, "logs/")).m_abs("b.txt")
+# 'logs/b.txt'    WRONG, silently
 ```
 
 The wrong answer is a **plausible `str`** — precisely because ADR-0001 puts the prefix in the
@@ -149,13 +149,13 @@ ObjectInfo-from-LIST, handles) into one mechanism rather than three.
 **The cost, stated plainly:** a user who wraps the data store must wrap the sibling in parallel.
 
 ```python
-s = s3_store('bucket', prefix='p/')
-h = s3_handles('bucket', prefix='p/')
-h['f'].url()                       # correct
+s = s3_store("bucket", prefix="p/")
+h = s3_handles("bucket", prefix="p/")
+h["f"].url()  # correct
 
-c = KeyCodecs.prefixed('x/')       # user-applied key codec
-s2, h2 = c(s), c(h)                # wrap BOTH
-h2['f']                            # -> p/x/f   correct at any depth, any lifetime
+c = KeyCodecs.prefixed("x/")  # user-applied key codec
+s2, h2 = c(s), c(h)  # wrap BOTH
+h2["f"]  # -> p/x/f   correct at any depth, any lifetime
 ```
 
 `s3dol.handles(store)` / `.urls(store)` / `.info(store)` derive a sibling from an **unwrapped**
@@ -169,10 +169,10 @@ test — no weakref, none of D1a's fragility. Re-deriving the user's codec chain
 Bulk and endpoint-level operations have no Mapping to ride on, so they are free functions:
 
 ```python
-s3dol.delete_many(store, keys)                  # D4; see ADR-0010 §2
-s3dol.prefixes(store)                           # relative to the caller's key space
-s3dol.sub(store, prefix)                        # a store in the CALLER's key space
-s3dol.delete_bucket(endpoint, name, force=True) # D4; see ADR-0010 §3
+s3dol.delete_many(store, keys)  # D4; see ADR-0010 §2
+s3dol.prefixes(store)  # relative to the caller's key space
+s3dol.sub(store, prefix)  # a store in the CALLER's key space
+s3dol.delete_bucket(endpoint, name, force=True)  # D4; see ADR-0010 §3
 ```
 
 This matches `dol`'s own idiom (`content_url`, `get_content`, `put_content`, `add_content` all

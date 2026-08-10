@@ -344,8 +344,9 @@ wrong when **nothing holds a reference to the wrapper**, because a delegated bou
 none and `wrapped_self`'s weakref cleanup then removes the registry entry:
 
 ```python
-s = KeyCodecs.prefixed('x/')(s3_store(...));  s.handle(k)   # correct
-KeyCodecs.prefixed('x/')(s3_store(...)).handle(k)           # WRONG, silently
+s = KeyCodecs.prefixed("x/")(s3_store(...))
+s.handle(k)  # correct
+KeyCodecs.prefixed("x/")(s3_store(...)).handle(k)  # WRONG, silently
 ```
 
 Because the prefix lives in the leaf, the wrong answer is a plausible `str`, so a type check
@@ -592,7 +593,9 @@ mk().m_abs("b.txt")  # 'logs/b.txt'  WRONG     — wrapper was a TEMPORARY
 #     collected-temporary and never-wrapped cases, so it is undetectable.
 
 f_abs(s, "b.txt")  # 'logs/x/b.txt'  correct
-f_abs(mk(), "b.txt")  # 'logs/x/b.txt'  correct — store is an ARGUMENT, so it stays alive
+f_abs(
+    mk(), "b.txt"
+)  # 'logs/x/b.txt'  correct — store is an ARGUMENT, so it stays alive
 ```
 
 ```python

@@ -130,7 +130,7 @@ project. `url_for` must additionally **raise** when the mapped key is not a `str
 
    ```python
    # store scoped to 'logs/', outer key 'a.txt'
-   inner_most_key(wrapped_self(self), k)                   # 'logs/a.txt'       correct
+   inner_most_key(wrapped_self(self), k)  # 'logs/a.txt'       correct
    self._id_of_key(inner_most_key(wrapped_self(self), k))  # 'logs/logs/a.txt'  WRONG
    ```
 
