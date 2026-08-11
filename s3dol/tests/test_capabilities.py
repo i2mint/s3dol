@@ -189,6 +189,24 @@ def test_delete_many_partial_failure_carries_the_split():
     assert info.value.succeeded == ["a"] and set(info.value.failures) == {"b"}
 
 
+def test_partial_failure_reports_keys_in_the_callers_key_space():
+    # "Keys embedded in an exception payload" is one of the shapes a codec
+    # boundary cannot map (the raise site has no boundary frame) — but a free
+    # function holds the store, so the inverse walk IS available here.
+    from s3dol.testing import FakeBucketStore, _FakeBackend
+
+    class Failing(FakeBucketStore):
+        def _op_bulk_delete(self, ids):
+            return [], [(ids[0], "AccessDenied", "nope")]
+
+    store = Failing("b", backing=_FakeBackend({"p/x/a": b"1"}), prefix="p")
+    wrapped = KeyCodecs.prefixed("x/")(store)
+    with pytest.raises(S3PartialFailure) as info:
+        s3dol.delete_many(wrapped, ["a"])
+    # 'a' — the key the caller passed — not the wire key 'p/x/a'
+    assert set(info.value.failures) == {"a"}
+
+
 def test_delete_many_emulates_when_batch_delete_is_unsupported():
     # GCS and any provider that rejects the mandatory DeleteObjects checksum:
     # loop DeleteObject; identical observable result, only cost differs.

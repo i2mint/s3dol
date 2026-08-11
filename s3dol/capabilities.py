@@ -351,10 +351,30 @@ def delete_many(store, keys: Iterable[str]) -> None:
                     failures[key] = S3PartialFailure(
                         str(code_of(error)), succeeded=[], failures={}
                     )
+    if failures or succeeded:
+        # Map the reported keys BACK to the caller's key space. A partial-
+        # failure payload is "keys embedded in an exception" — one of the
+        # shapes ADR-0011 lists as inexpressible for a codec boundary, because
+        # the raise site has no boundary frame. Here we have the store as an
+        # argument, so the inverse walk is available and the caller gets keys
+        # they can act on rather than wire keys they never used.
+        def outward(wire_key):
+            try:
+                return (
+                    _map_key_outward(store, leaf._key_of_id(wire_key))
+                    if len(chain) > 1
+                    else leaf._key_of_id(wire_key)
+                )
+            except Exception:
+                return wire_key  # un-mappable: report it raw rather than drop it
+
+        succeeded = [outward(k) for k in succeeded]
+        failures = {outward(k): error for k, error in failures.items()}
     if failures:
         raise S3PartialFailure(
             f"delete_many: {len(failures)} of {len(wire_keys)} deletions "
-            f"failed ({len(succeeded)} succeeded).",
+            f"failed ({len(succeeded)} succeeded). .succeeded/.failures are "
+            f"keyed in YOUR key space, not the wire's.",
             succeeded=succeeded,
             failures=failures,
         )
