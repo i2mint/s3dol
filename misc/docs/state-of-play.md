@@ -64,12 +64,12 @@ consumer's requirements.
 | Live bug found | **#10** — `url_for` emits SigV2 |
 | Answered | **#5** (multipart / value types), **discussion #6** (extendable KeyError) |
 | Upstream blockers | **i2mint/dol#82** (prefix corruption), **i2mint/dol#83** (delegation with unmapped key), plus `inner_most_key` export + `content_url` resolution (ADR-0006 §3) |
-| Resolved design question | **§7** / discussion **#14** → [ADR-0011](decisions/0011-keyed-capability-surface.md) |
-| Open design question | **§8** / discussion **#15** — credential and endpoint resolution |
+| Resolved design questions | **§7** / **#14** → [ADR-0011](decisions/0011-keyed-capability-surface.md) · **§8** / **#15** → [ADR-0012](decisions/0012-credential-and-endpoint-resolution.md) |
+| Open design questions | none — implementation is unblocked; see §11 |
 
 **Nothing has been implemented.** The repo still ships v0.1.9 unchanged.
 
-## 3. The eleven ADRs, in one paragraph each
+## 3. The twelve ADRs, in one paragraph each
 
 **[0001 — Four-layer architecture](decisions/0001-layered-architecture.md).** Three layers
 (`connection` → `base` → `recipes`), mirroring `azuredol` so one adapter in the family reads
@@ -389,7 +389,11 @@ now a blocking upstream item ([ADR-0006](decisions/0006-key-scoping-and-dol-fixe
   (dol#18 Approach C, committed for 0.4/1.0) — which #14's option list did not contain, and
   which is why the selection criterion became *correct on 0.3.x AND redundant under is-a*.
 
-## 8. Open question — credential and endpoint resolution
+## 8. ~~Open question~~ RESOLVED — credential and endpoint resolution
+
+> **Resolved 2026-08-11 in [ADR-0012](decisions/0012-credential-and-endpoint-resolution.md)**
+> (discussion #15). The framing below stands as the problem statement, with **three premises
+> corrected** — see §8-resolution at the end of the section.
 
 ### The problem
 
@@ -462,6 +466,35 @@ named preset is an explicit argument.)
 requires learning Layer A. And `'auto'` needs a precise meaning — proposed: "try unsigned if no
 credentials resolve **at all**", explicitly *not* "retry unsigned after `AccessDenied`", because
 an expired token would then silently downgrade to a different, public view of the data.
+
+### §8-resolution — what was decided, and the three corrected premises
+
+Full record: [ADR-0012](decisions/0012-credential-and-endpoint-resolution.md).
+
+**Decided.** `S3Connection` is a frozen, picklable spec with **no live-object escape hatch**.
+`resolve(spec, environ, aws_config)` is pure. s3dol owns **two** endpoint rungs (explicit kwarg,
+then the bound preset) and hands botocore one value; every other field is a ladder bottoming out
+in *omit the key*. Presets resolve in two passes and detection supplies the full row. `anon` is
+`bool` in v1 — **`'auto'` is deferred to v1.x**. The migration warning is a differential through
+v1's own resolver, not a frozen copy of v0. No `strict=` kwarg.
+
+**Correction 1 — "the obvious fix inverts v0's precedence" is wrong.** botocore already ranks
+`explicit > AWS_ENDPOINT_URL_S3 > AWS_ENDPOINT_URL > config file > resolver`. v0 behaves
+otherwise because it *drops* the argument. **v1 re-ranks nothing**, which deletes the
+"vendor a precedence ladder" work item.
+
+**Correction 2 — the SigV2 scope in #10 and ADR-0003 §4 is wrong.** It is region-gated (12
+v2-capable region strings), not universal, and **not** caused by a custom endpoint.
+
+**Correction 3 — `Config(ignore_configured_endpoint_urls=True)` must never be passed.** Measured:
+a no-op when an explicit endpoint is set, and it retargets an `AWS_ENDPOINT_URL_S3` user to AWS
+when one is not. Two independent design drafts passed it unconditionally.
+
+Also newly measured and load-bearing: **nothing live pickles** (so #15's "a `botocore.Session`"
+is impossible); **`profile_name` + any credential kwarg silently discards the profile's
+credentials**; **reading `.access_key` triggers a network refresh**, so `diagnose()` must never
+touch it; **`repr()` of a botocore provider chain dumps the whole `os.environ`**; and **botocore
+does not read `AWS_REGION`**.
 
 ## 9. Re-verification snippets
 

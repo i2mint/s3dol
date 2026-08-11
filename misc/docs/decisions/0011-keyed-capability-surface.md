@@ -247,6 +247,11 @@ argument, where a method could not be called on a store lacking it. Free-functio
 
 ### D5 — A conformance test, not a registry
 
+> **Amended by [ADR-0012](0012-credential-and-endpoint-resolution.md) §D5:** the allowlisted
+> `url_for` returns `str | None`, where `None` means "no presign capability" (an anonymous
+> connection). Its *other* refusal — the unreachable-wrapper guard in D3b — still **raises**.
+> Two distinct conditions; do not merge them.
+
 No `_key_methods` registry. A **reflective conformance test** enumerates the public methods of
 every Layer B class and fails on any that takes a key — allowlist: `url_for` (D3b), and nothing
 else.

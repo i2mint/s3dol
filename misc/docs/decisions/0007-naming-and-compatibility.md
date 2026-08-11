@@ -71,6 +71,11 @@ what v0 lacked was a statement of which were *public*.)
 
 ### 3. `s3dol.store.S3Store` becomes a deprecated shim, removed in v2
 
+> **Amended by [ADR-0012](0012-credential-and-endpoint-resolution.md) §D7:** the shim signature
+> below **omits `is_supabase_endpoint=`, which v0 accepts** (`s3dol/store.py:26`). As written it
+> is a `TypeError` on upgrade for anyone passing it. Add it, map it to the supabase preset, and
+> preserve `False` as an opt-out.
+
 It keeps its current signature exactly — `bucket_name` accepted **both positionally and by
 keyword**, `path=` (not renamed), plus `aws_access_key_id`, `aws_secret_access_key`,
 `aws_session_token`, `endpoint_url`, `region_name`, `profile_name`, `make_bucket`,
@@ -98,6 +103,18 @@ hard-coded endpoint will silently redirect on upgrade. That is why §5 has a ste
 `get_s3_test_access_info_from_env_vars`, because `py2store`'s import of them fails silently.
 
 ### 4. Behaviour changes that the shim deliberately does NOT preserve
+
+> **Corrected by [ADR-0012](0012-credential-and-endpoint-resolution.md).** The ladder below is
+> kept, but the sentence "v0's effective precedence is `AWS_ENDPOINT_URL_S3 > … > explicit
+> kwarg`, and the corrected ladder **inverts the top of it**" describes a **deletion, not a
+> ranking**. Measured: botocore already ranks `explicit > AWS_ENDPOINT_URL_S3 > AWS_ENDPOINT_URL
+> > config file > resolver`. v0 behaves otherwise because it *drops* the argument
+> (`_find_default_credentials` never forwards `endpoint_url`). **v1 re-ranks nothing; it stops
+> discarding an argument** — which deletes the "vendor a precedence ladder" work item entirely.
+> Two further v0 behaviour changes are missing from the table below: v0 silently **nulls an
+> explicitly-passed `aws_session_token`** and silently **changes an explicitly-passed
+> `region_name`**. And `http_cosmo_prep` moves on **three axes at once** (endpoint honoured,
+> credential identity, checksum policy) — one row, one release-note bullet, not three.
 
 These are bug fixes, and preserving them would mean preserving data-misrouting:
 

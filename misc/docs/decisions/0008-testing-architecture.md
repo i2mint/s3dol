@@ -54,6 +54,17 @@ own stores.
 
 ### What the conformance suite must assert
 
+> **Extended by [ADR-0012](0012-credential-and-endpoint-resolution.md).** The pickle conformance
+> test must run **after** touching `.client` (the cache is what breaks it) and must **also assert
+> `hash(conn)`** — measured, a container-valued field pickles happily but raises `TypeError` on
+> `hash`, so the pickle test alone misses it. Add to the moto-fidelity list: **moto lets an
+> anonymous client `list_objects_v2` and `put_object` against a private bucket**, so no tier
+> below 4 can validate anonymous semantics. Any test of credential fallback must scrub CI's
+> `AWS_*` variables. And presign assertions must check `'X-Amz-Algorithm'` in the URL across
+> **both** a v2-legacy region and a v4-only region — `client.meta.config.signature_version`
+> reports `'s3v4'` while emitting SigV2, and a `us-east-1`-only test cannot distinguish "we
+> forced s3v4" from "this region defaults to v4 anyway".
+
 Beyond the obvious Mapping laws, these are the ones that would have caught real bugs:
 
 1. **Prefix scoping round-trip.** Fixture must include sibling, non-matching, marker and
