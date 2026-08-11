@@ -23,7 +23,7 @@ Before upgrading to v1, run the diagnosis with the same arguments you pass
 ```python
 import s3dol
 
-s3dol.diagnose(bucket_name='my-bucket', endpoint_url='...', path='...')
+s3dol.diagnose(bucket_name="my-bucket", endpoint_url="...", path="...")
 ```
 
 It prints what resolves (endpoint, region, signing, credential *source* — never
