@@ -85,28 +85,49 @@ load-bearing rather than decorative:
 ### Layer A — `s3dol.connection`
 
 Owns the expensive resource (the botocore client) and *all* credential/endpoint
-resolution. See [decisions/0002](decisions/0002-boto3-as-engine.md) and
-[decisions/0003](decisions/0003-provider-presets-and-capabilities.md).
+resolution. See [decisions/0002](decisions/0002-boto3-as-engine.md),
+[decisions/0003](decisions/0003-provider-presets-and-capabilities.md) and — for the full
+resolution design — [decisions/0012](decisions/0012-credential-and-endpoint-resolution.md).
 
 ```python
 @dataclass(frozen=True)
 class S3Connection:
-    preset: str | Preset | None = None  # 'aws' | 'minio' | 'r2' | ...
-    profile_name: str | None = None
+    # WHERE
     endpoint_url: str | None = None
     region_name: str | None = None
-    credentials: Credentials | None = None  # explicit; None => resolve the chain
-    anon: bool | Literal["auto"] = False
-    client_config: dict = field(default_factory=dict)
+    # WHO
+    profile: str | None = None
+    credentials: CredentialProvider | None = None  # normalised in __post_init__
+    anon: bool = False  # 'auto' deferred to v1.x — ADR-0012 §D5
+    # HOW ("None" means do not override; each is a ladder — ADR-0012 §D3)
+    signature_version: str = "s3v4"
+    addressing_style: Literal["path", "virtual"] | None = None
+    checksum: Literal["when_supported", "when_required"] | None = None
+    payload_signing_enabled: bool | None = None
+    verify: bool | str | None = None
+    client_kwargs: tuple[tuple[str, Any], ...] = ()
+    # POLICY
+    deny_means_absent: bool = False  # ADR-0004 §3
 ```
 
-Three properties matter and are each tested:
+`preset` is an argument to the factory, not a field: it resolves to concrete values in
+`resolve()`, so the spec records *what was resolved and from where*, not *what to look up later*.
 
-- **Lazy.** The client is a `cached_property`; constructing a connection performs no I/O and
-  never raises for missing credentials.
-- **Picklable.** The connection carries a *spec*, not a client. `__getstate__` drops the
-  cached client so stores survive `ProcessPoolExecutor` and Dask.
-- **Redacting.** No secret appears in `repr`, `str`, or any surviving local.
+Four properties matter and are each tested:
+
+- **Lazy, and built under a lock.** Constructing a connection performs no I/O and never raises
+  for missing credentials. The client is **not** a bare `cached_property` — measured, 8
+  concurrent threads produce 8 clients, which for a callable credential is 8 token fetches
+  ([ADR-0012](decisions/0012-credential-and-endpoint-resolution.md) §D1).
+- **Picklable, always.** The connection carries a *spec*, never a live object — there is no
+  `connection=<boto3 client>` escape hatch. `__getstate__`/`__setstate__` are mandatory for
+  *every* connection, because the boto3 client is unpicklable regardless of `anon`.
+- **Redacting.** No secret appears in `repr`, `str`, or any surviving local. Note `repr()` of a
+  botocore provider chain dumps the entire `os.environ`, and a `str` subclass is not sufficient
+  redaction — it leaks through `json`, concatenation and `join`.
+- **Purely resolvable.** `resolve(spec, environ, aws_config) -> Resolution` does no I/O and
+  carries per-field provenance, so the whole ladder is exhaustively testable with a fake environ
+  dict and `s3dol.diagnose()` can print where every value came from.
 
 ### Layer B — `s3dol.base`
 

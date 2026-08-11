@@ -150,6 +150,16 @@ Two caveats we must not forget:
 
 ### 4. `signature_version` is never left to botocore — this is the single most load-bearing default in the package
 
+> **Amended by [ADR-0012](0012-credential-and-endpoint-resolution.md).** The mandate is right;
+> its stated *scope and cause* are wrong. Measured across 16 regions on botocore 1.43.68: the
+> presign downgrade fires in exactly the regions `endpoints.json` still lists as v2-capable —
+> **12 region strings**, not 8, counting `aws-global` and three FIPS regions. **A custom endpoint
+> is irrelevant**: `us-east-1` + MinIO → SigV2, `eu-south-2` + MinIO → SigV4. *Region* is the
+> discriminator. The practical impact stands only because `us-east-1` is the conventional MinIO
+> default. Pin this as a conformance test **against `endpoints.json`**, not against a literal
+> region list — and note a user's own AWS-config profile setting `s3.signature_version = s3v4`
+> already suppresses the downgrade, so `diagnose()` must report the source.
+
 botocore silently **downgrades presigning to SigV2** whenever the user has not *explicitly*
 set `signature_version` (`botocore/client.py::_set_s3_presign_signature_version`). Measured:
 
@@ -176,6 +186,16 @@ This is a live bug in v0, not merely a design gap: `s3dol` today presigns with S
 `'X-Amz-Algorithm=AWS4-HMAC-SHA256' in url and 'AWSAccessKeyId' not in url`.
 
 ### 5. Anonymous access
+
+> **Amended by [ADR-0012](0012-credential-and-endpoint-resolution.md) §D5, in two places.**
+> (1) **`url_for` returns `None` when anonymous — it does not raise.**
+> `dol.SupportsUrlFor.url_for` is typed `-> Optional[str]`, and raising turns `lacing`'s
+> documented streaming fallback into a 500 on a *public* bucket, the one case `anon` exists for.
+> ADR-0011 D3b's unreachable-wrapper guard still raises; the two refusal conditions must not be
+> merged. (2) **The pickle rationale is incomplete.** Keeping `UNSIGNED` out of the dataclass is
+> necessary but not sufficient — the boto3 client is unpicklable full stop, so
+> `__getstate__`/`__setstate__` are mandatory for *every* connection, not only anonymous ones.
+> Also: `anon='auto'` is **deferred to v1.x**; v1 ships `anon: bool`.
 
 `anon` is `bool | 'auto'` on the connection **and surfaced directly on `s3_store(...)`** —
 reading a public bucket must not require learning Layer A. It is translated to

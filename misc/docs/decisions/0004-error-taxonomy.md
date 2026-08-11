@@ -77,6 +77,17 @@ produce**.
 
 ### 3. The taxonomy
 
+> **Extended by [ADR-0012](0012-credential-and-endpoint-resolution.md) §D1** with the
+> configuration/spec-time branch, which resolves before any request is made and therefore has no
+> `(operation, code, status)` row: `ConfigurationError(S3Error, ValueError)` with
+> `PresetConflict`, `PresetHostMismatch`, `MissingEndpoint`, `MissingPresetParam`,
+> `UnknownPresetParam`, `InvalidEndpoint`. Plus a warning tree, `S3DolWarning(UserWarning)` with
+> `S3DolResolutionChanged`, `AmbiguousResolution`, `AnonymousFallback` —
+> `filterwarnings('error', category=S3DolWarning)` is the strict mode, so there is no `strict=`
+> kwarg. Two bans belong here too: `anon=True` with credentials or a profile, and `anon=True`
+> with `deny_means_absent=True` (measured under moto, anonymous HEAD gives 403 on a present key
+> and 404 on an absent one, so every key reads as absent — a silently empty store).
+
 | Condition | Raises | Rationale |
 |---|---|---|
 | object absent | `ObjectNotFound(KeyError)` | Mapping contract |

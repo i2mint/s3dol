@@ -32,7 +32,13 @@ classifiers = [
 dependencies = [
     "dol",
     "boto3",
-    "botocore",
+    # ADR-0012: the endpoint env vars (AWS_ENDPOINT_URL_S3 / AWS_ENDPOINT_URL) do not exist
+    # before botocore 1.31, and ADR-0003 §3's checksum knobs
+    # (request_checksum_calculation / response_checksum_validation) arrive in 1.36. s3dol sets
+    # them on every client, so an older botocore silently ignores them.
+    "botocore>=1.36",
+    # ADR-0003 §3: the aws-chunked framing fix on the transfer path.
+    "s3transfer>=0.11.2",
 ]
 
 [project.urls]

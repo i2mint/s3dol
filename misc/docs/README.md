@@ -23,6 +23,7 @@ output; don't put prose here that a build step will overwrite.)
 | [0009](decisions/0009-scope-and-deferrals.md) | v1 scope, deferrals, the `s3dol`/`botodol` line | proposing a feature |
 | [0010](decisions/0010-bucket-and-bulk-operations.md) | Bucket-existence policy, `delete_many`, cascading delete | touching bucket lifecycle or bulk ops |
 | [0011](decisions/0011-keyed-capability-surface.md) | **No key-taking methods; capabilities are sibling stores** | adding any capability, or wondering where `url_for` went |
+| [0012](decisions/0012-credential-and-endpoint-resolution.md) | **Credential + endpoint resolution**: a pure `resolve()`, a picklable spec, two endpoint rungs | touching credentials, endpoints, presets, `anon`, or the migration warning |
 
 ## The five things most likely to bite you
 
