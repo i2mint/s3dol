@@ -1,0 +1,4 @@
+s3dol.tests.test_errors
+=======================
+.. automodule:: s3dol.tests.test_errors
+   :members:

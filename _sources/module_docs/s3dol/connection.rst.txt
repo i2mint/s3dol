@@ -1,0 +1,4 @@
+s3dol.connection
+================
+.. automodule:: s3dol.connection
+   :members:

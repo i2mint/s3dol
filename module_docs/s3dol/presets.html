@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.presets &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="s3dol.store" href="store.html" />
+    <link rel="prev" title="s3dol.errors" href="errors.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.presets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.CONFIG_KWARGS_ALLOWLIST"><code class="docutils literal notranslate"><span class="pre">CONFIG_KWARGS_ALLOWLIST</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.Capabilities"><code class="docutils literal notranslate"><span class="pre">Capabilities</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.Preset"><code class="docutils literal notranslate"><span class="pre">Preset</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.addressing_style"><code class="docutils literal notranslate"><span class="pre">Preset.addressing_style</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.bind"><code class="docutils literal notranslate"><span class="pre">Preset.bind()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.bound_endpoint"><code class="docutils literal notranslate"><span class="pre">Preset.bound_endpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.checksum"><code class="docutils literal notranslate"><span class="pre">Preset.checksum</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.config_kwargs"><code class="docutils literal notranslate"><span class="pre">Preset.config_kwargs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.error_overrides"><code class="docutils literal notranslate"><span class="pre">Preset.error_overrides</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.host_patterns"><code class="docutils literal notranslate"><span class="pre">Preset.host_patterns</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.matches_host"><code class="docutils literal notranslate"><span class="pre">Preset.matches_host()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.missing_endpoint_params"><code class="docutils literal notranslate"><span class="pre">Preset.missing_endpoint_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.params"><code class="docutils literal notranslate"><span class="pre">Preset.params</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.pinned"><code class="docutils literal notranslate"><span class="pre">Preset.pinned</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.presign_endpoint_url"><code class="docutils literal notranslate"><span class="pre">Preset.presign_endpoint_url</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.requires_endpoint"><code class="docutils literal notranslate"><span class="pre">Preset.requires_endpoint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.soft"><code class="docutils literal notranslate"><span class="pre">Preset.soft</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.template_params"><code class="docutils literal notranslate"><span class="pre">Preset.template_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.presets.Preset.verified"><code class="docutils literal notranslate"><span class="pre">Preset.verified</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.detect_preset"><code class="docutils literal notranslate"><span class="pre">detect_preset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.get_preset"><code class="docutils literal notranslate"><span class="pre">get_preset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.unregister"><code class="docutils literal notranslate"><span class="pre">unregister()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.presets.validate_endpoint_hygiene"><code class="docutils literal notranslate"><span class="pre">validate_endpoint_hygiene()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">s3dol.presets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/s3dol/presets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-s3dol.presets">
+<span id="s3dol-presets"></span><h1>s3dol.presets<a class="headerlink" href="#module-s3dol.presets" title="Link to this heading"></a></h1>
+<p>Provider presets: config rows, not subclasses.</p>
+<p>Design record: <cite>misc/docs/decisions/0003-provider-presets-and-capabilities.md</cite>
+(the survey of 16 backends, the checksum analysis, capabilities policy) amended
+by <cite>misc/docs/decisions/0012-credential-and-endpoint-resolution.md</cite> §D4
+(<code class="docutils literal notranslate"><span class="pre">params</span></code>/<code class="docutils literal notranslate"><span class="pre">host_patterns</span></code>/<code class="docutils literal notranslate"><span class="pre">requires_endpoint</span></code>/<code class="docutils literal notranslate"><span class="pre">soft</span></code>/<code class="docutils literal notranslate"><span class="pre">config_kwargs</span></code>,
+derived <code class="docutils literal notranslate"><span class="pre">pinned</span></code>; <code class="docutils literal notranslate"><span class="pre">signature_version</span></code> and <code class="docutils literal notranslate"><span class="pre">client_kwargs</span></code> moved to the
+connection; <code class="docutils literal notranslate"><span class="pre">addressing_style</span></code> mandatory with <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> illegal; the
+structural no-credential rule).</p>
+<p>A provider divergence is a row in this registry — never a subclass, never an
+endpoint-substring branch in the hot path. Users register their own rows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row</span> <span class="o">=</span> <span class="n">Preset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;mycorp&#39;</span><span class="p">,</span> <span class="n">addressing_style</span><span class="o">=</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+<span class="gp">... </span>             <span class="n">endpoint_url</span><span class="o">=</span><span class="s1">&#39;https://s3.mycorp.example&#39;</span><span class="p">,</span> <span class="n">requires_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_preset</span><span class="p">(</span><span class="s1">&#39;mycorp&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">endpoint_url</span>
+<span class="go">&#39;https://s3.mycorp.example&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unregister</span><span class="p">(</span><span class="s1">&#39;mycorp&#39;</span><span class="p">)</span>  <span class="c1"># (cleanup for this doctest)</span>
+</pre></div>
+</div>
+<p>Most builtin rows are <strong>doc-sourced, not verified against a live endpoint</strong> —
+they say so via <code class="docutils literal notranslate"><span class="pre">verified=False</span></code>. Wrong values mostly fail loudly, which is
+the acceptable failure mode; <code class="docutils literal notranslate"><span class="pre">pinned</span></code> (which makes a row’s region literal
+conflict-raising) is derived and <em>gated on</em> <code class="docutils literal notranslate"><span class="pre">verified</span></code>, so it is dormant
+until a row earns evidence (ADR-0012 D4).</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.presets.CONFIG_KWARGS_ALLOWLIST">
+<span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">CONFIG_KWARGS_ALLOWLIST</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'connect_timeout',</span> <span class="pre">'max_pool_connections',</span> <span class="pre">'read_timeout',</span> <span class="pre">'tcp_keepalive'})</span></span><a class="headerlink" href="#s3dol.presets.CONFIG_KWARGS_ALLOWLIST" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Config</span></code>-constructor kwargs a preset row may carry. Scalars only, and
+<code class="docutils literal notranslate"><span class="pre">proxies</span></code>/<code class="docutils literal notranslate"><span class="pre">proxies_config</span></code>/<code class="docutils literal notranslate"><span class="pre">client_context_params</span></code> are structurally
+excluded — a preset must not be able to smuggle a credential-bearing proxy
+URL (ADR-0012 D4).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.presets.Capabilities">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">Capabilities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_objects_v2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_delete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presigned_post</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multipart</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_multipart_parts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_part_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5242880</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_tagging</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">versioning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditional_writes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consistency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'strong'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'read-after-write'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'eventual'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'strong'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/presets.html#Capabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Capabilities" title="Link to this definition"></a></dt>
+<dd><p>What a backend supports. A <em>static declared table</em>, never a probe
+(a probe costs a round-trip, is wrong under partial permissions, and can’t
+be trusted anyway — ADR-0003 §2). Missing capabilities are handled
+per-capability: emulate when exact (batch delete -&gt; loop), substitute when
+equivalent (ListObjectsV2 -&gt; V1), raise <code class="docutils literal notranslate"><span class="pre">NotSupported</span></code> when there is no
+honest fallback. Never silently degrade correctness.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.presets.Preset">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">Preset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addressing_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'virtual'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'when_supported'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'when_required'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload_signing_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.presets.Capabilities" title="s3dol.presets.Capabilities"><span class="pre">Capabilities</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Capabilities(list_objects_v2=True,</span> <span class="pre">batch_delete=True,</span> <span class="pre">presigned_post=True,</span> <span class="pre">multipart=True,</span> <span class="pre">max_multipart_parts=10000,</span> <span class="pre">min_part_size=5242880,</span> <span class="pre">object_tagging=True,</span> <span class="pre">versioning=True,</span> <span class="pre">conditional_writes=True,</span> <span class="pre">consistency='strong')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presign_endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presign_addressing_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'virtual'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_patterns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requires_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_overrides</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verified</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/presets.html#Preset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Preset" title="Link to this definition"></a></dt>
+<dd><p>One provider’s facts. Public, shareable, committable config — which is
+why there is <strong>no credential slot</strong>, structurally (ADR-0012 D4).</p>
+<p><code class="docutils literal notranslate"><span class="pre">endpoint_url</span></code>/<code class="docutils literal notranslate"><span class="pre">region_name</span></code> may contain <code class="docutils literal notranslate"><span class="pre">{placeholders}</span></code>; bind them
+with <a class="reference internal" href="#s3dol.presets.Preset.bind" title="s3dol.presets.Preset.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind()</span></code></a>. A row whose endpoint template has an unbound <em>required</em>
+placeholder contributes no endpoint rung (ADR-0012 C1).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.addressing_style">
+<span class="sig-name descname"><span class="pre">addressing_style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'virtual'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#s3dol.presets.Preset.addressing_style" title="Link to this definition"></a></dt>
+<dd><p>Mandatory; no default; <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> is illegal (ADR-0012 D4).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.bind">
+<span class="sig-name descname"><span class="pre">bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.presets.Preset" title="s3dol.presets.Preset"><span class="pre">Preset</span></a></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#Preset.bind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Preset.bind" title="Link to this definition"></a></dt>
+<dd><p>A copy of this row with template <code class="docutils literal notranslate"><span class="pre">params</span></code> bound.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">get_preset</span><span class="p">(</span><span class="s1">&#39;r2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">account_id</span><span class="o">=</span><span class="s1">&#39;abc123&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span><span class="o">.</span><span class="n">bound_endpoint</span><span class="p">()</span>
+<span class="go">&#39;https://abc123.r2.cloudflarestorage.com&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.bound_endpoint">
+<span class="sig-name descname"><span class="pre">bound_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#Preset.bound_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Preset.bound_endpoint" title="Link to this definition"></a></dt>
+<dd><p>The endpoint URL with params bound, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the template has
+unbound placeholders (C1: an unbound row contributes no rung —
+<code class="docutils literal notranslate"><span class="pre">preset='minio'</span></code> silently becoming AWS is structurally impossible).</p>
+<p><code class="docutils literal notranslate"><span class="pre">region_name</span></code> binds a <code class="docutils literal notranslate"><span class="pre">{region_name}</span></code> placeholder, per the region
+ladder’s first rung (ADR-0012 D3).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.checksum">
+<span class="sig-name descname"><span class="pre">checksum</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'when_supported'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'when_required'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#s3dol.presets.Preset.checksum" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">None</span></code> == the row makes no claim (the ladder continues — ADR-0012 D3).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.config_kwargs">
+<span class="sig-name descname"><span class="pre">config_kwargs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></span><a class="headerlink" href="#s3dol.presets.Preset.config_kwargs" title="Link to this definition"></a></dt>
+<dd><p>Extra <code class="docutils literal notranslate"><span class="pre">botocore.Config</span></code> kwargs — allowlisted, scalars only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.error_overrides">
+<span class="sig-name descname"><span class="pre">error_overrides</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></span><a class="headerlink" href="#s3dol.presets.Preset.error_overrides" title="Link to this definition"></a></dt>
+<dd><p>Error-classification overrides, consulted before the default table
+(ADR-0004 §2/§6): rows of <code class="docutils literal notranslate"><span class="pre">((operation,</span> <span class="pre">code,</span> <span class="pre">status),</span> <span class="pre">kind)</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.host_patterns">
+<span class="sig-name descname"><span class="pre">host_patterns</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></span><a class="headerlink" href="#s3dol.presets.Preset.host_patterns" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">fnmatch</span></code> patterns over the endpoint <em>hostname</em>; used for detection
+(pass 2) and the C2 named-vs-resolved guard.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.matches_host">
+<span class="sig-name descname"><span class="pre">matches_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#Preset.matches_host"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Preset.matches_host" title="Link to this definition"></a></dt>
+<dd><p>Whether <code class="docutils literal notranslate"><span class="pre">endpoint_url</span></code>’s hostname matches this row’s patterns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.missing_endpoint_params">
+<span class="sig-name descname"><span class="pre">missing_endpoint_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#Preset.missing_endpoint_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Preset.missing_endpoint_params" title="Link to this definition"></a></dt>
+<dd><p>Which placeholders keep <a class="reference internal" href="#s3dol.presets.Preset.bound_endpoint" title="s3dol.presets.Preset.bound_endpoint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bound_endpoint()</span></code></a> from producing a URL.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.params">
+<span class="sig-name descname"><span class="pre">params</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></span><a class="headerlink" href="#s3dol.presets.Preset.params" title="Link to this definition"></a></dt>
+<dd><p>Bound template parameters, e.g. <code class="docutils literal notranslate"><span class="pre">(('account_id',</span> <span class="pre">'abc'),)</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.pinned">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">pinned</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#s3dol.presets.Preset.pinned" title="Link to this definition"></a></dt>
+<dd><p>Whether the row’s region literal is authoritative enough to make a
+conflicting explicit <code class="docutils literal notranslate"><span class="pre">region_name=</span></code> raise <code class="docutils literal notranslate"><span class="pre">PresetConflict</span></code>.
+Derived, and gated on <code class="docutils literal notranslate"><span class="pre">verified</span></code> — dormant while rows are
+doc-sourced (ADR-0012 D4).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.presign_endpoint_url">
+<span class="sig-name descname"><span class="pre">presign_endpoint_url</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#s3dol.presets.Preset.presign_endpoint_url" title="Link to this definition"></a></dt>
+<dd><p>Presigning sometimes genuinely differs from the API config (Hetzner
+presigns virtual while the API is path; R2 presigns only on the S3 API
+domain) — ADR-0003 §1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.requires_endpoint">
+<span class="sig-name descname"><span class="pre">requires_endpoint</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#s3dol.presets.Preset.requires_endpoint" title="Link to this definition"></a></dt>
+<dd><p>The provider cannot be reached without an explicit endpoint.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.soft">
+<span class="sig-name descname"><span class="pre">soft</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#s3dol.presets.Preset.soft" title="Link to this definition"></a></dt>
+<dd><p>they
+never win detection over a non-soft row and never trigger the C2 guard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Soft rows are last-resort fallbacks (<code class="docutils literal notranslate"><span class="pre">aws</span></code>, <code class="docutils literal notranslate"><span class="pre">generic-s3</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.template_params">
+<span class="sig-name descname"><span class="pre">template_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#Preset.template_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.Preset.template_params" title="Link to this definition"></a></dt>
+<dd><p>All placeholder names across this row’s templates.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.presets.Preset.verified">
+<span class="sig-name descname"><span class="pre">verified</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#s3dol.presets.Preset.verified" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> only when the row was verified against a live endpoint (with a
+date in the row’s docstring/comment). Builtin rows are doc-sourced.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.presets.detect_preset">
+<span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">detect_preset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.presets.Preset" title="s3dol.presets.Preset"><span class="pre">Preset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#detect_preset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.detect_preset" title="Link to this definition"></a></dt>
+<dd><p>Detection (resolution pass 2): the non-soft row whose <code class="docutils literal notranslate"><span class="pre">host_patterns</span></code>
+match the resolved endpoint’s host. Two matching rows is genuinely
+ambiguous and raises; zero yields <code class="docutils literal notranslate"><span class="pre">None</span></code> (the caller falls back to
+<code class="docutils literal notranslate"><span class="pre">generic-s3</span></code>/<code class="docutils literal notranslate"><span class="pre">aws</span></code> — ADR-0012 D4).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.presets.get_preset">
+<span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">get_preset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.presets.Preset" title="s3dol.presets.Preset"><span class="pre">Preset</span></a></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#get_preset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.get_preset" title="Link to this definition"></a></dt>
+<dd><p>Look a row up by name; unknown names raise, naming the registry.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.presets.register">
+<span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.presets.Preset" title="s3dol.presets.Preset"><span class="pre">Preset</span></a></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.register" title="Link to this definition"></a></dt>
+<dd><p>Add a row. Open-closed: adding a provider is adding a row.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.presets.unregister">
+<span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#unregister"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.unregister" title="Link to this definition"></a></dt>
+<dd><p>Remove a row (mostly for tests).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.presets.validate_endpoint_hygiene">
+<span class="sig-prename descclassname"><span class="pre">s3dol.presets.</span></span><span class="sig-name descname"><span class="pre">validate_endpoint_hygiene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">what</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'endpoint_url'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/s3dol/presets.html#validate_endpoint_hygiene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presets.validate_endpoint_hygiene" title="Link to this definition"></a></dt>
+<dd><p>Refuse credential-carrying URL shapes: userinfo in the netloc, a query
+string, or a fragment (ADR-0012 D4 — a query-string endpoint is accepted by
+botocore and retained verbatim in <code class="docutils literal notranslate"><span class="pre">client.meta.endpoint_url</span></code>, so it would
+leak into <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> and tracebacks).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate_endpoint_hygiene</span><span class="p">(</span><span class="s1">&#39;https://s3.example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_endpoint_hygiene</span><span class="p">(</span><span class="s1">&#39;https://user:pw@s3.example.com&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">s3dol.errors.InvalidEndpoint</span>: <span class="n">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="errors.html" class="btn btn-neutral float-left" title="s3dol.errors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="store.html" class="btn btn-neutral float-right" title="s3dol.store" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

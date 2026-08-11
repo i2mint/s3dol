@@ -1,0 +1,4 @@
+s3dol.tests.test_connection
+===========================
+.. automodule:: s3dol.tests.test_connection
+   :members:

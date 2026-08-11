@@ -1,0 +1,1038 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.connection &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.connection</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.connection</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;``S3Connection`` — the credential + endpoint SSOT, and the pure resolver.</span>
+
+<span class="sd">Design record: `misc/docs/decisions/0012-credential-and-endpoint-resolution.md`</span>
+<span class="sd">(all of it) on top of `0002-boto3-as-engine.md` (lazy boto3) and</span>
+<span class="sd">`0003-provider-presets-and-capabilities.md` (presets, SigV4 mandate).</span>
+
+<span class="sd">The two sentences the module follows from (ADR-0012):</span>
+
+<span class="sd">1. **A preset is the caller&#39;s explicit endpoint, spelled by name.** It sits</span>
+<span class="sd">   exactly where ``endpoint_url=`` sits — above every environment and</span>
+<span class="sd">   config-file channel. s3dol owns two rungs of the endpoint ladder, not six.</span>
+<span class="sd">2. **A ``Config`` value s3dol does not set is a channel it leaves open to the</span>
+<span class="sd">   user.** Every field is a ladder with a documented bottom, and &quot;the row makes</span>
+<span class="sd">   no claim&quot; is spelled by *omitting the key*, never by passing ``None``.</span>
+
+<span class="sd">Structure:</span>
+
+<span class="sd">- :class:`S3Connection` — a frozen, picklable spec. No live objects, no</span>
+<span class="sd">  escape hatch for one. Construction performs no I/O and imports no boto3.</span>
+<span class="sd">- :func:`resolve` — a **pure** function ``(spec, environ, aws_config) -&gt;</span>
+<span class="sd">  Resolution`` where every field carries its provenance. Tier-1 tests cover</span>
+<span class="sd">  the whole ladder with a fake environ dict and zero I/O.</span>
+<span class="sd">- :func:`load_aws_config` — the separate, *named impure* loader for the</span>
+<span class="sd">  aws-config rungs; pass it (or its result) to :func:`resolve`.</span>
+<span class="sd">- Credential shapes (ADR-0012 D5) — normalised in ``__post_init__`` to small</span>
+<span class="sd">  frozen, picklable providers; live botocore objects are rejected with</span>
+<span class="sd">  shape-specific messages.</span>
+
+<span class="sd">&gt;&gt;&gt; spec = S3Connection(endpoint_url=&#39;http://localhost:9000&#39;,</span>
+<span class="sd">...                     credentials=(&#39;AKIAEXAMPLE&#39;, &#39;sEkR3tVALUE&#39;))</span>
+<span class="sd">&gt;&gt;&gt; res = resolve(spec, {})</span>
+<span class="sd">&gt;&gt;&gt; res.endpoint_url.value, res.endpoint_url.source</span>
+<span class="sd">(&#39;http://localhost:9000&#39;, &#39;endpoint_url=&#39;)</span>
+<span class="sd">&gt;&gt;&gt; res.signature_version.value  # never left to botocore (ADR-0003 §4)</span>
+<span class="sd">&#39;s3v4&#39;</span>
+<span class="sd">&gt;&gt;&gt; &#39;sEkR3tVALUE&#39; in repr(spec)  # secrets never in repr (ADR-0012 D1)</span>
+<span class="sd">False</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">fields</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Mapping</span><span class="p">,</span>
+    <span class="n">NamedTuple</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AmbiguousResolution</span><span class="p">,</span>
+    <span class="n">ConfigurationError</span><span class="p">,</span>
+    <span class="n">MissingEndpoint</span><span class="p">,</span>
+    <span class="n">PresetConflict</span><span class="p">,</span>
+    <span class="n">PresetHostMismatch</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.presets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Capabilities</span><span class="p">,</span>
+    <span class="n">Preset</span><span class="p">,</span>
+    <span class="n">detect_preset</span><span class="p">,</span>
+    <span class="n">get_preset</span><span class="p">,</span>
+    <span class="n">validate_endpoint_hygiene</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Credential shapes (ADR-0012 D5)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<div class="viewcode-block" id="CredentialProvider">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CredentialProvider">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CredentialProvider</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base of s3dol&#39;s picklable credential specs.</span>
+
+<span class="sd">    Subclasses are small frozen dataclasses that *describe* how to obtain</span>
+<span class="sd">    credentials; nothing live is held (nothing live pickles — measured, ADR-0012</span>
+<span class="sd">    D5). At client-build time each is adapted into a botocore provider and</span>
+<span class="sd">    **replaces** botocore&#39;s resolver via</span>
+<span class="sd">    ``session.register_component(&#39;credential_provider&#39;, ...)`` — never</span>
+<span class="sd">    prepended (silent fallthrough) and never ``insert_before`` (raises when a</span>
+<span class="sd">    profile is set).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CredentialProvider.provenance">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CredentialProvider.provenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A label for diagnose() — never a credential value.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_botocore_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">botocore_provider</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CredentialProvider</span> <span class="k">as</span> <span class="n">_BotocoreBase</span>
+
+        <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">class</span><span class="w"> </span><span class="nc">_Adapter</span><span class="p">(</span><span class="n">_BotocoreBase</span><span class="p">):</span>
+            <span class="n">METHOD</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;s3dol-</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">CANONICAL_NAME</span> <span class="o">=</span> <span class="n">METHOD</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">spec</span><span class="o">.</span><span class="n">_load_botocore_credentials</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">_Adapter</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="StaticCredentials">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.StaticCredentials">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StaticCredentials</span><span class="p">(</span><span class="n">CredentialProvider</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An explicit key pair (optionally a session token).</span>
+
+<span class="sd">    Note: a *static* token expires and cannot refresh — prefer ``profile=`` or</span>
+<span class="sd">    a callable provider for STS/SSO. Pickling this object carries the secret</span>
+<span class="sd">    (that is what &quot;explicit credentials&quot; means); its repr does not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">access_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">secret_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="StaticCredentials.provenance">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.StaticCredentials.provenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;explicit static (access key </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">access_key</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">…)&quot;</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># secrets never in repr (ADR-0012 D1 §4)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;, token=***&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(access_key=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">access_key</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="si">!r}</span><span class="s2">…, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;secret_key=***</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_botocore_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">Credentials</span>
+
+        <span class="k">return</span> <span class="n">Credentials</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">access_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">secret_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-static&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ProfileCredentials">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.ProfileCredentials">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProfileCredentials</span><span class="p">(</span><span class="n">CredentialProvider</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials from a named profile — *credentials only*; the profile&#39;s</span>
+<span class="sd">    other config is not selected by this (that is what ``profile=`` on the</span>
+<span class="sd">    connection is for). Rebuilds live, still-refreshable credentials after</span>
+<span class="sd">    unpickling (a frozen dataclass holding only a profile name round-trips).&quot;&quot;&quot;</span>
+
+    <span class="n">profile</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="ProfileCredentials.provenance">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.ProfileCredentials.provenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;profile:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="si">}</span><span class="s2"> (via credentials=)&quot;</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_botocore_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">botocore.session</span>
+
+        <span class="k">return</span> <span class="n">botocore</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="CallableCredentials">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CallableCredentials">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CallableCredentials</span><span class="p">(</span><span class="n">CredentialProvider</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A picklable zero-arg callable returning a mapping with keys</span>
+<span class="sd">    ``access_key``/``secret_key`` (aliases: ``key``/``secret``), optional</span>
+<span class="sd">    ``token``, optional ``expires_at``/``expiry_time`` (ISO 8601). With an</span>
+<span class="sd">    expiry, credentials are refreshable — the callable is re-invoked by</span>
+<span class="sd">    botocore&#39;s refresh machinery (advisory 900 s / mandatory 600 s before</span>
+<span class="sd">    expiry).&quot;&quot;&quot;</span>
+
+    <span class="n">fetch</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Mapping</span><span class="p">]</span>
+
+<div class="viewcode-block" id="CallableCredentials.provenance">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CallableCredentials.provenance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">,</span> <span class="s2">&quot;__qualname__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">))</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;callable:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">pick</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">creds</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">access_key</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="s2">&quot;access_key&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">),</span>
+            <span class="n">secret_key</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="s2">&quot;secret_key&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_session_token&quot;</span><span class="p">),</span>
+            <span class="n">expiry_time</span><span class="o">=</span><span class="n">pick</span><span class="p">(</span><span class="s2">&quot;expires_at&quot;</span><span class="p">,</span> <span class="s2">&quot;expiry_time&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">creds</span><span class="p">[</span><span class="s2">&quot;access_key&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">creds</span><span class="p">[</span><span class="s2">&quot;secret_key&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="s2">&quot;The credentials callable must return a mapping with &quot;</span>
+                <span class="s2">&quot;&#39;access_key&#39; and &#39;secret_key&#39; (aliases: &#39;key&#39;/&#39;secret&#39;); got &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;keys </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">creds</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_botocore_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">Credentials</span><span class="p">,</span> <span class="n">RefreshableCredentials</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">first</span><span class="p">[</span><span class="s2">&quot;expiry_time&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Credentials</span><span class="p">(</span>
+                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;access_key&quot;</span><span class="p">],</span>
+                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;secret_key&quot;</span><span class="p">],</span>
+                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">],</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-callable&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">refresh</span><span class="p">():</span>
+            <span class="n">fresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">())</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;access_key&quot;</span><span class="p">:</span> <span class="n">fresh</span><span class="p">[</span><span class="s2">&quot;access_key&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;secret_key&quot;</span><span class="p">:</span> <span class="n">fresh</span><span class="p">[</span><span class="s2">&quot;secret_key&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="n">fresh</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;expiry_time&quot;</span><span class="p">:</span> <span class="n">fresh</span><span class="p">[</span><span class="s2">&quot;expiry_time&quot;</span><span class="p">],</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">RefreshableCredentials</span><span class="o">.</span><span class="n">create_from_metadata</span><span class="p">(</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">refresh</span><span class="p">(),</span> <span class="n">refresh_using</span><span class="o">=</span><span class="n">refresh</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-callable&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="n">CredentialsInput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">CredentialProvider</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Mapping</span><span class="p">]</span>
+<span class="p">]</span>
+
+<span class="n">_AWS_CRED_KEYS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_session_token&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_live_botocore_object</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detect live boto3/botocore objects *without importing them* —</span>
+<span class="sd">    construction must not import boto3 (ADR-0002).&quot;&quot;&quot;</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">module</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;botocore&quot;</span><span class="p">,</span> <span class="s2">&quot;boto3&quot;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="normalize_credentials">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.normalize_credentials">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_credentials</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">CredentialsInput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CredentialProvider</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise every accepted credential shape; reject the rest, each with</span>
+<span class="sd">    its own message (ADR-0012 D5). The only door is ``S3Connection.__post_init__``.</span>
+
+<span class="sd">    &gt;&gt;&gt; normalize_credentials(None) is None</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; normalize_credentials(&#39;prod&#39;)</span>
+<span class="sd">    ProfileCredentials(profile=&#39;prod&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; normalize_credentials((&#39;AKIAXX&#39;, &#39;sec&#39;))</span>
+<span class="sd">    StaticCredentials(access_key=&#39;AKIA&#39;…, secret_key=***)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">CredentialProvider</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">CredentialProvider</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;credentials= got the class </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">; pass an *instance* &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(e.g. </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(...)).&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">_is_live_botocore_object</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;credentials= got a live boto3/botocore object &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). A resolved credential snapshot cannot &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;refresh and cannot pickle, and sessions/clients hold sockets. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Pass a profile name, a (key, secret[, token]) tuple, a mapping of &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;aws_* keys, or a picklable zero-arg callable.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ProfileCredentials</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># a bare str is ALWAYS a profile name</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;credentials= tuple must be (key, secret) or &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(key, secret, token); got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> items.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">StaticCredentials</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_AWS_CRED_KEYS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;credentials= mapping has unknown key(s) </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span><span class="si">}</span><span class="s2">; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;allowed: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_AWS_CRED_KEYS</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="s2">&quot;credentials= mapping needs both &#39;aws_access_key_id&#39; and &quot;</span>
+                <span class="s2">&quot;&#39;aws_secret_access_key&#39; (a token alone leaves &quot;</span>
+                <span class="s2">&quot;Credentials(None, None, TOKEN) — a measured boto3 hazard).&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">StaticCredentials</span><span class="p">(</span>
+            <span class="n">access_key</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">],</span>
+            <span class="n">secret_key</span><span class="o">=</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">],</span>
+            <span class="n">token</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aws_session_token&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;credentials= callable </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> is not picklable &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). Every s3dol store pickles &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(ADR-0012 D1); use a module-level function or a &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;functools.partial of one.&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+        <span class="k">return</span> <span class="n">CallableCredentials</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;credentials= got a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">; accepted: None, a profile &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;name (str), (key, secret[, token]), a mapping of aws_* keys, a &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;CredentialProvider instance, or a picklable zero-arg callable.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Resolution — pure, provenance-carrying (ADR-0012 D2/D3/D4)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<div class="viewcode-block" id="Sourced">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.Sourced">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Sourced</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A resolved value, where it came from, and whether s3dol passes it to</span>
+<span class="sd">    botocore explicitly (``passed=False`` == the key is omitted so the channel</span>
+<span class="sd">    below stays open — &quot;omit, never None&quot;).&quot;&quot;&quot;</span>
+
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">source</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">passed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="Resolution">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.Resolution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Resolution</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The result of :func:`resolve` — everything ``diagnose()`` prints and</span>
+<span class="sd">    everything client-build consumes. Carries provenance labels, never a</span>
+<span class="sd">    credential value.&quot;&quot;&quot;</span>
+
+    <span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">region_name</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">signature_version</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">addressing_style</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">checksum</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">payload_signing_enabled</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">verify</span><span class="p">:</span> <span class="n">Sourced</span>
+    <span class="n">preset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Preset</span><span class="p">]</span>
+    <span class="n">preset_source</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &#39;named&#39; | &#39;detected&#39; | &#39;fallback:&lt;name&gt;&#39; | &#39;none&#39;</span>
+    <span class="n">credential_provenance</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">capabilities</span><span class="p">:</span> <span class="n">Capabilities</span>
+    <span class="c1">#: The non-secret environment keys consulted, with their values.</span>
+    <span class="n">environ_consulted</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">...</span><span class="p">]</span>
+    <span class="c1">#: Collected (warning class, message) pairs. resolve() never emits them —</span>
+    <span class="c1">#: the impure caller decides (client build warns; diagnose prints rows).</span>
+    <span class="n">notes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></div>
+
+
+
+<span class="n">_ENV_ENDPOINT_KEYS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;AWS_ENDPOINT_URL_S3&quot;</span><span class="p">,</span> <span class="s2">&quot;AWS_ENDPOINT_URL&quot;</span><span class="p">)</span>
+<span class="n">_ENV_CONSULTED_KEYS</span> <span class="o">=</span> <span class="n">_ENV_ENDPOINT_KEYS</span> <span class="o">+</span> <span class="p">(</span>
+    <span class="s2">&quot;AWS_DEFAULT_REGION&quot;</span><span class="p">,</span>  <span class="c1"># botocore does NOT read AWS_REGION; neither do we</span>
+    <span class="s2">&quot;AWS_PROFILE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AWS_REQUEST_CHECKSUM_CALCULATION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AWS_RESPONSE_CHECKSUM_VALIDATION&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#: Region-looking tokens: ``us-east-1``, ``fr-par``, ``us-west-004``, hetzner&#39;s</span>
+<span class="c1">#: ``fsn1``, and R2&#39;s literal ``auto``.</span>
+<span class="n">_REGION_TOKEN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]+-\d+|[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]{3,}|[a-z]</span><span class="si">{3}</span><span class="s2">\d|auto&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_region_from_host</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best-effort region capture from a resolved endpoint host.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">endpoint_url</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlsplit</span>
+
+    <span class="n">host</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?:^|\.)s3[.-]([a-z0-9-]+)\.&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">host</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">labels</span><span class="p">:</span>
+        <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_REGION_TOKEN</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="n">_CREDENTIAL_KEY_MARKERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;access_key&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;secret&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;token&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;credential_process&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sso_&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_scrub_credentials</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively drop credential-shaped keys from an aws-config mapping.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">scrub</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">scrub</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span>
+                    <span class="n">marker</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">marker</span> <span class="ow">in</span> <span class="n">_CREDENTIAL_KEY_MARKERS</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">node</span>
+
+    <span class="k">return</span> <span class="n">scrub</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load_aws_config">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.load_aws_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_aws_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The named, *impure* aws-config loader (ADR-0012 D2): loads the shared</span>
+<span class="sd">    config via botocore (~16 ms — never on the common path; pass this function</span>
+<span class="sd">    as a thunk and :func:`resolve` calls it only if a rung needs it), scrubbed</span>
+<span class="sd">    of anything credential-shaped.&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">botocore.session</span>
+
+    <span class="k">return</span> <span class="n">_scrub_credentials</span><span class="p">(</span><span class="n">botocore</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span><span class="o">.</span><span class="n">full_config</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_profile_section</span><span class="p">(</span>
+    <span class="n">aws_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+    <span class="n">profiles</span> <span class="o">=</span> <span class="n">aws_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;profiles&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="k">if</span> <span class="n">aws_config</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">profile</span> <span class="ow">or</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_PROFILE&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;default&quot;</span>
+    <span class="k">return</span> <span class="n">profiles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_lower_rung_endpoint</span><span class="p">(</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">profile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The endpoint the rungs *below* s3dol&#39;s two would supply — read purely,</span>
+<span class="sd">    for diagnose() and the C1/C2 guards **only**, never to override (ADR-0012</span>
+<span class="sd">    D3; and never pass ``Config(ignore_configured_endpoint_urls=True)``).&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">env_key</span> <span class="ow">in</span> <span class="n">_ENV_ENDPOINT_KEYS</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">env_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;env:</span><span class="si">{</span><span class="n">env_key</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">aws_config</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.configprovider</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfiguredEndpointProvider</span>
+
+            <span class="n">provider</span> <span class="o">=</span> <span class="n">ConfiguredEndpointProvider</span><span class="p">(</span>
+                <span class="n">full_config</span><span class="o">=</span><span class="n">aws_config</span><span class="p">,</span>
+                <span class="n">scoped_config</span><span class="o">=</span><span class="n">_profile_section</span><span class="p">(</span><span class="n">aws_config</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">profile</span><span class="p">),</span>
+                <span class="n">client_name</span><span class="o">=</span><span class="s2">&quot;s3&quot;</span><span class="p">,</span>
+                <span class="n">environ</span><span class="o">=</span><span class="p">{},</span>  <span class="c1"># env rungs already handled above</span>
+            <span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">provide</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s2">&quot;aws-config&quot;</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># config parsing must never fail resolution</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_row_region</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">Preset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The row&#39;s region literal with params bound; ``None`` if it makes no</span>
+<span class="sd">    claim (absent, or a template with unbound placeholders).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="o">.</span><span class="n">region_name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">value</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">_bound</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">region_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">missing</span> <span class="k">else</span> <span class="n">value</span>
+
+
+<div class="viewcode-block" id="resolve">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.resolve">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resolve</span><span class="p">(</span>
+    <span class="n">spec</span><span class="p">:</span> <span class="s2">&quot;S3Connection&quot;</span><span class="p">,</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">aws_config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Mapping</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Resolution</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pure resolution: no ``os.environ``, no disk, no network (ADR-0012 D2).</span>
+
+<span class="sd">    ``environ`` is a plain mapping (pass ``os.environ`` at real call sites,</span>
+<span class="sd">    a dict in tests). ``aws_config`` is a pre-loaded, credential-scrubbed</span>
+<span class="sd">    config mapping, or a thunk for one (:func:`load_aws_config`) — called only</span>
+<span class="sd">    if a rung needs it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">notes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">aws_config_cache</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">aws_config_cache</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">aws_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">aws_config_cache</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">aws_config</span><span class="p">):</span>
+                <span class="n">aws_config_cache</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aws_config</span><span class="p">()</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">aws_config_cache</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aws_config</span>
+        <span class="k">return</span> <span class="n">aws_config_cache</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+
+    <span class="c1"># -- the named row (pass 1 input)</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">preset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">named</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">preset</span><span class="p">,</span> <span class="n">Preset</span><span class="p">):</span>
+        <span class="n">named</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">preset</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">named</span> <span class="o">=</span> <span class="n">get_preset</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">preset</span><span class="p">)</span>
+
+    <span class="c1"># -- endpoint ladder (D3): s3dol owns two rungs, then stops</span>
+    <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sourced</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">:</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">,</span> <span class="s2">&quot;endpoint_url=&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">named</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">named</span><span class="o">.</span><span class="n">bound_endpoint</span><span class="p">(</span><span class="n">region_name</span><span class="o">=</span><span class="n">spec</span><span class="o">.</span><span class="n">region_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">validate_endpoint_hygiene</span><span class="p">(</span><span class="n">bound</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;preset:</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> endpoint&quot;</span><span class="p">)</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">bound</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;preset:</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">lower</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="n">_lower_rung_endpoint</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">config</span><span class="p">(),</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lower</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">lower</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lower</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">named</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">missing</span> <span class="o">=</span> <span class="n">named</span><span class="o">.</span><span class="n">missing_endpoint_params</span><span class="p">(</span><span class="n">region_name</span><span class="o">=</span><span class="n">spec</span><span class="o">.</span><span class="n">region_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">named</span><span class="o">.</span><span class="n">requires_endpoint</span> <span class="ow">or</span> <span class="n">missing</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MissingEndpoint</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> needs an endpoint and nothing &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;supplied one&quot;</span>
+                    <span class="o">+</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot; (unbound template parameter(s): </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2"> — &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;bind with get_preset(</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">).bind(...))&quot;</span>
+                        <span class="k">if</span> <span class="n">missing</span>
+                        <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                    <span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;. Pass endpoint_url=, or set AWS_ENDPOINT_URL_S3. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Falling back to AWS silently is structurally impossible &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(ADR-0012 C1).&quot;</span>
+                <span class="p">)</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SDK resolver&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SDK resolver&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># -- C2 guard: a named, patterned row whose endpoint arrived from below</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">named</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">named</span><span class="o">.</span><span class="n">soft</span>
+        <span class="ow">and</span> <span class="n">named</span><span class="o">.</span><span class="n">host_patterns</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">passed</span>
+        <span class="ow">and</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">named</span><span class="o">.</span><span class="n">matches_host</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">detect_preset</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PresetHostMismatch</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;preset=</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> was named, but the endpoint that &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;resolved from the environment (</span><span class="si">{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">) matches &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&#39;s host patterns: </span><span class="si">{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Pass endpoint_url= explicitly (rung 1 never triggers &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;this guard), or name the right preset.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">AmbiguousResolution</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;preset=</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> was named, but the endpoint that &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;resolved from the environment (</span><span class="si">{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="si">!r}</span><span class="s2">) matches none of its host patterns &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">host_patterns</span><span class="si">}</span><span class="s2">. Proceeding; pass endpoint_url= to &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;silence this.&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="c1"># -- pass 2: pick the settings row (named &gt; detected &gt; fallback)</span>
+    <span class="k">if</span> <span class="n">named</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">preset_source</span> <span class="o">=</span> <span class="n">named</span><span class="p">,</span> <span class="s2">&quot;named&quot;</span>
+    <span class="k">elif</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">detected</span> <span class="o">=</span> <span class="n">detect_preset</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">detected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">,</span> <span class="n">preset_source</span> <span class="o">=</span> <span class="n">detected</span><span class="p">,</span> <span class="s2">&quot;detected&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">,</span> <span class="n">preset_source</span> <span class="o">=</span> <span class="n">get_preset</span><span class="p">(</span><span class="s2">&quot;generic-s3&quot;</span><span class="p">),</span> <span class="s2">&quot;fallback:generic-s3&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">,</span> <span class="n">preset_source</span> <span class="o">=</span> <span class="n">get_preset</span><span class="p">(</span><span class="s2">&quot;aws&quot;</span><span class="p">),</span> <span class="s2">&quot;fallback:aws&quot;</span>
+
+    <span class="c1"># -- region ladder</span>
+    <span class="n">row_region</span> <span class="o">=</span> <span class="n">_row_region</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">region_name</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">pinned</span> <span class="ow">and</span> <span class="n">row_region</span> <span class="ow">and</span> <span class="n">spec</span><span class="o">.</span><span class="n">region_name</span> <span class="o">!=</span> <span class="n">row_region</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PresetConflict</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;region_name=</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">region_name</span><span class="si">!r}</span><span class="s2"> contradicts the verified &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;preset </span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, which pins region </span><span class="si">{</span><span class="n">row_region</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">region_name</span><span class="p">,</span> <span class="s2">&quot;region_name=&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">row_region</span><span class="p">:</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">row_region</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;preset:</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">captured</span> <span class="o">=</span> <span class="n">_region_from_host</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">env_region</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_DEFAULT_REGION&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">captured</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">captured</span><span class="p">,</span> <span class="s2">&quot;endpoint host (best-effort)&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">env_region</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">env_region</span><span class="p">,</span> <span class="s2">&quot;env:AWS_DEFAULT_REGION&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">_profile_section</span><span class="p">(</span><span class="n">config</span><span class="p">(),</span> <span class="n">environ</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">):</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span>
+                <span class="n">_profile_section</span><span class="p">(</span><span class="n">config</span><span class="p">(),</span> <span class="n">environ</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">)[</span><span class="s2">&quot;region&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;aws-config profile&quot;</span><span class="p">,</span>
+                <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># -- addressing style ladder: kwarg &gt; row &gt; profile &gt; omit.</span>
+    <span class="c1">#    Soft rows (aws, generic-s3) document the expected behaviour but do NOT</span>
+    <span class="c1">#    pass it — omitting the key preserves the profile channel and botocore&#39;s</span>
+    <span class="c1">#    endpoint-dependent default (ADR-0012 D3: omit, never None).</span>
+    <span class="n">profile_addressing</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_profile_section</span><span class="p">(</span><span class="n">config</span><span class="p">(),</span> <span class="n">environ</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;s3&quot;</span><span class="p">,</span> <span class="p">{})</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;addressing_style&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">addressing_style</span><span class="p">:</span>
+        <span class="n">addressing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">addressing_style</span><span class="p">,</span> <span class="s2">&quot;addressing_style=&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">row</span><span class="o">.</span><span class="n">soft</span><span class="p">:</span>
+        <span class="n">addressing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">addressing_style</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;preset:</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">profile_addressing</span><span class="p">:</span>
+        <span class="n">addressing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">profile_addressing</span><span class="p">,</span> <span class="s2">&quot;aws-config profile&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">addressing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">addressing_style</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;botocore default (≈</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">addressing_style</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># -- checksum ladder: kwarg &gt; row &gt; env &gt; botocore default. The env and</span>
+    <span class="c1">#    default rungs OMIT the keys, so a user&#39;s AWS_REQUEST_CHECKSUM_* env</span>
+    <span class="c1">#    workaround keeps working (measured: Config beats env both ways).</span>
+    <span class="n">env_checksum</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_REQUEST_CHECKSUM_CALCULATION&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">&quot;AWS_RESPONSE_CHECKSUM_VALIDATION&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">checksum</span><span class="p">:</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">checksum</span><span class="p">,</span> <span class="s2">&quot;checksum=&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="o">.</span><span class="n">checksum</span><span class="p">:</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">checksum</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;preset:</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">env_checksum</span><span class="p">:</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">env_checksum</span><span class="p">,</span> <span class="s2">&quot;env:AWS_*_CHECKSUM_*&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">checksum</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="s2">&quot;when_supported&quot;</span><span class="p">,</span> <span class="s2">&quot;botocore default&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># -- payload signing: kwarg &gt; row &gt; omit (no env channel exists)</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">payload_signing_enabled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">payload_signing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span>
+            <span class="n">spec</span><span class="o">.</span><span class="n">payload_signing_enabled</span><span class="p">,</span> <span class="s2">&quot;payload_signing_enabled=&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">row</span><span class="o">.</span><span class="n">payload_signing_enabled</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">payload_signing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">payload_signing_enabled</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;preset:</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">payload_signing</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;omitted&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># -- signature version: kwarg &gt; &#39;s3v4&#39;; never from a row, never from env,</span>
+    <span class="c1">#    never left to botocore (which silently downgrades to SigV2 in the 12</span>
+    <span class="c1">#    regions endpoints.json lists as v2-capable — ADR-0003 §4 / ADR-0012).</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">signature_version</span><span class="p">,</span>
+        <span class="s2">&quot;signature_version=&quot;</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">signature_version</span> <span class="o">!=</span> <span class="s2">&quot;s3v4&quot;</span> <span class="k">else</span> <span class="s2">&quot;s3dol default&quot;</span><span class="p">,</span>
+        <span class="n">passed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">verify</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">verify</span><span class="p">,</span>
+        <span class="s2">&quot;verify=&quot;</span> <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;omitted&quot;</span><span class="p">,</span>
+        <span class="n">passed</span><span class="o">=</span><span class="n">spec</span><span class="o">.</span><span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># -- credential provenance label (never a value)</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
+        <span class="n">provenance</span> <span class="o">=</span> <span class="s2">&quot;anonymous (UNSIGNED)&quot;</span>
+    <span class="k">elif</span> <span class="n">spec</span><span class="o">.</span><span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">provenance</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">provenance</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">:</span>
+        <span class="n">provenance</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;profile:</span><span class="si">{</span><span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">):</span>
+        <span class="n">provenance</span> <span class="o">=</span> <span class="s2">&quot;chain (env credentials present)&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">provenance</span> <span class="o">=</span> <span class="s2">&quot;chain (config file / SSO / IMDS / none)&quot;</span>
+
+    <span class="k">return</span> <span class="n">Resolution</span><span class="p">(</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+        <span class="n">signature_version</span><span class="o">=</span><span class="n">signature</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="n">addressing</span><span class="p">,</span>
+        <span class="n">checksum</span><span class="o">=</span><span class="n">checksum</span><span class="p">,</span>
+        <span class="n">payload_signing_enabled</span><span class="o">=</span><span class="n">payload_signing</span><span class="p">,</span>
+        <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+        <span class="n">preset</span><span class="o">=</span><span class="n">row</span><span class="p">,</span>
+        <span class="n">preset_source</span><span class="o">=</span><span class="n">preset_source</span><span class="p">,</span>
+        <span class="n">credential_provenance</span><span class="o">=</span><span class="n">provenance</span><span class="p">,</span>
+        <span class="n">capabilities</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">capabilities</span><span class="p">,</span>
+        <span class="n">environ_consulted</span><span class="o">=</span><span class="nb">tuple</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ENV_CONSULTED_KEYS</span><span class="p">),</span>
+        <span class="n">notes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">notes</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># S3Connection (ADR-0012 D1)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<div class="viewcode-block" id="S3Connection">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.S3Connection">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S3Connection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A frozen, picklable connection spec. No live objects — ever.</span>
+
+<span class="sd">    Construction performs no I/O and does not import boto3 (ADR-0002); the</span>
+<span class="sd">    client is built lazily, once, under a per-instance lock (CPython ≥3.12</span>
+<span class="sd">    removed ``cached_property``&#39;s lock deliberately — measured: 8 racing</span>
+<span class="sd">    threads → 8 clients without one).</span>
+
+<span class="sd">    ``__post_init__`` is the only door: every normalisation and contradiction</span>
+<span class="sd">    check happens here, so a bad shape dies at construction with a message,</span>
+<span class="sd">    not later inside botocore.</span>
+
+<span class="sd">    &gt;&gt;&gt; S3Connection(anon=True, profile=&#39;prod&#39;)</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">    ...</span>
+<span class="sd">    s3dol.errors.ConfigurationError: ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># WHERE</span>
+    <span class="n">preset</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Preset</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># WHO</span>
+    <span class="n">profile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">credentials</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CredentialProvider</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># normalised in __post_init__</span>
+    <span class="n">anon</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># HOW (None == &quot;do not override&quot; — the ladder continues; see resolve())</span>
+    <span class="n">signature_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;s3v4&quot;</span>  <span class="c1"># never left to botocore (ADR-0003 §4)</span>
+    <span class="n">addressing_style</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;virtual&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">checksum</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;when_supported&quot;</span><span class="p">,</span> <span class="s2">&quot;when_required&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">payload_signing_enabled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">verify</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># self-signed MinIO / corporate CA</span>
+    <span class="n">client_kwargs</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="c1"># POLICY</span>
+    <span class="n">deny_means_absent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># ADR-0004 §3</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;credentials&quot;</span><span class="p">,</span> <span class="n">normalize_credentials</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preset</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">get_preset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preset</span><span class="p">)</span>  <span class="c1"># unknown names die here, loudly</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">validate_endpoint_hygiene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">addressing_style</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;virtual&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;addressing_style must be &#39;path&#39;, &#39;virtual&#39;, or None (ladder &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;continues); got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">addressing_style</span><span class="si">!r}</span><span class="s2">. &#39;auto&#39; is illegal.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;when_supported&quot;</span><span class="p">,</span> <span class="s2">&quot;when_required&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;checksum must be &#39;when_supported&#39;, &#39;when_required&#39;, or None; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">checksum</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;client_kwargs&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="s2">&quot;anon=True with credentials/profile: UNSIGNED would &quot;</span>
+                    <span class="s2">&quot;silently discard them (measured — the request signer&#39;s &quot;</span>
+                    <span class="s2">&quot;credentials become None). Drop anon, or drop the &quot;</span>
+                    <span class="s2">&quot;credentials.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deny_means_absent</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="s2">&quot;anon=True with deny_means_absent=True: an anonymous HEAD &quot;</span>
+                    <span class="s2">&quot;gives 403 on existing keys and 404 on missing ones, so &quot;</span>
+                    <span class="s2">&quot;every key would read as absent — a silently empty store &quot;</span>
+                    <span class="s2">&quot;(measured under moto; banned by ADR-0001 goal 4).&quot;</span>
+                <span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_lock&quot;</span><span class="p">,</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">())</span>
+
+    <span class="c1"># -- the client -------------------------------------------------------- #</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The boto3 S3 client — built lazily, once, under the lock.&quot;&quot;&quot;</span>
+        <span class="n">built</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_client&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">built</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+                <span class="n">built</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_client&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">built</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">built</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_client</span><span class="p">()</span>
+                    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_client&quot;</span><span class="p">,</span> <span class="n">built</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">built</span>
+
+<div class="viewcode-block" id="S3Connection.resolution">
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.S3Connection.resolution">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolution</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">environ</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">aws_config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_aws_config</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Resolution</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve against the real environment by default (a thin impure</span>
+<span class="sd">        wrapper over the pure :func:`resolve`).&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+        <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span> <span class="k">if</span> <span class="n">environ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">botocore.session</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore</span><span class="w"> </span><span class="kn">import</span> <span class="n">UNSIGNED</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CredentialResolver</span>
+
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">warning_class</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">resolution</span><span class="o">.</span><span class="n">notes</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">warning_class</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">s3_settings</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">addressing_style</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="n">s3_settings</span><span class="p">[</span><span class="s2">&quot;addressing_style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">addressing_style</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">payload_signing_enabled</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="n">s3_settings</span><span class="p">[</span><span class="s2">&quot;payload_signing_enabled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">resolution</span><span class="o">.</span><span class="n">payload_signing_enabled</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">)</span>
+        <span class="n">config_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolution</span><span class="o">.</span><span class="n">preset</span><span class="o">.</span><span class="n">config_kwargs</span> <span class="ow">or</span> <span class="p">())</span>
+        <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="n">config_kwargs</span><span class="p">[</span><span class="s2">&quot;request_checksum_calculation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">config_kwargs</span><span class="p">[</span><span class="s2">&quot;response_checksum_validation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">s3_settings</span><span class="p">:</span>
+            <span class="n">config_kwargs</span><span class="p">[</span><span class="s2">&quot;s3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s3_settings</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+            <span class="c1"># UNSIGNED never enters the dataclass (unpicklable) — build-time only</span>
+            <span class="n">signature_version</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">UNSIGNED</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anon</span> <span class="k">else</span> <span class="n">resolution</span><span class="o">.</span><span class="n">signature_version</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">),</span>
+            <span class="o">**</span><span class="n">config_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">botocore_session</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">botocore</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span>
+            <span class="k">else</span> <span class="n">botocore</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">botocore_session</span><span class="o">.</span><span class="n">register_component</span><span class="p">(</span>
+                <span class="s2">&quot;credential_provider&quot;</span><span class="p">,</span>
+                <span class="n">CredentialResolver</span><span class="p">(</span><span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">botocore_provider</span><span class="p">()]),</span>
+            <span class="p">)</span>
+
+        <span class="n">client_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">&quot;verify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span>
+        <span class="k">return</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">botocore_session</span><span class="o">=</span><span class="n">botocore_session</span><span class="p">)</span><span class="o">.</span><span class="n">client</span><span class="p">(</span>
+            <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
+            <span class="n">endpoint_url</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">resolution</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">passed</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">),</span>
+            <span class="n">region_name</span><span class="o">=</span><span class="n">resolution</span><span class="o">.</span><span class="n">region_name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">client_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># -- pickling: mandatory for every connection (ADR-0012 D1 §3) --------- #</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Enumerating dataclass fields drops every cache by construction</span>
+        <span class="c1"># (the boto3 client is unpicklable, full stop).</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_lock&quot;</span><span class="p">,</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">())</span>
+
+    <span class="c1"># -- repr: non-default fields only; secrets never (D1 §4) -------------- #</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">shown</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">f</span><span class="o">.</span><span class="n">default</span><span class="p">:</span>
+                <span class="n">shown</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shown</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

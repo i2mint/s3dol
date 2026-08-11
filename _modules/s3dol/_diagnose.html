@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol._diagnose &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol._diagnose</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol._diagnose</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;``s3dol.diagnose()`` — print what would resolve, from where, and whether v1</span>
+<span class="sd">moves it. The step-0 migration safety mechanism (ADR-0007 §5, ADR-0012 D6/D7).</span>
+
+<span class="sd">Run it with the same arguments you pass ``s3dol.store.S3Store`` today::</span>
+
+<span class="sd">    import s3dol</span>
+<span class="sd">    s3dol.diagnose(bucket_name=&#39;my-bucket&#39;, endpoint_url=&#39;...&#39;, path=&#39;logs&#39;)</span>
+
+<span class="sd">Non-negotiables (ADR-0012 D6):</span>
+
+<span class="sd">- it **never raises** — a failed resolution is a *row*; this function exists to</span>
+<span class="sd">  report exactly the misconfigurations that raise;</span>
+<span class="sd">- it holds **no credential value**, only a provenance label; it never reads</span>
+<span class="sd">  ``.access_key`` (which can trigger a network refresh); credential identity is</span>
+<span class="sd">  discussed as a predicate, never a snapshot.</span>
+
+<span class="sd">The v0-vs-v1 divergence table is a **differential, not a frozen simulation**</span>
+<span class="sd">(ADR-0012 D7): one ~20-line argument-mangler (:func:`_v0_mangle`, mapping 1:1</span>
+<span class="sd">onto v0&#39;s ``get_client``/``_find_default_credentials``) is run through v1&#39;s own</span>
+<span class="sd">resolver twice, so resolver imprecision cancels. It dies in the same commit as</span>
+<span class="sd">the compat shim.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3Connection</span><span class="p">,</span> <span class="n">Resolution</span><span class="p">,</span> <span class="n">load_aws_config</span><span class="p">,</span> <span class="n">resolve</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">redact</span>
+
+<span class="c1">#: v0 ``S3Store`` parameter names (the shim signature, ADR-0007 §3 — including</span>
+<span class="c1">#: ``is_supabase_endpoint``, which v0 accepts and an early shim draft forgot).</span>
+<span class="n">_V0_ARG_NAMES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;make_bucket&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aws_session_token&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;endpoint_url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;region_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;profile_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;skip_bucket_check&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is_supabase_endpoint&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">_SECRET_ARG_NAMES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_session_token&quot;</span><span class="p">})</span>
+
+<span class="c1">#: Reasons a v0 branch is excluded from the differential (ADR-0012 D7): these</span>
+<span class="c1">#: two branches build clients through the module-level ``boto3.client(...)``,</span>
+<span class="c1">#: which resolves through the process-global cached DEFAULT_SESSION — they are</span>
+<span class="c1">#: not functions of their arguments.</span>
+<span class="n">_EXCLUDED_BRANCHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;supabase&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;v0&#39;s Supabase branch builds its client through boto3&#39;s process-global &quot;</span>
+        <span class="s2">&quot;session, so its behaviour is not a function of these arguments. Note: &quot;</span>
+        <span class="s2">&quot;a long-lived v0 process that builds one Supabase store pins its &quot;</span>
+        <span class="s2">&quot;credentials for the life of the interpreter.&quot;</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;skip-bucket-check&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;v0&#39;s skip_bucket_check branch builds its client through boto3&#39;s &quot;</span>
+        <span class="s2">&quot;process-global session, so its behaviour is not a function of these &quot;</span>
+        <span class="s2">&quot;arguments.&quot;</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_v0_mangle</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What v0&#39;s ``S3Store`` *effectively* does with these arguments.</span>
+
+<span class="sd">    ~20 frozen lines mapping 1:1 onto v0 (``store.py`` + ``base.py:get_client``</span>
+<span class="sd">    / ``_find_default_credentials``). Returns ``(branch, effective_args)``;</span>
+<span class="sd">    ``effective_args=None`` means the branch is excluded (see</span>
+<span class="sd">    :data:`_EXCLUDED_BRANCHES`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">)</span>
+    <span class="n">is_supabase</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_supabase_endpoint&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_supabase</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">is_supabase</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">endpoint</span> <span class="ow">and</span> <span class="s2">&quot;.supabase.&quot;</span> <span class="ow">in</span> <span class="n">endpoint</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_supabase</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;supabase&quot;</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;skip_bucket_check&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;skip-bucket-check&quot;</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">effective</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;profile_name&quot;</span><span class="p">)</span>
+    <span class="n">env_creds</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+        <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">profile</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">env_creds</span><span class="p">:</span>
+        <span class="c1"># get_client(None) -&gt; _find_default_credentials -&gt; the env branch:</span>
+        <span class="c1"># env creds OVERRIDE explicit kwargs ({**kwargs, **env}), env&#39;s (maybe</span>
+        <span class="c1"># unset) token/region NULL explicit ones, and endpoint_url is DROPPED</span>
+        <span class="c1"># (never forwarded to get_client(&#39;environment variables&#39;, ...)).</span>
+        <span class="n">effective</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">),</span>
+            <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">),</span>
+            <span class="n">aws_session_token</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_SESSION_TOKEN&quot;</span><span class="p">),</span>
+            <span class="n">region_name</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_DEFAULT_REGION&quot;</span><span class="p">),</span>
+            <span class="n">endpoint_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;env-credentials (endpoint dropped)&quot;</span><span class="p">,</span> <span class="n">effective</span>
+    <span class="k">if</span> <span class="n">profile</span> <span class="o">==</span> <span class="s2">&quot;environment variables&quot;</span><span class="p">:</span>
+        <span class="n">effective</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">),</span>
+            <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">),</span>
+            <span class="n">aws_session_token</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_SESSION_TOKEN&quot;</span><span class="p">),</span>
+            <span class="n">region_name</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_DEFAULT_REGION&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;env-profile&quot;</span><span class="p">,</span> <span class="n">effective</span>
+    <span class="k">if</span> <span class="n">profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_session_token&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="c1"># boto3: profile + any explicit credential kwarg silently discards the</span>
+        <span class="c1"># profile&#39;s credentials (measured, ADR-0012 D5).</span>
+        <span class="k">return</span> <span class="s2">&quot;profile+explicit-creds (profile credentials discarded)&quot;</span><span class="p">,</span> <span class="n">effective</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;profile&quot;</span> <span class="k">if</span> <span class="n">profile</span> <span class="k">else</span> <span class="s2">&quot;explicit&quot;</span><span class="p">),</span> <span class="n">effective</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spec_from_v0_args</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">S3Connection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The v1 spec equivalent of a v0 ``S3Store`` call (connection axes only).&quot;&quot;&quot;</span>
+    <span class="n">access</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">)</span>
+    <span class="n">secret</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;aws_session_token&quot;</span><span class="p">)</span>
+    <span class="n">credentials</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">access</span> <span class="ow">and</span> <span class="n">secret</span><span class="p">:</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="p">(</span><span class="n">access</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span> <span class="k">if</span> <span class="n">token</span> <span class="k">else</span> <span class="p">(</span><span class="n">access</span><span class="p">,</span> <span class="n">secret</span><span class="p">)</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;profile_name&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">profile</span> <span class="o">==</span> <span class="s2">&quot;environment variables&quot;</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># env credentials are the top of botocore&#39;s own chain</span>
+    <span class="k">return</span> <span class="n">S3Connection</span><span class="p">(</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;region_name&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span>
+        <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_redact_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Redact query secrets and any userinfo from a URL for display.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;://[^@/]+@&quot;</span><span class="p">,</span> <span class="s2">&quot;://REDACTED@&quot;</span><span class="p">,</span> <span class="n">redact</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_field_rows</span><span class="p">(</span><span class="n">resolution</span><span class="p">:</span> <span class="n">Resolution</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="s2">&quot;endpoint_url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;region_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;signature_version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addressing_style&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;checksum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;payload_signing_enabled&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;verify&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">sourced</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resolution</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">sourced</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_redact_url</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">handed</span> <span class="o">=</span> <span class="s2">&quot;passed&quot;</span> <span class="k">if</span> <span class="n">sourced</span><span class="o">.</span><span class="n">passed</span> <span class="k">else</span> <span class="s2">&quot;omitted (channel open)&quot;</span>
+        <span class="k">yield</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">sourced</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">handed</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_divergence_rows</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">branch</span><span class="p">,</span> <span class="n">effective</span> <span class="o">=</span> <span class="n">_v0_mangle</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">environ</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">effective</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;v0 branch: </span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2"> — EXCLUDED from the differential.&quot;</span><span class="p">,</span>
+            <span class="n">_EXCLUDED_BRANCHES</span><span class="p">[</span><span class="n">branch</span><span class="p">],</span>
+        <span class="p">]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;v0 branch: </span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="n">v1_res</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="n">environ</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">)</span>
+    <span class="n">v0_res</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">effective</span><span class="p">),</span> <span class="n">environ</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">)</span>
+    <span class="n">moved</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">,</span> <span class="s2">&quot;region_name&quot;</span><span class="p">):</span>
+        <span class="n">v0_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v0_res</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">v1_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v1_res</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">v0_value</span> <span class="o">!=</span> <span class="n">v1_value</span><span class="p">:</span>
+            <span class="n">moved</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">: v0 -&gt; </span><span class="si">{</span><span class="n">_redact_url</span><span class="p">(</span><span class="n">v0_value</span><span class="p">)</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;v1 -&gt; </span><span class="si">{</span><span class="n">_redact_url</span><span class="p">(</span><span class="n">v1_value</span><span class="p">)</span><span class="si">!r}</span><span class="s2">   ** CHANGES ON UPGRADE **&quot;</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="n">v0_res</span><span class="o">.</span><span class="n">credential_provenance</span> <span class="o">!=</span> <span class="n">v1_res</span><span class="o">.</span><span class="n">credential_provenance</span><span class="p">:</span>
+        <span class="n">moved</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;  credentials: v0 -&gt; </span><span class="si">{</span><span class="n">v0_res</span><span class="o">.</span><span class="n">credential_provenance</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;v1 -&gt; </span><span class="si">{</span><span class="n">v1_res</span><span class="o">.</span><span class="n">credential_provenance</span><span class="si">}</span><span class="s2">   ** CHANGES ON UPGRADE **&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">moved</span><span class="p">:</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  no divergence: v1 resolves this call exactly as v0 does.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rows</span>
+
+
+<div class="viewcode-block" id="diagnose">
+<a class="viewcode-back" href="../../module_docs/s3dol/_diagnose.html#s3dol._diagnose.diagnose">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">diagnose</span><span class="p">(</span>
+    <span class="n">connection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">S3Connection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">environ</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print (and return) the resolution report. Never raises.</span>
+
+<span class="sd">    Call it either with a ready :class:`~s3dol.connection.S3Connection`, with</span>
+<span class="sd">    ``S3Connection`` kwargs, or — the migration case — with exactly the kwargs</span>
+<span class="sd">    you pass ``s3dol.store.S3Store`` today (``bucket_name=``, ``path=``,</span>
+<span class="sd">    ``profile_name=``, ...), which additionally prints the v0-vs-v1</span>
+<span class="sd">    divergence table.</span>
+
+<span class="sd">    &gt;&gt;&gt; report = diagnose(endpoint_url=&#39;http://localhost:9000&#39;,</span>
+<span class="sd">    ...                   environ={}, file=io.StringIO())</span>
+<span class="sd">    &gt;&gt;&gt; &#39;endpoint_url&#39; in report and &#39;resolution&#39; in report.lower()</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.metadata</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">own_version</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">&quot;s3dol&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">own_version</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">botocore</span>
+
+            <span class="n">botocore_version</span> <span class="o">=</span> <span class="n">botocore</span><span class="o">.</span><span class="n">__version__</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">botocore_version</span> <span class="o">=</span> <span class="s2">&quot;NOT IMPORTABLE&quot;</span>
+        <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;s3dol diagnose&quot;</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;s3dol </span><span class="si">{</span><span class="n">own_version</span><span class="si">}</span><span class="s2"> | botocore </span><span class="si">{</span><span class="n">botocore_version</span><span class="si">}</span><span class="s2"> | &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;python </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">environ</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+            <span class="n">environ</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+        <span class="n">aws_config</span><span class="p">:</span> <span class="nb">object</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">aws_config</span> <span class="o">=</span> <span class="n">load_aws_config</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">aws_config</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;note: aws config unreadable (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+        <span class="n">v0_args</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_V0_ARG_NAMES</span><span class="p">}</span>
+        <span class="n">v1_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_V0_ARG_NAMES</span><span class="p">}</span>
+        <span class="n">v0_mode</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">v0_args</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v1_kwargs</span> <span class="ow">and</span> <span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">emit</span><span class="p">()</span>
+            <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;arguments:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="n">shown</span> <span class="o">=</span> <span class="s2">&quot;&lt;provided&gt;&quot;</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_SECRET_ARG_NAMES</span> <span class="k">else</span> <span class="nb">repr</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">shown</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">emit</span><span class="p">()</span>
+        <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;resolution:&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">v0_mode</span><span class="p">:</span>
+                    <span class="n">spec</span> <span class="o">=</span> <span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">v0_args</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">spec</span> <span class="o">=</span> <span class="n">S3Connection</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">v0_args</span><span class="p">,</span> <span class="o">**</span><span class="n">v1_kwargs</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;note: connection= given; extra kwargs ignored.&quot;</span><span class="p">)</span>
+                <span class="n">spec</span> <span class="o">=</span> <span class="n">connection</span>
+            <span class="n">resolution</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  RESOLUTION FAILS: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">emit</span><span class="p">()</span>
+            <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;(That failure is the diagnosis: the same arguments would&quot;</span><span class="p">)</span>
+            <span class="n">emit</span><span class="p">(</span><span class="s2">&quot; raise at first use. Fix the row above and re-run.)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_finish</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;  preset: </span><span class="si">{</span><span class="n">resolution</span><span class="o">.</span><span class="n">preset</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="n">resolution</span><span class="o">.</span><span class="n">preset_source</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">preset</span><span class="o">.</span><span class="n">verified</span> <span class="k">else</span> <span class="s2">&quot;  [doc-sourced row]&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">handed</span> <span class="ow">in</span> <span class="n">_field_rows</span><span class="p">(</span><span class="n">resolution</span><span class="p">):</span>
+            <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;24</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">!r:</span><span class="s2">&lt;28</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="n">handed</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  credentials: </span><span class="si">{</span><span class="n">resolution</span><span class="o">.</span><span class="n">credential_provenance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  can_presign: </span><span class="si">{</span><span class="ow">not</span><span class="w"> </span><span class="n">spec</span><span class="o">.</span><span class="n">anon</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">emit</span><span class="p">()</span>
+        <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;environment consulted (non-secret keys only):&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">resolution</span><span class="o">.</span><span class="n">environ_consulted</span><span class="p">:</span>
+            <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">_redact_url</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">warning_class</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">resolution</span><span class="o">.</span><span class="n">notes</span><span class="p">:</span>
+            <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;warning [</span><span class="si">{</span><span class="n">warning_class</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">v0_mode</span><span class="p">:</span>
+            <span class="n">emit</span><span class="p">()</span>
+            <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;v0 (S3Store) vs v1 divergence:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">_divergence_rows</span><span class="p">(</span><span class="n">v0_args</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">):</span>
+                <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># never raises — D6</span>
+        <span class="n">emit</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;diagnose itself hit an unexpected error: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;Please report this at https://github.com/i2mint/s3dol/issues&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_finish</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finish</span><span class="p">(</span><span class="n">out</span><span class="p">:</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span> <span class="k">if</span> <span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

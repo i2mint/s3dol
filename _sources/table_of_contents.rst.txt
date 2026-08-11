@@ -3,9 +3,17 @@
    :caption: Contents:
 
    module_docs/s3dol
+   module_docs/s3dol/_diagnose
    module_docs/s3dol/base
+   module_docs/s3dol/connection
+   module_docs/s3dol/errors
+   module_docs/s3dol/presets
    module_docs/s3dol/store
    module_docs/s3dol/tests/test_base
+   module_docs/s3dol/tests/test_connection
+   module_docs/s3dol/tests/test_diagnose
+   module_docs/s3dol/tests/test_errors
+   module_docs/s3dol/tests/test_presets
    module_docs/s3dol/tests/test_store
    module_docs/s3dol/tests/test_url_for
    module_docs/s3dol/tests/util

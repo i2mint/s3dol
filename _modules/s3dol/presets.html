@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.presets &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.presets</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.presets</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Provider presets: config rows, not subclasses.</span>
+
+<span class="sd">Design record: `misc/docs/decisions/0003-provider-presets-and-capabilities.md`</span>
+<span class="sd">(the survey of 16 backends, the checksum analysis, capabilities policy) amended</span>
+<span class="sd">by `misc/docs/decisions/0012-credential-and-endpoint-resolution.md` §D4</span>
+<span class="sd">(``params``/``host_patterns``/``requires_endpoint``/``soft``/``config_kwargs``,</span>
+<span class="sd">derived ``pinned``; ``signature_version`` and ``client_kwargs`` moved to the</span>
+<span class="sd">connection; ``addressing_style`` mandatory with ``&#39;auto&#39;`` illegal; the</span>
+<span class="sd">structural no-credential rule).</span>
+
+<span class="sd">A provider divergence is a row in this registry — never a subclass, never an</span>
+<span class="sd">endpoint-substring branch in the hot path. Users register their own rows:</span>
+
+<span class="sd">&gt;&gt;&gt; row = Preset(name=&#39;mycorp&#39;, addressing_style=&#39;path&#39;,</span>
+<span class="sd">...              endpoint_url=&#39;https://s3.mycorp.example&#39;, requires_endpoint=False)</span>
+<span class="sd">&gt;&gt;&gt; register(row)</span>
+<span class="sd">&gt;&gt;&gt; get_preset(&#39;mycorp&#39;).endpoint_url</span>
+<span class="sd">&#39;https://s3.mycorp.example&#39;</span>
+<span class="sd">&gt;&gt;&gt; unregister(&#39;mycorp&#39;)  # (cleanup for this doctest)</span>
+
+<span class="sd">Most builtin rows are **doc-sourced, not verified against a live endpoint** —</span>
+<span class="sd">they say so via ``verified=False``. Wrong values mostly fail loudly, which is</span>
+<span class="sd">the acceptable failure mode; ``pinned`` (which makes a row&#39;s region literal</span>
+<span class="sd">conflict-raising) is derived and *gated on* ``verified``, so it is dormant</span>
+<span class="sd">until a row earns evidence (ADR-0012 D4).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">replace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fnmatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">fnmatch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlsplit</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConfigurationError</span><span class="p">,</span>
+    <span class="n">InvalidEndpoint</span><span class="p">,</span>
+    <span class="n">MissingPresetParam</span><span class="p">,</span>
+    <span class="n">UnknownPresetParam</span><span class="p">,</span>
+    <span class="n">Rule</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Capabilities</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<div class="viewcode-block" id="Capabilities">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Capabilities">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Capabilities</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What a backend supports. A *static declared table*, never a probe</span>
+<span class="sd">    (a probe costs a round-trip, is wrong under partial permissions, and can&#39;t</span>
+<span class="sd">    be trusted anyway — ADR-0003 §2). Missing capabilities are handled</span>
+<span class="sd">    per-capability: emulate when exact (batch delete -&gt; loop), substitute when</span>
+<span class="sd">    equivalent (ListObjectsV2 -&gt; V1), raise ``NotSupported`` when there is no</span>
+<span class="sd">    honest fallback. Never silently degrade correctness.&quot;&quot;&quot;</span>
+
+    <span class="n">list_objects_v2</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">batch_delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">presigned_post</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">multipart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">max_multipart_parts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10_000</span>
+    <span class="n">min_part_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span>
+    <span class="n">object_tagging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">versioning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">conditional_writes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">consistency</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;strong&quot;</span><span class="p">,</span> <span class="s2">&quot;read-after-write&quot;</span><span class="p">,</span> <span class="s2">&quot;eventual&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;strong&quot;</span></div>
+
+
+
+<span class="n">DEFAULT_CAPABILITIES</span> <span class="o">=</span> <span class="n">Capabilities</span><span class="p">()</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Preset</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+<span class="c1">#: ``Config``-constructor kwargs a preset row may carry. Scalars only, and</span>
+<span class="c1">#: ``proxies``/``proxies_config``/``client_context_params`` are structurally</span>
+<span class="c1">#: excluded — a preset must not be able to smuggle a credential-bearing proxy</span>
+<span class="c1">#: URL (ADR-0012 D4).</span>
+<span class="n">CONFIG_KWARGS_ALLOWLIST</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;connect_timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;read_timeout&quot;</span><span class="p">,</span> <span class="s2">&quot;max_pool_connections&quot;</span><span class="p">,</span> <span class="s2">&quot;tcp_keepalive&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">_SCALAR_TYPES</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_template_params</span><span class="p">(</span><span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Placeholder names in a ``str.format``-style template.</span>
+
+<span class="sd">    &gt;&gt;&gt; sorted(_template_params(&#39;https://{account_id}.r2.example/{x}&#39;))</span>
+<span class="sd">    [&#39;account_id&#39;, &#39;x&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">name</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">template</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="validate_endpoint_hygiene">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.validate_endpoint_hygiene">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_endpoint_hygiene</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">what</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;endpoint_url&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Refuse credential-carrying URL shapes: userinfo in the netloc, a query</span>
+<span class="sd">    string, or a fragment (ADR-0012 D4 — a query-string endpoint is accepted by</span>
+<span class="sd">    botocore and retained verbatim in ``client.meta.endpoint_url``, so it would</span>
+<span class="sd">    leak into ``diagnose()`` and tracebacks).</span>
+
+<span class="sd">    &gt;&gt;&gt; validate_endpoint_hygiene(&#39;https://s3.example.com&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; validate_endpoint_hygiene(&#39;https://user:pw@s3.example.com&#39;)</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">    ...</span>
+<span class="sd">    s3dol.errors.InvalidEndpoint: ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">parts</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry userinfo (user[:password]@host): got a URL &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;with &#39;@&#39; in its netloc. Pass credentials via &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;S3Connection(credentials=...), never in a URL.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry a query string: </span><span class="si">{</span><span class="n">url</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">fragment</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry a fragment: </span><span class="si">{</span><span class="n">url</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Preset">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Preset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One provider&#39;s facts. Public, shareable, committable config — which is</span>
+<span class="sd">    why there is **no credential slot**, structurally (ADR-0012 D4).</span>
+
+<span class="sd">    ``endpoint_url``/``region_name`` may contain ``{placeholders}``; bind them</span>
+<span class="sd">    with :meth:`bind`. A row whose endpoint template has an unbound *required*</span>
+<span class="sd">    placeholder contributes no endpoint rung (ADR-0012 C1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="c1">#: Mandatory; no default; ``&#39;auto&#39;`` is illegal (ADR-0012 D4).</span>
+    <span class="n">addressing_style</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;virtual&quot;</span><span class="p">]</span>
+    <span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: ``None`` == the row makes no claim (the ladder continues — ADR-0012 D3).</span>
+    <span class="n">checksum</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;when_supported&quot;</span><span class="p">,</span> <span class="s2">&quot;when_required&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">payload_signing_enabled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">capabilities</span><span class="p">:</span> <span class="n">Capabilities</span> <span class="o">=</span> <span class="n">DEFAULT_CAPABILITIES</span>
+    <span class="c1">#: Presigning sometimes genuinely differs from the API config (Hetzner</span>
+    <span class="c1">#: presigns virtual while the API is path; R2 presigns only on the S3 API</span>
+    <span class="c1">#: domain) — ADR-0003 §1.</span>
+    <span class="n">presign_endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">presign_addressing_style</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;virtual&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: Bound template parameters, e.g. ``((&#39;account_id&#39;, &#39;abc&#39;),)``.</span>
+    <span class="n">params</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="c1">#: ``fnmatch`` patterns over the endpoint *hostname*; used for detection</span>
+    <span class="c1">#: (pass 2) and the C2 named-vs-resolved guard.</span>
+    <span class="n">host_patterns</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="c1">#: The provider cannot be reached without an explicit endpoint.</span>
+    <span class="n">requires_endpoint</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1">#: Soft rows are last-resort fallbacks (``aws``, ``generic-s3``): they</span>
+    <span class="c1">#: never win detection over a non-soft row and never trigger the C2 guard.</span>
+    <span class="n">soft</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1">#: Extra ``botocore.Config`` kwargs — allowlisted, scalars only.</span>
+    <span class="n">config_kwargs</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="c1">#: Error-classification overrides, consulted before the default table</span>
+    <span class="c1">#: (ADR-0004 §2/§6): rows of ``((operation, code, status), kind)``.</span>
+    <span class="n">error_overrides</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Rule</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="c1">#: ``True`` only when the row was verified against a live endpoint (with a</span>
+    <span class="c1">#: date in the row&#39;s docstring/comment). Builtin rows are doc-sourced.</span>
+    <span class="n">verified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pinned</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the row&#39;s region literal is authoritative enough to make a</span>
+<span class="sd">        conflicting explicit ``region_name=`` raise ``PresetConflict``.</span>
+<span class="sd">        Derived, and gated on ``verified`` — dormant while rows are</span>
+<span class="sd">        doc-sourced (ADR-0012 D4).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">verified</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">region_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">_template_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region_name</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">addressing_style</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;virtual&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: addressing_style must be &#39;path&#39; or &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;virtual&#39; (got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">addressing_style</span><span class="si">!r}</span><span class="s2">). &#39;auto&#39; is illegal: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;every row must state what the provider actually needs &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(ADR-0012 D4).&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">url_field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">,</span> <span class="s2">&quot;presign_endpoint_url&quot;</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">validate_endpoint_hygiene</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Preset.</span><span class="si">{</span><span class="n">url_field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_kwargs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CONFIG_KWARGS_ALLOWLIST</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: config_kwargs key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> is not &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;allowlisted (allowed: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">CONFIG_KWARGS_ALLOWLIST</span><span class="p">)</span><span class="si">}</span><span class="s2">). &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;This list is closed to keep presets credential-free.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_SCALAR_TYPES</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: config_kwargs values must be &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;scalars; </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> is a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+        <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_params</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownPresetParam</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: bound params </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span><span class="si">}</span><span class="s2"> appear in &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;no template. Templates use: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template_params</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="Preset.template_params">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.template_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">template_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All placeholder names across this row&#39;s templates.&quot;&quot;&quot;</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">region_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">presign_endpoint_url</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">template</span><span class="p">:</span>
+                <span class="n">names</span> <span class="o">|=</span> <span class="n">_template_params</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">names</span></div>
+
+
+<div class="viewcode-block" id="Preset.bind">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.bind">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Preset&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A copy of this row with template ``params`` bound.</span>
+
+<span class="sd">        &gt;&gt;&gt; r2 = get_preset(&#39;r2&#39;).bind(account_id=&#39;abc123&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; r2.bound_endpoint()</span>
+<span class="sd">        &#39;https://abc123.r2.cloudflarestorage.com&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_params</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownPresetParam</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has no template parameter(s) &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span><span class="si">}</span><span class="s2">; it uses </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template_params</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">),</span> <span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()}}</span>
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">merged</span><span class="o">.</span><span class="n">items</span><span class="p">())))</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">extra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;``(value, missing_params)`` for a template under current bindings.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">template</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">bindings</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">),</span> <span class="o">**</span><span class="p">(</span><span class="n">extra</span> <span class="ow">or</span> <span class="p">{})}</span>
+        <span class="n">missing</span> <span class="o">=</span> <span class="n">_template_params</span><span class="p">(</span><span class="n">template</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">bindings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">missing</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">bindings</span><span class="p">),</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Preset.bound_endpoint">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.bound_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bound_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The endpoint URL with params bound, or ``None`` if the template has</span>
+<span class="sd">        unbound placeholders (C1: an unbound row contributes no rung —</span>
+<span class="sd">        ``preset=&#39;minio&#39;`` silently becoming AWS is structurally impossible).</span>
+
+<span class="sd">        ``region_name`` binds a ``{region_name}`` placeholder, per the region</span>
+<span class="sd">        ladder&#39;s first rung (ADR-0012 D3).&quot;&quot;&quot;</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;region_name&quot;</span><span class="p">:</span> <span class="n">region_name</span><span class="p">}</span> <span class="k">if</span> <span class="n">region_name</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">_missing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Preset.missing_endpoint_params">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.missing_endpoint_params">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">missing_endpoint_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Which placeholders keep :meth:`bound_endpoint` from producing a URL.&quot;&quot;&quot;</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;region_name&quot;</span><span class="p">:</span> <span class="n">region_name</span><span class="p">}</span> <span class="k">if</span> <span class="n">region_name</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">_value</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">missing</span></div>
+
+
+<div class="viewcode-block" id="Preset.matches_host">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.matches_host">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">matches_host</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether ``endpoint_url``&#39;s hostname matches this row&#39;s patterns.&quot;&quot;&quot;</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">host_patterns</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># The registry</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+<span class="n">_REGISTRY</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Preset</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="register">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.register">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">preset</span><span class="p">:</span> <span class="n">Preset</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a row. Open-closed: adding a provider is adding a row.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span> <span class="ow">and</span> <span class="n">preset</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">_REGISTRY</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;A preset named </span><span class="si">{</span><span class="n">preset</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is already registered. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Pass overwrite=True to replace it.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">_REGISTRY</span><span class="p">[</span><span class="n">preset</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">preset</span></div>
+
+
+
+<div class="viewcode-block" id="unregister">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.unregister">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">unregister</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove a row (mostly for tests).&quot;&quot;&quot;</span>
+    <span class="n">_REGISTRY</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_preset">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.get_preset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_preset</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Preset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Look a row up by name; unknown names raise, naming the registry.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_REGISTRY</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Unknown preset </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">. Registered: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_REGISTRY</span><span class="p">)</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Register your own with s3dol.presets.register(Preset(...)).&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">available_presets</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_REGISTRY</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="detect_preset">
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.detect_preset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_preset</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Preset</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detection (resolution pass 2): the non-soft row whose ``host_patterns``</span>
+<span class="sd">    match the resolved endpoint&#39;s host. Two matching rows is genuinely</span>
+<span class="sd">    ambiguous and raises; zero yields ``None`` (the caller falls back to</span>
+<span class="sd">    ``generic-s3``/``aws`` — ADR-0012 D4).&quot;&quot;&quot;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">_REGISTRY</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">soft</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">matches_host</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Endpoint </span><span class="si">{</span><span class="n">endpoint_url</span><span class="si">!r}</span><span class="s2"> matches more than one preset&#39;s host &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;patterns: </span><span class="si">{</span><span class="n">names</span><span class="si">}</span><span class="s2">. Name one explicitly with preset=&lt;name&gt;.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">matches</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Builtin rows (ADR-0003 §1&#39;s table; doc-sourced — verified=False throughout)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+<span class="n">_SUPABASE_ERROR_OVERRIDES</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Rule</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c1"># Supabase returns 400 where AWS returns 404 on HeadBucket (ADR-0004 §2).</span>
+    <span class="p">((</span><span class="s2">&quot;HeadBucket&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="s2">&quot;bucket_absent&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">_BUILTIN_PRESETS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="c1"># AWS: the reference semantics. SDK-resolved endpoint; soft fallback row.</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;aws&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">soft</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;*.amazonaws.com&quot;</span><span class="p">,),</span>
+    <span class="p">),</span>
+    <span class="c1"># Fallback for &quot;some endpoint resolved, nothing matched&quot;: makes no claim</span>
+    <span class="c1"># beyond path addressing (botocore&#39;s own behaviour for custom endpoints),</span>
+    <span class="c1"># so it is byte-identical to today for endpoint-passing callers.</span>
+    <span class="n">Preset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;generic-s3&quot;</span><span class="p">,</span> <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">soft</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;minio&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>  <span class="c1"># conventional</span>
+        <span class="n">requires_endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://</span><span class="si">{account_id}</span><span class="s2">.r2.cloudflarestorage.com&quot;</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>  <span class="c1"># R2&#39;s literal region string</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;*.r2.cloudflarestorage.com&quot;</span><span class="p">,),</span>
+        <span class="c1"># Presign only on the S3 API domain, never a custom domain (docs).</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;scaleway&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://s3.</span><span class="si">{region_name}</span><span class="s2">.scw.cloud&quot;</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;s3.*.scw.cloud&quot;</span><span class="p">,),</span>
+        <span class="n">capabilities</span><span class="o">=</span><span class="n">Capabilities</span><span class="p">(</span><span class="n">max_multipart_parts</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;hetzner&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>  <span class="c1"># virtual breaks plain Get/Put (TLS cert)</span>
+        <span class="n">presign_addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>  <span class="c1"># docs: needed for presigned URLs</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://</span><span class="si">{location}</span><span class="s2">.your-objectstorage.com&quot;</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{location}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># must repeat the location</span>
+        <span class="n">payload_signing_enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;*.your-objectstorage.com&quot;</span><span class="p">,),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;backblaze&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://s3.</span><span class="si">{region_name}</span><span class="s2">.backblazeb2.com&quot;</span><span class="p">,</span>
+        <span class="n">checksum</span><span class="o">=</span><span class="s2">&quot;when_required&quot;</span><span class="p">,</span>  <span class="c1"># mandatory: rejects default SDK checksums</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;s3.*.backblazeb2.com&quot;</span><span class="p">,),</span>
+        <span class="n">capabilities</span><span class="o">=</span><span class="n">Capabilities</span><span class="p">(</span><span class="n">presigned_post</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;wasabi&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>  <span class="c1"># the vendor&#39;s own advice</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://s3.</span><span class="si">{region_name}</span><span class="s2">.wasabisys.com&quot;</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;s3.*.wasabisys.com&quot;</span><span class="p">,),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;gcs&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://storage.googleapis.com&quot;</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;storage.googleapis.com&quot;</span><span class="p">,),</span>
+        <span class="n">capabilities</span><span class="o">=</span><span class="n">Capabilities</span><span class="p">(</span><span class="n">list_objects_v2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_delete</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;supabase&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>  <span class="c1"># forced</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://</span><span class="si">{project_ref}</span><span class="s2">.storage.supabase.co/storage/v1/s3&quot;</span><span class="p">,</span>
+        <span class="n">checksum</span><span class="o">=</span><span class="s2">&quot;when_required&quot;</span><span class="p">,</span>  <span class="c1"># the ADR-0003 §3 corruption fix</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;*.supabase.co&quot;</span><span class="p">,</span> <span class="s2">&quot;*.supabase.in&quot;</span><span class="p">),</span>
+        <span class="n">error_overrides</span><span class="o">=</span><span class="n">_SUPABASE_ERROR_OVERRIDES</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;digitalocean&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://</span><span class="si">{region_name}</span><span class="s2">.digitaloceanspaces.com&quot;</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;*.digitaloceanspaces.com&quot;</span><span class="p">,),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tigris&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://fly.storage.tigris.dev&quot;</span><span class="p">,</span>
+        <span class="n">host_patterns</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;fly.storage.tigris.dev&quot;</span><span class="p">,</span> <span class="s2">&quot;*.storage.tigris.dev&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+        <span class="n">requires_endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># behaviour varies more by release than vendor</span>
+    <span class="p">),</span>
+    <span class="c1"># Test doubles</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;localstack&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:4566&quot;</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">Preset</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;moto&quot;</span><span class="p">,</span>
+        <span class="n">addressing_style</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">,</span>
+        <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">_preset</span> <span class="ow">in</span> <span class="n">_BUILTIN_PRESETS</span><span class="p">:</span>
+    <span class="n">register</span><span class="p">(</span><span class="n">_preset</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">_preset</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

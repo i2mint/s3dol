@@ -1,0 +1,4 @@
+s3dol.tests.test_diagnose
+=========================
+.. automodule:: s3dol.tests.test_diagnose
+   :members:

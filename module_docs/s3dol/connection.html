@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.connection &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="s3dol.errors" href="errors.html" />
+    <link rel="prev" title="s3dol.base" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.connection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.CallableCredentials"><code class="docutils literal notranslate"><span class="pre">CallableCredentials</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.CallableCredentials.provenance"><code class="docutils literal notranslate"><span class="pre">CallableCredentials.provenance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.CredentialProvider"><code class="docutils literal notranslate"><span class="pre">CredentialProvider</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.CredentialProvider.provenance"><code class="docutils literal notranslate"><span class="pre">CredentialProvider.provenance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.ProfileCredentials"><code class="docutils literal notranslate"><span class="pre">ProfileCredentials</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.ProfileCredentials.provenance"><code class="docutils literal notranslate"><span class="pre">ProfileCredentials.provenance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.Resolution"><code class="docutils literal notranslate"><span class="pre">Resolution</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.Resolution.environ_consulted"><code class="docutils literal notranslate"><span class="pre">Resolution.environ_consulted</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.Resolution.notes"><code class="docutils literal notranslate"><span class="pre">Resolution.notes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.S3Connection"><code class="docutils literal notranslate"><span class="pre">S3Connection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.S3Connection.client"><code class="docutils literal notranslate"><span class="pre">S3Connection.client</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.S3Connection.resolution"><code class="docutils literal notranslate"><span class="pre">S3Connection.resolution()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.Sourced"><code class="docutils literal notranslate"><span class="pre">Sourced</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.Sourced.passed"><code class="docutils literal notranslate"><span class="pre">Sourced.passed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.Sourced.source"><code class="docutils literal notranslate"><span class="pre">Sourced.source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.Sourced.value"><code class="docutils literal notranslate"><span class="pre">Sourced.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.StaticCredentials"><code class="docutils literal notranslate"><span class="pre">StaticCredentials</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.StaticCredentials.provenance"><code class="docutils literal notranslate"><span class="pre">StaticCredentials.provenance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.load_aws_config"><code class="docutils literal notranslate"><span class="pre">load_aws_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.normalize_credentials"><code class="docutils literal notranslate"><span class="pre">normalize_credentials()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.resolve"><code class="docutils literal notranslate"><span class="pre">resolve()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">s3dol.connection</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/s3dol/connection.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-s3dol.connection">
+<span id="s3dol-connection"></span><h1>s3dol.connection<a class="headerlink" href="#module-s3dol.connection" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">S3Connection</span></code> — the credential + endpoint SSOT, and the pure resolver.</p>
+<p>Design record: <cite>misc/docs/decisions/0012-credential-and-endpoint-resolution.md</cite>
+(all of it) on top of <cite>0002-boto3-as-engine.md</cite> (lazy boto3) and
+<cite>0003-provider-presets-and-capabilities.md</cite> (presets, SigV4 mandate).</p>
+<p>The two sentences the module follows from (ADR-0012):</p>
+<ol class="arabic simple">
+<li><p><strong>A preset is the caller’s explicit endpoint, spelled by name.</strong> It sits
+exactly where <code class="docutils literal notranslate"><span class="pre">endpoint_url=</span></code> sits — above every environment and
+config-file channel. s3dol owns two rungs of the endpoint ladder, not six.</p></li>
+<li><p><strong>A ``Config`` value s3dol does not set is a channel it leaves open to the
+user.</strong> Every field is a ladder with a documented bottom, and “the row makes
+no claim” is spelled by <em>omitting the key</em>, never by passing <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ol>
+<p>Structure:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#s3dol.connection.S3Connection" title="s3dol.connection.S3Connection"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Connection</span></code></a> — a frozen, picklable spec. No live objects, no
+escape hatch for one. Construction performs no I/O and imports no boto3.</p></li>
+<li><p><a class="reference internal" href="#s3dol.connection.resolve" title="s3dol.connection.resolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve()</span></code></a> — a <strong>pure</strong> function <code class="docutils literal notranslate"><span class="pre">(spec,</span> <span class="pre">environ,</span> <span class="pre">aws_config)</span> <span class="pre">-&gt;</span>
+<span class="pre">Resolution</span></code> where every field carries its provenance. Tier-1 tests cover
+the whole ladder with a fake environ dict and zero I/O.</p></li>
+<li><p><a class="reference internal" href="#s3dol.connection.load_aws_config" title="s3dol.connection.load_aws_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_aws_config()</span></code></a> — the separate, <em>named impure</em> loader for the
+aws-config rungs; pass it (or its result) to <a class="reference internal" href="#s3dol.connection.resolve" title="s3dol.connection.resolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve()</span></code></a>.</p></li>
+<li><p>Credential shapes (ADR-0012 D5) — normalised in <code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> to small
+frozen, picklable providers; live botocore objects are rejected with
+shape-specific messages.</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span> <span class="o">=</span> <span class="n">S3Connection</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s1">&#39;http://localhost:9000&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">credentials</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;AKIAEXAMPLE&#39;</span><span class="p">,</span> <span class="s1">&#39;sEkR3tVALUE&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">source</span>
+<span class="go">(&#39;http://localhost:9000&#39;, &#39;endpoint_url=&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="o">.</span><span class="n">signature_version</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># never left to botocore (ADR-0003 §4)</span>
+<span class="go">&#39;s3v4&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;sEkR3tVALUE&#39;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>  <span class="c1"># secrets never in repr (ADR-0012 D1)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.CallableCredentials">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">CallableCredentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fetch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/connection.html#CallableCredentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.CallableCredentials" title="Link to this definition"></a></dt>
+<dd><p>A picklable zero-arg callable returning a mapping with keys
+<code class="docutils literal notranslate"><span class="pre">access_key</span></code>/<code class="docutils literal notranslate"><span class="pre">secret_key</span></code> (aliases: <code class="docutils literal notranslate"><span class="pre">key</span></code>/<code class="docutils literal notranslate"><span class="pre">secret</span></code>), optional
+<code class="docutils literal notranslate"><span class="pre">token</span></code>, optional <code class="docutils literal notranslate"><span class="pre">expires_at</span></code>/<code class="docutils literal notranslate"><span class="pre">expiry_time</span></code> (ISO 8601). With an
+expiry, credentials are refreshable — the callable is re-invoked by
+botocore’s refresh machinery (advisory 900 s / mandatory 600 s before
+expiry).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.connection.CallableCredentials.provenance">
+<span class="sig-name descname"><span class="pre">provenance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#CallableCredentials.provenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.CallableCredentials.provenance" title="Link to this definition"></a></dt>
+<dd><p>A label for diagnose() — never a credential value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.CredentialProvider">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">CredentialProvider</span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#CredentialProvider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.CredentialProvider" title="Link to this definition"></a></dt>
+<dd><p>Base of s3dol’s picklable credential specs.</p>
+<p>Subclasses are small frozen dataclasses that <em>describe</em> how to obtain
+credentials; nothing live is held (nothing live pickles — measured, ADR-0012
+D5). At client-build time each is adapted into a botocore provider and
+<strong>replaces</strong> botocore’s resolver via
+<code class="docutils literal notranslate"><span class="pre">session.register_component('credential_provider',</span> <span class="pre">...)</span></code> — never
+prepended (silent fallthrough) and never <code class="docutils literal notranslate"><span class="pre">insert_before</span></code> (raises when a
+profile is set).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.connection.CredentialProvider.provenance">
+<span class="sig-name descname"><span class="pre">provenance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#CredentialProvider.provenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.CredentialProvider.provenance" title="Link to this definition"></a></dt>
+<dd><p>A label for diagnose() — never a credential value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.ProfileCredentials">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">ProfileCredentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/connection.html#ProfileCredentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.ProfileCredentials" title="Link to this definition"></a></dt>
+<dd><p>Credentials from a named profile — <em>credentials only</em>; the profile’s
+other config is not selected by this (that is what <code class="docutils literal notranslate"><span class="pre">profile=</span></code> on the
+connection is for). Rebuilds live, still-refreshable credentials after
+unpickling (a frozen dataclass holding only a profile name round-trips).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.connection.ProfileCredentials.provenance">
+<span class="sig-name descname"><span class="pre">provenance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#ProfileCredentials.provenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.ProfileCredentials.provenance" title="Link to this definition"></a></dt>
+<dd><p>A label for diagnose() — never a credential value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.Resolution">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">Resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">addressing_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload_signing_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.Sourced" title="s3dol.connection.Sourced"><span class="pre">Sourced</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">preset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="presets.html#s3dol.presets.Preset" title="s3dol.presets.Preset"><span class="pre">Preset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preset_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credential_provenance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="presets.html#s3dol.presets.Capabilities" title="s3dol.presets.Capabilities"><span class="pre">Capabilities</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">environ_consulted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">type</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/connection.html#Resolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.Resolution" title="Link to this definition"></a></dt>
+<dd><p>The result of <a class="reference internal" href="#s3dol.connection.resolve" title="s3dol.connection.resolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve()</span></code></a> — everything <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> prints and
+everything client-build consumes. Carries provenance labels, never a
+credential value.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.connection.Resolution.environ_consulted">
+<span class="sig-name descname"><span class="pre">environ_consulted</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#s3dol.connection.Resolution.environ_consulted" title="Link to this definition"></a></dt>
+<dd><p>The non-secret environment keys consulted, with their values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.connection.Resolution.notes">
+<span class="sig-name descname"><span class="pre">notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">type</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#s3dol.connection.Resolution.notes" title="Link to this definition"></a></dt>
+<dd><p>Collected (warning class, message) pairs. resolve() never emits them —
+the impure caller decides (client build warns; diagnose prints rows).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.S3Connection">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">S3Connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="presets.html#s3dol.presets.Preset" title="s3dol.presets.Preset"><span class="pre">Preset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.CredentialProvider" title="s3dol.connection.CredentialProvider"><span class="pre">CredentialProvider</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signature_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'s3v4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addressing_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'virtual'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'when_supported'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'when_required'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload_signing_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deny_means_absent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/connection.html#S3Connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.S3Connection" title="Link to this definition"></a></dt>
+<dd><p>A frozen, picklable connection spec. No live objects — ever.</p>
+<p>Construction performs no I/O and does not import boto3 (ADR-0002); the
+client is built lazily, once, under a per-instance lock (CPython ≥3.12
+removed <code class="docutils literal notranslate"><span class="pre">cached_property</span></code>’s lock deliberately — measured: 8 racing
+threads → 8 clients without one).</p>
+<p><code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> is the only door: every normalisation and contradiction
+check happens here, so a bad shape dies at construction with a message,
+not later inside botocore.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S3Connection</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="s1">&#39;prod&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">s3dol.errors.ConfigurationError</span>: <span class="n">...</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="s3dol.connection.S3Connection.client">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">client</span></span><a class="headerlink" href="#s3dol.connection.S3Connection.client" title="Link to this definition"></a></dt>
+<dd><p>The boto3 S3 client — built lazily, once, under the lock.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.connection.S3Connection.resolution">
+<span class="sig-name descname"><span class="pre">resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">load_aws_config&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.connection.Resolution" title="s3dol.connection.Resolution"><span class="pre">Resolution</span></a></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#S3Connection.resolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.S3Connection.resolution" title="Link to this definition"></a></dt>
+<dd><p>Resolve against the real environment by default (a thin impure
+wrapper over the pure <a class="reference internal" href="#s3dol.connection.resolve" title="s3dol.connection.resolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve()</span></code></a>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.Sourced">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">Sourced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/connection.html#Sourced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.Sourced" title="Link to this definition"></a></dt>
+<dd><p>A resolved value, where it came from, and whether s3dol passes it to
+botocore explicitly (<code class="docutils literal notranslate"><span class="pre">passed=False</span></code> == the key is omitted so the channel
+below stays open — “omit, never None”).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.connection.Sourced.passed">
+<span class="sig-name descname"><span class="pre">passed</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#s3dol.connection.Sourced.passed" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.connection.Sourced.source">
+<span class="sig-name descname"><span class="pre">source</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#s3dol.connection.Sourced.source" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.connection.Sourced.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></span><a class="headerlink" href="#s3dol.connection.Sourced.value" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.connection.StaticCredentials">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">StaticCredentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">access_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secret_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/connection.html#StaticCredentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.StaticCredentials" title="Link to this definition"></a></dt>
+<dd><p>An explicit key pair (optionally a session token).</p>
+<p>Note: a <em>static</em> token expires and cannot refresh — prefer <code class="docutils literal notranslate"><span class="pre">profile=</span></code> or
+a callable provider for STS/SSO. Pickling this object carries the secret
+(that is what “explicit credentials” means); its repr does not.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.connection.StaticCredentials.provenance">
+<span class="sig-name descname"><span class="pre">provenance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#StaticCredentials.provenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.StaticCredentials.provenance" title="Link to this definition"></a></dt>
+<dd><p>A label for diagnose() — never a credential value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.connection.load_aws_config">
+<span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">load_aws_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#load_aws_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.load_aws_config" title="Link to this definition"></a></dt>
+<dd><p>The named, <em>impure</em> aws-config loader (ADR-0012 D2): loads the shared
+config via botocore (~16 ms — never on the common path; pass this function
+as a thunk and <a class="reference internal" href="#s3dol.connection.resolve" title="s3dol.connection.resolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve()</span></code></a> calls it only if a rung needs it), scrubbed
+of anything credential-shaped.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.connection.normalize_credentials">
+<span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">normalize_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#s3dol.connection.CredentialProvider" title="s3dol.connection.CredentialProvider"><span class="pre">CredentialProvider</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.connection.CredentialProvider" title="s3dol.connection.CredentialProvider"><span class="pre">CredentialProvider</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#normalize_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.normalize_credentials" title="Link to this definition"></a></dt>
+<dd><p>Normalise every accepted credential shape; reject the rest, each with
+its own message (ADR-0012 D5). The only door is <code class="docutils literal notranslate"><span class="pre">S3Connection.__post_init__</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_credentials</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_credentials</span><span class="p">(</span><span class="s1">&#39;prod&#39;</span><span class="p">)</span>
+<span class="go">ProfileCredentials(profile=&#39;prod&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_credentials</span><span class="p">((</span><span class="s1">&#39;AKIAXX&#39;</span><span class="p">,</span> <span class="s1">&#39;sec&#39;</span><span class="p">))</span>
+<span class="go">StaticCredentials(access_key=&#39;AKIA&#39;…, secret_key=***)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.connection.resolve">
+<span class="sig-prename descclassname"><span class="pre">s3dol.connection.</span></span><span class="sig-name descname"><span class="pre">resolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.connection.S3Connection" title="s3dol.connection.S3Connection"><span class="pre">S3Connection</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">environ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.connection.Resolution" title="s3dol.connection.Resolution"><span class="pre">Resolution</span></a></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#resolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.resolve" title="Link to this definition"></a></dt>
+<dd><p>Pure resolution: no <code class="docutils literal notranslate"><span class="pre">os.environ</span></code>, no disk, no network (ADR-0012 D2).</p>
+<p><code class="docutils literal notranslate"><span class="pre">environ</span></code> is a plain mapping (pass <code class="docutils literal notranslate"><span class="pre">os.environ</span></code> at real call sites,
+a dict in tests). <code class="docutils literal notranslate"><span class="pre">aws_config</span></code> is a pre-loaded, credential-scrubbed
+config mapping, or a thunk for one (<a class="reference internal" href="#s3dol.connection.load_aws_config" title="s3dol.connection.load_aws_config"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_aws_config()</span></code></a>) — called only
+if a rung needs it.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="base.html" class="btn btn-neutral float-left" title="s3dol.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="errors.html" class="btn btn-neutral float-right" title="s3dol.errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

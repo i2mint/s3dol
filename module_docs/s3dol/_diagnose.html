@@ -1,0 +1,169 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol._diagnose &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="s3dol.base" href="base.html" />
+    <link rel="prev" title="s3dol" href="../s3dol.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol._diagnose</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol._diagnose.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">s3dol._diagnose</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/s3dol/_diagnose.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-s3dol._diagnose">
+<span id="s3dol-diagnose"></span><h1>s3dol._diagnose<a class="headerlink" href="#module-s3dol._diagnose" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">s3dol.diagnose()</span></code> — print what would resolve, from where, and whether v1
+moves it. The step-0 migration safety mechanism (ADR-0007 §5, ADR-0012 D6/D7).</p>
+<p>Run it with the same arguments you pass <code class="docutils literal notranslate"><span class="pre">s3dol.store.S3Store</span></code> today:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">s3dol</span>
+<span class="n">s3dol</span><span class="o">.</span><span class="n">diagnose</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;logs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Non-negotiables (ADR-0012 D6):</p>
+<ul class="simple">
+<li><p>it <strong>never raises</strong> — a failed resolution is a <em>row</em>; this function exists to
+report exactly the misconfigurations that raise;</p></li>
+<li><p>it holds <strong>no credential value</strong>, only a provenance label; it never reads
+<code class="docutils literal notranslate"><span class="pre">.access_key</span></code> (which can trigger a network refresh); credential identity is
+discussed as a predicate, never a snapshot.</p></li>
+</ul>
+<p>The v0-vs-v1 divergence table is a <strong>differential, not a frozen simulation</strong>
+(ADR-0012 D7): one ~20-line argument-mangler (<code class="xref py py-func docutils literal notranslate"><span class="pre">_v0_mangle()</span></code>, mapping 1:1
+onto v0’s <code class="docutils literal notranslate"><span class="pre">get_client</span></code>/<code class="docutils literal notranslate"><span class="pre">_find_default_credentials</span></code>) is run through v1’s own
+resolver twice, so resolver imprecision cancels. It dies in the same commit as
+the compat shim.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol._diagnose.diagnose">
+<span class="sig-prename descclassname"><span class="pre">s3dol._diagnose.</span></span><span class="sig-name descname"><span class="pre">diagnose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="connection.html#s3dol.connection.S3Connection" title="s3dol.connection.S3Connection"><span class="pre">S3Connection</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">environ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/s3dol/_diagnose.html#diagnose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol._diagnose.diagnose" title="Link to this definition"></a></dt>
+<dd><p>Print (and return) the resolution report. Never raises.</p>
+<p>Call it either with a ready <a class="reference internal" href="connection.html#s3dol.connection.S3Connection" title="s3dol.connection.S3Connection"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Connection</span></code></a>, with
+<code class="docutils literal notranslate"><span class="pre">S3Connection</span></code> kwargs, or — the migration case — with exactly the kwargs
+you pass <code class="docutils literal notranslate"><span class="pre">s3dol.store.S3Store</span></code> today (<code class="docutils literal notranslate"><span class="pre">bucket_name=</span></code>, <code class="docutils literal notranslate"><span class="pre">path=</span></code>,
+<code class="docutils literal notranslate"><span class="pre">profile_name=</span></code>, …), which additionally prints the v0-vs-v1
+divergence table.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">report</span> <span class="o">=</span> <span class="n">diagnose</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s1">&#39;http://localhost:9000&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                  <span class="n">environ</span><span class="o">=</span><span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;endpoint_url&#39;</span> <span class="ow">in</span> <span class="n">report</span> <span class="ow">and</span> <span class="s1">&#39;resolution&#39;</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../s3dol.html" class="btn btn-neutral float-left" title="s3dol" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="base.html" class="btn btn-neutral float-right" title="s3dol.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

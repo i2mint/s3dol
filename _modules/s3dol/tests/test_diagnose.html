@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.tests.test_diagnose &mdash; s3dol 0.1.13 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.tests.test_diagnose</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.tests.test_diagnose</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Tests for ``s3dol.diagnose()`` (ADR-0012 D6/D7). All tier 1.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol._diagnose</span><span class="w"> </span><span class="kn">import</span> <span class="n">_spec_from_v0_args</span><span class="p">,</span> <span class="n">_v0_mangle</span><span class="p">,</span> <span class="n">diagnose</span>
+
+
+<div class="viewcode-block" id="run_diagnose">
+<a class="viewcode-back" href="../../../module_docs/s3dol/tests/test_diagnose.html#s3dol.tests.test_diagnose.run_diagnose">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_diagnose</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;diagnose() against a controlled environment, capturing the report.&quot;&quot;&quot;</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;environ&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="n">diagnose</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># never raises (D6)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_reports_resolution_for_plain_v1_kwargs</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:9000&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;resolution:&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;http://localhost:9000&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;endpoint_url=&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;can_presign: True&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_failing_resolution_is_a_row_not_a_raise</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">preset</span><span class="o">=</span><span class="s2">&quot;minio&quot;</span><span class="p">)</span>  <span class="c1"># C1: MissingEndpoint</span>
+    <span class="k">assert</span> <span class="s2">&quot;RESOLUTION FAILS&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;MissingEndpoint&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_failing_construction_is_a_row_not_a_raise</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="s2">&quot;prod&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;RESOLUTION FAILS&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;ConfigurationError&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_utter_garbage_never_raises</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">bogus_kwarg</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">report</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">report</span>  <span class="c1"># something readable came back</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_secret_values_never_echo</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s2">&quot;AKIAEXAMPLE&quot;</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s2">&quot;sEkR3tVALUE&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;&lt;provided&gt;&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_prints_to_the_given_file_and_returns_the_text</span><span class="p">():</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">diagnose</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://x:1&quot;</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sink</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span> <span class="o">==</span> <span class="n">text</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># the v0 mangler (D7): ~20 frozen lines mapping 1:1 onto v0</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_mangle_endpoint_dropped_under_env_credentials</span><span class="p">():</span>
+    <span class="n">branch</span><span class="p">,</span> <span class="n">effective</span> <span class="o">=</span> <span class="n">_v0_mangle</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://r2:1&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">:</span> <span class="s2">&quot;EXPLICIT&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">:</span> <span class="s2">&quot;ENVKEY&quot;</span><span class="p">,</span> <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">:</span> <span class="s2">&quot;ENVSECRET&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;endpoint dropped&quot;</span> <span class="ow">in</span> <span class="n">branch</span>
+    <span class="k">assert</span> <span class="n">effective</span><span class="p">[</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># the v0 data-misrouting bug</span>
+    <span class="k">assert</span> <span class="n">effective</span><span class="p">[</span><span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ENVKEY&quot;</span>  <span class="c1"># env over explicit</span>
+    <span class="k">assert</span> <span class="n">effective</span><span class="p">[</span><span class="s2">&quot;aws_session_token&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># nulled, silently</span>
+    <span class="k">assert</span> <span class="n">effective</span><span class="p">[</span><span class="s2">&quot;region_name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># nulled, silently</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_mangle_explicit_branch_when_no_env_credentials</span><span class="p">():</span>
+    <span class="n">branch</span><span class="p">,</span> <span class="n">effective</span> <span class="o">=</span> <span class="n">_v0_mangle</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://r2:1&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">:</span> <span class="s2">&quot;AK&quot;</span><span class="p">},</span> <span class="p">{}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">branch</span> <span class="o">==</span> <span class="s2">&quot;explicit&quot;</span>
+    <span class="k">assert</span> <span class="n">effective</span><span class="p">[</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;http://r2:1&quot;</span>  <span class="c1"># honoured on this path</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_mangle_profile_with_explicit_creds_discards_profile</span><span class="p">():</span>
+    <span class="n">branch</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_v0_mangle</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;profile_name&quot;</span><span class="p">:</span> <span class="s2">&quot;prod&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">:</span> <span class="s2">&quot;AK&quot;</span><span class="p">},</span> <span class="p">{}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;discarded&quot;</span> <span class="ow">in</span> <span class="n">branch</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_mangle_supabase_and_skip_branches_are_excluded</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">_v0_mangle</span><span class="p">({</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://x.supabase.co/s3&quot;</span><span class="p">},</span> <span class="p">{})[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">_v0_mangle</span><span class="p">({</span><span class="s2">&quot;is_supabase_endpoint&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{})[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">_v0_mangle</span><span class="p">({</span><span class="s2">&quot;skip_bucket_check&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{})[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_spec_from_v0_args_maps_env_profile_to_the_chain</span><span class="p">():</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">_spec_from_v0_args</span><span class="p">({</span><span class="s2">&quot;profile_name&quot;</span><span class="p">:</span> <span class="s2">&quot;environment variables&quot;</span><span class="p">})</span>
+    <span class="k">assert</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># env creds are the top of botocore&#39;s own chain</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># the divergence table</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_divergence_flags_the_endpoint_drop</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://r2.example:1&quot;</span><span class="p">,</span>
+        <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s2">&quot;AK&quot;</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s2">&quot;SK&quot;</span><span class="p">,</span>
+        <span class="n">environ</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">:</span> <span class="s2">&quot;ENVK&quot;</span><span class="p">,</span> <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">:</span> <span class="s2">&quot;ENVS&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;divergence&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;CHANGES ON UPGRADE&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;endpoint dropped&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_no_divergence_when_v0_and_v1_agree</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://minio:9000&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;no divergence&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_excluded_branch_prints_the_reason</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://x.supabase.co/s3&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;EXCLUDED&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;process-global&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_credential_identity_divergence_is_a_predicate_not_a_value</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s2">&quot;AKIAEXPLICIT&quot;</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s2">&quot;sEkR3tVALUE&quot;</span><span class="p">,</span>
+        <span class="n">environ</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">:</span> <span class="s2">&quot;AKIAFROMENV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">:</span> <span class="s2">&quot;ENVSEKRET99&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;credentials:&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;ENVSEKRET99&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>  <span class="c1"># no env secret value either</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
