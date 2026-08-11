@@ -58,17 +58,17 @@ class S3Connection:
     region_name: str | None = None
     # WHO
     profile: str | None = None
-    credentials: CredentialProvider | None = None   # normalised in __post_init__
-    anon: bool = False                              # see D5
+    credentials: CredentialProvider | None = None  # normalised in __post_init__
+    anon: bool = False  # see D5
     # HOW  (None == "do not override" — see D3's ladders)
-    signature_version: str = 's3v4'                 # ADR-0003 §4: never left to botocore
-    addressing_style: Literal['path', 'virtual'] | None = None
-    checksum: Literal['when_supported', 'when_required'] | None = None
+    signature_version: str = "s3v4"  # ADR-0003 §4: never left to botocore
+    addressing_style: Literal["path", "virtual"] | None = None
+    checksum: Literal["when_supported", "when_required"] | None = None
     payload_signing_enabled: bool | None = None
-    verify: bool | str | None = None                # self-signed MinIO / corporate CA
+    verify: bool | str | None = None  # self-signed MinIO / corporate CA
     client_kwargs: tuple[tuple[str, Any], ...] = ()
     # POLICY
-    deny_means_absent: bool = False                 # ADR-0004 §3
+    deny_means_absent: bool = False  # ADR-0004 §3
 ```
 
 **There is no `_live` escape hatch and no `connection=<boto3 client>`.** Checked: no dependent
