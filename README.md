@@ -7,6 +7,31 @@ To install:	```pip install s3dol```
 [Documentation](https://i2mint.github.io/s3dol/)
 
 
+## Heads-up: v1 is coming — run `s3dol.diagnose()` now
+
+A major, behaviour-clarifying v1 is in progress
+(design: [`misc/docs/architecture.md`](misc/docs/architecture.md) and the ADRs in
+[`misc/docs/decisions/`](misc/docs/decisions/)). Today's `S3Store` will keep
+working through a compatibility shim, but a few v0 behaviours were bugs
+(e.g. an explicit `endpoint_url=` being silently dropped whenever
+`AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` are exported) and v1 fixes them —
+which can *move where your data goes*.
+
+Before upgrading to v1, run the diagnosis with the same arguments you pass
+`S3Store` today, in the environment you deploy in:
+
+```python
+import s3dol
+
+s3dol.diagnose(bucket_name='my-bucket', endpoint_url='...', path='...')
+```
+
+It prints what resolves (endpoint, region, signing, credential *source* — never
+a secret), where each value came from, and a **v0-vs-v1 divergence table**
+telling you whether the upgrade changes anything for your call. It never
+raises; a failing resolution is part of the report.
+
+
 ## Set up credentials
 
 Recommended prerequisite to make getting started easier but not required.

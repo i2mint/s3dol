@@ -30,7 +30,16 @@ DFLT_S3_PROBE_ENDPOINT = "http://localhost:4566"
 #: module not listed here is deselected when no endpoint is reachable, so a new
 #: endpoint-using test can never silently fail the local gate. Widen only after
 #: verifying a module's tests are genuinely endpoint-free.
-_S3_FREE_TEST_STEMS = frozenset({"test_url_for"})
+_S3_FREE_TEST_STEMS = frozenset(
+    {
+        "test_url_for",
+        # Layer A (v1) suites: tier-1 pure + moto-mocked tier-2 — no endpoint.
+        "test_errors",
+        "test_presets",
+        "test_connection",
+        "test_diagnose",
+    }
+)
 
 
 def _probe_host_port():
