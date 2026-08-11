@@ -227,6 +227,39 @@ documented limitation, and the real fix is upstream: `content_url` must resolve 
 chain **and** call the innermost `url_for` with the resolved key — resolving without that second
 half would double-transform.
 
+#### D3b-amended (2026-08-11, during implementation) — the guarded method cannot serve both call paths
+
+The guard above assumed one call path. There are **two**, and they hand the *same signature*
+**different key domains**:
+
+| caller | what `url_for` receives | correct action |
+|---|---|---|
+| `dol.content_url(wrapped, k)` | the key already mapped through the **outer** layers — because the walk stops at the layer owning `url_for` "*because that layer applies its own*" (`dol/content.py::_url_for_provider_and_key`) | apply `self._id_of_key` |
+| `wrapped.url_for(k)` (delegation) | the raw **outer** key | resolve through the whole chain |
+
+Applying `_id_of_key` is right for the first and wrong for the second; re-resolving through the
+chain is right for the second and **double-transforms** the first (measured: a store scoped to
+`p/` under a `x/` key codec produced `p/x/x/g`). Nothing at the callee distinguishes them —
+this is dol#83's defect reaching the one method the ADR kept.
+
+**Decision:** `url_for` applies `self._id_of_key(k)` (dol's stated contract), and **refuses**
+— `NotSupported`, naming `s3dol.urls(store)[k]` — as soon as the leaf has ever been wrapped.
+Consequences, stated plainly:
+
+- `dol.content_url` is correct for an **unwrapped** s3dol store (the common case, and the one
+  `dol/content.py`'s docstring shows) and **raises** for a wrapped one. Loud, never wrong.
+- The refusal is driven by a *sticky flag* set when dol probes the leaf (`hasattr(store,
+  'KeysView')` in `Store.__init__`), implemented as a descriptor because a `KvReader` leaf
+  would otherwise satisfy the probe from `MappingViewMixin` and never see it. Unlike the
+  `wrapped_self` weakref, the flag survives the wrapper's death — so the refusal is reliable,
+  not intermittent. The documented false positive stands: a once-wrapped leaf later used bare
+  also refuses.
+
+**This is the P1 evidence for dol#86/#83**: a keyed capability *method* is unfixable in the
+general case — not merely fragile, and not fixable by a better resolution primitive, because
+the ambiguity is in the *call*, not the resolution. Sibling stores (D2) route through
+`__getitem__`, which has one key domain and one caller, and so remain correct by construction.
+
 ### D4 — Destructive operations are free functions
 
 `delete_many(keys)` and `EndpointStore.delete(name, force=True)` both leave Layer B.

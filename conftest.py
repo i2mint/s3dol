@@ -33,11 +33,18 @@ DFLT_S3_PROBE_ENDPOINT = "http://localhost:4566"
 _S3_FREE_TEST_STEMS = frozenset(
     {
         "test_url_for",
-        # Layer A (v1) suites: tier-1 pure + moto-mocked tier-2 — no endpoint.
+        # v1 suites: tier-1 pure + moto-mocked tier-2 — no live endpoint.
         "test_errors",
         "test_presets",
         "test_connection",
         "test_diagnose",
+        "test_values",
+        "test_keyed_surface",
+        "test_conformance",
+        "test_base",
+        "test_capabilities",
+        "test_store_shim",
+        "test_recipes",
     }
 )
 

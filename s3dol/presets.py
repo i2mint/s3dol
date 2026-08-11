@@ -36,9 +36,8 @@ from urllib.parse import urlsplit
 from s3dol.errors import (
     ConfigurationError,
     InvalidEndpoint,
-    MissingPresetParam,
-    UnknownPresetParam,
     Rule,
+    UnknownPresetParam,
 )
 
 # --------------------------------------------------------------------------- #
@@ -115,10 +114,20 @@ def validate_endpoint_hygiene(url: str, *, what: str = "endpoint_url") -> None:
             f"with '@' in its netloc. Pass credentials via "
             f"S3Connection(credentials=...), never in a URL."
         )
+    # The refusal messages deliberately do NOT echo the URL: its query/
+    # fragment is exactly the secret carrier this check exists to stop, and an
+    # exception message lands in tracebacks, logs and diagnose reports.
     if parts.query:
-        raise InvalidEndpoint(f"{what} must not carry a query string: {url!r}")
+        raise InvalidEndpoint(
+            f"{what} must not carry a query string (host "
+            f"{parts.hostname!r}): the query is where signed-URL and SAS-style "
+            f"credentials live, and botocore would retain it verbatim in "
+            f"client.meta.endpoint_url. Pass the bare endpoint."
+        )
     if parts.fragment:
-        raise InvalidEndpoint(f"{what} must not carry a fragment: {url!r}")
+        raise InvalidEndpoint(
+            f"{what} must not carry a fragment (host {parts.hostname!r})."
+        )
 
 
 @dataclass(frozen=True)
@@ -199,6 +208,23 @@ class Preset:
                 raise ConfigurationError(
                     f"Preset {self.name!r}: config_kwargs values must be "
                     f"scalars; {key!r} is a {type(value).__name__}."
+                )
+        from s3dol.errors import KINDS
+
+        for rule in self.error_overrides:
+            try:
+                (_operation, _code, _status), kind = rule
+            except (TypeError, ValueError):
+                raise ConfigurationError(
+                    f"Preset {self.name!r}: each error_overrides row is "
+                    f"((operation, code, status), kind); got {rule!r}."
+                ) from None
+            if kind not in KINDS:
+                raise ConfigurationError(
+                    f"Preset {self.name!r}: error_overrides kind {kind!r} is "
+                    f"not one of {list(KINDS)}. An unvalidated kind would "
+                    f"detonate inside the error-translation seam at request "
+                    f"time, masking the real backend error."
                 )
         unknown = set(dict(self.params)) - self.template_params()
         if unknown:

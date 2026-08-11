@@ -30,7 +30,12 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "dol",
+    # A hard floor, not a preference (ADR-0006 §3's upstream policy: raise the
+    # floor the day each fix lands, and delete the local workaround in the same
+    # commit). v1 needs dol.inner_most_key exported (0.3.62), content_url
+    # resolving keys through the wrapper chain (0.3.62), and filesys
+    # is_valid_key fixed — all shipped by 0.3.63.
+    "dol>=0.3.63",
     "boto3",
     # ADR-0012: the endpoint env vars (AWS_ENDPOINT_URL_S3 / AWS_ENDPOINT_URL) do not exist
     # before botocore 1.31, and ADR-0003 §3's checksum knobs
@@ -49,12 +54,17 @@ test = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "moto[s3]>=5.0",
+    # conformance assertion 2b fetches a presigned URL; moto patches
+    # `requests` but NOT urllib (which would leave the machine). Declared
+    # explicitly rather than relied on transitively via moto[s3].
+    "requests",
 ]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "ruff>=0.1.0",
     "moto[s3]>=5.0",
+    "requests",
 ]
 docs = [
     "sphinx>=6.0",
@@ -144,10 +154,14 @@ enabled = false
 [tool.wads.ci.testing]
 python_versions = [
     "3.10",
+    "3.12",
 ]
 pytest_args = [
     "-v",
     "--tb=short",
+    # Every documented example is executable against the in-memory fake, so
+    # doctests run in the default gate (ADR-0008).
+    "--doctest-modules",
 ]
 coverage_enabled = true
 coverage_threshold = 0

@@ -25,6 +25,8 @@ from s3dol.errors import (
     AmbiguousResolution,
     ConfigurationError,
     MissingEndpoint,
+    MissingPresetParam,
+    PresetConflict,
     PresetHostMismatch,
 )
 from s3dol.presets import get_preset
@@ -307,9 +309,14 @@ def test_c1_requires_endpoint_raises_missing_endpoint():
 
 
 def test_c1_unbound_template_raises_and_names_the_params():
-    with pytest.raises(MissingEndpoint) as info:
+    # MissingPresetParam names this case exactly, and IS a MissingEndpoint —
+    # so either `except` works and neither class is dead (ADR-0004's own
+    # indictment of v0 was five never-raised exception classes).
+    with pytest.raises(MissingPresetParam) as info:
         resolve(S3Connection(preset="r2"), {})
     assert "account_id" in str(info.value)
+    with pytest.raises(MissingEndpoint):
+        resolve(S3Connection(preset="r2"), {})
 
 
 def test_c1_env_endpoint_satisfies_a_requiring_preset():
@@ -469,7 +476,12 @@ def test_load_aws_config_is_credential_scrubbed():
 # tier 2 (moto): the built client — SigV4 presigning is issue #10's regression
 # --------------------------------------------------------------------------- #
 
-moto = pytest.importorskip("moto")
+@pytest.fixture
+def moto():
+    """moto, per-test — a module-level importorskip would skip this file's
+    ~60 pure tier-1 tests (credential shapes, pickling, the lock race, every
+    resolve() ladder) along with the two that actually need it."""
+    return pytest.importorskip("moto")
 
 
 @pytest.fixture
@@ -481,7 +493,7 @@ def _mock_aws_env(monkeypatch):
     monkeypatch.setenv("AWS_DEFAULT_REGION", "us-east-1")
 
 
-def test_client_presigns_sigv4_even_in_us_east_1(_mock_aws_env):
+def test_client_presigns_sigv4_even_in_us_east_1(moto, _mock_aws_env):
     # us-east-1 is precisely a region where botocore, left to itself, silently
     # downgrades presigning to SigV2 (ADR-0003 §4). Assert on the URL, never on
     # client.meta.config.signature_version — it reports 's3v4' while emitting
@@ -498,7 +510,7 @@ def test_client_presigns_sigv4_even_in_us_east_1(_mock_aws_env):
     assert "AWSAccessKeyId" not in url  # the SigV2 tell
 
 
-def test_anon_client_is_unsigned_and_still_builds(_mock_aws_env):
+def test_anon_client_is_unsigned_and_still_builds(moto, _mock_aws_env):
     from botocore import UNSIGNED
 
     with moto.mock_aws():
@@ -506,7 +518,7 @@ def test_anon_client_is_unsigned_and_still_builds(_mock_aws_env):
         assert spec.client.meta.config.signature_version is UNSIGNED
 
 
-def test_static_credentials_reach_the_request(_mock_aws_env):
+def test_static_credentials_reach_the_request(moto, _mock_aws_env):
     with moto.mock_aws():
         spec = S3Connection(
             credentials=("AKIAINJECTED", "sEkR3t"), region_name="us-east-1"
@@ -517,3 +529,174 @@ def test_static_credentials_reach_the_request(_mock_aws_env):
             "get_object", Params={"Bucket": "cred-bucket", "Key": "k"}, ExpiresIn=60
         )
     assert "AKIAINJECTED" in url  # the injected identity signed, not the env one
+
+
+# --------------------------------------------------------------------------- #
+# branches the first pass left untested (found by adversarial review)
+# --------------------------------------------------------------------------- #
+
+
+def test_pinned_preset_conflict_raises():
+    # The ratchet of ADR-0012 D4: pinning is dormant while rows are
+    # doc-sourced, and turns on with evidence. Exercise the branch that
+    # consumes it, or it can be broken before any row is ever verified.
+    from s3dol.presets import Preset, register, unregister
+
+    register(
+        Preset(
+            name="verified-row",
+            addressing_style="path",
+            endpoint_url="https://verified.example",
+            region_name="eu-west-9",
+            verified=True,
+        )
+    )
+    try:
+        with pytest.raises(PresetConflict, match="eu-west-9"):
+            resolve(S3Connection(preset="verified-row", region_name="us-east-1"), {})
+        # ...and agreeing is fine
+        assert (
+            resolve(
+                S3Connection(preset="verified-row", region_name="eu-west-9"), {}
+            ).region_name.value
+            == "eu-west-9"
+        )
+    finally:
+        unregister("verified-row")
+
+
+def test_notes_are_actually_emitted_as_warnings_at_client_build(monkeypatch):
+    # resolve() only COLLECTS notes; _build_client is the sole user-visible
+    # channel, and filterwarnings over it is the documented strict mode.
+    # Without this test, deleting the warn loop leaves the suite green.
+    monkeypatch.setenv("AWS_ENDPOINT_URL_S3", "https://proxy.mycorp.internal")
+    with pytest.warns(AmbiguousResolution, match="host patterns"):
+        S3Connection(preset="r2").client
+
+
+def test_filterwarnings_is_strict_mode(monkeypatch):
+    import warnings
+
+    from s3dol.errors import S3DolWarning
+
+    monkeypatch.setenv("AWS_ENDPOINT_URL_S3", "https://proxy.mycorp.internal")
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        warnings.filterwarnings("error", category=S3DolWarning)
+        with pytest.raises(AmbiguousResolution):
+            S3Connection(preset="r2").client
+
+
+def test_verify_and_client_kwargs_reach_the_built_client(monkeypatch):
+    # verify= is a connection-security field: dropping it would silently lose
+    # a self-signed-MinIO user's CA setting, failing OPEN.
+    captured = {}
+
+    class FakeSession:
+        def __init__(self, botocore_session=None):
+            pass
+
+        def client(self, service, **kwargs):
+            captured.update(kwargs)
+            return object()
+
+    import boto3
+
+    monkeypatch.setattr(boto3, "Session", FakeSession)
+    S3Connection(
+        endpoint_url="https://minio.internal:9000",
+        verify="/etc/ssl/corp-ca.pem",
+        client_kwargs={"use_ssl": True},
+    ).client
+    assert captured["verify"] == "/etc/ssl/corp-ca.pem"
+    assert captured["use_ssl"] is True
+    assert captured["endpoint_url"] == "https://minio.internal:9000"
+
+
+def test_signature_version_none_is_refused_not_silently_sigv2():
+    # 'None == do not override' is the convention of its NEIGHBOURS; for this
+    # field it would re-enable the SigV2 downgrade (issue #10) silently.
+    with pytest.raises(ConfigurationError, match="SigV2"):
+        S3Connection(signature_version=None)
+
+
+def test_client_kwargs_cannot_smuggle_credentials():
+    with pytest.raises(ConfigurationError, match="credentials="):
+        S3Connection(client_kwargs={"aws_secret_access_key": "sEkR3t"})
+    with pytest.raises(ConfigurationError):
+        S3Connection(client_kwargs={"config": object()})
+
+
+@pytest.mark.parametrize(
+    "shape",
+    [
+        lambda: S3Connection(client_kwargs={"aws_secret_access_key": "sEkR3tVALUE"}),
+        lambda: S3Connection(credentials=("AKIAX", "sEkR3tVALUE")),
+    ],
+)
+def test_no_credential_shape_can_leak_through_repr(shape):
+    try:
+        spec = shape()
+    except ConfigurationError:
+        return  # refused outright: even better
+    assert "sEkR3tVALUE" not in repr(spec)
+
+
+def test_env_endpoint_userinfo_never_survives_into_messages_or_repr():
+    secret_url = "https://user:sEkR3tVALUE@minio.internal:9000"
+    resolution = resolve(S3Connection(), {"AWS_ENDPOINT_URL_S3": secret_url})
+    assert "sEkR3tVALUE" not in repr(resolution)
+    assert "minio.internal" in repr(resolution)  # the host survives
+    with_note = resolve(
+        S3Connection(preset="wasabi"), {"AWS_ENDPOINT_URL_S3": secret_url}
+    )
+    assert all("sEkR3tVALUE" not in message for _, message in with_note.notes)
+
+
+def test_tuple_credentials_with_a_none_token_behave_like_the_pair():
+    assert normalize_credentials(("AK", "SK", None)) == normalize_credentials(
+        ("AK", "SK")
+    )
+
+
+def test_callable_credentials_fetch_exactly_once_on_first_load():
+    # A token vendor may be rate-limited or single-use.
+    calls = []
+
+    def counting_fetch():
+        calls.append(1)
+        return {
+            "access_key": "a",
+            "secret_key": "b",
+            "expires_at": "2030-01-01T00:00:00Z",
+        }
+
+    CallableCredentials(counting_fetch)._load_botocore_credentials()
+    assert len(calls) == 1
+
+
+def test_region_capture_does_not_hijack_an_explicit_env_region():
+    for host in (
+        "https://eu-storage.mycorp.com",
+        "https://srv1.corp.example",
+        "https://my-storage.example.com",
+    ):
+        resolution = resolve(
+            S3Connection(endpoint_url=host), {"AWS_DEFAULT_REGION": "eu-west-1"}
+        )
+        assert resolution.region_name.value == "eu-west-1", host
+    # ...while the canonical shape is still captured
+    assert (
+        resolve(
+            S3Connection(endpoint_url="https://s3.eu-central-2.amazonaws.com"), {}
+        ).region_name.value
+        == "eu-central-2"
+    )
+
+
+def test_c2_guard_applies_to_a_named_soft_row_too():
+    with pytest.raises(PresetHostMismatch):
+        resolve(
+            S3Connection(preset="aws"),
+            {"AWS_ENDPOINT_URL_S3": "https://s3.eu-central-1.wasabisys.com"},
+        )
