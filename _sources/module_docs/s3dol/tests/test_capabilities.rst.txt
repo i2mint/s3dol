@@ -1,0 +1,4 @@
+s3dol.tests.test_capabilities
+=============================
+.. automodule:: s3dol.tests.test_capabilities
+   :members:

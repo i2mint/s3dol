@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.testing &mdash; s3dol 0.1.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.testing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.testing</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;``s3dol.testing`` — a shipped in-memory fake and the exported conformance</span>
+<span class="sd">suite (ADR-0008). Downstream users can test services that take a store as a</span>
+<span class="sd">dependency with **no network, no docker, no moto**::</span>
+
+<span class="sd">    from s3dol.testing import mock_s3</span>
+
+<span class="sd">    def test_my_service():</span>
+<span class="sd">        assert MediaService(mock_s3()).url(&#39;a&#39;)</span>
+
+<span class="sd">The fake is not a re-implementation: :class:`FakeBucketStore` *is* the real</span>
+<span class="sd">:class:`~s3dol.base.BucketStore` with only the backend protocol (the ``_op_*``</span>
+<span class="sd">seam of ADR-0002) swapped for a dict — so the prefix arithmetic, key validity,</span>
+<span class="sd">error taxonomy (the fake raises *synthesized botocore ClientErrors* through</span>
+<span class="sd">the same translation seam), guards and Mapping semantics are structurally</span>
+<span class="sd">identical, and drift fails the same conformance suite that gates the real</span>
+<span class="sd">store.</span>
+
+<span class="sd">The suite is parameterized by capability flags: ``mock_s3()`` runs the</span>
+<span class="sd">structural presign assertion (2a) but not the fetch-it assertion (2b — there</span>
+<span class="sd">is no HTTP server), so the honest claim is *&quot;the same suite, parameterized by</span>
+<span class="sd">an ``endpoint_is_fetchable`` capability&quot;* (ADR-0008).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BucketStore</span><span class="p">,</span> <span class="n">ObjectInfo</span><span class="p">,</span> <span class="n">clamp_expires_in</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.capabilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">BucketHandles</span><span class="p">,</span> <span class="n">BucketInfo</span><span class="p">,</span> <span class="n">BucketUrls</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeyNotValid</span><span class="p">,</span> <span class="n">ObjectNotFound</span><span class="p">,</span> <span class="n">S3Error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.values</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_fileobj</span><span class="p">,</span> <span class="n">is_bytes_like</span><span class="p">,</span> <span class="n">reject_str_value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_client_error</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A synthesized botocore ClientError, exactly like the wire produces.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span>
+
+    <span class="k">return</span> <span class="n">ClientError</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Error&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Code&quot;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s2">&quot;Message&quot;</span><span class="p">:</span> <span class="s2">&quot;synthesized by s3dol.testing&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;ResponseMetadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;HTTPStatusCode&quot;</span><span class="p">:</span> <span class="n">status</span><span class="p">},</span>
+        <span class="p">},</span>
+        <span class="n">operation</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_FakeBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The shared in-memory &#39;bucket&#39;: absolute (wire) keys -&gt; bytes.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">bucket_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bucket_exists</span> <span class="o">=</span> <span class="n">bucket_exists</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_FakeOps</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin overriding exactly the ``_op_*`` backend protocol with dict</span>
+<span class="sd">    operations that raise synthesized ``ClientError``s — everything above the</span>
+<span class="sd">    seam (guards, taxonomy, key arithmetic) runs unchanged.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">backing</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_FakeBackend</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span> <span class="o">=</span> <span class="n">backing</span> <span class="k">if</span> <span class="n">backing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_FakeBackend</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># the fake never builds a client</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">S3Error</span><span class="p">(</span>
+            <span class="s2">&quot;s3dol.testing fakes have no boto3 client — a code path reached &quot;</span>
+            <span class="s2">&quot;the backend outside the _op_* protocol seam (that is a bug worth &quot;</span>
+            <span class="s2">&quot;reporting).&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">bucket_exists</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">_client_error</span><span class="p">(</span><span class="s2">&quot;NoSuchBucket&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_list_pages</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bucket</span><span class="p">(</span><span class="s2">&quot;ListObjectsV2&quot;</span><span class="p">)</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">prefix</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">base</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Key&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s2">&quot;Size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]),</span>
+                    <span class="s2">&quot;LastModified&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+                    <span class="s2">&quot;ETag&quot;</span><span class="p">:</span> <span class="s1">&#39;&quot;fake&quot;&#39;</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span>
+            <span class="p">]</span>
+            <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;Contents&quot;</span><span class="p">:</span> <span class="n">contents</span><span class="p">}</span>
+            <span class="k">return</span>
+        <span class="n">seen</span><span class="p">,</span> <span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">rest</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="p">:]</span>
+            <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">in</span> <span class="n">rest</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">delimiter</span><span class="p">):</span>
+                <span class="n">head</span> <span class="o">=</span> <span class="n">rest</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delimiter</span>
+                <span class="k">if</span> <span class="n">head</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+                    <span class="n">prefixes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Prefix&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}{</span><span class="n">head</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">})</span>
+        <span class="k">yield</span> <span class="p">{</span><span class="s2">&quot;CommonPrefixes&quot;</span><span class="p">:</span> <span class="n">prefixes</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_head_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bucket</span><span class="p">(</span><span class="s2">&quot;HeadObject&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="c1"># moto returns a body here; real AWS does not. The fake mimics</span>
+            <span class="c1"># REAL AWS (code synthesized from the status) so the ambiguity</span>
+            <span class="c1"># path of ADR-0004 §2 is exercised, which moto cannot do.</span>
+            <span class="k">raise</span> <span class="n">_client_error</span><span class="p">(</span><span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;HeadObject&quot;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;ContentLength&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+            <span class="s2">&quot;LastModified&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+            <span class="s2">&quot;ETag&quot;</span><span class="p">:</span> <span class="s1">&#39;&quot;fake&quot;&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;ContentType&quot;</span><span class="p">:</span> <span class="s2">&quot;binary/octet-stream&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_head_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">bucket_exists</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">_client_error</span><span class="p">(</span><span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;HeadBucket&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bucket</span><span class="p">(</span><span class="s2">&quot;GetObject&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">_client_error</span><span class="p">(</span><span class="s2">&quot;NoSuchKey&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;GetObject&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bucket</span><span class="p">(</span><span class="s2">&quot;PutObject&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">reject_str_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_bytes_like</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">as_fileobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bucket</span><span class="p">(</span><span class="s2">&quot;DeleteObject&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># idempotent, like the wire</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_bulk_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_ids</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_bucket</span><span class="p">(</span><span class="s2">&quot;DeleteObjects&quot;</span><span class="p">)</span>
+        <span class="n">deleted</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_id</span> <span class="ow">in</span> <span class="n">_ids</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">deleted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span>  <span class="c1"># absent keys report as Deleted, like S3</span>
+        <span class="k">return</span> <span class="n">deleted</span><span class="p">,</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">bucket_exists</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_op_presign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">,</span> <span class="n">client_method</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">expires_in</span> <span class="o">=</span> <span class="n">clamp_expires_in</span><span class="p">(</span><span class="n">expires_in</span><span class="p">)</span>  <span class="c1"># same guard as the real one</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="si">}</span><span class="s2">.mock-s3.invalid/</span><span class="si">{</span><span class="n">quote</span><span class="p">(</span><span class="n">_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Expires=</span><span class="si">{</span><span class="n">expires_in</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&amp;X-Amz-Signature=mock&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sibling_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_sibling_kwargs</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_sibling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="n">sibling_class</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;handles&quot;</span><span class="p">:</span> <span class="n">FakeBucketHandles</span><span class="p">,</span>
+            <span class="s2">&quot;urls&quot;</span><span class="p">:</span> <span class="n">FakeBucketUrls</span><span class="p">,</span>
+            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="n">FakeBucketInfo</span><span class="p">,</span>
+        <span class="p">}[</span><span class="n">kind</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sibling_class</span><span class="p">(</span>
+            <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_sibling_kwargs</span><span class="p">(),</span> <span class="o">**</span><span class="n">options</span><span class="p">},</span> <span class="n">backing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_backing</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_sibling_kwargs</span><span class="p">()</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;on_missing_bucket&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_missing_bucket</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">overrides</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;bucket&quot;</span><span class="p">),</span> <span class="n">backing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FakeObjectHandle">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.FakeObjectHandle">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FakeObjectHandle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The fake&#39;s per-object escape hatch (mirrors ``ObjectHandle``).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backing</span><span class="p">:</span> <span class="n">_FakeBackend</span><span class="p">,</span> <span class="n">anon</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span> <span class="o">=</span> <span class="n">backing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_anon</span> <span class="o">=</span> <span class="n">anon</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ObjectNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GetObject failed: key=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">offset</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">8</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">chunk_size</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">chunk_size</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.values</span><span class="w"> </span><span class="kn">import</span> <span class="n">Filepath</span>
+
+        <span class="n">target</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">path</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">Filepath</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bytes</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">target</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">reject_str_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_bytes_like</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">as_fileobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectInfo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ObjectInfo</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bytes</span><span class="p">()),</span>
+            <span class="n">last_modified</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+            <span class="n">etag</span><span class="o">=</span><span class="s1">&#39;&quot;fake&quot;&#39;</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;binary/octet-stream&quot;</span><span class="p">,</span>
+            <span class="n">storage_class</span><span class="o">=</span><span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">expires_in</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span> <span class="n">client_method</span><span class="o">=</span><span class="s2">&quot;get_object&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_anon</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;https://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="si">}</span><span class="s2">.mock-s3.invalid/</span><span class="si">{</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Expires=</span><span class="si">{</span><span class="n">expires_in</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&amp;X-Amz-Signature=mock&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FakeBucketStore">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.FakeBucketStore">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FakeBucketStore</span><span class="p">(</span><span class="n">_FakeOps</span><span class="p">,</span> <span class="n">BucketStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The real ``BucketStore`` over a dict backend.&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="FakeBucketHandles">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.FakeBucketHandles">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FakeBucketHandles</span><span class="p">(</span><span class="n">_FakeOps</span><span class="p">,</span> <span class="n">BucketHandles</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">FakeObjectHandle</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+            <span class="n">backing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="p">,</span>
+            <span class="n">anon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">anon</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FakeBucketUrls">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.FakeBucketUrls">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FakeBucketUrls</span><span class="p">(</span><span class="n">_FakeOps</span><span class="p">,</span> <span class="n">BucketUrls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_presign</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+            <span class="n">expires_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expires_in</span><span class="p">,</span>
+            <span class="n">client_method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client_method</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FakeBucketInfo">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.FakeBucketInfo">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FakeBucketInfo</span><span class="p">(</span><span class="n">_FakeOps</span><span class="p">,</span> <span class="n">BucketInfo</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ObjectNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HeadObject failed: key=</span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ObjectInfo</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">_id</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backing</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">_id</span><span class="p">]),</span>
+            <span class="n">last_modified</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+            <span class="n">etag</span><span class="o">=</span><span class="s1">&#39;&quot;fake&quot;&#39;</span><span class="p">,</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;binary/octet-stream&quot;</span><span class="p">,</span>
+            <span class="n">storage_class</span><span class="o">=</span><span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="mock_s3">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.mock_s3">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mock_s3</span><span class="p">(</span>
+    <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;mock-bucket&quot;</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bucket_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">anon</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FakeBucketStore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An in-process fake ``BucketStore``: no network, no docker, no moto.</span>
+
+<span class="sd">    ``data`` seeds the bucket with *absolute* (wire) keys -&gt; bytes.</span>
+
+<span class="sd">    &gt;&gt;&gt; s = mock_s3(data={&#39;logs/a.txt&#39;: b&#39;hi&#39;, &#39;other/z&#39;: b&#39;no&#39;}, prefix=&#39;logs&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; list(s), s[&#39;a.txt&#39;]</span>
+<span class="sd">    ([&#39;a.txt&#39;], b&#39;hi&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; s[&#39;b&#39;] = b&#39;new&#39;; sorted(s)</span>
+<span class="sd">    [&#39;a.txt&#39;, &#39;b&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3Connection</span>
+
+    <span class="k">return</span> <span class="n">FakeBucketStore</span><span class="p">(</span>
+        <span class="n">bucket</span><span class="p">,</span>
+        <span class="n">backing</span><span class="o">=</span><span class="n">_FakeBackend</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bucket_exists</span><span class="o">=</span><span class="n">bucket_exists</span><span class="p">),</span>
+        <span class="n">connection</span><span class="o">=</span><span class="n">S3Connection</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="n">anon</span><span class="p">)</span> <span class="k">if</span> <span class="n">anon</span> <span class="k">else</span> <span class="n">S3Connection</span><span class="p">(),</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># The exported conformance suite (ADR-0008)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<div class="viewcode-block" id="run_conformance">
+<a class="viewcode-back" href="../../module_docs/s3dol/testing.html#s3dol.testing.run_conformance">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_conformance</span><span class="p">(</span>
+    <span class="n">make_store</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">object</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">endpoint_is_fetchable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">normalize</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
+    <span class="n">check_pickle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">check_urls</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">secret</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Assert the s3dol store laws against a fresh store from ``make_store``.</span>
+
+<span class="sd">    ``make_store`` must return an EMPTY, writable store (each call may return</span>
+<span class="sd">    a new one over the same empty backend). ``normalize`` is the per-layer</span>
+<span class="sd">    canonical form of ADR-0005 N3 (identity for Layer B; ``json.loads ∘</span>
+<span class="sd">    json.dumps`` for a json recipe, …). ``secret``, when given, is asserted</span>
+<span class="sd">    absent from every repr this suite touches.</span>
+
+<span class="sd">    Sibling packages and user code are welcome to run this against their own</span>
+<span class="sd">    stores — that is why it ships in the package rather than in ``tests/``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlsplit</span>
+
+    <span class="n">store</span> <span class="o">=</span> <span class="n">make_store</span><span class="p">()</span>
+
+    <span class="c1"># -- Mapping laws + the value law (N3)</span>
+    <span class="n">store</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;alpha&quot;</span>
+    <span class="n">store</span><span class="p">[</span><span class="s2">&quot;b/c&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;beta&quot;</span>
+    <span class="k">assert</span> <span class="n">store</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">normalize</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;alpha&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b/c&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;a&quot;</span> <span class="ow">in</span> <span class="n">store</span> <span class="ow">and</span> <span class="s2">&quot;b/c&quot;</span> <span class="ow">in</span> <span class="n">store</span>
+    <span class="k">assert</span> <span class="s2">&quot;missing&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span>
+    <span class="c1"># iter/contains agreement — the law EncodingType breaks (ADR-0006 §4)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">store</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">store</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">store</span><span class="p">[</span><span class="s2">&quot;missing&quot;</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;reading an absent key must raise KeyError&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">assert</span> <span class="n">store</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;missing&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># the defaulted accessor degrades</span>
+    <span class="k">del</span> <span class="n">store</span><span class="p">[</span><span class="s2">&quot;b/c&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s2">&quot;b/c&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">store</span>
+    <span class="k">del</span> <span class="n">store</span><span class="p">[</span><span class="s2">&quot;b/c&quot;</span><span class="p">]</span>  <span class="c1"># idempotent (documented; costs no probe)</span>
+
+    <span class="c1"># -- len() raises with guidance (ADR-0008 cost model)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;len(store) must raise TypeError&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># -- keys that must round-trip (and KeyNotValid before the wire)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;plain&quot;</span><span class="p">,</span> <span class="s2">&quot;a b&quot;</span><span class="p">,</span> <span class="s2">&quot;café&quot;</span><span class="p">,</span> <span class="s2">&quot;a+b&quot;</span><span class="p">,</span> <span class="s2">&quot;a</span><span class="se">\r</span><span class="s2">b&quot;</span><span class="p">,</span> <span class="s2">&quot;p/x y&quot;</span><span class="p">,</span> <span class="s2">&quot;a%20b&quot;</span><span class="p">]:</span>
+        <span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;v&quot;</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">store</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">store</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">bad</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span> <span class="o">*</span> <span class="mi">2000</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">store</span><span class="p">[</span><span class="n">bad</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;v&quot;</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;key </span><span class="si">{</span><span class="n">bad</span><span class="si">!r}</span><span class="s2"> must be rejected&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">KeyNotValid</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">pass</span>
+
+    <span class="c1"># -- str values are rejected, loudly (ADR-0005 §2)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">store</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;a string&quot;</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;str values must be rejected&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># -- url assertions (2a: structural, never substring — ADR-0008)</span>
+    <span class="k">if</span> <span class="n">check_urls</span><span class="p">:</span>
+        <span class="n">url_for</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;url_for&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">url_for</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">url_for</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="s2">&quot;X-Amz-Algorithm=AWS4-HMAC-SHA256&quot;</span> <span class="ow">in</span> <span class="p">(</span><span class="n">parts</span><span class="o">.</span><span class="n">query</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">url</span>
+                <span class="k">assert</span> <span class="s2">&quot;AWSAccessKeyId&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">url</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;SigV2 tell in </span><span class="si">{</span><span class="n">url</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="k">assert</span> <span class="n">parts</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)),</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;URL path must address the key: </span><span class="si">{</span><span class="n">url</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">endpoint_is_fetchable</span><span class="p">:</span>
+                    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+                    <span class="k">assert</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="n">normalize</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;alpha&quot;</span><span class="p">)</span>
+
+    <span class="c1"># -- pickling (ADR-0008 §6): a store must cross a process boundary</span>
+    <span class="k">if</span> <span class="n">check_pickle</span><span class="p">:</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">store</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">clone</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+
+    <span class="c1"># -- no secret in repr (ADR-0008 §7)</span>
+    <span class="k">if</span> <span class="n">secret</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">secret</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">secret</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

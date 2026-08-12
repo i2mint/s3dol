@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.writes &mdash; s3dol 0.1.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.writes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.writes</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Write strategies (ADR-0005 §5): how ``s[k] = v`` reaches the wire.</span>
+
+<span class="sd">A strategy is a callable ``(client, bucket, key, value) -&gt; None``, injected at</span>
+<span class="sd">store construction — ``__setitem__`` stays ``__setitem__``; *how* it uploads is</span>
+<span class="sd">a constructor parameter. This is the answer to &quot;infra-specific optimisation</span>
+<span class="sd">without polluting the interface&quot;: multipart is *transport*, not storage-model.</span>
+
+<span class="sd">Strategies are frozen dataclasses, not closures, because every s3dol store</span>
+<span class="sd">must pickle (ADR-0008 §6 / ADR-0012 D1) and a store carries its strategy.</span>
+
+<span class="sd">Every non-``bytes`` source routes through ``upload_fileobj``/``TransferManager``,</span>
+<span class="sd">never ``PutObject`` — so seekability is s3transfer&#39;s problem, and the size</span>
+<span class="sd">threshold is never consulted for a non-seekable source (where it is undecidable</span>
+<span class="sd">anyway). Note ``io.UnsupportedOperation`` and botocore&#39;s</span>
+<span class="sd">``UnseekableStreamError`` raise *before the request is built*, so they reach the</span>
+<span class="sd">caller directly (they are not ``ClientError``s and the error seam does not —</span>
+<span class="sd">and must not — convert them to ``KeyError``).</span>
+
+<span class="sd">&gt;&gt;&gt; strategy = transfer_writes(multipart_threshold=16 * 2**20)</span>
+<span class="sd">&gt;&gt;&gt; import pickle; pickle.loads(pickle.dumps(strategy)) == strategy</span>
+<span class="sd">True</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.values</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_fileobj</span><span class="p">,</span> <span class="n">is_bytes_like</span><span class="p">,</span> <span class="n">reject_str_value</span>
+
+
+<div class="viewcode-block" id="WriteStrategy">
+<a class="viewcode-back" href="../../module_docs/s3dol/writes.html#s3dol.writes.WriteStrategy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WriteStrategy</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span></div>
+
+
+
+<span class="c1">#: boto3&#39;s own default multipart threshold (8 MiB).</span>
+<span class="n">DEFAULT_MULTIPART_THRESHOLD</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span>
+
+
+<div class="viewcode-block" id="TransferWrites">
+<a class="viewcode-back" href="../../module_docs/s3dol/writes.html#s3dol.writes.TransferWrites">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TransferWrites</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The default: small in-memory values take a single ``PutObject``; file</span>
+<span class="sd">    objects and refs go through ``upload_fileobj`` (which goes multipart above</span>
+<span class="sd">    the threshold, transparently). The overhead on small objects is one branch.</span>
+
+<span class="sd">    Providers that cap multipart parts (Scaleway: 1000 — see the preset&#39;s</span>
+<span class="sd">    ``Capabilities.max_multipart_parts``) may need a larger</span>
+<span class="sd">    ``multipart_chunksize`` for very large objects: parts ≈ size / chunksize.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">multipart_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_MULTIPART_THRESHOLD</span>
+    <span class="n">multipart_chunksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_MULTIPART_THRESHOLD</span>
+    <span class="n">max_concurrency</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">use_threads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">reject_str_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_bytes_like</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">multipart_threshold</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="nb">bytes</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">boto3.s3.transfer</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransferConfig</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">TransferConfig</span><span class="p">(</span>
+            <span class="n">multipart_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multipart_threshold</span><span class="p">,</span>
+            <span class="n">multipart_chunksize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multipart_chunksize</span><span class="p">,</span>
+            <span class="n">max_concurrency</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_concurrency</span><span class="p">,</span>
+            <span class="n">use_threads</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_threads</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">with</span> <span class="n">as_fileobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">upload_fileobj</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">Config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SimpleWrites">
+<a class="viewcode-back" href="../../module_docs/s3dol/writes.html#s3dol.writes.SimpleWrites">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleWrites</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Everything through a single ``PutObject`` — refs are materialised in</span>
+<span class="sd">    memory first. For small-object workloads and providers with no multipart</span>
+<span class="sd">    at all (``Capabilities.multipart=False``).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">bucket</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">reject_str_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_bytes_like</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">as_fileobj</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="nb">bytes</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="transfer_writes">
+<a class="viewcode-back" href="../../module_docs/s3dol/writes.html#s3dol.writes.transfer_writes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">transfer_writes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransferWrites</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory spelling of :class:`TransferWrites` (the constructor-injection</span>
+<span class="sd">    idiom of ADR-0005 §5: ``BucketStore(..., writes=transfer_writes(...))``).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TransferWrites</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_writes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">SimpleWrites</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">SimpleWrites</span><span class="p">()</span>
+
+
+<span class="n">DEFAULT_WRITES</span> <span class="o">=</span> <span class="n">TransferWrites</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

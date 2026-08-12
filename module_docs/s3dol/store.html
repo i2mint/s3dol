@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.store &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.store &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -24,8 +24,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="s3dol.tests.test_base" href="tests/test_base.html" />
-    <link rel="prev" title="s3dol.presets" href="presets.html" /> 
+    <link rel="next" title="s3dol.testing" href="testing.html" />
+    <link rel="prev" title="s3dol.recipes" href="recipes.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,28 +52,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.store</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#s3dol.store.S3BucketDolWithouBucketCheck"><code class="docutils literal notranslate"><span class="pre">S3BucketDolWithouBucketCheck</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#s3dol.store.S3BucketDolWithouBucketCheck.from_params"><code class="docutils literal notranslate"><span class="pre">S3BucketDolWithouBucketCheck.from_params()</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#s3dol.store.S3Store"><code class="docutils literal notranslate"><span class="pre">S3Store()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#s3dol.store.SupabaseS3BucketDol"><code class="docutils literal notranslate"><span class="pre">SupabaseS3BucketDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#s3dol.store.validate_bucket"><code class="docutils literal notranslate"><span class="pre">validate_bucket()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.store.dechunk_aws_chunked"><code class="docutils literal notranslate"><span class="pre">dechunk_aws_chunked()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.store.detect_chunked_framing"><code class="docutils literal notranslate"><span class="pre">detect_chunked_framing()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -102,63 +106,77 @@
              
   <section id="module-s3dol.store">
 <span id="s3dol-store"></span><h1>s3dol.store<a class="headerlink" href="#module-s3dol.store" title="Link to this heading"></a></h1>
-<p>S3 Store Class</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="s3dol.store.S3BucketDolWithouBucketCheck">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">S3BucketDolWithouBucketCheck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_bucket_exists_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/store.html#S3BucketDolWithouBucketCheck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.S3BucketDolWithouBucketCheck" title="Link to this definition"></a></dt>
-<dd><p>A S3BucketDol that completely avoids the bucket exists check.
-This is needed for Supabase endpoints where the bucket is not created
-until the first object is uploaded, for example.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="s3dol.store.S3BucketDolWithouBucketCheck.from_params">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_session_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/store.html#S3BucketDolWithouBucketCheck.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.S3BucketDolWithouBucketCheck.from_params" title="Link to this definition"></a></dt>
-<dd><p>Create a S3BucketDol without session token</p>
-</dd></dl>
-
-</dd></dl>
-
+<p>COMPAT SHIM — the v0 <code class="docutils literal notranslate"><span class="pre">S3Store</span></code>, forwarded onto the v1 machinery.</p>
+<p>Removed in v2. This module <strong>must survive as an importable module</strong>: external
+dependents do <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">s3dol.store</span> <span class="pre">import</span> <span class="pre">S3Store</span></code> (fully qualified), not
+<code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">s3dol</span> <span class="pre">import</span> <span class="pre">S3Store</span></code> (ADR-0007 §3).</p>
+<p>The shim keeps v0’s exact signature (<code class="docutils literal notranslate"><span class="pre">bucket_name</span></code> positional-or-keyword,
+<code class="docutils literal notranslate"><span class="pre">path=</span></code> not renamed, the <code class="docutils literal notranslate"><span class="pre">make_bucket</span></code> tri-state, and
+<code class="docutils literal notranslate"><span class="pre">is_supabase_endpoint=</span></code> which an early draft forgot) and is <strong>a fix delivery
+mechanism</strong>: callers get the corrected endpoint/credential resolution without
+changing a line. Three v0 behaviours a dependent’s <em>passing tests</em> rely on are
+deliberately preserved here (and only here — ADR-0007 §4):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">store[k]</span> <span class="pre">=</span> <span class="pre">'a</span> <span class="pre">str'</span></code> is accepted (encoded utf-8, with a
+<code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code>);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">store['folder/']</span></code> returns a sub-store;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">del</span> <span class="pre">store[absent]</span></code> silently succeeds (v1 deletes are idempotent anyway).</p></li>
+</ul>
+<p>And one v0 behaviour is preserved on the Supabase branch only: the read-side
+de-chunker for objects that v0’s misconfigured writes stored with their
+<code class="docutils literal notranslate"><span class="pre">aws-chunked</span></code> HTTP framing verbatim (ADR-0003 §3). It is implemented
+<em>correctly</em> here (multi-chunk; full-parse-or-passthrough) where v0’s truncated
+multi-chunk payloads. Per ADR-0003’s sequencing rule the codec is not deleted
+until a repair path ships — <a class="reference internal" href="#s3dol.store.detect_chunked_framing" title="s3dol.store.detect_chunked_framing"><code class="xref py py-func docutils literal notranslate"><span class="pre">detect_chunked_framing()</span></code></a> is that path’s
+diagnostic.</p>
+<p>When v1 resolves a call differently than v0 <em>effectively</em> did (v0 dropped an
+explicit <code class="docutils literal notranslate"><span class="pre">endpoint_url</span></code> whenever env credentials were set, and let env
+credentials override explicit ones), the shim warns with
+<a class="reference internal" href="errors.html#s3dol.errors.S3DolResolutionChanged" title="s3dol.errors.S3DolResolutionChanged"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3DolResolutionChanged</span></code></a> — the ADR-0012 D7 differential.
+This module and that warning die together in v2.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="s3dol.store.S3Store">
-<span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">S3Store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_bucket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_session_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_bucket_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_supabase_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Store</span></span></span><a class="reference internal" href="../../_modules/s3dol/store.html#S3Store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.S3Store" title="Link to this definition"></a></dt>
-<dd><p>S3 Bucket Store</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>bucket_name</strong> – name of bucket to store data in</p></li>
-<li><p><strong>make_bucket</strong> – if True, create bucket if it does not exist.
-If None, skip bucket existence checks completely.
-If False, check for existence but don’t create.</p></li>
-<li><p><strong>path</strong> – prefix to use for bucket keys</p></li>
-<li><p><strong>aws_access_key_id</strong> – AWS access key ID</p></li>
-<li><p><strong>aws_secret_access_key</strong> – AWS secret access key</p></li>
-<li><p><strong>aws_session_token</strong> – AWS session token</p></li>
-<li><p><strong>endpoint_url</strong> – URL of S3 endpoint</p></li>
-<li><p><strong>region_name</strong> – AWS region name</p></li>
-<li><p><strong>profile_name</strong> – AWS profile name</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>S3BucketDol</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="s3dol.store.SupabaseS3BucketDol">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">SupabaseS3BucketDol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_bucket_exists_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/store.html#SupabaseS3BucketDol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.SupabaseS3BucketDol" title="Link to this definition"></a></dt>
-<dd><p>S3BucketDol for Supabase endpoints.
-Over the S3BucketDolWithouBucketCheck, it adds support to unravel the returned
-content from the stuff (number of bytes, check sum, etc.) superbase adds to the
-content.</p>
+<span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">S3Store</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_bucket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_session_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_bucket_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_supabase_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">MutableMapping</span></span></span><a class="reference internal" href="../../_modules/s3dol/store.html#S3Store"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.S3Store" title="Link to this definition"></a></dt>
+<dd><p>DEPRECATED — the v0 entry point, kept working until v2.</p>
+<p>Use <a class="reference internal" href="../s3dol.html#s3dol.s3_store" title="s3dol.s3_store"><code class="xref py py-func docutils literal notranslate"><span class="pre">s3dol.s3_store()</span></code></a> instead: <code class="docutils literal notranslate"><span class="pre">s3_store(bucket,</span> <span class="pre">prefix=...)</span></code>.</p>
+<p>Signature is v0’s exactly (<code class="docutils literal notranslate"><span class="pre">path=</span></code> not renamed; <code class="docutils literal notranslate"><span class="pre">make_bucket</span></code>
+tri-state maps <code class="docutils literal notranslate"><span class="pre">True</span> <span class="pre">-&gt;</span> <span class="pre">on_missing_bucket='create'</span></code>, <code class="docutils literal notranslate"><span class="pre">False</span> <span class="pre">-&gt;</span>
+<span class="pre">'raise'</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span> <span class="pre">-&gt;</span> <span class="pre">'assume'</span></code>). Behaviour differences vs v0 are bug
+fixes only (explicit endpoint/credentials honoured; listing errors raise
+instead of returning <code class="docutils literal notranslate"><span class="pre">[]</span></code>; writes no longer create buckets unless asked)
+and announce themselves via <code class="docutils literal notranslate"><span class="pre">S3DolResolutionChanged</span></code> when they change
+this call’s resolution.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="s3dol.store.validate_bucket">
-<span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">validate_bucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s3_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="base.html#s3dol.base.S3ClientDol" title="s3dol.base.S3ClientDol"><span class="pre">S3ClientDol</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_bucket</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/store.html#validate_bucket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.validate_bucket" title="Link to this definition"></a></dt>
-<dd><p>Validate bucket name and create if needed</p>
-<p>If make_bucket is None, skip existence check entirely.
-If make_bucket is True, create bucket if it doesn’t exist.
-If make_bucket is False, check existence but don’t create.</p>
+<dt class="sig sig-object py" id="s3dol.store.dechunk_aws_chunked">
+<span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">dechunk_aws_chunked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/s3dol/store.html#dechunk_aws_chunked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.dechunk_aws_chunked" title="Link to this definition"></a></dt>
+<dd><p>Undo verbatim-persisted <code class="docutils literal notranslate"><span class="pre">aws-chunked</span></code> framing, if present.</p>
+<p>Full-parse-or-passthrough: either the ENTIRE payload parses as chunked
+framing (every chunk header, every CRLF, through the terminal <code class="docutils literal notranslate"><span class="pre">0</span></code> chunk)
+and the concatenated chunks are returned, or the payload is returned
+untouched. v0’s parser truncated any payload larger than one chunk and
+misfired on payloads that merely <em>started</em> with hex digits; requiring a
+complete valid parse removes both failure modes (a random payload that
+happens to be a complete chunked document is astronomically unlikely).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dechunk_aws_chunked</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;5</span><span class="se">\r\n</span><span class="s1">hello</span><span class="se">\r\n</span><span class="s1">0</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="go">b&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">framed</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;3</span><span class="se">\r\n</span><span class="s1">abc</span><span class="se">\r\n</span><span class="s1">2</span><span class="se">\r\n</span><span class="s1">de</span><span class="se">\r\n</span><span class="s1">0</span><span class="se">\r\n</span><span class="s1">x-amz-checksum-crc32:AAAA</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dechunk_aws_chunked</span><span class="p">(</span><span class="n">framed</span><span class="p">)</span>  <span class="c1"># multi-chunk (v0 truncated this)</span>
+<span class="go">b&#39;abcde&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dechunk_aws_chunked</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;cafe is hex-ish but not framed&#39;</span><span class="p">)</span>
+<span class="go">b&#39;cafe is hex-ish but not framed&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.store.detect_chunked_framing">
+<span class="sig-prename descclassname"><span class="pre">s3dol.store.</span></span><span class="sig-name descname"><span class="pre">detect_chunked_framing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../_modules/s3dol/store.html#detect_chunked_framing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.store.detect_chunked_framing" title="Link to this definition"></a></dt>
+<dd><p>Which of the first <code class="docutils literal notranslate"><span class="pre">sample</span></code> keys hold verbatim <code class="docutils literal notranslate"><span class="pre">aws-chunked</span></code>
+framing (objects corrupted by v0 Supabase writes). The repair path:
+<code class="docutils literal notranslate"><span class="pre">store[k]</span> <span class="pre">=</span> <span class="pre">dechunk_aws_chunked(raw[k])</span></code> per flagged key, reading raw
+bytes through an un-codec’d store.</p>
 </dd></dl>
 
 </section>
@@ -167,8 +185,8 @@ If make_bucket is False, check existence but don’t create.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="presets.html" class="btn btn-neutral float-left" title="s3dol.presets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tests/test_base.html" class="btn btn-neutral float-right" title="s3dol.tests.test_base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="recipes.html" class="btn btn-neutral float-left" title="s3dol.recipes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="testing.html" class="btn btn-neutral float-right" title="s3dol.testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

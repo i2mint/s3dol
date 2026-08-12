@@ -1,0 +1,4 @@
+s3dol.writes
+============
+.. automodule:: s3dol.writes
+   :members:

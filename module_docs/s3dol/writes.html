@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.writes &mdash; s3dol 0.1.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="s3dol.values" href="values.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">s3dol.testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_values.html">s3dol.tests.test_values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="values.html">s3dol.values</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.writes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.writes.DEFAULT_MULTIPART_THRESHOLD"><code class="docutils literal notranslate"><span class="pre">DEFAULT_MULTIPART_THRESHOLD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.writes.SimpleWrites"><code class="docutils literal notranslate"><span class="pre">SimpleWrites</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.writes.TransferWrites"><code class="docutils literal notranslate"><span class="pre">TransferWrites</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.writes.WriteStrategy"><code class="docutils literal notranslate"><span class="pre">WriteStrategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.writes.transfer_writes"><code class="docutils literal notranslate"><span class="pre">transfer_writes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">s3dol.writes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/s3dol/writes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-s3dol.writes">
+<span id="s3dol-writes"></span><h1>s3dol.writes<a class="headerlink" href="#module-s3dol.writes" title="Link to this heading"></a></h1>
+<p>Write strategies (ADR-0005 §5): how <code class="docutils literal notranslate"><span class="pre">s[k]</span> <span class="pre">=</span> <span class="pre">v</span></code> reaches the wire.</p>
+<p>A strategy is a callable <code class="docutils literal notranslate"><span class="pre">(client,</span> <span class="pre">bucket,</span> <span class="pre">key,</span> <span class="pre">value)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code>, injected at
+store construction — <code class="docutils literal notranslate"><span class="pre">__setitem__</span></code> stays <code class="docutils literal notranslate"><span class="pre">__setitem__</span></code>; <em>how</em> it uploads is
+a constructor parameter. This is the answer to “infra-specific optimisation
+without polluting the interface”: multipart is <em>transport</em>, not storage-model.</p>
+<p>Strategies are frozen dataclasses, not closures, because every s3dol store
+must pickle (ADR-0008 §6 / ADR-0012 D1) and a store carries its strategy.</p>
+<p>Every non-<code class="docutils literal notranslate"><span class="pre">bytes</span></code> source routes through <code class="docutils literal notranslate"><span class="pre">upload_fileobj</span></code>/<code class="docutils literal notranslate"><span class="pre">TransferManager</span></code>,
+never <code class="docutils literal notranslate"><span class="pre">PutObject</span></code> — so seekability is s3transfer’s problem, and the size
+threshold is never consulted for a non-seekable source (where it is undecidable
+anyway). Note <code class="docutils literal notranslate"><span class="pre">io.UnsupportedOperation</span></code> and botocore’s
+<code class="docutils literal notranslate"><span class="pre">UnseekableStreamError</span></code> raise <em>before the request is built</em>, so they reach the
+caller directly (they are not <code class="docutils literal notranslate"><span class="pre">ClientError``s</span> <span class="pre">and</span> <span class="pre">the</span> <span class="pre">error</span> <span class="pre">seam</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">—</span>
+<span class="pre">and</span> <span class="pre">must</span> <span class="pre">not</span> <span class="pre">—</span> <span class="pre">convert</span> <span class="pre">them</span> <span class="pre">to</span> <span class="pre">``KeyError</span></code>).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">strategy</span> <span class="o">=</span> <span class="n">transfer_writes</span><span class="p">(</span><span class="n">multipart_threshold</span><span class="o">=</span><span class="mi">16</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span><span class="p">;</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span> <span class="o">==</span> <span class="n">strategy</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.writes.DEFAULT_MULTIPART_THRESHOLD">
+<span class="sig-prename descclassname"><span class="pre">s3dol.writes.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_MULTIPART_THRESHOLD</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8388608</span></span><a class="headerlink" href="#s3dol.writes.DEFAULT_MULTIPART_THRESHOLD" title="Link to this definition"></a></dt>
+<dd><p>boto3’s own default multipart threshold (8 MiB).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.writes.SimpleWrites">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.writes.</span></span><span class="sig-name descname"><span class="pre">SimpleWrites</span></span><a class="reference internal" href="../../_modules/s3dol/writes.html#SimpleWrites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.writes.SimpleWrites" title="Link to this definition"></a></dt>
+<dd><p>Everything through a single <code class="docutils literal notranslate"><span class="pre">PutObject</span></code> — refs are materialised in
+memory first. For small-object workloads and providers with no multipart
+at all (<code class="docutils literal notranslate"><span class="pre">Capabilities.multipart=False</span></code>).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.writes.TransferWrites">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.writes.</span></span><span class="sig-name descname"><span class="pre">TransferWrites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multipart_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8388608</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multipart_chunksize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8388608</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_concurrency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/writes.html#TransferWrites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.writes.TransferWrites" title="Link to this definition"></a></dt>
+<dd><p>The default: small in-memory values take a single <code class="docutils literal notranslate"><span class="pre">PutObject</span></code>; file
+objects and refs go through <code class="docutils literal notranslate"><span class="pre">upload_fileobj</span></code> (which goes multipart above
+the threshold, transparently). The overhead on small objects is one branch.</p>
+<p>Providers that cap multipart parts (Scaleway: 1000 — see the preset’s
+<code class="docutils literal notranslate"><span class="pre">Capabilities.max_multipart_parts</span></code>) may need a larger
+<code class="docutils literal notranslate"><span class="pre">multipart_chunksize</span></code> for very large objects: parts ≈ size / chunksize.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.writes.WriteStrategy">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.writes.</span></span><span class="sig-name descname"><span class="pre">WriteStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/writes.html#WriteStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.writes.WriteStrategy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.writes.transfer_writes">
+<span class="sig-prename descclassname"><span class="pre">s3dol.writes.</span></span><span class="sig-name descname"><span class="pre">transfer_writes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.writes.TransferWrites" title="s3dol.writes.TransferWrites"><span class="pre">TransferWrites</span></a></span></span><a class="reference internal" href="../../_modules/s3dol/writes.html#transfer_writes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.writes.transfer_writes" title="Link to this definition"></a></dt>
+<dd><p>Factory spelling of <a class="reference internal" href="#s3dol.writes.TransferWrites" title="s3dol.writes.TransferWrites"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferWrites</span></code></a> (the constructor-injection
+idiom of ADR-0005 §5: <code class="docutils literal notranslate"><span class="pre">BucketStore(...,</span> <span class="pre">writes=transfer_writes(...))</span></code>).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="values.html" class="btn btn-neutral float-left" title="s3dol.values" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

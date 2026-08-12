@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; s3dol 0.1.13 documentation</title>
+  <title>&lt;no title&gt; &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8d02545a"></script>
+      <script src="_static/documentation_options.js?v=468bc497"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -50,19 +50,27 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -92,21 +100,91 @@
   <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol.html">s3dol</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.AccessDenied"><code class="docutils literal notranslate"><span class="pre">AccessDenied</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketCollection"><code class="docutils literal notranslate"><span class="pre">BucketCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketHandles"><code class="docutils literal notranslate"><span class="pre">BucketHandles</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketInfo"><code class="docutils literal notranslate"><span class="pre">BucketInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketNotEmpty"><code class="docutils literal notranslate"><span class="pre">BucketNotEmpty</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketNotFound"><code class="docutils literal notranslate"><span class="pre">BucketNotFound</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketReader"><code class="docutils literal notranslate"><span class="pre">BucketReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketStore"><code class="docutils literal notranslate"><span class="pre">BucketStore</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.BucketUrls"><code class="docutils literal notranslate"><span class="pre">BucketUrls</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.CallableCredentials"><code class="docutils literal notranslate"><span class="pre">CallableCredentials</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.Capabilities"><code class="docutils literal notranslate"><span class="pre">Capabilities</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.Chunks"><code class="docutils literal notranslate"><span class="pre">Chunks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.ConfigurationError"><code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.CredentialsError"><code class="docutils literal notranslate"><span class="pre">CredentialsError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.EndpointCollection"><code class="docutils literal notranslate"><span class="pre">EndpointCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.EndpointReader"><code class="docutils literal notranslate"><span class="pre">EndpointReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.EndpointStore"><code class="docutils literal notranslate"><span class="pre">EndpointStore</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.Filepath"><code class="docutils literal notranslate"><span class="pre">Filepath</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.KeyNotValid"><code class="docutils literal notranslate"><span class="pre">KeyNotValid</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.NotSupported"><code class="docutils literal notranslate"><span class="pre">NotSupported</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.ObjectArchived"><code class="docutils literal notranslate"><span class="pre">ObjectArchived</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.ObjectHandle"><code class="docutils literal notranslate"><span class="pre">ObjectHandle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.ObjectInfo"><code class="docutils literal notranslate"><span class="pre">ObjectInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.ObjectNotFound"><code class="docutils literal notranslate"><span class="pre">ObjectNotFound</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.Preset"><code class="docutils literal notranslate"><span class="pre">Preset</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.ProfileCredentials"><code class="docutils literal notranslate"><span class="pre">ProfileCredentials</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.Resolution"><code class="docutils literal notranslate"><span class="pre">Resolution</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Connection"><code class="docutils literal notranslate"><span class="pre">S3Connection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Dol"><code class="docutils literal notranslate"><span class="pre">S3Dol</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3DolWarning"><code class="docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Error"><code class="docutils literal notranslate"><span class="pre">S3Error</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Jsons"><code class="docutils literal notranslate"><span class="pre">S3Jsons</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3PartialFailure"><code class="docutils literal notranslate"><span class="pre">S3PartialFailure</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Pickles"><code class="docutils literal notranslate"><span class="pre">S3Pickles</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Profiles"><code class="docutils literal notranslate"><span class="pre">S3Profiles</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Store"><code class="docutils literal notranslate"><span class="pre">S3Store()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.S3Texts"><code class="docutils literal notranslate"><span class="pre">S3Texts</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.StaticCredentials"><code class="docutils literal notranslate"><span class="pre">StaticCredentials</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.Streamable"><code class="docutils literal notranslate"><span class="pre">Streamable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.delete_bucket"><code class="docutils literal notranslate"><span class="pre">delete_bucket()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.delete_many"><code class="docutils literal notranslate"><span class="pre">delete_many()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.handles"><code class="docutils literal notranslate"><span class="pre">handles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.prefixes"><code class="docutils literal notranslate"><span class="pre">prefixes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.register_preset"><code class="docutils literal notranslate"><span class="pre">register_preset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.resolve"><code class="docutils literal notranslate"><span class="pre">resolve()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.s3_store"><code class="docutils literal notranslate"><span class="pre">s3_store()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.sub"><code class="docutils literal notranslate"><span class="pre">sub()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol.html#s3dol.urls"><code class="docutils literal notranslate"><span class="pre">urls()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/_diagnose.html">s3dol._diagnose</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/_diagnose.html#s3dol._diagnose.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/base.html">s3dol.base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.BaseS3BucketDol"><code class="docutils literal notranslate"><span class="pre">BaseS3BucketDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.BaseS3BucketReader"><code class="docutils literal notranslate"><span class="pre">BaseS3BucketReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.S3BucketDol"><code class="docutils literal notranslate"><span class="pre">S3BucketDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.S3BucketReader"><code class="docutils literal notranslate"><span class="pre">S3BucketReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.S3ClientDol"><code class="docutils literal notranslate"><span class="pre">S3ClientDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.S3ClientReader"><code class="docutils literal notranslate"><span class="pre">S3ClientReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.S3Dol"><code class="docutils literal notranslate"><span class="pre">S3Dol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.get_client"><code class="docutils literal notranslate"><span class="pre">get_client()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.list_profile_names"><code class="docutils literal notranslate"><span class="pre">list_profile_names()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.BucketCollection"><code class="docutils literal notranslate"><span class="pre">BucketCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.BucketReader"><code class="docutils literal notranslate"><span class="pre">BucketReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.BucketStore"><code class="docutils literal notranslate"><span class="pre">BucketStore</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.EndpointCollection"><code class="docutils literal notranslate"><span class="pre">EndpointCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.EndpointReader"><code class="docutils literal notranslate"><span class="pre">EndpointReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.EndpointStore"><code class="docutils literal notranslate"><span class="pre">EndpointStore</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.MAX_KEY_BYTES"><code class="docutils literal notranslate"><span class="pre">MAX_KEY_BYTES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.MAX_PRESIGN_EXPIRES"><code class="docutils literal notranslate"><span class="pre">MAX_PRESIGN_EXPIRES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.ObjectHandle"><code class="docutils literal notranslate"><span class="pre">ObjectHandle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.ObjectInfo"><code class="docutils literal notranslate"><span class="pre">ObjectInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.ObjectNotFoundForDelete"><code class="docutils literal notranslate"><span class="pre">ObjectNotFoundForDelete</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.S3Profiles"><code class="docutils literal notranslate"><span class="pre">S3Profiles</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/base.html#s3dol.base.clamp_expires_in"><code class="docutils literal notranslate"><span class="pre">clamp_expires_in()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/capabilities.html">s3dol.capabilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.BucketHandles"><code class="docutils literal notranslate"><span class="pre">BucketHandles</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.BucketInfo"><code class="docutils literal notranslate"><span class="pre">BucketInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.BucketUrls"><code class="docutils literal notranslate"><span class="pre">BucketUrls</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.DELETE_MANY_CHUNK"><code class="docutils literal notranslate"><span class="pre">DELETE_MANY_CHUNK</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.delete_bucket"><code class="docutils literal notranslate"><span class="pre">delete_bucket()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.delete_many"><code class="docutils literal notranslate"><span class="pre">delete_many()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.handles"><code class="docutils literal notranslate"><span class="pre">handles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.prefixes"><code class="docutils literal notranslate"><span class="pre">prefixes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.sub"><code class="docutils literal notranslate"><span class="pre">sub()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/capabilities.html#s3dol.capabilities.urls"><code class="docutils literal notranslate"><span class="pre">urls()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/connection.html">s3dol.connection</a><ul>
@@ -151,9 +229,11 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.classify_client_error"><code class="docutils literal notranslate"><span class="pre">classify_client_error()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.code_of"><code class="docutils literal notranslate"><span class="pre">code_of()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.redact"><code class="docutils literal notranslate"><span class="pre">redact()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.redact_url"><code class="docutils literal notranslate"><span class="pre">redact_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.status_of"><code class="docutils literal notranslate"><span class="pre">status_of()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.translate_client_error"><code class="docutils literal notranslate"><span class="pre">translate_client_error()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.translate_s3_errors"><code class="docutils literal notranslate"><span class="pre">translate_s3_errors()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/errors.html#s3dol.errors.translating_s3_errors"><code class="docutils literal notranslate"><span class="pre">translating_s3_errors()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/presets.html">s3dol.presets</a><ul>
@@ -167,32 +247,63 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/presets.html#s3dol.presets.validate_endpoint_hygiene"><code class="docutils literal notranslate"><span class="pre">validate_endpoint_hygiene()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/reads.html">s3dol.reads</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/reads.html#s3dol.reads.BytesReads"><code class="docutils literal notranslate"><span class="pre">BytesReads</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/reads.html#s3dol.reads.DEFAULT_CHUNK_SIZE"><code class="docutils literal notranslate"><span class="pre">DEFAULT_CHUNK_SIZE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/reads.html#s3dol.reads.ReadStrategy"><code class="docutils literal notranslate"><span class="pre">ReadStrategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/reads.html#s3dol.reads.StreamReads"><code class="docutils literal notranslate"><span class="pre">StreamReads</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/recipes.html">s3dol.recipes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/recipes.html#s3dol.recipes.s3_store"><code class="docutils literal notranslate"><span class="pre">s3_store()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/store.html">s3dol.store</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/store.html#s3dol.store.S3BucketDolWithouBucketCheck"><code class="docutils literal notranslate"><span class="pre">S3BucketDolWithouBucketCheck</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/store.html#s3dol.store.S3Store"><code class="docutils literal notranslate"><span class="pre">S3Store()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/store.html#s3dol.store.SupabaseS3BucketDol"><code class="docutils literal notranslate"><span class="pre">SupabaseS3BucketDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/store.html#s3dol.store.validate_bucket"><code class="docutils literal notranslate"><span class="pre">validate_bucket()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/store.html#s3dol.store.dechunk_aws_chunked"><code class="docutils literal notranslate"><span class="pre">dechunk_aws_chunked()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/store.html#s3dol.store.detect_chunked_framing"><code class="docutils literal notranslate"><span class="pre">detect_chunked_framing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/testing.html">s3dol.testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.FakeBucketHandles"><code class="docutils literal notranslate"><span class="pre">FakeBucketHandles</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.FakeBucketInfo"><code class="docutils literal notranslate"><span class="pre">FakeBucketInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.FakeBucketStore"><code class="docutils literal notranslate"><span class="pre">FakeBucketStore</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.FakeBucketUrls"><code class="docutils literal notranslate"><span class="pre">FakeBucketUrls</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.FakeObjectHandle"><code class="docutils literal notranslate"><span class="pre">FakeObjectHandle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.mock_s3"><code class="docutils literal notranslate"><span class="pre">mock_s3()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/testing.html#s3dol.testing.run_conformance"><code class="docutils literal notranslate"><span class="pre">run_conformance()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/tests/test_diagnose.html#s3dol.tests.test_diagnose.run_diagnose"><code class="docutils literal notranslate"><span class="pre">run_diagnose()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/utility.html">s3dol.utility</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.GetItemForKeyError"><code class="docutils literal notranslate"><span class="pre">GetItemForKeyError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.KeyNotValidError"><code class="docutils literal notranslate"><span class="pre">KeyNotValidError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.NoSuchKeyError"><code class="docutils literal notranslate"><span class="pre">NoSuchKeyError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.S3DolException"><code class="docutils literal notranslate"><span class="pre">S3DolException</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.S3HttpError"><code class="docutils literal notranslate"><span class="pre">S3HttpError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.S3KeyError"><code class="docutils literal notranslate"><span class="pre">S3KeyError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/utility.html#s3dol.utility.S3Not200StatusCodeError"><code class="docutils literal notranslate"><span class="pre">S3Not200StatusCodeError</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/values.html">s3dol.values</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.BytesSource"><code class="docutils literal notranslate"><span class="pre">BytesSource</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.Chunks"><code class="docutils literal notranslate"><span class="pre">Chunks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.Filepath"><code class="docutils literal notranslate"><span class="pre">Filepath</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.Streamable"><code class="docutils literal notranslate"><span class="pre">Streamable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.as_fileobj"><code class="docutils literal notranslate"><span class="pre">as_fileobj()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.is_bytes_like"><code class="docutils literal notranslate"><span class="pre">is_bytes_like()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/values.html#s3dol.values.reject_str_value"><code class="docutils literal notranslate"><span class="pre">reject_str_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/s3dol/writes.html">s3dol.writes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/writes.html#s3dol.writes.DEFAULT_MULTIPART_THRESHOLD"><code class="docutils literal notranslate"><span class="pre">DEFAULT_MULTIPART_THRESHOLD</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/writes.html#s3dol.writes.SimpleWrites"><code class="docutils literal notranslate"><span class="pre">SimpleWrites</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/writes.html#s3dol.writes.TransferWrites"><code class="docutils literal notranslate"><span class="pre">TransferWrites</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/writes.html#s3dol.writes.WriteStrategy"><code class="docutils literal notranslate"><span class="pre">WriteStrategy</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/s3dol/writes.html#s3dol.writes.transfer_writes"><code class="docutils literal notranslate"><span class="pre">transfer_writes()</span></code></a></li>
 </ul>
 </li>
 </ul>

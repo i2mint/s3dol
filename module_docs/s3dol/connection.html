@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.connection &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.connection &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="s3dol.errors" href="errors.html" />
-    <link rel="prev" title="s3dol.base" href="base.html" /> 
+    <link rel="prev" title="s3dol.capabilities" href="capabilities.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,6 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.connection</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.CallableCredentials"><code class="docutils literal notranslate"><span class="pre">CallableCredentials</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.CallableCredentials.provenance"><code class="docutils literal notranslate"><span class="pre">CallableCredentials.provenance()</span></code></a></li>
@@ -72,6 +73,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#s3dol.connection.S3Connection"><code class="docutils literal notranslate"><span class="pre">S3Connection</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.S3Connection.client"><code class="docutils literal notranslate"><span class="pre">S3Connection.client</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.S3Connection.presign_client"><code class="docutils literal notranslate"><span class="pre">S3Connection.presign_client</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#s3dol.connection.S3Connection.resolution"><code class="docutils literal notranslate"><span class="pre">S3Connection.resolution()</span></code></a></li>
 </ul>
 </li>
@@ -92,16 +94,23 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -262,6 +271,18 @@ not later inside botocore.</p>
 <dd><p>The boto3 S3 client — built lazily, once, under the lock.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="s3dol.connection.S3Connection.presign_client">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">presign_client</span></span><a class="headerlink" href="#s3dol.connection.S3Connection.presign_client" title="Link to this definition"></a></dt>
+<dd><p>The client presigned URLs are generated with.</p>
+<p>For most providers this is <a class="reference internal" href="#s3dol.connection.S3Connection.client" title="s3dol.connection.S3Connection.client"><code class="xref py py-attr docutils literal notranslate"><span class="pre">client</span></code></a>. Two providers genuinely
+need different config for presigning than for the API (ADR-0003 §1):
+Hetzner presigns virtual-hosted while the API is path-style; R2
+presigns only on the S3 API domain. When the resolved preset carries
+<code class="docutils literal notranslate"><span class="pre">presign_endpoint_url</span></code>/<code class="docutils literal notranslate"><span class="pre">presign_addressing_style</span></code>, a second client
+is built (lazily, once, under the same lock) from the merged config.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="s3dol.connection.S3Connection.resolution">
 <span class="sig-name descname"><span class="pre">resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">environ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str]</span> <span class="pre">|</span> <span class="pre">None</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">load_aws_config&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#s3dol.connection.Resolution" title="s3dol.connection.Resolution"><span class="pre">Resolution</span></a></span></span><a class="reference internal" href="../../_modules/s3dol/connection.html#S3Connection.resolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.connection.S3Connection.resolution" title="Link to this definition"></a></dt>
@@ -352,7 +373,7 @@ if a rung needs it.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="base.html" class="btn btn-neutral float-left" title="s3dol.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="capabilities.html" class="btn btn-neutral float-left" title="s3dol.capabilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="errors.html" class="btn btn-neutral float-right" title="s3dol.errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

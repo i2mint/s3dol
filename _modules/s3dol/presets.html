@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.presets &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.presets &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,19 +49,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -127,9 +135,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ConfigurationError</span><span class="p">,</span>
     <span class="n">InvalidEndpoint</span><span class="p">,</span>
-    <span class="n">MissingPresetParam</span><span class="p">,</span>
-    <span class="n">UnknownPresetParam</span><span class="p">,</span>
     <span class="n">Rule</span><span class="p">,</span>
+    <span class="n">UnknownPresetParam</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># --------------------------------------------------------------------------- #</span>
@@ -138,7 +145,7 @@
 
 
 <div class="viewcode-block" id="Capabilities">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Capabilities">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Capabilities">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Capabilities</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;What a backend supports. A *static declared table*, never a probe</span>
@@ -191,7 +198,7 @@
 
 
 <div class="viewcode-block" id="validate_endpoint_hygiene">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.validate_endpoint_hygiene">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.validate_endpoint_hygiene">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_endpoint_hygiene</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">what</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;endpoint_url&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Refuse credential-carrying URL shapes: userinfo in the netloc, a query</span>
 <span class="sd">    string, or a fragment (ADR-0012 D4 — a query-string endpoint is accepted by</span>
@@ -211,15 +218,25 @@
             <span class="sa">f</span><span class="s2">&quot;with &#39;@&#39; in its netloc. Pass credentials via &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;S3Connection(credentials=...), never in a URL.&quot;</span>
         <span class="p">)</span>
+    <span class="c1"># The refusal messages deliberately do NOT echo the URL: its query/</span>
+    <span class="c1"># fragment is exactly the secret carrier this check exists to stop, and an</span>
+    <span class="c1"># exception message lands in tracebacks, logs and diagnose reports.</span>
     <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">query</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry a query string: </span><span class="si">{</span><span class="n">url</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry a query string (host &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parts</span><span class="o">.</span><span class="n">hostname</span><span class="si">!r}</span><span class="s2">): the query is where signed-URL and SAS-style &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;credentials live, and botocore would retain it verbatim in &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;client.meta.endpoint_url. Pass the bare endpoint.&quot;</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">fragment</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry a fragment: </span><span class="si">{</span><span class="n">url</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="n">InvalidEndpoint</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2"> must not carry a fragment (host </span><span class="si">{</span><span class="n">parts</span><span class="o">.</span><span class="n">hostname</span><span class="si">!r}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="Preset">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Preset">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Preset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;One provider&#39;s facts. Public, shareable, committable config — which is</span>
@@ -299,6 +316,23 @@
                     <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: config_kwargs values must be &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;scalars; </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> is a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
                 <span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KINDS</span>
+
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_overrides</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">_operation</span><span class="p">,</span> <span class="n">_code</span><span class="p">,</span> <span class="n">_status</span><span class="p">),</span> <span class="n">kind</span> <span class="o">=</span> <span class="n">rule</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: each error_overrides row is &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;((operation, code, status), kind); got </span><span class="si">{</span><span class="n">rule</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+            <span class="k">if</span> <span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">KINDS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: error_overrides kind </span><span class="si">{</span><span class="n">kind</span><span class="si">!r}</span><span class="s2"> is &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;not one of </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">KINDS</span><span class="p">)</span><span class="si">}</span><span class="s2">. An unvalidated kind would &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;detonate inside the error-translation seam at request &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;time, masking the real backend error.&quot;</span>
+                <span class="p">)</span>
         <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">))</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_params</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnknownPresetParam</span><span class="p">(</span>
@@ -307,7 +341,7 @@
             <span class="p">)</span>
 
 <div class="viewcode-block" id="Preset.template_params">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.template_params">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Preset.template_params">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">template_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;All placeholder names across this row&#39;s templates.&quot;&quot;&quot;</span>
         <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -322,7 +356,7 @@
 
 
 <div class="viewcode-block" id="Preset.bind">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.bind">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Preset.bind">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Preset&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A copy of this row with template ``params`` bound.</span>
 
@@ -351,7 +385,7 @@
         <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">bindings</span><span class="p">),</span> <span class="nb">set</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Preset.bound_endpoint">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.bound_endpoint">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Preset.bound_endpoint">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">bound_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The endpoint URL with params bound, or ``None`` if the template has</span>
 <span class="sd">        unbound placeholders (C1: an unbound row contributes no rung —</span>
@@ -365,7 +399,7 @@
 
 
 <div class="viewcode-block" id="Preset.missing_endpoint_params">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.missing_endpoint_params">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Preset.missing_endpoint_params">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">missing_endpoint_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Which placeholders keep :meth:`bound_endpoint` from producing a URL.&quot;&quot;&quot;</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;region_name&quot;</span><span class="p">:</span> <span class="n">region_name</span><span class="p">}</span> <span class="k">if</span> <span class="n">region_name</span> <span class="k">else</span> <span class="kc">None</span>
@@ -374,7 +408,7 @@
 
 
 <div class="viewcode-block" id="Preset.matches_host">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.Preset.matches_host">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.Preset.matches_host">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">matches_host</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether ``endpoint_url``&#39;s hostname matches this row&#39;s patterns.&quot;&quot;&quot;</span>
         <span class="n">host</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
@@ -391,7 +425,7 @@
 
 
 <div class="viewcode-block" id="register">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.register">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.register">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">preset</span><span class="p">:</span> <span class="n">Preset</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a row. Open-closed: adding a provider is adding a row.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span> <span class="ow">and</span> <span class="n">preset</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">_REGISTRY</span><span class="p">:</span>
@@ -404,7 +438,7 @@
 
 
 <div class="viewcode-block" id="unregister">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.unregister">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.unregister">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">unregister</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove a row (mostly for tests).&quot;&quot;&quot;</span>
     <span class="n">_REGISTRY</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
@@ -412,7 +446,7 @@
 
 
 <div class="viewcode-block" id="get_preset">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.get_preset">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.get_preset">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_preset</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Preset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Look a row up by name; unknown names raise, naming the registry.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -430,7 +464,7 @@
 
 
 <div class="viewcode-block" id="detect_preset">
-<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.presets.detect_preset">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/presets.html#s3dol.detect_preset">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">detect_preset</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Preset</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Detection (resolution pass 2): the non-soft row whose ``host_patterns``</span>
 <span class="sd">    match the resolved endpoint&#39;s host. Two matching rows is genuinely</span>

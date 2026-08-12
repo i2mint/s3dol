@@ -1,0 +1,4 @@
+s3dol.reads
+===========
+.. automodule:: s3dol.reads
+   :members:

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.errors &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.errors &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,19 +49,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -132,7 +140,7 @@
 
 
 <div class="viewcode-block" id="S3Error">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.S3Error">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3Error">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base of every s3dol exception — ``except S3Error`` catches the package.&quot;&quot;&quot;</span></div>
 
@@ -158,14 +166,14 @@
 
 
 <div class="viewcode-block" id="ObjectNotFound">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.ObjectNotFound">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ObjectNotFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ObjectNotFound</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The object is absent. The Mapping contract&#39;s ``KeyError``.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="BucketNotFound">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.BucketNotFound">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.BucketNotFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BucketNotFound</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The bucket is absent.</span>
 
@@ -176,7 +184,7 @@
 
 
 <div class="viewcode-block" id="KeyNotValid">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.KeyNotValid">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.KeyNotValid">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">KeyNotValid</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The key is syntactically invalid (checked before the wire).</span>
 
@@ -189,7 +197,7 @@
 
 
 <div class="viewcode-block" id="ObjectArchived">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.ObjectArchived">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ObjectArchived">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ObjectArchived</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The object exists but is archived (e.g. Glacier) and cannot be read now.</span>
 
@@ -215,7 +223,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_restore</span> <span class="o">=</span> <span class="n">restore</span>
 
 <div class="viewcode-block" id="ObjectArchived.restore">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.ObjectArchived.restore">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ObjectArchived.restore">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Standard&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Request restoration of the archived object (if a handle was bound).&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restore</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -229,7 +237,7 @@
 
 
 <div class="viewcode-block" id="AccessDenied">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.AccessDenied">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.AccessDenied">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AccessDenied</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Permission denied. **Not** a ``KeyError`` — a missing permission must</span>
 <span class="sd">    not look like a missing key (ADR-0004 §1/§3).&quot;&quot;&quot;</span></div>
@@ -237,21 +245,21 @@
 
 
 <div class="viewcode-block" id="CredentialsError">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.CredentialsError">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.CredentialsError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CredentialsError</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials are missing, expired, or invalid.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="NotSupported">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.NotSupported">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.NotSupported">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NotSupported</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The operation is not supported by this provider (names both).&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="BucketNotEmpty">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.BucketNotEmpty">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.BucketNotEmpty">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BucketNotEmpty</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Refusal to delete a non-empty bucket. Use</span>
 <span class="sd">    ``s3dol.delete_bucket(endpoint, name, force=True)`` for the explicit</span>
@@ -260,7 +268,7 @@
 
 
 <div class="viewcode-block" id="S3PartialFailure">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.S3PartialFailure">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3PartialFailure">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3PartialFailure</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A bulk operation partially failed (ADR-0010 §2).</span>
 
@@ -280,21 +288,21 @@
 
 
 <div class="viewcode-block" id="ConfigurationError">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.ConfigurationError">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ConfigurationError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigurationError</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A construction- or resolution-time misconfiguration (ADR-0012 D1).&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="PresetConflict">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.PresetConflict">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.PresetConflict">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PresetConflict</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An explicit argument contradicts a *pinned* (verified) preset value.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="PresetHostMismatch">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.PresetHostMismatch">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.PresetHostMismatch">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PresetHostMismatch</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The resolved endpoint&#39;s host matches a *different* provider&#39;s patterns</span>
 <span class="sd">    than the preset you named (ADR-0012 C2).&quot;&quot;&quot;</span></div>
@@ -302,7 +310,7 @@
 
 
 <div class="viewcode-block" id="MissingEndpoint">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.MissingEndpoint">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.MissingEndpoint">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MissingEndpoint</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The named preset needs an endpoint (or endpoint parameters) that nothing</span>
 <span class="sd">    supplied (ADR-0012 C1).&quot;&quot;&quot;</span></div>
@@ -310,21 +318,23 @@
 
 
 <div class="viewcode-block" id="MissingPresetParam">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.MissingPresetParam">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MissingPresetParam</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A preset endpoint template has an unbound required parameter.&quot;&quot;&quot;</span></div>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.MissingPresetParam">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MissingPresetParam</span><span class="p">(</span><span class="n">MissingEndpoint</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A preset&#39;s endpoint template has an unbound required parameter, so the</span>
+<span class="sd">    row contributes no endpoint rung (ADR-0012 C1). A ``MissingEndpoint``, so</span>
+<span class="sd">    either ``except`` works.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="UnknownPresetParam">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.UnknownPresetParam">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.UnknownPresetParam">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UnknownPresetParam</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A parameter was bound that the preset&#39;s templates do not use.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidEndpoint">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.InvalidEndpoint">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.InvalidEndpoint">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidEndpoint</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An endpoint URL failed hygiene checks (userinfo/query/fragment —</span>
 <span class="sd">    ADR-0012 D4: a URL is the residual credential carrier).&quot;&quot;&quot;</span></div>
@@ -339,14 +349,14 @@
 
 
 <div class="viewcode-block" id="S3DolWarning">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.S3DolWarning">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3DolWarning">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3DolWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base of every s3dol warning.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="S3DolResolutionChanged">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.S3DolResolutionChanged">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3DolResolutionChanged">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3DolResolutionChanged</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;v1 resolves this call differently than v0 would have (ADR-0012 D7).</span>
 <span class="sd">    Emitted by the compat shim; dies with it.&quot;&quot;&quot;</span></div>
@@ -354,7 +364,7 @@
 
 
 <div class="viewcode-block" id="AmbiguousResolution">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.AmbiguousResolution">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.AmbiguousResolution">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AmbiguousResolution</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolution is legal but ambiguous (e.g. a named preset whose endpoint,</span>
 <span class="sd">    supplied from the environment, matches no known host pattern).&quot;&quot;&quot;</span></div>
@@ -362,7 +372,7 @@
 
 
 <div class="viewcode-block" id="AnonymousFallback">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.AnonymousFallback">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.AnonymousFallback">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AnonymousFallback</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Anonymous access was used as a fallback (reserved for a future</span>
 <span class="sd">    ``anon=&#39;auto&#39;`` — ADR-0012 D5 defers that feature to v1.x).&quot;&quot;&quot;</span></div>
@@ -388,8 +398,35 @@
 <span class="p">)</span>
 
 
+<div class="viewcode-block" id="redact_url">
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.redact_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">redact_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A URL safe to display: userinfo, query and fragment removed.</span>
+
+<span class="sd">    A URL is the residual credential carrier (ADR-0012 D4). Endpoint hygiene</span>
+<span class="sd">    refuses those shapes for values *s3dol* is given, but an endpoint read</span>
+<span class="sd">    from ``AWS_ENDPOINT_URL_S3`` or an aws-config profile is not ours to</span>
+<span class="sd">    refuse — it must merely never be echoed intact.</span>
+
+<span class="sd">    &gt;&gt;&gt; redact_url(&#39;https://user:pw@minio.internal:9000/x?sig=abc#f&#39;)</span>
+<span class="sd">    &#39;https://REDACTED@minio.internal:9000/x?&lt;redacted&gt;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">url</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunsplit</span>
+
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">netloc</span> <span class="o">=</span> <span class="n">parts</span><span class="o">.</span><span class="n">netloc</span>
+    <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">netloc</span><span class="p">:</span>
+        <span class="n">netloc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;REDACTED@</span><span class="si">{</span><span class="n">netloc</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">urlunsplit</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">parts</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">netloc</span><span class="p">,</span> <span class="n">parts</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;&lt;redacted&gt;&quot;</span> <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">query</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="redact">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.redact">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.redact">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">redact</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Redact signed-URL query secrets from ``text``.</span>
 
@@ -429,7 +466,7 @@
 
 
 <div class="viewcode-block" id="Classified">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.Classified">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.Classified">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Classified</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The result of classifying a backend error.&quot;&quot;&quot;</span>
@@ -481,6 +518,12 @@
     <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AuthorizationHeaderMalformed&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;wrong_region&quot;</span><span class="p">),</span>
     <span class="c1"># -- archived objects</span>
     <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;InvalidObjectState&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;archived&quot;</span><span class="p">),</span>
+    <span class="c1"># -- clock skew / request expiry: 403s that are NOT permission problems.</span>
+    <span class="c1">#    They must sit ABOVE the wildcard 403 rows, or deny_means_absent</span>
+    <span class="c1">#    would turn a skewed clock into &quot;every key is absent&quot;.</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;RequestTimeTooSkewed&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;RequestExpired&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AuthorizationQueryParametersError&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
     <span class="c1"># -- credentials</span>
     <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ExpiredToken&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
     <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;InvalidAccessKeyId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
@@ -517,7 +560,7 @@
 
 
 <div class="viewcode-block" id="classify_client_error">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.classify_client_error">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.classify_client_error">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">classify_client_error</span><span class="p">(</span>
     <span class="n">operation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -543,7 +586,7 @@
 
 
 <div class="viewcode-block" id="code_of">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.code_of">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.code_of">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">code_of</span><span class="p">(</span><span class="n">client_error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The ``Error.Code`` of a botocore ``ClientError`` (or ``None``).&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -554,7 +597,7 @@
 
 
 <div class="viewcode-block" id="status_of">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.status_of">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.status_of">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">status_of</span><span class="p">(</span><span class="n">client_error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The HTTP status of a botocore ``ClientError`` (or ``None``).&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -591,7 +634,7 @@
 
 
 <div class="viewcode-block" id="translate_client_error">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.translate_client_error">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.translate_client_error">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">translate_client_error</span><span class="p">(</span>
     <span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -622,15 +665,21 @@
     <span class="n">kind</span> <span class="o">=</span> <span class="n">classified</span><span class="o">.</span><span class="n">kind</span>
 
     <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;ambiguous_head&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">head_ambiguity_resolver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">head_ambiguity_resolver</span><span class="p">():</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;object_absent&quot;</span>
-        <span class="k">elif</span> <span class="n">head_ambiguity_resolver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;bucket_absent&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;object_absent&quot;</span>  <span class="c1"># documented default when no resolver bound</span>
+        <span class="k">if</span> <span class="n">head_ambiguity_resolver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># ADR-0004 §2: the body-less HeadObject 404 must NOT be resolved</span>
+            <span class="c1"># by guessing — &quot;the object is absent&quot; and &quot;the bucket is absent&quot;</span>
+            <span class="c1"># are indistinguishable here on real AWS. With no disambiguator</span>
+            <span class="c1"># bound we propagate the backend error untouched (loud) rather</span>
+            <span class="c1"># than manufacture an absence a caller&#39;s .get() would swallow.</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;object_absent&quot;</span> <span class="k">if</span> <span class="n">head_ambiguity_resolver</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;bucket_absent&quot;</span>
 
     <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;access_denied&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">deny_means_absent</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Only a genuine permission code may be read as absence. A 403 that</span>
+        <span class="c1"># means something else (clock skew, expired request) is classified</span>
+        <span class="c1"># above; this guard is the second belt.</span>
+        <span class="n">permission_code</span> <span class="o">=</span> <span class="n">code</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AccessDenied&quot;</span><span class="p">,</span> <span class="s2">&quot;403&quot;</span><span class="p">,</span> <span class="s2">&quot;AllAccessDisabled&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">deny_means_absent</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">permission_code</span><span class="p">:</span>
             <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;object_absent&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">AccessDenied</span><span class="p">(</span>
@@ -672,8 +721,44 @@
 
 
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+
+
+<div class="viewcode-block" id="translating_s3_errors">
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.translating_s3_errors">[docs]</a>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">translating_s3_errors</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">translate_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generator/inline form of the seam, for code the decorator cannot wrap</span>
+<span class="sd">    (``__iter__`` bodies: a decorated generator function returns its generator</span>
+<span class="sd">    before the body runs, so the decorator&#39;s ``except`` never fires).</span>
+
+<span class="sd">    Same contract as :func:`translate_s3_errors`; the store supplies</span>
+<span class="sd">    ``_error_context()``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span><span class="p">,</span> <span class="n">NoCredentialsError</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;_error_context&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)())</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">translate_kwargs</span><span class="p">)</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">translate_client_error</span><span class="p">(</span>
+            <span class="n">error</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">replacement</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">raise</span> <span class="n">replacement</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+    <span class="k">except</span> <span class="n">NoCredentialsError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">CredentialsError</span><span class="p">(</span>
+            <span class="s2">&quot;No AWS credentials found. Configure credentials (env vars, &quot;</span>
+            <span class="s2">&quot;~/.aws/credentials, SSO, or S3Connection(credentials=...)), &quot;</span>
+            <span class="s2">&quot;or pass anon=True for public data.&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span></div>
+
+
+
 <div class="viewcode-block" id="translate_s3_errors">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.errors.translate_s3_errors">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.translate_s3_errors">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">translate_s3_errors</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -695,6 +780,14 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 
         <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key_arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key_arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;translate_s3_errors(key_arg=</span><span class="si">{</span><span class="n">key_arg</span><span class="si">!r}</span><span class="s2">) on &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">: that function has no such parameter &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(it has </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">). A silently unresolved &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;key_arg would drop the key from every error message and &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;disable the deny_means_absent conversion.&quot;</span>
+            <span class="p">)</span>
 
         <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -706,6 +799,7 @@
                 <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="n">key_arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">bound</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">bound</span><span class="o">.</span><span class="n">apply_defaults</span><span class="p">()</span>  <span class="c1"># a defaulted key is still the key</span>
                     <span class="n">key</span> <span class="o">=</span> <span class="n">bound</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key_arg</span><span class="p">)</span>
                 <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_error_context&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)())</span>
                 <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">translate_kwargs</span><span class="p">)</span>

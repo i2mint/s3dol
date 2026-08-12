@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.values &mdash; s3dol 0.1.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="s3dol.writes" href="writes.html" />
+    <link rel="prev" title="s3dol.tests.util" href="tests/util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">s3dol.testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_values.html">s3dol.tests.test_values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.values</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.BytesSource"><code class="docutils literal notranslate"><span class="pre">BytesSource</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.Chunks"><code class="docutils literal notranslate"><span class="pre">Chunks</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.Filepath"><code class="docutils literal notranslate"><span class="pre">Filepath</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.Streamable"><code class="docutils literal notranslate"><span class="pre">Streamable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.as_fileobj"><code class="docutils literal notranslate"><span class="pre">as_fileobj()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.is_bytes_like"><code class="docutils literal notranslate"><span class="pre">is_bytes_like()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s3dol.values.reject_str_value"><code class="docutils literal notranslate"><span class="pre">reject_str_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="writes.html">s3dol.writes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">s3dol.values</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/s3dol/values.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-s3dol.values">
+<span id="s3dol-values"></span><h1>s3dol.values<a class="headerlink" href="#module-s3dol.values" title="Link to this heading"></a></h1>
+<p>Value refs and the write domain (ADR-0005).</p>
+<p>The write domain is a small, closed, explicitly-named union:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BytesSource</span> <span class="o">=</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="nb">bytearray</span> <span class="o">|</span> <span class="nb">memoryview</span> <span class="o">|</span> <span class="n">BinaryIO</span> <span class="o">|</span> <span class="n">Filepath</span> <span class="o">|</span> <span class="n">Chunks</span> <span class="o">|</span> <span class="n">Streamable</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Filepath</span></code>/<code class="docutils literal notranslate"><span class="pre">Chunks</span></code>/<code class="docutils literal notranslate"><span class="pre">Streamable</span></code> are tiny frozen dataclasses — value
+<em>refs</em>, not values (h5py’s <code class="docutils literal notranslate"><span class="pre">SoftLink</span></code>/<code class="docutils literal notranslate"><span class="pre">ExternalLink</span></code> are the precedent:
+purpose-built objects meaning “the value is a reference to content elsewhere”,
+assigned through an ordinary <code class="docutils literal notranslate"><span class="pre">__setitem__</span></code>).</p>
+<p>The law that makes the asymmetric read/write types safe (ADR-0005 §3):</p>
+<ul class="simple">
+<li><p><strong>N1 (canonical form)</strong>: <code class="docutils literal notranslate"><span class="pre">normalize:</span> <span class="pre">WriteDomain</span> <span class="pre">-&gt;</span> <span class="pre">bytes</span></code> is total on
+<code class="docutils literal notranslate"><span class="pre">bytes</span> <span class="pre">|</span> <span class="pre">bytearray</span> <span class="pre">|</span> <span class="pre">memoryview</span> <span class="pre">|</span> <span class="pre">Filepath</span></code> and <strong>one-shot</strong> on
+<code class="docutils literal notranslate"><span class="pre">BinaryIO</span> <span class="pre">|</span> <span class="pre">Chunks</span> <span class="pre">|</span> <span class="pre">Streamable</span></code> — a stream ref is consumed by its first
+write; assigning the same ref twice is a documented error, not a second copy.</p></li>
+<li><p><strong>N3 (the honest invariant)</strong>: <code class="docutils literal notranslate"><span class="pre">s[k]</span> <span class="pre">=</span> <span class="pre">v</span>&#160; <span class="pre">=&gt;</span>&#160; <span class="pre">s[k]</span> <span class="pre">==</span> <span class="pre">normalize(v)</span></code> — for
+the re-readable half.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">str</span></code> is rejected, loudly, on <strong>decidability</strong> (§2): <code class="docutils literal notranslate"><span class="pre">s['config']</span> <span class="pre">=</span> <span class="pre">'{&quot;a&quot;:1}'</span></code>
+and <code class="docutils literal notranslate"><span class="pre">s['video']</span> <span class="pre">=</span> <span class="pre">'/tmp/big.mp4'</span></code> are both overwhelmingly plausible, and any
+rule distinguishing them is a latent data-corruption bug. One word —
+<code class="docutils literal notranslate"><span class="pre">Filepath(p)</span></code> — removes the ambiguity. Bare <code class="docutils literal notranslate"><span class="pre">os.PathLike</span></code> is rejected too:
+accepting it while rejecting <code class="docutils literal notranslate"><span class="pre">str</span></code> would be a confusing half-rule.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reject_str_value</span><span class="p">(</span><span class="s1">&#39;{&quot;a&quot;: 1}&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">...</span>
+</pre></div>
+</div>
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.values.BytesSource">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">BytesSource</span></span><a class="headerlink" href="#s3dol.values.BytesSource" title="Link to this definition"></a></dt>
+<dd><p>The static write domain (<code class="docutils literal notranslate"><span class="pre">BinaryIO</span></code> is for mypy; runtime dispatch uses
+<code class="docutils literal notranslate"><span class="pre">io.IOBase</span></code> — see <a class="reference internal" href="#s3dol.values.as_fileobj" title="s3dol.values.as_fileobj"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_fileobj()</span></code></a>).</p>
+<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">bytearray</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryIO</span></code> | <a class="reference internal" href="#s3dol.values.Filepath" title="s3dol.values.Filepath"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filepath</span></code></a> | <a class="reference internal" href="#s3dol.values.Chunks" title="s3dol.values.Chunks"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chunks</span></code></a> | <a class="reference internal" href="#s3dol.values.Streamable" title="s3dol.values.Streamable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Streamable</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.values.Chunks">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">Chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">chunks:</span> <span class="pre">~typing.Iterable[bytes],</span> <span class="pre">consumed:</span> <span class="pre">list</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/values.html#Chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.values.Chunks" title="Link to this definition"></a></dt>
+<dd><p>The value is the concatenation of an iterable of <code class="docutils literal notranslate"><span class="pre">bytes</span></code> chunks.
+<strong>One-shot</strong> unless the iterable is re-iterable (a list is; a generator is
+not — and a consumed generator writes <code class="docutils literal notranslate"><span class="pre">b''</span></code>, which is why assigning the
+same one-shot ref twice is a documented error).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.values.Filepath">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">Filepath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/values.html#Filepath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.values.Filepath" title="Link to this definition"></a></dt>
+<dd><p>The value <em>is the content of this file</em>. Re-readable (N1-total).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.values.Streamable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">Streamable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">open_stream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/values.html#Streamable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.values.Streamable" title="Link to this definition"></a></dt>
+<dd><p>The value is whatever a zero-arg factory’s stream yields — for sources
+that must be (re)opened at write time, e.g. an HTTP download. The factory
+is called once per write, so unlike <a class="reference internal" href="#s3dol.values.Chunks" title="s3dol.values.Chunks"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chunks</span></code></a> this ref IS safely
+re-writable (each write gets a fresh stream).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.values.as_fileobj">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BinaryIO</span></span></span><a class="reference internal" href="../../_modules/s3dol/values.html#as_fileobj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.values.as_fileobj" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytearray</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IOBase</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.values.Filepath" title="s3dol.values.Filepath"><span class="pre">Filepath</span></a></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.values.Chunks" title="s3dol.values.Chunks"><span class="pre">Chunks</span></a></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">as_fileobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3dol.values.Streamable" title="s3dol.values.Streamable"><span class="pre">Streamable</span></a></span></em><span class="sig-paren">)</span></dt>
+<dd><p>A binary file object for any member of the write domain.</p>
+<p><code class="docutils literal notranslate"><span class="pre">functools.singledispatch</span></code>: the union is open for extension (users
+register their own ref types) and closed for modification. Everything
+non-<code class="docutils literal notranslate"><span class="pre">bytes</span></code> routes through <code class="docutils literal notranslate"><span class="pre">upload_fileobj</span></code> downstream, so seekability
+is s3transfer’s problem.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.values.is_bytes_like">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">is_bytes_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/s3dol/values.html#is_bytes_like"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.values.is_bytes_like" title="Link to this definition"></a></dt>
+<dd><p>Whether <code class="docutils literal notranslate"><span class="pre">v</span></code> is an in-memory bytes value (the <code class="docutils literal notranslate"><span class="pre">PutObject</span></code> fast path).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.values.reject_str_value">
+<span class="sig-prename descclassname"><span class="pre">s3dol.values.</span></span><span class="sig-name descname"><span class="pre">reject_str_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/s3dol/values.html#reject_str_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.values.reject_str_value" title="Link to this definition"></a></dt>
+<dd><p>The one error message for the <code class="docutils literal notranslate"><span class="pre">str</span></code> ambiguity (ADR-0005 §2).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests/util.html" class="btn btn-neutral float-left" title="s3dol.tests.util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="writes.html" class="btn btn-neutral float-right" title="s3dol.writes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

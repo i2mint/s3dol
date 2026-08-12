@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.connection &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.connection &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,19 +49,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -148,6 +156,7 @@
     <span class="n">AmbiguousResolution</span><span class="p">,</span>
     <span class="n">ConfigurationError</span><span class="p">,</span>
     <span class="n">MissingEndpoint</span><span class="p">,</span>
+    <span class="n">MissingPresetParam</span><span class="p">,</span>
     <span class="n">PresetConflict</span><span class="p">,</span>
     <span class="n">PresetHostMismatch</span><span class="p">,</span>
 <span class="p">)</span>
@@ -165,7 +174,7 @@
 
 
 <div class="viewcode-block" id="CredentialProvider">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CredentialProvider">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.CredentialProvider">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CredentialProvider</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base of s3dol&#39;s picklable credential specs.</span>
 
@@ -179,7 +188,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CredentialProvider.provenance">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CredentialProvider.provenance">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.CredentialProvider.provenance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A label for diagnose() — never a credential value.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
@@ -205,7 +214,7 @@
 
 
 <div class="viewcode-block" id="StaticCredentials">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.StaticCredentials">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.StaticCredentials">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">StaticCredentials</span><span class="p">(</span><span class="n">CredentialProvider</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An explicit key pair (optionally a session token).</span>
@@ -220,7 +229,7 @@
     <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="StaticCredentials.provenance">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.StaticCredentials.provenance">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.StaticCredentials.provenance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;explicit static (access key </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">access_key</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">…)&quot;</span></div>
 
@@ -242,7 +251,7 @@
 
 
 <div class="viewcode-block" id="ProfileCredentials">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.ProfileCredentials">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.ProfileCredentials">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">ProfileCredentials</span><span class="p">(</span><span class="n">CredentialProvider</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials from a named profile — *credentials only*; the profile&#39;s</span>
@@ -253,7 +262,7 @@
     <span class="n">profile</span><span class="p">:</span> <span class="nb">str</span>
 
 <div class="viewcode-block" id="ProfileCredentials.provenance">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.ProfileCredentials.provenance">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.ProfileCredentials.provenance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;profile:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="si">}</span><span class="s2"> (via credentials=)&quot;</span></div>
 
@@ -266,7 +275,7 @@
 
 
 <div class="viewcode-block" id="CallableCredentials">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CallableCredentials">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.CallableCredentials">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">CallableCredentials</span><span class="p">(</span><span class="n">CredentialProvider</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A picklable zero-arg callable returning a mapping with keys</span>
@@ -278,11 +287,20 @@
 
     <span class="n">fetch</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Mapping</span><span class="p">]</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># NEVER repr(self.fetch): functools.partial&#39;s repr prints its bound</span>
+        <span class="c1"># arguments, and the rejection message below recommends a partial —</span>
+        <span class="c1"># a partial closing over a vault token would leak it (D1 §4).</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">,</span> <span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">)</span>  <span class="c1"># unwrap a partial</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;__qualname__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(fetch=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
 <div class="viewcode-block" id="CallableCredentials.provenance">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.CallableCredentials.provenance">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.CallableCredentials.provenance">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">,</span> <span class="s2">&quot;__qualname__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">))</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;callable:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;callable:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
     <span class="nd">@staticmethod</span>
@@ -310,15 +328,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_botocore_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">Credentials</span><span class="p">,</span> <span class="n">RefreshableCredentials</span>
 
-        <span class="n">first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">first</span><span class="p">[</span><span class="s2">&quot;expiry_time&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Credentials</span><span class="p">(</span>
-                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;access_key&quot;</span><span class="p">],</span>
-                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;secret_key&quot;</span><span class="p">],</span>
-                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">],</span>
-                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-callable&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-
         <span class="k">def</span><span class="w"> </span><span class="nf">refresh</span><span class="p">():</span>
             <span class="n">fresh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fetch</span><span class="p">())</span>
             <span class="k">return</span> <span class="p">{</span>
@@ -328,8 +337,18 @@
                 <span class="s2">&quot;expiry_time&quot;</span><span class="p">:</span> <span class="n">fresh</span><span class="p">[</span><span class="s2">&quot;expiry_time&quot;</span><span class="p">],</span>
             <span class="p">}</span>
 
+        <span class="c1"># ONE fetch on the first load — a token vendor may be rate-limited or</span>
+        <span class="c1"># single-use, so the initial credential is the one we keep.</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">refresh</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">first</span><span class="p">[</span><span class="s2">&quot;expiry_time&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Credentials</span><span class="p">(</span>
+                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;access_key&quot;</span><span class="p">],</span>
+                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;secret_key&quot;</span><span class="p">],</span>
+                <span class="n">first</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">],</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-callable&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">RefreshableCredentials</span><span class="o">.</span><span class="n">create_from_metadata</span><span class="p">(</span>
-            <span class="n">metadata</span><span class="o">=</span><span class="n">refresh</span><span class="p">(),</span> <span class="n">refresh_using</span><span class="o">=</span><span class="n">refresh</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-callable&quot;</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">first</span><span class="p">,</span> <span class="n">refresh_using</span><span class="o">=</span><span class="n">refresh</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;s3dol-callable&quot;</span>
         <span class="p">)</span></div>
 
 
@@ -349,7 +368,7 @@
 
 
 <div class="viewcode-block" id="normalize_credentials">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.normalize_credentials">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.normalize_credentials">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">normalize_credentials</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">CredentialsInput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CredentialProvider</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise every accepted credential shape; reject the rest, each with</span>
 <span class="sd">    its own message (ADR-0012 D5). The only door is ``S3Connection.__post_init__``.</span>
@@ -386,7 +405,14 @@
                 <span class="sa">f</span><span class="s2">&quot;credentials= tuple must be (key, secret) or &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;(key, secret, token); got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2"> items.&quot;</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">StaticCredentials</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="n">access</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">rest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">rest</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="c1"># str()-ing a None token would yield the truthy string &#39;None&#39; and sign</span>
+        <span class="c1"># every request with X-Amz-Security-Token: None — the natural</span>
+        <span class="c1"># `credentials=(k, s, maybe_token)` shape must behave like the 2-tuple.</span>
+        <span class="k">return</span> <span class="n">StaticCredentials</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">access</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">secret</span><span class="p">),</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
         <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_AWS_CRED_KEYS</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
@@ -409,11 +435,14 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="s2">&quot;__qualname__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;credentials= callable </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> is not picklable &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;credentials= callable </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not picklable &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). Every s3dol store pickles &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;(ADR-0012 D1); use a module-level function or a &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;functools.partial of one.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;functools.partial of one. (Its repr is deliberately not &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;shown — a bound argument may be a secret.)&quot;</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
         <span class="k">return</span> <span class="n">CallableCredentials</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
@@ -430,7 +459,7 @@
 
 
 <div class="viewcode-block" id="Sourced">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.Sourced">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.Sourced">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Sourced</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A resolved value, where it came from, and whether s3dol passes it to</span>
 <span class="sd">    botocore explicitly (``passed=False`` == the key is omitted so the channel</span>
@@ -443,7 +472,7 @@
 
 
 <div class="viewcode-block" id="Resolution">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.Resolution">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.Resolution">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Resolution</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The result of :func:`resolve` — everything ``diagnose()`` prints and</span>
@@ -477,27 +506,40 @@
     <span class="s2">&quot;AWS_RESPONSE_CHECKSUM_VALIDATION&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1">#: Region-looking tokens: ``us-east-1``, ``fr-par``, ``us-west-004``, hetzner&#39;s</span>
-<span class="c1">#: ``fsn1``, and R2&#39;s literal ``auto``.</span>
-<span class="n">_REGION_TOKEN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]+-\d+|[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]{3,}|[a-z]</span><span class="si">{3}</span><span class="s2">\d|auto&quot;</span><span class="p">)</span>
+<span class="c1">#: Region-shaped tokens, deliberately NARROW: ``us-east-1``, ``fr-par``,</span>
+<span class="c1">#: ``us-west-004``. A looser pattern (an earlier draft also accepted any</span>
+<span class="c1">#: ``xxxN`` first label, for hetzner&#39;s ``fsn1``) captures ordinary hostname</span>
+<span class="c1">#: labels — ``srv1.corp``, ``eu-storage.corp`` — and because host capture</span>
+<span class="c1">#: outranks ``AWS_DEFAULT_REGION`` in the ladder, that garbage would be handed</span>
+<span class="c1">#: to botocore as the SigV4 credential scope and silently override the user&#39;s</span>
+<span class="c1">#: exported region. Providers whose region is genuinely part of the host state</span>
+<span class="c1">#: it in their preset row instead (hetzner binds ``{location}``).</span>
+<span class="n">_REGION_TOKEN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]+-\d+|[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]{3,}-\d{2,}|[a-z]</span><span class="si">{2}</span><span class="s2">-[a-z]{3,}&quot;</span>
+<span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_region_from_host</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best-effort region capture from a resolved endpoint host.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best-effort region capture — ONLY from the canonical ``s3.&lt;region&gt;.``</span>
+<span class="sd">    (or ``s3-&lt;region&gt;.``) host shape, never from an arbitrary label.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">endpoint_url</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlsplit</span>
 
     <span class="n">host</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
     <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?:^|\.)s3[.-]([a-z0-9-]+)\.&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="p">[]</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">host</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">labels</span><span class="p">:</span>
-        <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">_REGION_TOKEN</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">if</span> <span class="n">match</span> <span class="ow">and</span> <span class="n">_REGION_TOKEN</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_looks_secret</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether an option name plausibly carries a secret (repr scrubbing).&quot;&quot;&quot;</span>
+    <span class="n">lowered</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="n">marker</span> <span class="ow">in</span> <span class="n">lowered</span>
+        <span class="k">for</span> <span class="n">marker</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;secret&quot;</span><span class="p">,</span> <span class="s2">&quot;token&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;passwd&quot;</span><span class="p">,</span> <span class="s2">&quot;credential&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
 
 
 <span class="n">_CREDENTIAL_KEY_MARKERS</span> <span class="o">=</span> <span class="p">(</span>
@@ -508,6 +550,15 @@
     <span class="s2">&quot;credential_process&quot;</span><span class="p">,</span>
     <span class="s2">&quot;sso_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_redact_env_value</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A display-safe form of a consulted environment value.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">redact_url</span>
+
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="s2">&quot;ENDPOINT&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redact_url</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_scrub_credentials</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -528,7 +579,7 @@
 
 
 <div class="viewcode-block" id="load_aws_config">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.load_aws_config">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.load_aws_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_aws_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The named, *impure* aws-config loader (ADR-0012 D2): loads the shared</span>
 <span class="sd">    config via botocore (~16 ms — never on the common path; pass this function</span>
@@ -554,10 +605,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The endpoint the rungs *below* s3dol&#39;s two would supply — read purely,</span>
 <span class="sd">    for diagnose() and the C1/C2 guards **only**, never to override (ADR-0012</span>
 <span class="sd">    D3; and never pass ``Config(ignore_configured_endpoint_urls=True)``).&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">redact_url</span>
+
     <span class="k">for</span> <span class="n">env_key</span> <span class="ow">in</span> <span class="n">_ENV_ENDPOINT_KEYS</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">env_key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;env:</span><span class="si">{</span><span class="n">env_key</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="c1"># Redact at capture. This rung is never PASSED to botocore (which</span>
+            <span class="c1"># reads the env itself), only reported — so the Resolution, the C2</span>
+            <span class="c1"># messages and diagnose all become leak-proof at once, while the</span>
+            <span class="c1"># host survives for detection and the guards.</span>
+            <span class="k">return</span> <span class="n">redact_url</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;env:</span><span class="si">{</span><span class="n">env_key</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="n">aws_config</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.configprovider</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfiguredEndpointProvider</span>
@@ -570,7 +627,7 @@
             <span class="p">)</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">provide</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s2">&quot;aws-config&quot;</span>
+                <span class="k">return</span> <span class="n">redact_url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)),</span> <span class="s2">&quot;aws-config&quot;</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># config parsing must never fail resolution</span>
             <span class="k">return</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="kc">None</span>
@@ -586,7 +643,7 @@
 
 
 <div class="viewcode-block" id="resolve">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.resolve">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.resolve">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">resolve</span><span class="p">(</span>
     <span class="n">spec</span><span class="p">:</span> <span class="s2">&quot;S3Connection&quot;</span><span class="p">,</span>
     <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
@@ -637,28 +694,32 @@
             <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="n">lower</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lower</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">named</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">missing</span> <span class="o">=</span> <span class="n">named</span><span class="o">.</span><span class="n">missing_endpoint_params</span><span class="p">(</span><span class="n">region_name</span><span class="o">=</span><span class="n">spec</span><span class="o">.</span><span class="n">region_name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">named</span><span class="o">.</span><span class="n">requires_endpoint</span> <span class="ow">or</span> <span class="n">missing</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">MissingPresetParam</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has unbound endpoint template &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;parameter(s) </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2">, so it supplies no &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;endpoint — and nothing below supplied one either. Bind &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;them (preset=get_preset(</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">).bind(...)), or &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;pass endpoint_url=. Falling back to AWS silently is &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;structurally impossible (ADR-0012 C1).&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">named</span><span class="o">.</span><span class="n">requires_endpoint</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">MissingEndpoint</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> needs an endpoint and nothing &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;supplied one&quot;</span>
-                    <span class="o">+</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot; (unbound template parameter(s): </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="s2"> — &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;bind with get_preset(</span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">).bind(...))&quot;</span>
-                        <span class="k">if</span> <span class="n">missing</span>
-                        <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-                    <span class="p">)</span>
-                    <span class="o">+</span> <span class="s2">&quot;. Pass endpoint_url=, or set AWS_ENDPOINT_URL_S3. &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Falling back to AWS silently is structurally impossible &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;(ADR-0012 C1).&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Preset </span><span class="si">{</span><span class="n">named</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> cannot be reached without an &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;explicit endpoint and nothing supplied one. Pass &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;endpoint_url=, or set AWS_ENDPOINT_URL_S3 (ADR-0012 C1).&quot;</span>
                 <span class="p">)</span>
             <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SDK resolver&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">endpoint</span> <span class="o">=</span> <span class="n">Sourced</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SDK resolver&quot;</span><span class="p">,</span> <span class="n">passed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># -- C2 guard: a named, patterned row whose endpoint arrived from below</span>
+    <span class="c1"># ADR-0012 C2 exempts no *named* row: `soft` governs detection (pass 2),</span>
+    <span class="c1"># not this guard. Exempting &#39;aws&#39; would silence it for exactly the</span>
+    <span class="c1"># population that declared &quot;I want AWS&quot; and was then retargeted elsewhere</span>
+    <span class="c1"># by an environment variable.</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">named</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="ow">and</span> <span class="ow">not</span> <span class="n">named</span><span class="o">.</span><span class="n">soft</span>
         <span class="ow">and</span> <span class="n">named</span><span class="o">.</span><span class="n">host_patterns</span>
         <span class="ow">and</span> <span class="ow">not</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">passed</span>
         <span class="ow">and</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span>
@@ -809,7 +870,16 @@
         <span class="n">preset_source</span><span class="o">=</span><span class="n">preset_source</span><span class="p">,</span>
         <span class="n">credential_provenance</span><span class="o">=</span><span class="n">provenance</span><span class="p">,</span>
         <span class="n">capabilities</span><span class="o">=</span><span class="n">row</span><span class="o">.</span><span class="n">capabilities</span><span class="p">,</span>
-        <span class="n">environ_consulted</span><span class="o">=</span><span class="nb">tuple</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ENV_CONSULTED_KEYS</span><span class="p">),</span>
+        <span class="c1"># Redacted at capture: these are display values (diagnose prints them,</span>
+        <span class="c1"># and a Resolution is the natural thing to log), and an endpoint env</span>
+        <span class="c1"># var may carry userinfo we neither refuse nor pass on.</span>
+        <span class="n">environ_consulted</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">key</span><span class="p">,</span>
+                <span class="n">_redact_env_value</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ENV_CONSULTED_KEYS</span>
+        <span class="p">),</span>
         <span class="n">notes</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">notes</span><span class="p">),</span>
     <span class="p">)</span></div>
 
@@ -821,7 +891,7 @@
 
 
 <div class="viewcode-block" id="S3Connection">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.S3Connection">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.S3Connection">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3Connection</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A frozen, picklable connection spec. No live objects — ever.</span>
@@ -875,9 +945,43 @@
                 <span class="sa">f</span><span class="s2">&quot;checksum must be &#39;when_supported&#39;, &#39;when_required&#39;, or None; &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">checksum</span><span class="si">!r}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signature_version</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">signature_version</span><span class="p">:</span>
+            <span class="c1"># NOT a &quot;None == do not override&quot; field, unlike its neighbours:</span>
+            <span class="c1"># ADR-0003 §4 requires signature_version to be set explicitly on</span>
+            <span class="c1"># every client. Leaving it to botocore silently downgrades</span>
+            <span class="c1"># presigning to SigV2 in the regions endpoints.json still lists as</span>
+            <span class="c1"># v2-capable (us-east-1 among them — every conventional MinIO</span>
+            <span class="c1"># setup), and client.meta.config reports &#39;s3v4&#39; while doing it.</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;signature_version must be a non-empty str (default &#39;s3v4&#39;); &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">signature_version</span><span class="si">!r}</span><span class="s2">. It is never left to botocore: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;that silently re-enables SigV2 presigning (ADR-0003 §4, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;issue #10). Pass anon=True for unsigned access.&quot;</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;client_kwargs&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="p">)</span>
+        <span class="n">smuggled</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">key</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span>
+            <span class="k">if</span> <span class="n">key</span>
+            <span class="ow">in</span> <span class="p">(</span>
+                <span class="s2">&quot;aws_access_key_id&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aws_session_token&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;config&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">smuggled</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;client_kwargs must not carry </span><span class="si">{</span><span class="n">smuggled</span><span class="si">}</span><span class="s2">: boto3 would accept &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;them, bypassing credential normalisation, the anon &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;contradiction check, and repr redaction (the secret would &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;then print in every log line that reprs this spec). Use &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;credentials=/profile=, and the connection&#39;s own fields for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Config (addressing_style, checksum, signature_version, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;payload_signing_enabled, verify).&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="p">:</span>
@@ -911,7 +1015,7 @@
         <span class="k">return</span> <span class="n">built</span>
 
 <div class="viewcode-block" id="S3Connection.resolution">
-<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.connection.S3Connection.resolution">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/connection.html#s3dol.S3Connection.resolution">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">resolution</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">environ</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -924,7 +1028,9 @@
         <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span> <span class="k">if</span> <span class="n">environ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">aws_config</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_build_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_client</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">_override_s3_settings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_override_endpoint</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
@@ -944,6 +1050,8 @@
             <span class="n">s3_settings</span><span class="p">[</span><span class="s2">&quot;payload_signing_enabled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">resolution</span><span class="o">.</span><span class="n">payload_signing_enabled</span><span class="o">.</span><span class="n">value</span>
             <span class="p">)</span>
+        <span class="k">if</span> <span class="n">_override_s3_settings</span><span class="p">:</span>
+            <span class="n">s3_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_override_s3_settings</span><span class="p">)</span>
         <span class="n">config_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">resolution</span><span class="o">.</span><span class="n">preset</span><span class="o">.</span><span class="n">config_kwargs</span> <span class="ow">or</span> <span class="p">())</span>
         <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
             <span class="n">config_kwargs</span><span class="p">[</span><span class="s2">&quot;request_checksum_calculation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">value</span>
@@ -972,17 +1080,51 @@
         <span class="n">client_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">&quot;verify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify</span>
+        <span class="n">endpoint_to_pass</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">resolution</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">passed</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">_override_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">endpoint_to_pass</span> <span class="o">=</span> <span class="n">_override_endpoint</span>
         <span class="k">return</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">botocore_session</span><span class="o">=</span><span class="n">botocore_session</span><span class="p">)</span><span class="o">.</span><span class="n">client</span><span class="p">(</span>
             <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
-            <span class="n">endpoint_url</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">resolution</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">value</span>
-                <span class="k">if</span> <span class="n">resolution</span><span class="o">.</span><span class="n">endpoint_url</span><span class="o">.</span><span class="n">passed</span>
-                <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">),</span>
+            <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_to_pass</span><span class="p">,</span>
             <span class="n">region_name</span><span class="o">=</span><span class="n">resolution</span><span class="o">.</span><span class="n">region_name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="o">**</span><span class="n">client_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">presign_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The client presigned URLs are generated with.</span>
+
+<span class="sd">        For most providers this is :attr:`client`. Two providers genuinely</span>
+<span class="sd">        need different config for presigning than for the API (ADR-0003 §1):</span>
+<span class="sd">        Hetzner presigns virtual-hosted while the API is path-style; R2</span>
+<span class="sd">        presigns only on the S3 API domain. When the resolved preset carries</span>
+<span class="sd">        ``presign_endpoint_url``/``presign_addressing_style``, a second client</span>
+<span class="sd">        is built (lazily, once, under the same lock) from the merged config.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">()</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">.</span><span class="n">preset</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">presign_endpoint_url</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row</span><span class="o">.</span><span class="n">presign_addressing_style</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+        <span class="n">built</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_presign_client&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">built</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+                <span class="n">built</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_presign_client&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">built</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">overrides</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">presign_addressing_style</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">overrides</span><span class="p">[</span><span class="s2">&quot;addressing_style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">presign_addressing_style</span>
+                    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">presign_endpoint_url</span>
+                    <span class="n">built</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_client</span><span class="p">(</span>
+                        <span class="n">_override_s3_settings</span><span class="o">=</span><span class="n">overrides</span><span class="p">,</span>
+                        <span class="n">_override_endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_presign_client&quot;</span><span class="p">,</span> <span class="n">built</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">built</span>
 
     <span class="c1"># -- pickling: mandatory for every connection (ADR-0012 D1 §3) --------- #</span>
 
@@ -999,11 +1141,20 @@
     <span class="c1"># -- repr: non-default fields only; secrets never (D1 §4) -------------- #</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">redact_url</span>
+
         <span class="n">shown</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">f</span><span class="o">.</span><span class="n">default</span><span class="p">:</span>
-                <span class="n">shown</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">f</span><span class="o">.</span><span class="n">default</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># only non-defaults, so the repr stays readable</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;client_kwargs&quot;</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;***&quot;</span> <span class="k">if</span> <span class="n">_looks_secret</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">else</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">redact_url</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">shown</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shown</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 </pre></div>

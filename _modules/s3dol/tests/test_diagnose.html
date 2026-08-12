@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.tests.test_diagnose &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.tests.test_diagnose &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,19 +49,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -99,8 +107,12 @@
 <div class="viewcode-block" id="run_diagnose">
 <a class="viewcode-back" href="../../../module_docs/s3dol/tests/test_diagnose.html#s3dol.tests.test_diagnose.run_diagnose">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_diagnose</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;diagnose() against a controlled environment, capturing the report.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;diagnose() against a controlled environment AND a controlled aws</span>
+<span class="sd">    config, capturing the report. Injecting both is what makes these tier 1:</span>
+<span class="sd">    otherwise every test silently consults the developer&#39;s own ~/.aws/config</span>
+<span class="sd">    and goes red on a machine whose profile sets an endpoint_url.&quot;&quot;&quot;</span>
     <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;environ&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;aws_config&quot;</span><span class="p">,</span> <span class="p">{})</span>
     <span class="k">return</span> <span class="n">diagnose</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -147,8 +159,17 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_prints_to_the_given_file_and_returns_the_text</span><span class="p">():</span>
     <span class="n">sink</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">diagnose</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://x:1&quot;</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sink</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">diagnose</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://x:1&quot;</span><span class="p">,</span> <span class="n">environ</span><span class="o">=</span><span class="p">{},</span> <span class="n">aws_config</span><span class="o">=</span><span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sink</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">sink</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span> <span class="o">==</span> <span class="n">text</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_configured_aws_endpoint_does_not_bleed_into_a_what_if_run</span><span class="p">():</span>
+    <span class="c1"># The injected config is the ONLY config consulted.</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;minio&quot;</span><span class="p">,</span> <span class="n">aws_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;profiles&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://cfg:1&quot;</span><span class="p">}}}</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;http://cfg:1&quot;</span> <span class="ow">in</span> <span class="n">report</span> <span class="ow">and</span> <span class="s2">&quot;RESOLUTION FAILS&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;RESOLUTION FAILS&quot;</span> <span class="ow">in</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">preset</span><span class="o">=</span><span class="s2">&quot;minio&quot;</span><span class="p">)</span>  <span class="c1"># nothing supplies one</span>
 
 
 <span class="c1"># --------------------------------------------------------------------------- #</span>
@@ -221,6 +242,76 @@
     <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://x.supabase.co/s3&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="s2">&quot;EXCLUDED&quot;</span> <span class="ow">in</span> <span class="n">report</span>
     <span class="k">assert</span> <span class="s2">&quot;process-global&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_credentials_overridden_by_env_is_reported_as_a_move</span><span class="p">():</span>
+    <span class="c1"># THE case step 0 exists for: v0 let env credentials silently override</span>
+    <span class="c1"># explicit ones. Comparing provenance LABELS missed it (both truncate to</span>
+    <span class="c1"># &#39;AKIA…&#39;); the identity predicate catches it.</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s2">&quot;AKIAEXPLICIT&quot;</span><span class="p">,</span>
+        <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s2">&quot;explicit-secret&quot;</span><span class="p">,</span>
+        <span class="n">environ</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">:</span> <span class="s2">&quot;AKIAFROMENV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">:</span> <span class="s2">&quot;env-secret&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;credential identity&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;CHANGES ON UPGRADE&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_env_only_credentials_are_not_a_false_alarm</span><span class="p">():</span>
+    <span class="c1"># The most common v0 configuration: env credentials, no explicit kwargs.</span>
+    <span class="c1"># Both sides resolve to the same keys, so the table must say so — a</span>
+    <span class="c1"># migration signal that cries wolf gets filtered away.</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;http://minio:9000&quot;</span><span class="p">,</span>
+        <span class="n">environ</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">:</span> <span class="s2">&quot;AKIAENV&quot;</span><span class="p">,</span> <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">:</span> <span class="s2">&quot;s&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;credential identity&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_detection_supplied_settings_are_announced_as_new_in_v1</span><span class="p">():</span>
+    <span class="c1"># Both sides run through v1&#39;s resolver, so pass-2 detection cancels out of</span>
+    <span class="c1"># any diff — it has to be reported explicitly or the announcement</span>
+    <span class="c1"># instrument cannot see the path-&gt;virtual flip it exists to announce.</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://s3.us-west-004.backblazeb2.com&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;NEW IN v1&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;backblaze&quot;</span> <span class="ow">in</span> <span class="n">report</span> <span class="ow">and</span> <span class="s2">&quot;when_required&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_env_profile_without_env_credentials_names_the_v0_raise</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">profile_name</span><span class="o">=</span><span class="s2">&quot;environment variables&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;v0 RAISES&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;EXCLUDED&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_v1_credential_kwargs_are_never_echoed</span><span class="p">():</span>
+    <span class="c1"># The allowlist, not a denylist of two v0 names: every v1 shape must be</span>
+    <span class="c1"># covered, in the one artifact users are told to run and paste into issues.</span>
+    <span class="k">for</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;credentials&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;AKIAX&quot;</span><span class="p">,</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span><span class="p">)},</span>
+        <span class="p">{</span><span class="s2">&quot;credentials&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">:</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span><span class="p">}},</span>
+        <span class="p">{</span><span class="s2">&quot;client_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">:</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span><span class="p">}},</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_the_access_key_id_is_shown_by_prefix_only</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s2">&quot;AKIAFULLKEYVALUE&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;AKIAFULLKEYVALUE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>
+    <span class="k">assert</span> <span class="s2">&quot;AKIA&quot;</span> <span class="ow">in</span> <span class="n">report</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_endpoint_with_userinfo_is_redacted_in_the_echo</span><span class="p">():</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">run_diagnose</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s2">&quot;https://user:sEkR3tVALUE@host:9000&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">&quot;sEkR3tVALUE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_credential_identity_divergence_is_a_predicate_not_a_value</span><span class="p">():</span>

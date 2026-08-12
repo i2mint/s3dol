@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol._diagnose &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol._diagnose &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,19 +49,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -117,7 +125,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3Connection</span><span class="p">,</span> <span class="n">Resolution</span><span class="p">,</span> <span class="n">load_aws_config</span><span class="p">,</span> <span class="n">resolve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">redact</span>
@@ -140,13 +148,48 @@
     <span class="p">}</span>
 <span class="p">)</span>
 
-<span class="n">_SECRET_ARG_NAMES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;aws_secret_access_key&quot;</span><span class="p">,</span> <span class="s2">&quot;aws_session_token&quot;</span><span class="p">})</span>
+<span class="c1">#: Argument names whose VALUE is safe to echo. An **allowlist**, not a</span>
+<span class="c1">#: denylist: a denylist of the two v0 secret names let every v1 shape through,</span>
+<span class="c1">#: so ``credentials=(&#39;AK&#39;, &#39;SECRET&#39;)`` printed the secret verbatim into the one</span>
+<span class="c1">#: artifact users are told to run and share (ADR-0012 D6: diagnose holds no</span>
+<span class="c1">#: credential value, only a provenance label).</span>
+<span class="n">_ECHOABLE_ARG_NAMES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;bucket_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prefix&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;region_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;profile_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;profile&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;preset&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;make_bucket&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;skip_bucket_check&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is_supabase_endpoint&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;on_missing_bucket&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anon&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;addressing_style&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;checksum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;payload_signing_enabled&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;deny_means_absent&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;signature_version&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1">#: Echoed, but redacted first (a URL is the residual credential carrier).</span>
+<span class="n">_REDACTED_ARG_NAMES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">})</span>
 
 <span class="c1">#: Reasons a v0 branch is excluded from the differential (ADR-0012 D7): these</span>
 <span class="c1">#: two branches build clients through the module-level ``boto3.client(...)``,</span>
 <span class="c1">#: which resolves through the process-global cached DEFAULT_SESSION — they are</span>
 <span class="c1">#: not functions of their arguments.</span>
 <span class="n">_EXCLUDED_BRANCHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;env-profile (v0 RAISES: no env credentials)&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;v0 raises S3DolException(&#39;Missing AWS credentials in environment &quot;</span>
+        <span class="s2">&quot;variables&#39;) for this call. v1 instead falls through to botocore&#39;s &quot;</span>
+        <span class="s2">&quot;credential chain, so it may succeed — with whatever identity the &quot;</span>
+        <span class="s2">&quot;chain resolves (~/.aws, SSO, IMDS). If you relied on v0 failing &quot;</span>
+        <span class="s2">&quot;loudly here, add an explicit check.&quot;</span>
+    <span class="p">),</span>
     <span class="s2">&quot;supabase&quot;</span><span class="p">:</span> <span class="p">(</span>
         <span class="s2">&quot;v0&#39;s Supabase branch builds its client through boto3&#39;s process-global &quot;</span>
         <span class="s2">&quot;session, so its behaviour is not a function of these arguments. Note: &quot;</span>
@@ -196,6 +239,12 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;env-credentials (endpoint dropped)&quot;</span><span class="p">,</span> <span class="n">effective</span>
     <span class="k">if</span> <span class="n">profile</span> <span class="o">==</span> <span class="s2">&quot;environment variables&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">env_creds</span><span class="p">:</span>
+            <span class="c1"># v0&#39;s get_client(&#39;environment variables&#39;) RAISES S3DolException</span>
+            <span class="c1"># here. v1 falls through to botocore&#39;s chain, which may resolve a</span>
+            <span class="c1"># DIFFERENT identity (~/.aws, SSO, IMDS) — a behaviour change worth</span>
+            <span class="c1"># naming, and not expressible as a resolution diff.</span>
+            <span class="k">return</span> <span class="s2">&quot;env-profile (v0 RAISES: no env credentials)&quot;</span><span class="p">,</span> <span class="kc">None</span>
         <span class="n">effective</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">),</span>
             <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span><span class="p">),</span>
@@ -230,6 +279,40 @@
         <span class="n">profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span>
         <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
     <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_credential_identity</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">environ</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A comparable, non-secret credential *identity* (ADR-0012 D7: compared</span>
+<span class="sd">    by a boolean predicate, never by snapshot, and never by reading</span>
+<span class="sd">    ``.access_key`` — which performs network I/O on a refreshable credential).</span>
+
+<span class="sd">    Provenance *labels* are the wrong comparator in both directions: the v0</span>
+<span class="sd">    side labels env credentials &quot;explicit static (AKIA…)&quot; while the v1 side</span>
+<span class="sd">    labels the same keys &quot;chain (env credentials present)&quot; (a false alarm for</span>
+<span class="sd">    the most common configuration), and two different explicit keys both</span>
+<span class="sd">    truncate to &quot;AKIA…&quot; (a missed alarm for the very case step 0 exists to</span>
+<span class="sd">    catch — v0 letting env silently override explicit credentials).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProfileCredentials</span><span class="p">,</span> <span class="n">StaticCredentials</span>
+
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;anonymous&quot;</span><span class="p">,)</span>
+    <span class="n">credentials</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">credentials</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">StaticCredentials</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">access_key</span><span class="p">)</span>  <span class="c1"># full id: compared, not printed</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">ProfileCredentials</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;profile&quot;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;callable&quot;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">provenance</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;profile&quot;</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">profile</span><span class="p">)</span>
+    <span class="c1"># The chain: its top rung is env credentials, which is what a v0-mangled</span>
+    <span class="c1"># side would have materialised as explicit keys — so identical inputs</span>
+    <span class="c1"># compare EQUAL here, which is the point.</span>
+    <span class="n">env_key</span> <span class="o">=</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">env_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;keys&quot;</span><span class="p">,</span> <span class="n">env_key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AWS_PROFILE&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_redact_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -277,23 +360,54 @@
                 <span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">: v0 -&gt; </span><span class="si">{</span><span class="n">_redact_url</span><span class="p">(</span><span class="n">v0_value</span><span class="p">)</span><span class="si">!r}</span><span class="s2">, &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;v1 -&gt; </span><span class="si">{</span><span class="n">_redact_url</span><span class="p">(</span><span class="n">v1_value</span><span class="p">)</span><span class="si">!r}</span><span class="s2">   ** CHANGES ON UPGRADE **&quot;</span>
             <span class="p">)</span>
-    <span class="k">if</span> <span class="n">v0_res</span><span class="o">.</span><span class="n">credential_provenance</span> <span class="o">!=</span> <span class="n">v1_res</span><span class="o">.</span><span class="n">credential_provenance</span><span class="p">:</span>
+    <span class="n">v0_identity</span> <span class="o">=</span> <span class="n">_credential_identity</span><span class="p">(</span><span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">effective</span><span class="p">),</span> <span class="n">environ</span><span class="p">)</span>
+    <span class="n">v1_identity</span> <span class="o">=</span> <span class="n">_credential_identity</span><span class="p">(</span><span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="n">environ</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">v0_identity</span> <span class="o">!=</span> <span class="n">v1_identity</span><span class="p">:</span>
         <span class="n">moved</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;  credentials: v0 -&gt; </span><span class="si">{</span><span class="n">v0_res</span><span class="o">.</span><span class="n">credential_provenance</span><span class="si">}</span><span class="s2">, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;v1 -&gt; </span><span class="si">{</span><span class="n">v1_res</span><span class="o">.</span><span class="n">credential_provenance</span><span class="si">}</span><span class="s2">   ** CHANGES ON UPGRADE **&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  credential identity: v0 -&gt; </span><span class="si">{</span><span class="n">_identity_label</span><span class="p">(</span><span class="n">v0_identity</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;v1 -&gt; </span><span class="si">{</span><span class="n">_identity_label</span><span class="p">(</span><span class="n">v1_identity</span><span class="p">)</span><span class="si">}</span><span class="s2">   ** CHANGES ON UPGRADE **&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># v1 introduces changes v0 never made, and they cannot show up above:</span>
+    <span class="c1"># BOTH sides run through v1&#39;s resolver, so pass-2 detection cancels out.</span>
+    <span class="c1"># Report them explicitly, or the announcement instrument cannot see the</span>
+    <span class="c1"># very path-&gt;virtual flip ADR-0012 D4 promises to announce.</span>
+    <span class="k">if</span> <span class="n">v1_res</span><span class="o">.</span><span class="n">preset_source</span> <span class="o">==</span> <span class="s2">&quot;detected&quot;</span><span class="p">:</span>
+        <span class="n">moved</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;  provider detected from the endpoint: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v1_res</span><span class="o">.</span><span class="n">preset</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> — v1 now sets &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;addressing_style=</span><span class="si">{</span><span class="n">v1_res</span><span class="o">.</span><span class="n">addressing_style</span><span class="o">.</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;, checksum=</span><span class="si">{</span><span class="n">v1_res</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">v1_res</span><span class="o">.</span><span class="n">checksum</span><span class="o">.</span><span class="n">passed</span>
+                <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;, region=</span><span class="si">{</span><span class="n">v1_res</span><span class="o">.</span><span class="n">region_name</span><span class="o">.</span><span class="n">value</span><span class="si">!r}</span><span class="s2">. v0 passed none of &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;these (botocore defaults applied).   ** NEW IN v1 **&quot;</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">moved</span><span class="p">:</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  no divergence: v1 resolves this call exactly as v0 does.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rows</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_identity_label</span><span class="p">(</span><span class="n">identity</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A printable form of a credential identity — key ids truncated.&quot;&quot;&quot;</span>
+    <span class="n">kind</span><span class="p">,</span> <span class="o">*</span><span class="n">rest</span> <span class="o">=</span> <span class="n">identity</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;keys&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;access key </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">rest</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:</span><span class="mi">4</span><span class="p">]</span><span class="si">}</span><span class="s2">…&quot;</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;anonymous&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;anonymous&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">rest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
 <div class="viewcode-block" id="diagnose">
-<a class="viewcode-back" href="../../module_docs/s3dol/_diagnose.html#s3dol._diagnose.diagnose">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/_diagnose.html#s3dol.diagnose">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">diagnose</span><span class="p">(</span>
     <span class="n">connection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">S3Connection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">environ</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aws_config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -339,12 +453,18 @@
             <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
             <span class="n">environ</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
-        <span class="n">aws_config</span><span class="p">:</span> <span class="nb">object</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">aws_config</span> <span class="o">=</span> <span class="n">load_aws_config</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="n">aws_config</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;note: aws config unreadable (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">aws_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># The one impure read (the shared AWS config file), matching what</span>
+            <span class="c1"># a real construction resolves against. Injectable — without that,</span>
+            <span class="c1"># a &quot;tier 1&quot; test silently consults the developer&#39;s own</span>
+            <span class="c1"># ~/.aws/config and goes red on a machine whose profile sets an</span>
+            <span class="c1"># endpoint_url (ADR-0012 D2 made resolve() injectable exactly so</span>
+            <span class="c1"># this channel is controllable).</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">aws_config</span> <span class="o">=</span> <span class="n">load_aws_config</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">aws_config</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;note: aws config unreadable (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
         <span class="n">v0_args</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_V0_ARG_NAMES</span><span class="p">}</span>
         <span class="n">v1_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_V0_ARG_NAMES</span><span class="p">}</span>
@@ -354,7 +474,14 @@
             <span class="n">emit</span><span class="p">()</span>
             <span class="n">emit</span><span class="p">(</span><span class="s2">&quot;arguments:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
-                <span class="n">shown</span> <span class="o">=</span> <span class="s2">&quot;&lt;provided&gt;&quot;</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_SECRET_ARG_NAMES</span> <span class="k">else</span> <span class="nb">repr</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_REDACTED_ARG_NAMES</span><span class="p">:</span>
+                    <span class="n">shown</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">_redact_url</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ECHOABLE_ARG_NAMES</span><span class="p">:</span>
+                    <span class="n">shown</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;aws_access_key_id&quot;</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                    <span class="n">shown</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])[:</span><span class="mi">4</span><span class="p">]</span><span class="si">!r}</span><span class="s2">… (prefix only)&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">shown</span> <span class="o">=</span> <span class="s2">&quot;&lt;provided&gt;&quot;</span>
                 <span class="n">emit</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">shown</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">emit</span><span class="p">()</span>

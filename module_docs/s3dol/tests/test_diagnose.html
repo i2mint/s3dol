@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.tests.test_diagnose &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.tests.test_diagnose &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -52,22 +52,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">s3dol.tests.test_diagnose</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#s3dol.tests.test_diagnose.run_diagnose"><code class="docutils literal notranslate"><span class="pre">run_diagnose()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -100,7 +108,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="s3dol.tests.test_diagnose.run_diagnose">
 <span class="sig-prename descclassname"><span class="pre">s3dol.tests.test_diagnose.</span></span><span class="sig-name descname"><span class="pre">run_diagnose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/s3dol/tests/test_diagnose.html#run_diagnose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.tests.test_diagnose.run_diagnose" title="Link to this definition"></a></dt>
-<dd><p>diagnose() against a controlled environment, capturing the report.</p>
+<dd><p>diagnose() against a controlled environment AND a controlled aws
+config, capturing the report. Injecting both is what makes these tier 1:
+otherwise every test silently consults the developer’s own ~/.aws/config
+and goes red on a machine whose profile sets an endpoint_url.</p>
 </dd></dl>
 
 </section>

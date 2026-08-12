@@ -1,0 +1,4 @@
+s3dol.testing
+=============
+.. automodule:: s3dol.testing
+   :members:

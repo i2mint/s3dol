@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.store &mdash; s3dol 0.1.13 documentation</title>
+  <title>s3dol.store &mdash; s3dol 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -49,19 +49,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store.html">s3dol.tests.test_store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_url_for.html">s3dol.tests.test_url_for</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/utility.html">s3dol.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
 </ul>
 
         </div>
@@ -89,227 +97,302 @@
            <div itemprop="articleBody">
              
   <h1>Source code for s3dol.store</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;S3 Store Class&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;COMPAT SHIM — the v0 ``S3Store``, forwarded onto the v1 machinery.</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Store</span>
+<span class="sd">Removed in v2. This module **must survive as an importable module**: external</span>
+<span class="sd">dependents do ``from s3dol.store import S3Store`` (fully qualified), not</span>
+<span class="sd">``from s3dol import S3Store`` (ADR-0007 §3).</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3BucketDol</span><span class="p">,</span> <span class="n">S3ClientDol</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.utility</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3DolException</span>
+<span class="sd">The shim keeps v0&#39;s exact signature (``bucket_name`` positional-or-keyword,</span>
+<span class="sd">``path=`` not renamed, the ``make_bucket`` tri-state, and</span>
+<span class="sd">``is_supabase_endpoint=`` which an early draft forgot) and is **a fix delivery</span>
+<span class="sd">mechanism**: callers get the corrected endpoint/credential resolution without</span>
+<span class="sd">changing a line. Three v0 behaviours a dependent&#39;s *passing tests* rely on are</span>
+<span class="sd">deliberately preserved here (and only here — ADR-0007 §4):</span>
+
+<span class="sd">- ``store[k] = &#39;a str&#39;`` is accepted (encoded utf-8, with a</span>
+<span class="sd">  ``DeprecationWarning``);</span>
+<span class="sd">- ``store[&#39;folder/&#39;]`` returns a sub-store;</span>
+<span class="sd">- ``del store[absent]`` silently succeeds (v1 deletes are idempotent anyway).</span>
+
+<span class="sd">And one v0 behaviour is preserved on the Supabase branch only: the read-side</span>
+<span class="sd">de-chunker for objects that v0&#39;s misconfigured writes stored with their</span>
+<span class="sd">``aws-chunked`` HTTP framing verbatim (ADR-0003 §3). It is implemented</span>
+<span class="sd">*correctly* here (multi-chunk; full-parse-or-passthrough) where v0&#39;s truncated</span>
+<span class="sd">multi-chunk payloads. Per ADR-0003&#39;s sequencing rule the codec is not deleted</span>
+<span class="sd">until a repair path ships — :func:`detect_chunked_framing` is that path&#39;s</span>
+<span class="sd">diagnostic.</span>
+
+<span class="sd">When v1 resolves a call differently than v0 *effectively* did (v0 dropped an</span>
+<span class="sd">explicit ``endpoint_url`` whenever env credentials were set, and let env</span>
+<span class="sd">credentials override explicit ones), the shim warns with</span>
+<span class="sd">:class:`~s3dol.errors.S3DolResolutionChanged` — the ADR-0012 D7 differential.</span>
+<span class="sd">This module and that warning die together in v2.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvPersister</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol._diagnose</span><span class="w"> </span><span class="kn">import</span> <span class="n">_spec_from_v0_args</span><span class="p">,</span> <span class="n">_v0_mangle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BucketStore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3DolResolutionChanged</span>
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># The corrected aws-chunked de-framer (Supabase legacy objects)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+<span class="n">_CHUNK_HEAD</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;^[0-9a-fA-F]{1,16}(;|\r\n)&quot;</span><span class="p">)</span>
 
 
-<span class="c1"># TODO: Add support for key-based grouping (store[&#39;folder/subfolder/&#39;] is the store with path = original_path + &#39;folder/subfolder/&#39;</span>
-<span class="c1"># TODO: Make profile_name handling work for SupabaseS3BucketDol and S3BucketDolWithouBucketCheck</span>
-<span class="c1"># TODO: Review this S3Store (with SupabaseS3BucketDol etc.) setup and see if we can make it simpler/cleaner</span>
+<div class="viewcode-block" id="dechunk_aws_chunked">
+<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.dechunk_aws_chunked">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">dechunk_aws_chunked</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Undo verbatim-persisted ``aws-chunked`` framing, if present.</span>
+
+<span class="sd">    Full-parse-or-passthrough: either the ENTIRE payload parses as chunked</span>
+<span class="sd">    framing (every chunk header, every CRLF, through the terminal ``0`` chunk)</span>
+<span class="sd">    and the concatenated chunks are returned, or the payload is returned</span>
+<span class="sd">    untouched. v0&#39;s parser truncated any payload larger than one chunk and</span>
+<span class="sd">    misfired on payloads that merely *started* with hex digits; requiring a</span>
+<span class="sd">    complete valid parse removes both failure modes (a random payload that</span>
+<span class="sd">    happens to be a complete chunked document is astronomically unlikely).</span>
+
+<span class="sd">    &gt;&gt;&gt; dechunk_aws_chunked(b&#39;5\\r\\nhello\\r\\n0\\r\\n\\r\\n&#39;)</span>
+<span class="sd">    b&#39;hello&#39;</span>
+<span class="sd">    &gt;&gt;&gt; framed = b&#39;3\\r\\nabc\\r\\n2\\r\\nde\\r\\n0\\r\\nx-amz-checksum-crc32:AAAA\\r\\n\\r\\n&#39;</span>
+<span class="sd">    &gt;&gt;&gt; dechunk_aws_chunked(framed)  # multi-chunk (v0 truncated this)</span>
+<span class="sd">    b&#39;abcde&#39;</span>
+<span class="sd">    &gt;&gt;&gt; dechunk_aws_chunked(b&#39;cafe is hex-ish but not framed&#39;)</span>
+<span class="sd">    b&#39;cafe is hex-ish but not framed&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_CHUNK_HEAD</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">data</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">crlf</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">crlf</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="n">size_token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">position</span><span class="p">:</span><span class="n">crlf</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">size_token</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="n">body_start</span> <span class="o">=</span> <span class="n">crlf</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Trailer (e.g. x-amz-checksum-crc32:…) then blank line — accept</span>
+            <span class="c1"># anything through the final CRLFCRLF (or end of payload).</span>
+            <span class="n">rest</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">body_start</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">rest</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">rest</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">data</span>
+            <span class="k">return</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">body_start</span> <span class="p">:</span> <span class="n">body_start</span> <span class="o">+</span> <span class="n">size</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span>
+            <span class="ow">or</span> <span class="n">data</span><span class="p">[</span><span class="n">body_start</span> <span class="o">+</span> <span class="n">size</span> <span class="p">:</span> <span class="n">body_start</span> <span class="o">+</span> <span class="n">size</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">body_start</span> <span class="o">+</span> <span class="n">size</span> <span class="o">+</span> <span class="mi">2</span></div>
+
+
+
+<div class="viewcode-block" id="detect_chunked_framing">
+<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.detect_chunked_framing">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_chunked_framing</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sample</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Which of the first ``sample`` keys hold verbatim ``aws-chunked``</span>
+<span class="sd">    framing (objects corrupted by v0 Supabase writes). The repair path:</span>
+<span class="sd">    ``store[k] = dechunk_aws_chunked(raw[k])`` per flagged key, reading raw</span>
+<span class="sd">    bytes through an un-codec&#39;d store.&quot;&quot;&quot;</span>
+    <span class="n">flagged</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">sample</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">raw</span> <span class="o">=</span> <span class="n">store</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dechunk_aws_chunked</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span> <span class="o">!=</span> <span class="n">raw</span><span class="p">:</span>
+            <span class="n">flagged</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flagged</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># The shim store: v0 conveniences over a v1 BucketStore</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_V0CompatStore</span><span class="p">(</span><span class="n">KvPersister</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The v0 ergonomics (str writes, ``&#39;folder/&#39;`` sub-stores, counting</span>
+<span class="sd">    ``len()``) over a v1 :class:`BucketStore`. Shim-only; not public API.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inner</span><span class="p">:</span> <span class="n">BucketStore</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">dechunk</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span> <span class="o">=</span> <span class="n">inner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dechunk</span> <span class="o">=</span> <span class="n">dechunk</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">delimiter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">_with</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">prefix</span><span class="si">}{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+                <span class="n">dechunk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dechunk</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dechunk</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">dechunk_aws_chunked</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Writing a str to an s3dol store is deprecated (removed in &quot;</span>
+                <span class="s2">&quot;v2): it will be stored as its utf-8 bytes. Be explicit: &quot;</span>
+                <span class="s2">&quot;s[k] = v.encode() — or s3dol.Filepath(v) if you meant a &quot;</span>
+                <span class="s2">&quot;file&#39;s contents.&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="c1"># v1 deletes are idempotent (no probe), which is exactly v0&#39;s</span>
+        <span class="c1"># &quot;del store[absent] silently succeeds&quot; — nothing to shim.</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">delimiter</span><span class="p">):</span>
+            <span class="c1"># v0: `&#39;d/&#39; in s` answered via HeadObject on the marker; keep it.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># v0&#39;s len() worked (by counting — two listings via the length hint).</span>
+        <span class="c1"># The v1 store raises; the shim keeps v0&#39;s behaviour, cost and all.</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">url_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="c1"># lacing calls store.url_for(k) on the v0 store; forward to the v1</span>
+        <span class="c1"># guarded shim (prefix-aware, SigV4 — this is what closes issue #10).</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;S3Store(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_inner</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_warn_if_resolution_changed</span><span class="p">(</span><span class="n">v0_args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The ADR-0012 D7 runtime differential: one v0 argument-mangler run</span>
+<span class="sd">    through v1&#39;s own resolver twice; warn iff the outcomes differ. Cost when</span>
+<span class="sd">    env credentials are absent: two environ lookups.&quot;&quot;&quot;</span>
+    <span class="n">branch</span><span class="p">,</span> <span class="n">effective</span> <span class="o">=</span> <span class="n">_v0_mangle</span><span class="p">(</span><span class="n">v0_args</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">effective</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">effective</span> <span class="o">==</span> <span class="n">v0_args</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="c1"># excluded branches, or v0 didn&#39;t mangle anything</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">environ</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+        <span class="n">v1_now</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">v0_args</span><span class="p">),</span> <span class="n">environ</span><span class="p">)</span>
+        <span class="n">v0_was</span> <span class="o">=</span> <span class="n">resolve</span><span class="p">(</span><span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">effective</span><span class="p">),</span> <span class="n">environ</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="c1"># the differential must never break the construction</span>
+    <span class="n">moved</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">axis</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;endpoint_url&quot;</span><span class="p">,</span> <span class="s2">&quot;region_name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v1_now</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v0_was</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">v1_now</span><span class="o">.</span><span class="n">credential_provenance</span> <span class="o">!=</span> <span class="n">v0_was</span><span class="o">.</span><span class="n">credential_provenance</span><span class="p">:</span>
+        <span class="n">moved</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;credential identity&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">moved</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;s3dol v1 resolves this S3Store(...) call differently than v0 &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;did (v0 branch: </span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2">; changed: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">moved</span><span class="p">)</span><span class="si">}</span><span class="s2">). v0 was &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;silently discarding an explicit argument; v1 honours it. Run &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;s3dol.diagnose(**your_S3Store_kwargs) for the full table.&quot;</span><span class="p">,</span>
+            <span class="n">S3DolResolutionChanged</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
 <div class="viewcode-block" id="S3Store">
-<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3Store">[docs]</a>
+<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.S3Store">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">S3Store</span><span class="p">(</span>
     <span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">make_bucket</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">aws_access_key_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">aws_secret_access_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">aws_session_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">profile_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">skip_bucket_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_supabase_endpoint</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Store</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;S3 Bucket Store</span>
+    <span class="n">make_bucket</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aws_access_key_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aws_secret_access_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">aws_session_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">region_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">profile_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">skip_bucket_check</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_supabase_endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;DEPRECATED — the v0 entry point, kept working until v2.</span>
 
-<span class="sd">    :param bucket_name: name of bucket to store data in</span>
-<span class="sd">    :param make_bucket: if True, create bucket if it does not exist.</span>
-<span class="sd">                        If None, skip bucket existence checks completely.</span>
-<span class="sd">                        If False, check for existence but don&#39;t create.</span>
-<span class="sd">    :param path: prefix to use for bucket keys</span>
-<span class="sd">    :param aws_access_key_id: AWS access key ID</span>
-<span class="sd">    :param aws_secret_access_key: AWS secret access key</span>
-<span class="sd">    :param aws_session_token: AWS session token</span>
-<span class="sd">    :param endpoint_url: URL of S3 endpoint</span>
-<span class="sd">    :param region_name: AWS region name</span>
-<span class="sd">    :param profile_name: AWS profile name</span>
-<span class="sd">    :return: S3BucketDol</span>
+<span class="sd">    Use :func:`s3dol.s3_store` instead: ``s3_store(bucket, prefix=...)``.</span>
+
+<span class="sd">    Signature is v0&#39;s exactly (``path=`` not renamed; ``make_bucket``</span>
+<span class="sd">    tri-state maps ``True -&gt; on_missing_bucket=&#39;create&#39;``, ``False -&gt;</span>
+<span class="sd">    &#39;raise&#39;``, ``None -&gt; &#39;assume&#39;``). Behaviour differences vs v0 are bug</span>
+<span class="sd">    fixes only (explicit endpoint/credentials honoured; listing errors raise</span>
+<span class="sd">    instead of returning ``[]``; writes no longer create buckets unless asked)</span>
+<span class="sd">    and announce themselves via ``S3DolResolutionChanged`` when they change</span>
+<span class="sd">    this call&#39;s resolution.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="n">is_supabase_endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">is_supabase_endpoint</span> <span class="o">=</span> <span class="n">_is_supabase_endpoint</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">skip_bucket_check</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">is_supabase_endpoint</span><span class="p">:</span>
-        <span class="n">skip_bucket_check</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="c1"># For Supabase endpoints, create a direct client without session token</span>
-
-    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;s3dol.store.S3Store is deprecated and will be removed in s3dol 2.0: &quot;</span>
+        <span class="s2">&quot;use s3dol.s3_store(bucket, prefix=..., ...) (note: prefix=, not &quot;</span>
+        <span class="s2">&quot;path=).&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">v0_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span>
+        <span class="n">make_bucket</span><span class="o">=</span><span class="n">make_bucket</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
         <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key_id</span><span class="p">,</span>
         <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret_access_key</span><span class="p">,</span>
         <span class="n">aws_session_token</span><span class="o">=</span><span class="n">aws_session_token</span><span class="p">,</span>
         <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span>
         <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">is_supabase_endpoint</span><span class="p">:</span>
-        <span class="c1"># For Supabase endpoints, use a custom store that doesn&#39;t check for bucket existence</span>
-        <span class="k">return</span> <span class="n">SupabaseS3BucketDol</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
-            <span class="o">**</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">skip_bucket_check</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">S3BucketDolWithouBucketCheck</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
-            <span class="o">**</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span>
-            <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="c1"># For standard AWS, use the regular flow</span>
-
-    <span class="n">s3cr</span> <span class="o">=</span> <span class="n">S3ClientDol</span><span class="p">(</span>
-        <span class="o">**</span><span class="n">params</span><span class="p">,</span>
         <span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span>
+        <span class="n">skip_bucket_check</span><span class="o">=</span><span class="n">skip_bucket_check</span><span class="p">,</span>
+        <span class="n">is_supabase_endpoint</span><span class="o">=</span><span class="n">is_supabase_endpoint</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">_warn_if_resolution_changed</span><span class="p">(</span><span class="n">v0_args</span><span class="p">)</span>
 
-    <span class="n">bucket</span> <span class="o">=</span> <span class="n">s3cr</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">is_supabase_endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">is_supabase_endpoint</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">endpoint_url</span> <span class="ow">and</span> <span class="s2">&quot;.supabase.&quot;</span> <span class="ow">in</span> <span class="n">endpoint_url</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">bucket</span><span class="o">.</span><span class="n">skip_bucket_exists_check</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">elif</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s3cr</span><span class="p">:</span>
-        <span class="n">s3cr</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_spec_from_v0_args</span><span class="p">(</span><span class="n">v0_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_supabase_endpoint</span><span class="p">:</span>
+        <span class="c1"># Route through the preset row: path addressing + checksum</span>
+        <span class="c1"># when_required — the WRITE-side cure for what the read-side</span>
+        <span class="c1"># de-chunker treats (ADR-0003 §3).</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.connection</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3Connection</span>
 
-    <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
-        <span class="c1"># Apply the key prefix in the standard flow too. It was documented</span>
-        <span class="c1"># (&quot;:param path: prefix to use for bucket keys&quot;) but silently dropped</span>
-        <span class="c1"># here — only the Supabase / skip-check branches honored it. Normalize</span>
-        <span class="c1"># exactly as S3BucketReader.__post_init__ does. #7 follow-up.</span>
-        <span class="n">bucket</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">delimiter</span><span class="p">)</span><span class="si">}{</span><span class="n">bucket</span><span class="o">.</span><span class="n">delimiter</span><span class="si">}</span><span class="s2">&quot;</span>
-
-    <span class="k">return</span> <span class="n">bucket</span></div>
-
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_is_supabase_endpoint</span><span class="p">(</span><span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the endpoint URL is a Supabase endpoint&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">endpoint_url</span> <span class="ow">and</span> <span class="s2">&quot;.supabase.&quot;</span> <span class="ow">in</span> <span class="n">endpoint_url</span>
-
-
-<div class="viewcode-block" id="validate_bucket">
-<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.validate_bucket">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">validate_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s3_client</span><span class="p">:</span> <span class="n">S3ClientDol</span><span class="p">,</span> <span class="n">make_bucket</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate bucket name and create if needed</span>
-
-<span class="sd">    If make_bucket is None, skip existence check entirely.</span>
-<span class="sd">    If make_bucket is True, create bucket if it doesn&#39;t exist.</span>
-<span class="sd">    If make_bucket is False, check existence but don&#39;t create.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Skip validation - just return a bucket object without checking existence</span>
-        <span class="k">return</span> <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">make_bucket</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">bucket_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">s3_client</span><span class="p">:</span>
-        <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">return</span> <span class="n">s3_client</span><span class="p">[</span><span class="n">bucket_name</span><span class="p">]</span></div>
-
-
-
-<div class="viewcode-block" id="S3BucketDolWithouBucketCheck">
-<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3BucketDolWithouBucketCheck">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">S3BucketDolWithouBucketCheck</span><span class="p">(</span><span class="n">S3BucketDol</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A S3BucketDol that completely avoids the bucket exists check.</span>
-<span class="sd">    This is needed for Supabase endpoints where the bucket is not created</span>
-<span class="sd">    until the first object is uploaded, for example.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># TODO: Smelly. use trans tools</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">_id</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_bucket_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-<div class="viewcode-block" id="S3BucketDolWithouBucketCheck.from_params">
-<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.S3BucketDolWithouBucketCheck.from_params">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_params</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">bucket_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">aws_access_key_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">aws_secret_access_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">aws_session_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">region_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">endpoint_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a S3BucketDol without session token&quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span>
-            <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
-            <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">aws_access_key_id</span><span class="p">,</span>
-            <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">aws_secret_access_key</span><span class="p">,</span>
-            <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint_url</span><span class="p">,</span>
-            <span class="n">aws_session_token</span><span class="o">=</span><span class="n">aws_session_token</span><span class="p">,</span>
-            <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">S3Connection</span><span class="p">(</span>
+            <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;supabase&quot;</span><span class="p">,</span>
+            <span class="n">endpoint_url</span><span class="o">=</span><span class="n">connection</span><span class="o">.</span><span class="n">endpoint_url</span><span class="p">,</span>
+            <span class="n">region_name</span><span class="o">=</span><span class="n">connection</span><span class="o">.</span><span class="n">region_name</span><span class="p">,</span>
+            <span class="n">profile</span><span class="o">=</span><span class="n">connection</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span>
+            <span class="n">credentials</span><span class="o">=</span><span class="n">connection</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
         <span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
-</div>
-
-
-
-<span class="c1"># TODO: Messy. Should use wrap_kvs.</span>
-<div class="viewcode-block" id="SupabaseS3BucketDol">
-<a class="viewcode-back" href="../../module_docs/s3dol/store.html#s3dol.store.SupabaseS3BucketDol">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SupabaseS3BucketDol</span><span class="p">(</span><span class="n">S3BucketDolWithouBucketCheck</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    S3BucketDol for Supabase endpoints.</span>
-<span class="sd">    Over the S3BucketDolWithouBucketCheck, it adds support to unravel the returned</span>
-<span class="sd">    content from the stuff (number of bytes, check sum, etc.) superbase adds to the</span>
-<span class="sd">    content.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># TODO: Smelly. use trans tools</span>
-
-        <span class="c1"># Handle nested key access for keys ending with delimiter</span>
-        <span class="k">if</span> <span class="n">_id</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">):</span>
-            <span class="n">_kw</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span> <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="n">_id</span><span class="p">}</span>
-            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="o">**</span><span class="n">_kw</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
-            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;Body&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-            <span class="c1"># Process HTTP chunked encoding directly on bytes</span>
-            <span class="c1"># Look for the pattern: [chunk size in hex]\r\n[data]\r\n0\r\n[optional headers]\r\n\r\n</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="n">raw_data</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
-                <span class="ow">or</span> <span class="p">(</span>
-                    <span class="n">raw_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
-                    <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span>
-                    <span class="ow">and</span> <span class="n">raw_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="sa">b</span><span class="s2">&quot;abcdef&quot;</span>
-                <span class="p">)</span>
-            <span class="p">):</span>
-                <span class="c1"># Find the first CRLF</span>
-                <span class="n">first_crlf_pos</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">first_crlf_pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="c1"># Extract what should be the hex chunk size</span>
-                    <span class="n">hex_size</span> <span class="o">=</span> <span class="n">raw_data</span><span class="p">[:</span><span class="n">first_crlf_pos</span><span class="p">]</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="c1"># Skip the chunk size and the CRLF</span>
-                        <span class="n">content_start</span> <span class="o">=</span> <span class="n">first_crlf_pos</span> <span class="o">+</span> <span class="mi">2</span>
-                        <span class="c1"># Find the end of the chunk (marked by another CRLF)</span>
-                        <span class="n">content_end</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">content_start</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">content_end</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                            <span class="c1"># Extract just the content between the CRLFs</span>
-                            <span class="k">return</span> <span class="n">raw_data</span><span class="p">[</span><span class="n">content_start</span><span class="p">:</span><span class="n">content_end</span><span class="p">]</span>
-                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                        <span class="k">pass</span>  <span class="c1"># Not valid hex, continue to return raw data</span>
-
-            <span class="c1"># If we couldn&#39;t parse it as chunked encoding or any step failed,</span>
-            <span class="c1"># return the raw data as a fallback</span>
-            <span class="k">return</span> <span class="n">raw_data</span>
-
-        <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NoSuchKey</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span></div>
+    <span class="n">on_missing_bucket</span> <span class="o">=</span> <span class="p">{</span><span class="kc">True</span><span class="p">:</span> <span class="s2">&quot;create&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s2">&quot;raise&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">:</span> <span class="s2">&quot;assume&quot;</span><span class="p">}[</span><span class="n">make_bucket</span><span class="p">]</span>
+    <span class="n">inner</span> <span class="o">=</span> <span class="n">BucketStore</span><span class="p">(</span>
+        <span class="n">bucket_name</span><span class="p">,</span>
+        <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="n">path</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">on_missing_bucket</span><span class="o">=</span><span class="n">on_missing_bucket</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_V0CompatStore</span><span class="p">(</span><span class="n">inner</span><span class="p">,</span> <span class="n">dechunk</span><span class="o">=</span><span class="n">is_supabase_endpoint</span><span class="p">)</span></div>
 
 </pre></div>
 

@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>s3dol.capabilities &mdash; s3dol 0.1.14 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            s3dol
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">s3dol</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">s3dol.capabilities</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for s3dol.capabilities</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Keyed capabilities as sibling stores; non-keyed operations as free</span>
+<span class="sd">functions (ADR-0011 D2/D3/D4).</span>
+
+<span class="sd">A keyed capability is a Layer B ``KvReader`` over the **same key space** whose</span>
+<span class="sd">``__getitem__`` returns the capability::</span>
+
+<span class="sd">    BucketStore                     k -&gt; bytes</span>
+<span class="sd">    BucketHandles  s3dol.handles(s) k -&gt; ObjectHandle</span>
+<span class="sd">    BucketUrls     s3dol.urls(s)    k -&gt; presigned URL (str) | None</span>
+<span class="sd">    BucketInfo     s3dol.info(s)    k -&gt; ObjectInfo</span>
+
+<span class="sd">``__getitem__`` is the one thing `dol` maps correctly at every wrapper depth,</span>
+<span class="sd">so sibling stores are correct *by construction*: no ``inner_most_key``, no</span>
+<span class="sd">``wrapped_self``, no guard — immune to both the lost-reference hole (D1a) and</span>
+<span class="sd">the non-``Store``-layer hole (D3a), the only form in ADR-0011 that is.</span>
+
+<span class="sd">**The cost, stated plainly** (D2): a user who wraps the data store must wrap</span>
+<span class="sd">the sibling in parallel::</span>
+
+<span class="sd">    s = s3_store(&#39;bucket&#39;, prefix=&#39;p/&#39;)</span>
+<span class="sd">    h = s3dol.handles(s)</span>
+<span class="sd">    c = KeyCodecs.prefixed(&#39;x/&#39;)      # a user-applied key codec</span>
+<span class="sd">    s2, h2 = c(s), c(h)               # wrap BOTH</span>
+<span class="sd">    h2[&#39;f&#39;]                           # -&gt; handle on &#39;p/x/f&#39;; correct at any depth</span>
+
+<span class="sd">The accessors therefore derive a sibling from an **unwrapped** store and</span>
+<span class="sd">**raise** on a wrapped one, naming that remedy — s3dol will not guess a user&#39;s</span>
+<span class="sd">codec chain (that is dol#10).</span>
+
+<span class="sd">Free functions (D3) resolve keys with the store held as an argument (alive, so</span>
+<span class="sd">no weakref registry is consulted). Per D3a they are *more* reliable than</span>
+<span class="sd">methods, not reliable: a hand-rolled non-``Store`` passthrough layer in the</span>
+<span class="sd">chain can still defeat the resolution — no docstring here claims &quot;correct at</span>
+<span class="sd">any wrapper depth&quot;; only the sibling stores may claim that.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">Store</span> <span class="k">as</span> <span class="n">DolStore</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BucketCollection</span><span class="p">,</span>
+    <span class="n">ObjectHandle</span><span class="p">,</span>
+    <span class="n">ObjectInfo</span><span class="p">,</span>
+    <span class="n">_BucketBase</span><span class="p">,</span>
+    <span class="n">_EndpointBase</span><span class="p">,</span>
+    <span class="n">_presign</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BucketNotEmpty</span><span class="p">,</span>
+    <span class="n">ConfigurationError</span><span class="p">,</span>
+    <span class="n">CredentialsError</span><span class="p">,</span>
+    <span class="n">S3PartialFailure</span><span class="p">,</span>
+    <span class="n">code_of</span><span class="p">,</span>
+    <span class="n">translate_s3_errors</span><span class="p">,</span>
+    <span class="n">translating_s3_errors</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># The sibling capability stores (D2)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<div class="viewcode-block" id="BucketHandles">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.BucketHandles">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BucketHandles</span><span class="p">(</span><span class="n">BucketCollection</span><span class="p">,</span> <span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;``k -&gt; ObjectHandle`` (key bound at construction; zero round-trips).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectHandle</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ObjectHandle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BucketUrls">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.BucketUrls">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BucketUrls</span><span class="p">(</span><span class="n">BucketCollection</span><span class="p">,</span> <span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;``k -&gt; presigned URL`` (zero object requests; ``None`` when anonymous).</span>
+<span class="sd">    The canonical spelling of what ``url_for`` shims (ADR-0011 D3b).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">client_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;get_object&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expires_in</span> <span class="o">=</span> <span class="n">expires_in</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_method</span> <span class="o">=</span> <span class="n">client_method</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">_presign</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
+            <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+            <span class="n">expires_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">expires_in</span><span class="p">,</span>
+            <span class="n">client_method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client_method</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BucketInfo">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.BucketInfo">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BucketInfo</span><span class="p">(</span><span class="n">BucketCollection</span><span class="p">,</span> <span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;``k -&gt; ObjectInfo`` (one ``HeadObject``).&quot;&quot;&quot;</span>
+
+    <span class="nd">@translate_s3_errors</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="s2">&quot;HeadObject&quot;</span><span class="p">,</span> <span class="n">key_arg</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectInfo</span><span class="p">:</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">head_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mark_bucket_reachable</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ObjectInfo</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">_id</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ContentLength&quot;</span><span class="p">),</span>
+            <span class="n">last_modified</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LastModified&quot;</span><span class="p">),</span>
+            <span class="n">etag</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ETag&quot;</span><span class="p">),</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ContentType&quot;</span><span class="p">),</span>
+            <span class="n">storage_class</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;StorageClass&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;STANDARD&quot;</span><span class="p">,</span>
+            <span class="n">restore_status</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Restore&quot;</span><span class="p">),</span>
+            <span class="n">version_id</span><span class="o">=</span><span class="n">head</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;VersionId&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># The accessors: derive a sibling from an UNWRAPPED store; refuse a wrapped one</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+<span class="n">_PARALLEL_WRAP_REMEDY</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;derive the sibling from the *unwrapped* store and apply the same &quot;</span>
+    <span class="s2">&quot;wrapper to both:  s2, sib2 = codec(s), codec(s3dol.</span><span class="si">{fn}</span><span class="s2">(s)). &quot;</span>
+    <span class="s2">&quot;s3dol will not guess your codec chain (that is dol#10).&quot;</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_leaf_of</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_BucketBase</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">_BucketBase</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">store</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">DolStore</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;s3dol.</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">() needs an unwrapped s3dol store, but got a dol &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;wrapper (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">store</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). Returning an unwrapped &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;sibling here would silently ignore your key/value transforms — &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;instead, </span><span class="si">{</span><span class="n">_PARALLEL_WRAP_REMEDY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+    <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;s3dol.</span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2">() takes an s3dol bucket store; got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">store</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="handles">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.handles">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handles</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BucketHandles</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The sibling store of :class:`ObjectHandle`\\ s: ``handles(s)[k]``.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_leaf_of</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s2">&quot;handles&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">_make_sibling</span><span class="p">(</span><span class="s2">&quot;handles&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="urls">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.urls">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">urls</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">client_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;get_object&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BucketUrls</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The sibling store of presigned URLs: ``urls(s)[k]``.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_leaf_of</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s2">&quot;urls&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">_make_sibling</span><span class="p">(</span>
+        <span class="s2">&quot;urls&quot;</span><span class="p">,</span> <span class="n">expires_in</span><span class="o">=</span><span class="n">expires_in</span><span class="p">,</span> <span class="n">client_method</span><span class="o">=</span><span class="n">client_method</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="info">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BucketInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The sibling store of :class:`ObjectInfo`: ``info(s)[k]``.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_leaf_of</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">_make_sibling</span><span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Free functions (D3/D4)</span>
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_outward_key_chain</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The wrapper layers outermost-first, ending at the s3dol leaf.</span>
+<span class="sd">    Refuses (rather than guesses) on a non-``Store`` middle layer — D3a&#39;s</span>
+<span class="sd">    documented hole.&quot;&quot;&quot;</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="p">[</span><span class="n">store</span><span class="p">]</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">store</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">_BucketBase</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">DolStore</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot resolve keys through </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">current</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: it is &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;neither an s3dol leaf nor a dol Store wrapper. Free &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;functions refuse rather than guess on hand-rolled layers &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(ADR-0011 D3a).&quot;</span>
+            <span class="p">)</span>
+        <span class="n">inner</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">store</span>
+        <span class="n">chain</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">inner</span>
+    <span class="k">return</span> <span class="n">chain</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_key_outward</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">wire_relative_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map a key from the LEAF&#39;s relative key space out to the caller&#39;s —</span>
+<span class="sd">    the inverse walk ``prefixes`` needs (each layer&#39;s ``_key_of_id``,</span>
+<span class="sd">    innermost first). Property-tested round trip:</span>
+<span class="sd">    ``inner_most_key(store, _map_key_outward(store, k_rel))`` recovers the</span>
+<span class="sd">    wire key for pure key-codec chains.&quot;&quot;&quot;</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">_outward_key_chain</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">wire_relative_key</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">chain</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>  <span class="c1"># innermost wrapper -&gt; outermost</span>
+        <span class="n">key_of_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s2">&quot;_key_of_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">key_of_id</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key_of_id</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">key</span>
+
+
+<div class="viewcode-block" id="sub">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.sub">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sub</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A store scoped to ``prefix``, **in the caller&#39;s key space** (D3).</span>
+
+<span class="sd">    Two branches, deliberately different (each documented in the ADR):</span>
+
+<span class="sd">    - **unwrapped s3dol store**: ``leaf._with(prefix=...)`` — cheap, keeps</span>
+<span class="sd">      server-side prefix pushdown, returns the same class;</span>
+<span class="sd">    - **dol-wrapped store**: composes ``Pipe(filt_iter.prefixes(p),</span>
+<span class="sd">      KeyCodecs.prefixed(p))`` over the *outer* store (filter FIRST — the only</span>
+<span class="sd">      safe composition, ADR-0006 §1), which preserves the user&#39;s codecs but</span>
+<span class="sd">      loses pushdown (a full scan filtered client-side; D8 closed this: the</span>
+<span class="sd">      cheap path is the unwrapped branch) and returns a different type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">_BucketBase</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">store</span><span class="o">.</span><span class="n">_with</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">store</span><span class="o">.</span><span class="n">prefix</span><span class="si">}{</span><span class="n">_norm</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span><span class="w"> </span><span class="n">store</span><span class="o">.</span><span class="n">delimiter</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">DolStore</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeyCodecs</span><span class="p">,</span> <span class="n">Pipe</span><span class="p">,</span> <span class="n">filt_iter</span>
+
+        <span class="n">normalized</span> <span class="o">=</span> <span class="n">_norm</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">filt_iter</span><span class="o">.</span><span class="n">prefixes</span><span class="p">(</span><span class="n">normalized</span><span class="p">),</span> <span class="n">KeyCodecs</span><span class="o">.</span><span class="n">prefixed</span><span class="p">(</span><span class="n">normalized</span><span class="p">))(</span>
+            <span class="n">store</span>
+        <span class="p">)</span>
+    <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;s3dol.sub() takes an s3dol store or a dol wrapper over one; got &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">store</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_norm</span><span class="p">(</span><span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">_normalize_prefix</span>
+
+    <span class="k">return</span> <span class="n">_normalize_prefix</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_wire_scope_base</span><span class="p">(</span><span class="n">chain</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The absolute (wire) prefix the *caller&#39;s* key space is rooted at:</span>
+<span class="sd">    the leaf&#39;s own prefix extended by each wrapper layer&#39;s contribution</span>
+<span class="sd">    (``layer._id_of_key(&#39;&#39;)``, outermost first). Only delimiter-shaped</span>
+<span class="sd">    contributions are accepted — a codec that maps ``&#39;&#39;`` to anything else</span>
+<span class="sd">    (a suffix codec, say) has no well-defined directory structure and is</span>
+<span class="sd">    refused loudly rather than listed wrongly.&quot;&quot;&quot;</span>
+    <span class="n">leaf</span><span class="p">:</span> <span class="n">_BucketBase</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">mapped</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>  <span class="c1"># outermost wrapper -&gt; innermost</span>
+        <span class="n">id_of_key</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s2">&quot;_id_of_key&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">id_of_key</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mapped</span> <span class="o">=</span> <span class="n">id_of_key</span><span class="p">(</span><span class="n">mapped</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;s3dol.prefixes(): the wrapper layer </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;cannot map the key-space root (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">); its &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;codec has no well-defined directory structure. List on the &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;unwrapped store instead.&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mapped</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">mapped</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">mapped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">leaf</span><span class="o">.</span><span class="n">delimiter</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;s3dol.prefixes(): the wrapper layer </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;maps the key-space root to </span><span class="si">{</span><span class="n">mapped</span><span class="si">!r}</span><span class="s2">, which is not a &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;delimiter-terminated scope — its codec has no well-defined &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;directory structure. List on the unwrapped store instead.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">leaf</span><span class="o">.</span><span class="n">prefix</span><span class="si">}{</span><span class="n">mapped</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<div class="viewcode-block" id="prefixes">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.prefixes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">prefixes</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The &#39;directories&#39; one level under the store&#39;s scope, **relative to the</span>
+<span class="sd">    caller&#39;s key space** — one ``ListObjectsV2(Delimiter=&#39;/&#39;)`` reading</span>
+<span class="sd">    ``CommonPrefixes`` (which v0 parsed and then called from nowhere;</span>
+<span class="sd">    ADR-0009). Through a dol wrapper chain, the listing is rooted at the</span>
+<span class="sd">    caller&#39;s scope (each prefix layer&#39;s contribution) and results are mapped</span>
+<span class="sd">    back **outward** (``_key_of_id`` per layer, innermost first — the inverse</span>
+<span class="sd">    walk `dol` does not provide; ADR-0011 D3). A wrapper whose codec cannot</span>
+<span class="sd">    express the scope raises — loud, not wrong.&quot;&quot;&quot;</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">_outward_key_chain</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+    <span class="n">leaf</span><span class="p">:</span> <span class="n">_BucketBase</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">_wire_scope_base</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">translating_s3_errors</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;ListObjectsV2&quot;</span><span class="p">):</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_op_list_pages</span><span class="p">(</span><span class="n">delimiter</span><span class="o">=</span><span class="n">leaf</span><span class="o">.</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">base</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CommonPrefixes&quot;</span><span class="p">,</span> <span class="p">()):</span>
+                <span class="n">relative</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_key_of_id</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Prefix&quot;</span><span class="p">])</span>
+                <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">_map_key_outward</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">relative</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">relative</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">found</span></div>
+
+
+
+<span class="c1">#: AWS&#39;s DeleteObjects cap. moto accepts 1001, so tier 2 can never catch a</span>
+<span class="c1">#: missing chunker (ADR-0010 §2) — hence the constant is also unit-tested.</span>
+<span class="n">DELETE_MANY_CHUNK</span> <span class="o">=</span> <span class="mi">1000</span>
+
+
+<div class="viewcode-block" id="delete_many">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.delete_many">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_many</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bulk delete (ADR-0010 §2; a free function per ADR-0011 D4 — keyed +</span>
+<span class="sd">    destructive + delegated is the census&#39;s data-destroying shape).</span>
+
+<span class="sd">    Chunks at 1000 (AWS&#39;s cap), parses the ``Errors`` list out of the HTTP</span>
+<span class="sd">    200 response, and on partial failure raises one :class:`S3PartialFailure`</span>
+<span class="sd">    carrying ``.succeeded`` and ``.failures``. Absent keys are reported by S3</span>
+<span class="sd">    as ``Deleted`` — this function does **not** distinguish them (same</span>
+<span class="sd">    idempotency as ``del store[k]``).</span>
+
+<span class="sd">    Keys are the *caller&#39;s* keys: with the store held as an argument the</span>
+<span class="sd">    chain is resolved via ``dol.inner_most_key`` (alive store — no weakref</span>
+<span class="sd">    hole). Validate-the-target caveat (D4): the first argument must be an</span>
+<span class="sd">    s3dol store or a dol wrapper over one.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">inner_most_key</span>
+
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">_outward_key_chain</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>  <span class="c1"># validates the target</span>
+    <span class="n">leaf</span><span class="p">:</span> <span class="n">_BucketBase</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">leaf</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">CredentialsError</span><span class="p">(</span><span class="s2">&quot;Anonymous credentials cannot sign deletes.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">wire_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">inner_most_key</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">)]</span>
+        <span class="n">bad</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">wire_keys</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">str</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Key resolution through the wrapper chain produced non-str &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;values (</span><span class="si">{</span><span class="n">bad</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">!r}</span><span class="s2">…): refusing to delete.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wire_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">leaf</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+
+    <span class="n">row</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_resolution</span><span class="p">()</span><span class="o">.</span><span class="n">preset</span>
+    <span class="n">batch_ok</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">capabilities</span><span class="o">.</span><span class="n">batch_delete</span> <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">True</span>
+    <span class="n">succeeded</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">failures</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="n">translating_s3_errors</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;DeleteObjects&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">batch_ok</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">wire_keys</span><span class="p">),</span> <span class="n">DELETE_MANY_CHUNK</span><span class="p">):</span>
+                <span class="n">chunk</span> <span class="o">=</span> <span class="n">wire_keys</span><span class="p">[</span><span class="n">start</span> <span class="p">:</span> <span class="n">start</span> <span class="o">+</span> <span class="n">DELETE_MANY_CHUNK</span><span class="p">]</span>
+                <span class="n">deleted</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_op_bulk_delete</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">succeeded</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">deleted</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">err_key</span><span class="p">,</span> <span class="n">err_code</span><span class="p">,</span> <span class="n">err_message</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>  <span class="c1"># in an HTTP 200!</span>
+                    <span class="n">failures</span><span class="p">[</span><span class="n">err_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">S3PartialFailure</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">err_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">err_message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">succeeded</span><span class="o">=</span><span class="p">[],</span> <span class="n">failures</span><span class="o">=</span><span class="p">{}</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Exact, cheap emulation (GCS &amp; checksum-rejecting providers):</span>
+            <span class="c1"># identical observable result, only cost differs (ADR-0003 §2).</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">wire_keys</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">leaf</span><span class="o">.</span><span class="n">_op_delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                    <span class="n">succeeded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">failures</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">S3PartialFailure</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">code_of</span><span class="p">(</span><span class="n">error</span><span class="p">)),</span> <span class="n">succeeded</span><span class="o">=</span><span class="p">[],</span> <span class="n">failures</span><span class="o">=</span><span class="p">{}</span>
+                    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">failures</span> <span class="ow">or</span> <span class="n">succeeded</span><span class="p">:</span>
+        <span class="c1"># Map the reported keys BACK to the caller&#39;s key space. A partial-</span>
+        <span class="c1"># failure payload is &quot;keys embedded in an exception&quot; — one of the</span>
+        <span class="c1"># shapes ADR-0011 lists as inexpressible for a codec boundary, because</span>
+        <span class="c1"># the raise site has no boundary frame. Here we have the store as an</span>
+        <span class="c1"># argument, so the inverse walk is available and the caller gets keys</span>
+        <span class="c1"># they can act on rather than wire keys they never used.</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">outward</span><span class="p">(</span><span class="n">wire_key</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="n">_map_key_outward</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_key_of_id</span><span class="p">(</span><span class="n">wire_key</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+                    <span class="k">else</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_key_of_id</span><span class="p">(</span><span class="n">wire_key</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">wire_key</span>  <span class="c1"># un-mappable: report it raw rather than drop it</span>
+
+        <span class="n">succeeded</span> <span class="o">=</span> <span class="p">[</span><span class="n">outward</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">succeeded</span><span class="p">]</span>
+        <span class="n">failures</span> <span class="o">=</span> <span class="p">{</span><span class="n">outward</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">error</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">failures</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">if</span> <span class="n">failures</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">S3PartialFailure</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;delete_many: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">failures</span><span class="p">)</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wire_keys</span><span class="p">)</span><span class="si">}</span><span class="s2"> deletions &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;failed (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">succeeded</span><span class="p">)</span><span class="si">}</span><span class="s2"> succeeded). .succeeded/.failures are &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;keyed in YOUR key space, not the wire&#39;s.&quot;</span><span class="p">,</span>
+            <span class="n">succeeded</span><span class="o">=</span><span class="n">succeeded</span><span class="p">,</span>
+            <span class="n">failures</span><span class="o">=</span><span class="n">failures</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete_bucket">
+<a class="viewcode-back" href="../../module_docs/s3dol/capabilities.html#s3dol.delete_bucket">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_bucket</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete bucket ``name``. Refuses a non-empty bucket unless</span>
+<span class="sd">    ``force=True``, in which case the cascade **paginates** — v0 listed one</span>
+<span class="sd">    page, deleted ≤1000 objects, then failed: a partial, non-idempotent</span>
+<span class="sd">    destruction (ADR-0010 §3). A free function, not a method (ADR-0011 D4).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">_EndpointBase</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;s3dol.delete_bucket() takes an EndpointStore/Reader first; got &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">anon</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">CredentialsError</span><span class="p">(</span><span class="s2">&quot;Anonymous credentials cannot delete buckets.&quot;</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">client</span>
+    <span class="k">with</span> <span class="n">translating_s3_errors</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">&quot;DeleteBucket&quot;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="n">paginator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_paginator</span><span class="p">(</span><span class="s2">&quot;list_objects_v2&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">paginator</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">contents</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Contents&quot;</span><span class="p">,</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">contents</span><span class="p">:</span>
+                    <span class="n">client</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span>
+                        <span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">Delete</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Objects&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Key&quot;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">contents</span><span class="p">]},</span>
+                    <span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">code_of</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;BucketNotEmpty&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BucketNotEmpty</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Bucket </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not empty; pass force=True for the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;explicit, paginated cascade.&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+            <span class="k">raise</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

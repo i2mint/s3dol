@@ -5,16 +5,24 @@
    module_docs/s3dol
    module_docs/s3dol/_diagnose
    module_docs/s3dol/base
+   module_docs/s3dol/capabilities
    module_docs/s3dol/connection
    module_docs/s3dol/errors
    module_docs/s3dol/presets
+   module_docs/s3dol/reads
+   module_docs/s3dol/recipes
    module_docs/s3dol/store
+   module_docs/s3dol/testing
    module_docs/s3dol/tests/test_base
+   module_docs/s3dol/tests/test_capabilities
+   module_docs/s3dol/tests/test_conformance
    module_docs/s3dol/tests/test_connection
    module_docs/s3dol/tests/test_diagnose
    module_docs/s3dol/tests/test_errors
+   module_docs/s3dol/tests/test_keyed_surface
    module_docs/s3dol/tests/test_presets
-   module_docs/s3dol/tests/test_store
-   module_docs/s3dol/tests/test_url_for
+   module_docs/s3dol/tests/test_store_shim
+   module_docs/s3dol/tests/test_values
    module_docs/s3dol/tests/util
-   module_docs/s3dol/utility
+   module_docs/s3dol/values
+   module_docs/s3dol/writes
