@@ -12,44 +12,48 @@ To install:	```pip install s3dol```
 ```python
 import s3dol
 
-s = s3dol.s3_store('my-bucket')                  # MutableMapping[str, bytes]
-s['hello.txt'] = b'world'
-s['hello.txt']                                   # b'world'
-list(s); 'hello.txt' in s; del s['hello.txt']
+s = s3dol.s3_store("my-bucket")  # MutableMapping[str, bytes]
+s["hello.txt"] = b"world"
+s["hello.txt"]  # b'world'
+list(s)
+"hello.txt" in s
+del s["hello.txt"]
 
-s = s3dol.s3_store('my-bucket', prefix='logs/')  # scoped to a prefix
-s = s3dol.s3_store('open-data', anon=True)       # public bucket, no credentials
-s = s3dol.s3_store('b', preset='minio', endpoint_url='http://localhost:9000')
+s = s3dol.s3_store("my-bucket", prefix="logs/")  # scoped to a prefix
+s = s3dol.s3_store("open-data", anon=True)  # public bucket, no credentials
+s = s3dol.s3_store("b", preset="minio", endpoint_url="http://localhost:9000")
 ```
 
 Starting from nothing (the default never creates a bucket from a typo):
 
 ```python
-s = s3dol.s3_store('brand-new-bucket', on_missing_bucket='create')
+s = s3dol.s3_store("brand-new-bucket", on_missing_bucket="create")
 ```
 
 **Big objects go through the same interface** — no `upload_multipart` method:
 
 ```python
-s['video.mp4'] = s3dol.Filepath('/tmp/video.mp4')   # streamed, multipart above 8 MiB
-s['stream.bin'] = s3dol.Chunks(chunk_iterator)       # never fully in memory
+s["video.mp4"] = s3dol.Filepath("/tmp/video.mp4")  # streamed, multipart above 8 MiB
+s["stream.bin"] = s3dol.Chunks(chunk_iterator)  # never fully in memory
 ```
 
 **Keyed capabilities are stores you index**, not methods (a `dol` key wrapper
 hands a method the *unmapped* key — so s3dol has none):
 
 ```python
-s3dol.handles(s)['video.mp4'].read(offset=0, length=1024)   # ranged read
-s3dol.handles(s)['video.mp4'].url(expires_in=3600)          # presigned URL
-s3dol.urls(s)['video.mp4']                                  # ...or directly
-s3dol.info(s)['video.mp4'].size                             # one HeadObject
+s3dol.handles(s)["video.mp4"].read(offset=0, length=1024)  # ranged read
+s3dol.handles(s)["video.mp4"].url(expires_in=3600)  # presigned URL
+s3dol.urls(s)["video.mp4"]  # ...or directly
+s3dol.info(s)["video.mp4"].size  # one HeadObject
 ```
 
 Everything else is a free function taking the store first:
 
 ```python
-s3dol.sub(s, 'folder/'); s3dol.prefixes(s)
-s3dol.delete_many(s, ['a', 'b']); s3dol.delete_bucket(endpoint, 'name', force=True)
+s3dol.sub(s, "folder/")
+s3dol.prefixes(s)
+s3dol.delete_many(s, ["a", "b"])
+s3dol.delete_bucket(endpoint, "name", force=True)
 ```
 
 **Test without a cloud** — no network, no docker, no moto:
@@ -57,8 +61,9 @@ s3dol.delete_many(s, ['a', 'b']); s3dol.delete_bucket(endpoint, 'name', force=Tr
 ```python
 from s3dol.testing import mock_s3, run_conformance
 
+
 def test_my_service():
-    assert MediaService(mock_s3(data={'a.mp4': b'...'})).play('a.mp4')
+    assert MediaService(mock_s3(data={"a.mp4": b"..."})).play("a.mp4")
 ```
 
 `run_conformance(make_store)` is exported too: run the same laws against your
@@ -80,7 +85,7 @@ Before upgrading to v1, run the diagnosis with the same arguments you pass
 ```python
 import s3dol
 
-s3dol.diagnose(bucket_name='my-bucket', endpoint_url='...', path='...')
+s3dol.diagnose(bucket_name="my-bucket", endpoint_url="...", path="...")
 ```
 
 It prints what resolves (endpoint, region, signing, credential *source* — never
