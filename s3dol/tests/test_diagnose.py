@@ -6,8 +6,12 @@ from s3dol._diagnose import _spec_from_v0_args, _v0_mangle, diagnose
 
 
 def run_diagnose(**kwargs):
-    """diagnose() against a controlled environment, capturing the report."""
+    """diagnose() against a controlled environment AND a controlled aws
+    config, capturing the report. Injecting both is what makes these tier 1:
+    otherwise every test silently consults the developer's own ~/.aws/config
+    and goes red on a machine whose profile sets an endpoint_url."""
     kwargs.setdefault("environ", {})
+    kwargs.setdefault("aws_config", {})
     return diagnose(file=io.StringIO(), **kwargs)
 
 
@@ -53,8 +57,17 @@ def test_secret_values_never_echo():
 
 def test_prints_to_the_given_file_and_returns_the_text():
     sink = io.StringIO()
-    text = diagnose(endpoint_url="http://x:1", environ={}, file=sink)
+    text = diagnose(endpoint_url="http://x:1", environ={}, aws_config={}, file=sink)
     assert sink.getvalue() == text
+
+
+def test_a_configured_aws_endpoint_does_not_bleed_into_a_what_if_run():
+    # The injected config is the ONLY config consulted.
+    report = run_diagnose(
+        preset="minio", aws_config={"profiles": {"default": {"endpoint_url": "http://cfg:1"}}}
+    )
+    assert "http://cfg:1" in report and "RESOLUTION FAILS" not in report
+    assert "RESOLUTION FAILS" in run_diagnose(preset="minio")  # nothing supplies one
 
 
 # --------------------------------------------------------------------------- #
@@ -127,6 +140,76 @@ def test_excluded_branch_prints_the_reason():
     report = run_diagnose(bucket_name="b", endpoint_url="https://x.supabase.co/s3")
     assert "EXCLUDED" in report
     assert "process-global" in report
+
+
+def test_explicit_credentials_overridden_by_env_is_reported_as_a_move():
+    # THE case step 0 exists for: v0 let env credentials silently override
+    # explicit ones. Comparing provenance LABELS missed it (both truncate to
+    # 'AKIA…'); the identity predicate catches it.
+    report = run_diagnose(
+        bucket_name="b",
+        aws_access_key_id="AKIAEXPLICIT",
+        aws_secret_access_key="explicit-secret",
+        environ={
+            "AWS_ACCESS_KEY_ID": "AKIAFROMENV",
+            "AWS_SECRET_ACCESS_KEY": "env-secret",
+        },
+    )
+    assert "credential identity" in report
+    assert "CHANGES ON UPGRADE" in report
+
+
+def test_env_only_credentials_are_not_a_false_alarm():
+    # The most common v0 configuration: env credentials, no explicit kwargs.
+    # Both sides resolve to the same keys, so the table must say so — a
+    # migration signal that cries wolf gets filtered away.
+    report = run_diagnose(
+        bucket_name="b",
+        endpoint_url="http://minio:9000",
+        environ={"AWS_ACCESS_KEY_ID": "AKIAENV", "AWS_SECRET_ACCESS_KEY": "s"},
+    )
+    assert "credential identity" not in report
+
+
+def test_detection_supplied_settings_are_announced_as_new_in_v1():
+    # Both sides run through v1's resolver, so pass-2 detection cancels out of
+    # any diff — it has to be reported explicitly or the announcement
+    # instrument cannot see the path->virtual flip it exists to announce.
+    report = run_diagnose(
+        bucket_name="b", endpoint_url="https://s3.us-west-004.backblazeb2.com"
+    )
+    assert "NEW IN v1" in report
+    assert "backblaze" in report and "when_required" in report
+
+
+def test_env_profile_without_env_credentials_names_the_v0_raise():
+    report = run_diagnose(bucket_name="b", profile_name="environment variables")
+    assert "v0 RAISES" in report
+    assert "EXCLUDED" in report
+
+
+def test_v1_credential_kwargs_are_never_echoed():
+    # The allowlist, not a denylist of two v0 names: every v1 shape must be
+    # covered, in the one artifact users are told to run and paste into issues.
+    for kwargs in (
+        {"credentials": ("AKIAX", "sEkR3tVALUE")},
+        {"credentials": {"aws_secret_access_key": "sEkR3tVALUE"}},
+        {"client_kwargs": {"aws_secret_access_key": "sEkR3tVALUE"}},
+    ):
+        assert "sEkR3tVALUE" not in run_diagnose(**kwargs)
+
+
+def test_the_access_key_id_is_shown_by_prefix_only():
+    report = run_diagnose(bucket_name="b", aws_access_key_id="AKIAFULLKEYVALUE")
+    assert "AKIAFULLKEYVALUE" not in report
+    assert "AKIA" in report
+
+
+def test_an_endpoint_with_userinfo_is_redacted_in_the_echo():
+    report = run_diagnose(
+        bucket_name="b", endpoint_url="https://user:sEkR3tVALUE@host:9000"
+    )
+    assert "sEkR3tVALUE" not in report
 
 
 def test_credential_identity_divergence_is_a_predicate_not_a_value():

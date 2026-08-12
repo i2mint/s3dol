@@ -57,6 +57,7 @@ from s3dol.errors import (
     AmbiguousResolution,
     ConfigurationError,
     MissingEndpoint,
+    MissingPresetParam,
     PresetConflict,
     PresetHostMismatch,
 )
@@ -167,9 +168,18 @@ class CallableCredentials(CredentialProvider):
 
     fetch: Callable[[], Mapping]
 
+    def _name(self) -> str:
+        # NEVER repr(self.fetch): functools.partial's repr prints its bound
+        # arguments, and the rejection message below recommends a partial —
+        # a partial closing over a vault token would leak it (D1 §4).
+        target = getattr(self.fetch, "func", self.fetch)  # unwrap a partial
+        return getattr(target, "__qualname__", None) or type(target).__name__
+
+    def __repr__(self):
+        return f"{type(self).__name__}(fetch={self._name()})"
+
     def provenance(self) -> str:
-        name = getattr(self.fetch, "__qualname__", None) or repr(type(self.fetch))
-        return f"callable:{name}"
+        return f"callable:{self._name()}"
 
     @staticmethod
     def _normalize(result: Mapping) -> dict:
@@ -196,15 +206,6 @@ class CallableCredentials(CredentialProvider):
     def _load_botocore_credentials(self):
         from botocore.credentials import Credentials, RefreshableCredentials
 
-        first = self._normalize(self.fetch())
-        if first["expiry_time"] is None:
-            return Credentials(
-                first["access_key"],
-                first["secret_key"],
-                first["token"],
-                method="s3dol-callable",
-            )
-
         def refresh():
             fresh = self._normalize(self.fetch())
             return {
@@ -214,8 +215,18 @@ class CallableCredentials(CredentialProvider):
                 "expiry_time": fresh["expiry_time"],
             }
 
+        # ONE fetch on the first load — a token vendor may be rate-limited or
+        # single-use, so the initial credential is the one we keep.
+        first = refresh()
+        if first["expiry_time"] is None:
+            return Credentials(
+                first["access_key"],
+                first["secret_key"],
+                first["token"],
+                method="s3dol-callable",
+            )
         return RefreshableCredentials.create_from_metadata(
-            metadata=refresh(), refresh_using=refresh, method="s3dol-callable"
+            metadata=first, refresh_using=refresh, method="s3dol-callable"
         )
 
 
@@ -269,7 +280,14 @@ def normalize_credentials(value: CredentialsInput) -> Optional[CredentialProvide
                 f"credentials= tuple must be (key, secret) or "
                 f"(key, secret, token); got {len(value)} items."
             )
-        return StaticCredentials(*map(str, value))
+        access, secret, *rest = value
+        token = rest[0] if rest else None
+        # str()-ing a None token would yield the truthy string 'None' and sign
+        # every request with X-Amz-Security-Token: None — the natural
+        # `credentials=(k, s, maybe_token)` shape must behave like the 2-tuple.
+        return StaticCredentials(
+            str(access), str(secret), None if token is None else str(token)
+        )
     if isinstance(value, Mapping):
         unknown = set(value) - set(_AWS_CRED_KEYS)
         if unknown:
@@ -292,11 +310,14 @@ def normalize_credentials(value: CredentialsInput) -> Optional[CredentialProvide
         try:
             pickle.dumps(value)
         except Exception as error:
+            target = getattr(value, "func", value)
+            name = getattr(target, "__qualname__", None) or type(target).__name__
             raise ConfigurationError(
-                f"credentials= callable {value!r} is not picklable "
+                f"credentials= callable {name} is not picklable "
                 f"({type(error).__name__}). Every s3dol store pickles "
                 f"(ADR-0012 D1); use a module-level function or a "
-                f"functools.partial of one."
+                f"functools.partial of one. (Its repr is deliberately not "
+                f"shown — a bound argument may be a secret.)"
             ) from error
         return CallableCredentials(value)
     raise ConfigurationError(
@@ -353,27 +374,40 @@ _ENV_CONSULTED_KEYS = _ENV_ENDPOINT_KEYS + (
     "AWS_RESPONSE_CHECKSUM_VALIDATION",
 )
 
-#: Region-looking tokens: ``us-east-1``, ``fr-par``, ``us-west-004``, hetzner's
-#: ``fsn1``, and R2's literal ``auto``.
-_REGION_TOKEN = re.compile(r"[a-z]{2}-[a-z]+-\d+|[a-z]{2}-[a-z]{3,}|[a-z]{3}\d|auto")
+#: Region-shaped tokens, deliberately NARROW: ``us-east-1``, ``fr-par``,
+#: ``us-west-004``. A looser pattern (an earlier draft also accepted any
+#: ``xxxN`` first label, for hetzner's ``fsn1``) captures ordinary hostname
+#: labels — ``srv1.corp``, ``eu-storage.corp`` — and because host capture
+#: outranks ``AWS_DEFAULT_REGION`` in the ladder, that garbage would be handed
+#: to botocore as the SigV4 credential scope and silently override the user's
+#: exported region. Providers whose region is genuinely part of the host state
+#: it in their preset row instead (hetzner binds ``{location}``).
+_REGION_TOKEN = re.compile(
+    r"[a-z]{2}-[a-z]+-\d+|[a-z]{2}-[a-z]{3,}-\d{2,}|[a-z]{2}-[a-z]{3,}"
+)
 
 
 def _region_from_host(endpoint_url: Optional[str]) -> Optional[str]:
-    """Best-effort region capture from a resolved endpoint host."""
+    """Best-effort region capture — ONLY from the canonical ``s3.<region>.``
+    (or ``s3-<region>.``) host shape, never from an arbitrary label."""
     if not endpoint_url:
         return None
     from urllib.parse import urlsplit
 
     host = urlsplit(endpoint_url).hostname or ""
     match = re.search(r"(?:^|\.)s3[.-]([a-z0-9-]+)\.", host)
-    candidates = [match.group(1)] if match else []
-    labels = host.split(".")
-    if labels:
-        candidates.append(labels[0])
-    for candidate in candidates:
-        if _REGION_TOKEN.fullmatch(candidate):
-            return candidate
+    if match and _REGION_TOKEN.fullmatch(match.group(1)):
+        return match.group(1)
     return None
+
+
+def _looks_secret(name: str) -> bool:
+    """Whether an option name plausibly carries a secret (repr scrubbing)."""
+    lowered = str(name).lower()
+    return any(
+        marker in lowered
+        for marker in ("secret", "token", "password", "passwd", "credential")
+    )
 
 
 _CREDENTIAL_KEY_MARKERS = (
@@ -384,6 +418,15 @@ _CREDENTIAL_KEY_MARKERS = (
     "credential_process",
     "sso_",
 )
+
+
+def _redact_env_value(key: str, value: Optional[str]) -> Optional[str]:
+    """A display-safe form of a consulted environment value."""
+    from s3dol.errors import redact_url
+
+    if value and "ENDPOINT" in key:
+        return redact_url(value)
+    return value
 
 
 def _scrub_credentials(config: Mapping) -> dict:
@@ -427,10 +470,16 @@ def _lower_rung_endpoint(
     """The endpoint the rungs *below* s3dol's two would supply — read purely,
     for diagnose() and the C1/C2 guards **only**, never to override (ADR-0012
     D3; and never pass ``Config(ignore_configured_endpoint_urls=True)``)."""
+    from s3dol.errors import redact_url
+
     for env_key in _ENV_ENDPOINT_KEYS:
         value = environ.get(env_key)
         if value:
-            return value, f"env:{env_key}"
+            # Redact at capture. This rung is never PASSED to botocore (which
+            # reads the env itself), only reported — so the Resolution, the C2
+            # messages and diagnose all become leak-proof at once, while the
+            # host survives for detection and the guards.
+            return redact_url(value), f"env:{env_key}"
     if aws_config:
         try:
             from botocore.configprovider import ConfiguredEndpointProvider
@@ -443,7 +492,7 @@ def _lower_rung_endpoint(
             )
             value = provider.provide()
             if value:
-                return str(value), "aws-config"
+                return redact_url(str(value)), "aws-config"
         except Exception:  # config parsing must never fail resolution
             return None
     return None
@@ -508,28 +557,32 @@ def resolve(
             endpoint = Sourced(lower[0], lower[1], passed=False)
         elif named is not None:
             missing = named.missing_endpoint_params(region_name=spec.region_name)
-            if named.requires_endpoint or missing:
+            if missing:
+                raise MissingPresetParam(
+                    f"Preset {named.name!r} has unbound endpoint template "
+                    f"parameter(s) {sorted(missing)}, so it supplies no "
+                    f"endpoint — and nothing below supplied one either. Bind "
+                    f"them (preset=get_preset({named.name!r}).bind(...)), or "
+                    f"pass endpoint_url=. Falling back to AWS silently is "
+                    f"structurally impossible (ADR-0012 C1)."
+                )
+            if named.requires_endpoint:
                 raise MissingEndpoint(
-                    f"Preset {named.name!r} needs an endpoint and nothing "
-                    f"supplied one"
-                    + (
-                        f" (unbound template parameter(s): {sorted(missing)} — "
-                        f"bind with get_preset({named.name!r}).bind(...))"
-                        if missing
-                        else ""
-                    )
-                    + ". Pass endpoint_url=, or set AWS_ENDPOINT_URL_S3. "
-                    f"Falling back to AWS silently is structurally impossible "
-                    f"(ADR-0012 C1)."
+                    f"Preset {named.name!r} cannot be reached without an "
+                    f"explicit endpoint and nothing supplied one. Pass "
+                    f"endpoint_url=, or set AWS_ENDPOINT_URL_S3 (ADR-0012 C1)."
                 )
             endpoint = Sourced(None, "SDK resolver", passed=False)
         else:
             endpoint = Sourced(None, "SDK resolver", passed=False)
 
     # -- C2 guard: a named, patterned row whose endpoint arrived from below
+    # ADR-0012 C2 exempts no *named* row: `soft` governs detection (pass 2),
+    # not this guard. Exempting 'aws' would silence it for exactly the
+    # population that declared "I want AWS" and was then retargeted elsewhere
+    # by an environment variable.
     if (
         named is not None
-        and not named.soft
         and named.host_patterns
         and not endpoint.passed
         and endpoint.value
@@ -680,7 +733,16 @@ def resolve(
         preset_source=preset_source,
         credential_provenance=provenance,
         capabilities=row.capabilities,
-        environ_consulted=tuple((key, environ.get(key)) for key in _ENV_CONSULTED_KEYS),
+        # Redacted at capture: these are display values (diagnose prints them,
+        # and a Resolution is the natural thing to log), and an endpoint env
+        # var may carry userinfo we neither refuse nor pass on.
+        environ_consulted=tuple(
+            (
+                key,
+                _redact_env_value(key, environ.get(key)),
+            )
+            for key in _ENV_CONSULTED_KEYS
+        ),
         notes=tuple(notes),
     )
 
@@ -743,9 +805,43 @@ class S3Connection:
                 f"checksum must be 'when_supported', 'when_required', or None; "
                 f"got {self.checksum!r}."
             )
+        if not isinstance(self.signature_version, str) or not self.signature_version:
+            # NOT a "None == do not override" field, unlike its neighbours:
+            # ADR-0003 §4 requires signature_version to be set explicitly on
+            # every client. Leaving it to botocore silently downgrades
+            # presigning to SigV2 in the regions endpoints.json still lists as
+            # v2-capable (us-east-1 among them — every conventional MinIO
+            # setup), and client.meta.config reports 's3v4' while doing it.
+            raise ConfigurationError(
+                f"signature_version must be a non-empty str (default 's3v4'); "
+                f"got {self.signature_version!r}. It is never left to botocore: "
+                f"that silently re-enables SigV2 presigning (ADR-0003 §4, "
+                f"issue #10). Pass anon=True for unsigned access."
+            )
         if isinstance(self.client_kwargs, Mapping):
             object.__setattr__(
                 self, "client_kwargs", tuple(sorted(self.client_kwargs.items()))
+            )
+        smuggled = sorted(
+            key
+            for key, _ in self.client_kwargs
+            if key
+            in (
+                "aws_access_key_id",
+                "aws_secret_access_key",
+                "aws_session_token",
+                "config",
+            )
+        )
+        if smuggled:
+            raise ConfigurationError(
+                f"client_kwargs must not carry {smuggled}: boto3 would accept "
+                f"them, bypassing credential normalisation, the anon "
+                f"contradiction check, and repr redaction (the secret would "
+                f"then print in every log line that reprs this spec). Use "
+                f"credentials=/profile=, and the connection's own fields for "
+                f"Config (addressing_style, checksum, signature_version, "
+                f"payload_signing_enabled, verify)."
             )
         if self.anon:
             if self.credentials is not None or self.profile:
@@ -789,7 +885,9 @@ class S3Connection:
 
         return resolve(self, environ if environ is not None else os.environ, aws_config)
 
-    def _build_client(self):
+    def _build_client(
+        self, *, _override_s3_settings: Optional[dict] = None, _override_endpoint=None
+    ):
         import warnings
 
         import boto3
@@ -809,6 +907,8 @@ class S3Connection:
             s3_settings["payload_signing_enabled"] = (
                 resolution.payload_signing_enabled.value
             )
+        if _override_s3_settings:
+            s3_settings.update(_override_s3_settings)
         config_kwargs: dict = dict(resolution.preset.config_kwargs or ())
         if resolution.checksum.passed:
             config_kwargs["request_checksum_calculation"] = resolution.checksum.value
@@ -837,17 +937,51 @@ class S3Connection:
         client_kwargs = dict(self.client_kwargs)
         if self.verify is not None:
             client_kwargs["verify"] = self.verify
+        endpoint_to_pass = (
+            resolution.endpoint_url.value if resolution.endpoint_url.passed else None
+        )
+        if _override_endpoint is not None:
+            endpoint_to_pass = _override_endpoint
         return boto3.Session(botocore_session=botocore_session).client(
             "s3",
-            endpoint_url=(
-                resolution.endpoint_url.value
-                if resolution.endpoint_url.passed
-                else None
-            ),
+            endpoint_url=endpoint_to_pass,
             region_name=resolution.region_name.value,
             config=config,
             **client_kwargs,
         )
+
+    @property
+    def presign_client(self):
+        """The client presigned URLs are generated with.
+
+        For most providers this is :attr:`client`. Two providers genuinely
+        need different config for presigning than for the API (ADR-0003 §1):
+        Hetzner presigns virtual-hosted while the API is path-style; R2
+        presigns only on the S3 API domain. When the resolved preset carries
+        ``presign_endpoint_url``/``presign_addressing_style``, a second client
+        is built (lazily, once, under the same lock) from the merged config.
+        """
+        resolution = self.resolution()
+        row = resolution.preset
+        if row is None or (
+            row.presign_endpoint_url is None and row.presign_addressing_style is None
+        ):
+            return self.client
+        built = self.__dict__.get("_presign_client")
+        if built is None:
+            with self._lock:
+                built = self.__dict__.get("_presign_client")
+                if built is None:
+                    overrides = {}
+                    if row.presign_addressing_style is not None:
+                        overrides["addressing_style"] = row.presign_addressing_style
+                    endpoint = row.presign_endpoint_url
+                    built = self._build_client(
+                        _override_s3_settings=overrides,
+                        _override_endpoint=endpoint,
+                    )
+                    object.__setattr__(self, "_presign_client", built)
+        return built
 
     # -- pickling: mandatory for every connection (ADR-0012 D1 §3) --------- #
 
@@ -864,9 +998,18 @@ class S3Connection:
     # -- repr: non-default fields only; secrets never (D1 §4) -------------- #
 
     def __repr__(self):
+        from s3dol.errors import redact_url
+
         shown = []
         for f in fields(self):
             value = getattr(self, f.name)
-            if value != f.default:
-                shown.append(f"{f.name}={value!r}")
+            if value == f.default:
+                continue  # only non-defaults, so the repr stays readable
+            if f.name == "client_kwargs":
+                value = tuple(
+                    (key, "***" if _looks_secret(key) else item) for key, item in value
+                )
+            elif f.name == "endpoint_url":
+                value = redact_url(value)
+            shown.append(f"{f.name}={value!r}")
         return f"{type(self).__name__}({', '.join(shown)})"

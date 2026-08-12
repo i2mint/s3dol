@@ -67,7 +67,20 @@ consumer's requirements.
 | Resolved design questions | **§7** / **#14** → [ADR-0011](decisions/0011-keyed-capability-surface.md) · **§8** / **#15** → [ADR-0012](decisions/0012-credential-and-endpoint-resolution.md) |
 | Open design questions | none — implementation is unblocked; see §11 |
 
-**Nothing has been implemented.** The repo still ships v0.1.9 unchanged.
+**Implementation is under way** (2026-08-11). Layer A landed as an additive
+0.1.x change (PR #19: `errors.py`, `presets.py`, `connection.py`, `_diagnose.py`
+— ADR-0007 §5 step 0, so dependents can record what resolves *before* anything
+moves), and the v1 surface followed on top (`values`/`writes`/`reads`/`base`/
+`capabilities`/`recipes`/`testing` + the `store.py` compat shim). Read §11 for
+what remains.
+
+One design amendment came out of implementation and is recorded where it
+belongs, in [ADR-0011 §D3b-amended](decisions/0011-keyed-capability-surface.md):
+the guarded `url_for` shim **cannot** serve both of its call paths, because
+`dol.content_url` and a direct delegated call hand the same signature different
+key domains. It now refuses once the leaf has been wrapped. That is the P1
+evidence for dol#86/#83 — a keyed capability *method* is unfixable in the
+general case, and not for want of a better resolution primitive.
 
 ## 3. The twelve ADRs, in one paragraph each
 

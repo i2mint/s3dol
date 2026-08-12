@@ -173,8 +173,10 @@ class MissingEndpoint(ConfigurationError):
     supplied (ADR-0012 C1)."""
 
 
-class MissingPresetParam(ConfigurationError):
-    """A preset endpoint template has an unbound required parameter."""
+class MissingPresetParam(MissingEndpoint):
+    """A preset's endpoint template has an unbound required parameter, so the
+    row contributes no endpoint rung (ADR-0012 C1). A ``MissingEndpoint``, so
+    either ``except`` works."""
 
 
 class UnknownPresetParam(ConfigurationError):
@@ -229,6 +231,30 @@ _SECRET_PARAM_RE = re.compile(
     r"(?P<name>{})=[^&\s]*".format("|".join(map(re.escape, _SECRET_QUERY_PARAMS))),
     flags=re.IGNORECASE,
 )
+
+
+def redact_url(url: Optional[str]) -> Optional[str]:
+    """A URL safe to display: userinfo, query and fragment removed.
+
+    A URL is the residual credential carrier (ADR-0012 D4). Endpoint hygiene
+    refuses those shapes for values *s3dol* is given, but an endpoint read
+    from ``AWS_ENDPOINT_URL_S3`` or an aws-config profile is not ours to
+    refuse — it must merely never be echoed intact.
+
+    >>> redact_url('https://user:pw@minio.internal:9000/x?sig=abc#f')
+    'https://REDACTED@minio.internal:9000/x?<redacted>'
+    """
+    if not url:
+        return url
+    from urllib.parse import urlsplit, urlunsplit
+
+    parts = urlsplit(url)
+    netloc = parts.netloc
+    if "@" in netloc:
+        netloc = f"REDACTED@{netloc.rsplit('@', 1)[1]}"
+    return urlunsplit(
+        (parts.scheme, netloc, parts.path, "<redacted>" if parts.query else "", "")
+    )
 
 
 def redact(text: str) -> str:
@@ -318,6 +344,12 @@ DEFAULT_RULES: tuple[Rule, ...] = (
     ((None, "AuthorizationHeaderMalformed", None), "wrong_region"),
     # -- archived objects
     ((None, "InvalidObjectState", None), "archived"),
+    # -- clock skew / request expiry: 403s that are NOT permission problems.
+    #    They must sit ABOVE the wildcard 403 rows, or deny_means_absent
+    #    would turn a skewed clock into "every key is absent".
+    ((None, "RequestTimeTooSkewed", None), "credentials"),
+    ((None, "RequestExpired", None), "credentials"),
+    ((None, "AuthorizationQueryParametersError", None), "credentials"),
     # -- credentials
     ((None, "ExpiredToken", None), "credentials"),
     ((None, "InvalidAccessKeyId", None), "credentials"),
@@ -448,15 +480,21 @@ def translate_client_error(
     kind = classified.kind
 
     if kind == "ambiguous_head":
-        if head_ambiguity_resolver is not None and head_ambiguity_resolver():
-            kind = "object_absent"
-        elif head_ambiguity_resolver is not None:
-            kind = "bucket_absent"
-        else:
-            kind = "object_absent"  # documented default when no resolver bound
+        if head_ambiguity_resolver is None:
+            # ADR-0004 §2: the body-less HeadObject 404 must NOT be resolved
+            # by guessing — "the object is absent" and "the bucket is absent"
+            # are indistinguishable here on real AWS. With no disambiguator
+            # bound we propagate the backend error untouched (loud) rather
+            # than manufacture an absence a caller's .get() would swallow.
+            return None
+        kind = "object_absent" if head_ambiguity_resolver() else "bucket_absent"
 
     if kind == "access_denied":
-        if deny_means_absent and key is not None:
+        # Only a genuine permission code may be read as absence. A 403 that
+        # means something else (clock skew, expired request) is classified
+        # above; this guard is the second belt.
+        permission_code = code in (None, "AccessDenied", "403", "AllAccessDisabled")
+        if deny_means_absent and key is not None and permission_code:
             kind = "object_absent"
         else:
             return AccessDenied(
@@ -497,6 +535,39 @@ def translate_client_error(
     return exc_type(message)
 
 
+from contextlib import contextmanager
+
+
+@contextmanager
+def translating_s3_errors(store, *, operation: str, key=None, **translate_kwargs):
+    """Generator/inline form of the seam, for code the decorator cannot wrap
+    (``__iter__`` bodies: a decorated generator function returns its generator
+    before the body runs, so the decorator's ``except`` never fires).
+
+    Same contract as :func:`translate_s3_errors`; the store supplies
+    ``_error_context()``.
+    """
+    from botocore.exceptions import ClientError, NoCredentialsError
+
+    try:
+        yield
+    except ClientError as error:
+        context = dict(getattr(store, "_error_context", dict)())
+        context.update(translate_kwargs)
+        replacement = translate_client_error(
+            error, operation=operation, key=key, **context
+        )
+        if replacement is None:
+            raise
+        raise replacement from error
+    except NoCredentialsError as error:
+        raise CredentialsError(
+            "No AWS credentials found. Configure credentials (env vars, "
+            "~/.aws/credentials, SSO, or S3Connection(credentials=...)), "
+            "or pass anon=True for public data."
+        ) from error
+
+
 def translate_s3_errors(
     *,
     operation: str,
@@ -518,6 +589,14 @@ def translate_s3_errors(
         import inspect
 
         sig = inspect.signature(func)
+        if key_arg is not None and key_arg not in sig.parameters:
+            raise TypeError(
+                f"translate_s3_errors(key_arg={key_arg!r}) on "
+                f"{func.__qualname__}: that function has no such parameter "
+                f"(it has {list(sig.parameters)[1:]}). A silently unresolved "
+                f"key_arg would drop the key from every error message and "
+                f"disable the deny_means_absent conversion."
+            )
 
         @wraps(func)
         def wrapper(self, *args, **kwargs):
@@ -529,6 +608,7 @@ def translate_s3_errors(
                 key = None
                 if key_arg is not None:
                     bound = sig.bind(self, *args, **kwargs)
+                    bound.apply_defaults()  # a defaulted key is still the key
                     key = bound.arguments.get(key_arg)
                 context = dict(getattr(self, "_error_context", dict)())
                 context.update(translate_kwargs)

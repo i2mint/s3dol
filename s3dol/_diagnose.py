@@ -26,7 +26,7 @@ from __future__ import annotations
 import io
 import re
 import sys
-from typing import Mapping, Optional
+from typing import Mapping, Optional, Union
 
 from s3dol.connection import S3Connection, Resolution, load_aws_config, resolve
 from s3dol.errors import redact
@@ -49,13 +49,48 @@ _V0_ARG_NAMES = frozenset(
     }
 )
 
-_SECRET_ARG_NAMES = frozenset({"aws_secret_access_key", "aws_session_token"})
+#: Argument names whose VALUE is safe to echo. An **allowlist**, not a
+#: denylist: a denylist of the two v0 secret names let every v1 shape through,
+#: so ``credentials=('AK', 'SECRET')`` printed the secret verbatim into the one
+#: artifact users are told to run and share (ADR-0012 D6: diagnose holds no
+#: credential value, only a provenance label).
+_ECHOABLE_ARG_NAMES = frozenset(
+    {
+        "bucket_name",
+        "path",
+        "prefix",
+        "region_name",
+        "profile_name",
+        "profile",
+        "preset",
+        "make_bucket",
+        "skip_bucket_check",
+        "is_supabase_endpoint",
+        "on_missing_bucket",
+        "anon",
+        "addressing_style",
+        "checksum",
+        "payload_signing_enabled",
+        "deny_means_absent",
+        "signature_version",
+    }
+)
+
+#: Echoed, but redacted first (a URL is the residual credential carrier).
+_REDACTED_ARG_NAMES = frozenset({"endpoint_url"})
 
 #: Reasons a v0 branch is excluded from the differential (ADR-0012 D7): these
 #: two branches build clients through the module-level ``boto3.client(...)``,
 #: which resolves through the process-global cached DEFAULT_SESSION — they are
 #: not functions of their arguments.
 _EXCLUDED_BRANCHES = {
+    "env-profile (v0 RAISES: no env credentials)": (
+        "v0 raises S3DolException('Missing AWS credentials in environment "
+        "variables') for this call. v1 instead falls through to botocore's "
+        "credential chain, so it may succeed — with whatever identity the "
+        "chain resolves (~/.aws, SSO, IMDS). If you relied on v0 failing "
+        "loudly here, add an explicit check."
+    ),
     "supabase": (
         "v0's Supabase branch builds its client through boto3's process-global "
         "session, so its behaviour is not a function of these arguments. Note: "
@@ -105,6 +140,12 @@ def _v0_mangle(args: Mapping, environ: Mapping) -> tuple[str, Optional[dict]]:
         )
         return "env-credentials (endpoint dropped)", effective
     if profile == "environment variables":
+        if not env_creds:
+            # v0's get_client('environment variables') RAISES S3DolException
+            # here. v1 falls through to botocore's chain, which may resolve a
+            # DIFFERENT identity (~/.aws, SSO, IMDS) — a behaviour change worth
+            # naming, and not expressible as a resolution diff.
+            return "env-profile (v0 RAISES: no env credentials)", None
         effective.update(
             aws_access_key_id=environ.get("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key=environ.get("AWS_SECRET_ACCESS_KEY"),
@@ -139,6 +180,40 @@ def _spec_from_v0_args(args: Mapping) -> S3Connection:
         profile=profile,
         credentials=credentials,
     )
+
+
+def _credential_identity(spec, environ: Mapping) -> tuple:
+    """A comparable, non-secret credential *identity* (ADR-0012 D7: compared
+    by a boolean predicate, never by snapshot, and never by reading
+    ``.access_key`` — which performs network I/O on a refreshable credential).
+
+    Provenance *labels* are the wrong comparator in both directions: the v0
+    side labels env credentials "explicit static (AKIA…)" while the v1 side
+    labels the same keys "chain (env credentials present)" (a false alarm for
+    the most common configuration), and two different explicit keys both
+    truncate to "AKIA…" (a missed alarm for the very case step 0 exists to
+    catch — v0 letting env silently override explicit credentials).
+    """
+    from s3dol.connection import ProfileCredentials, StaticCredentials
+
+    if spec.anon:
+        return ("anonymous",)
+    credentials = spec.credentials
+    if isinstance(credentials, StaticCredentials):
+        return ("keys", credentials.access_key)  # full id: compared, not printed
+    if isinstance(credentials, ProfileCredentials):
+        return ("profile", credentials.profile)
+    if credentials is not None:
+        return ("callable", credentials.provenance())
+    if spec.profile:
+        return ("profile", spec.profile)
+    # The chain: its top rung is env credentials, which is what a v0-mangled
+    # side would have materialised as explicit keys — so identical inputs
+    # compare EQUAL here, which is the point.
+    env_key = environ.get("AWS_ACCESS_KEY_ID")
+    if env_key:
+        return ("keys", env_key)
+    return ("chain", environ.get("AWS_PROFILE") or "default")
 
 
 def _redact_url(url: Optional[str]) -> Optional[str]:
@@ -186,21 +261,52 @@ def _divergence_rows(args: Mapping, environ: Mapping, aws_config) -> list[str]:
                 f"  {axis}: v0 -> {_redact_url(v0_value)!r}, "
                 f"v1 -> {_redact_url(v1_value)!r}   ** CHANGES ON UPGRADE **"
             )
-    if v0_res.credential_provenance != v1_res.credential_provenance:
+    v0_identity = _credential_identity(_spec_from_v0_args(effective), environ)
+    v1_identity = _credential_identity(_spec_from_v0_args(args), environ)
+    if v0_identity != v1_identity:
         moved = True
         rows.append(
-            f"  credentials: v0 -> {v0_res.credential_provenance}, "
-            f"v1 -> {v1_res.credential_provenance}   ** CHANGES ON UPGRADE **"
+            f"  credential identity: v0 -> {_identity_label(v0_identity)}, "
+            f"v1 -> {_identity_label(v1_identity)}   ** CHANGES ON UPGRADE **"
+        )
+    # v1 introduces changes v0 never made, and they cannot show up above:
+    # BOTH sides run through v1's resolver, so pass-2 detection cancels out.
+    # Report them explicitly, or the announcement instrument cannot see the
+    # very path->virtual flip ADR-0012 D4 promises to announce.
+    if v1_res.preset_source == "detected":
+        moved = True
+        rows.append(
+            f"  provider detected from the endpoint: "
+            f"{v1_res.preset.name!r} — v1 now sets "
+            f"addressing_style={v1_res.addressing_style.value!r}"
+            + (
+                f", checksum={v1_res.checksum.value!r}"
+                if v1_res.checksum.passed
+                else ""
+            )
+            + f", region={v1_res.region_name.value!r}. v0 passed none of "
+            f"these (botocore defaults applied).   ** NEW IN v1 **"
         )
     if not moved:
         rows.append("  no divergence: v1 resolves this call exactly as v0 does.")
     return rows
 
 
+def _identity_label(identity: tuple) -> str:
+    """A printable form of a credential identity — key ids truncated."""
+    kind, *rest = identity
+    if kind == "keys":
+        return f"access key {str(rest[0])[:4]}…"
+    if kind == "anonymous":
+        return "anonymous"
+    return f"{kind}:{rest[0]}"
+
+
 def diagnose(
     connection: Optional[S3Connection] = None,
     *,
     environ: Optional[Mapping[str, str]] = None,
+    aws_config: Union[Mapping, None] = None,
     file=None,
     **kwargs,
 ) -> str:
@@ -246,12 +352,18 @@ def diagnose(
             import os
 
             environ = dict(os.environ)
-        aws_config: object
-        try:
-            aws_config = load_aws_config()
-        except Exception as error:
-            aws_config = {}
-            emit(f"note: aws config unreadable ({type(error).__name__}: {error})")
+        if aws_config is None:
+            # The one impure read (the shared AWS config file), matching what
+            # a real construction resolves against. Injectable — without that,
+            # a "tier 1" test silently consults the developer's own
+            # ~/.aws/config and goes red on a machine whose profile sets an
+            # endpoint_url (ADR-0012 D2 made resolve() injectable exactly so
+            # this channel is controllable).
+            try:
+                aws_config = load_aws_config()
+            except Exception as error:
+                aws_config = {}
+                emit(f"note: aws config unreadable ({type(error).__name__}: {error})")
 
         v0_args = {k: v for k, v in kwargs.items() if k in _V0_ARG_NAMES}
         v1_kwargs = {k: v for k, v in kwargs.items() if k not in _V0_ARG_NAMES}
@@ -261,7 +373,14 @@ def diagnose(
             emit()
             emit("arguments:")
             for key in sorted(kwargs):
-                shown = "<provided>" if key in _SECRET_ARG_NAMES else repr(kwargs[key])
+                if key in _REDACTED_ARG_NAMES:
+                    shown = repr(_redact_url(kwargs[key]))
+                elif key in _ECHOABLE_ARG_NAMES:
+                    shown = repr(kwargs[key])
+                elif key == "aws_access_key_id" and kwargs[key]:
+                    shown = f"{str(kwargs[key])[:4]!r}… (prefix only)"
+                else:
+                    shown = "<provided>"
                 emit(f"  {key} = {shown}")
 
         emit()
