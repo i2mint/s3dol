@@ -119,3 +119,5 @@ venv.bak/
 
 # Notebook playground
 vf.ipynb
+# uv.lock: a library, not an application; a resolved lock goes stale on every CI version bump (same rule as i2mint/wads).
+uv.lock
