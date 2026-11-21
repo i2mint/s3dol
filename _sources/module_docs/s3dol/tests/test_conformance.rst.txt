@@ -1,4 +1,0 @@
-s3dol.tests.test_conformance
-============================
-.. automodule:: s3dol.tests.test_conformance
-   :members:

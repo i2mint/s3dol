@@ -1,103 +1,256 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+<link rel="alternate" type="text/markdown" href="errors.html.md">
+<link rel="describedby" href="../../llms.txt" type="text/markdown"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
+        <title>s3dol.errors - s3dol</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
 
 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s3dol.errors &mdash; s3dol 0.1.14 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-
+<style>
+  body {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  --color-brand-primary: #006c35;
+  --color-brand-content: #006c35;
   
-      <script src="../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=468bc497"></script>
-      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-</head>
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #6cd092;
+  --color-brand-content: #6cd092;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #6cd092;
+  --color-brand-content: #6cd092;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
 
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            s3dol
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol.html">s3dol</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/_diagnose.html">s3dol._diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/base.html">s3dol.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/capabilities.html">s3dol.capabilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/connection.html">s3dol.connection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/errors.html">s3dol.errors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/presets.html">s3dol.presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/reads.html">s3dol.reads</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/recipes.html">s3dol.recipes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/store.html">s3dol.store</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/testing.html">s3dol.testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_base.html">s3dol.tests.test_base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_capabilities.html">s3dol.tests.test_capabilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_conformance.html">s3dol.tests.test_conformance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_connection.html">s3dol.tests.test_connection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_diagnose.html">s3dol.tests.test_diagnose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_errors.html">s3dol.tests.test_errors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_keyed_surface.html">s3dol.tests.test_keyed_surface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_presets.html">s3dol.tests.test_presets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_store_shim.html">s3dol.tests.test_store_shim</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/test_values.html">s3dol.tests.test_values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/tests/util.html">s3dol.tests.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/values.html">s3dol.values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/s3dol/writes.html">s3dol.writes</a></li>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">s3dol</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">s3dol</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API reference</a><input aria-label="Toggle navigation of API reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/s3dol.html">s3dol</a><input aria-label="Toggle navigation of s3dol" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.base.html">s3dol.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.connection.html">s3dol.connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.errors.html">s3dol.errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.presets.html">s3dol.presets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.reads.html">s3dol.reads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.store.html">s3dol.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.testing.html">s3dol.testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.values.html">s3dol.values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/s3dol.writes.html">s3dol.writes</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">s3dol</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">s3dol.errors</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for s3dol.errors</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;The s3dol error taxonomy and the single error-translation seam.</span>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for s3dol.errors</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The s3dol error taxonomy and the single error-translation seam.</span>
 
 <span class="sd">Design record: `misc/docs/decisions/0004-error-taxonomy.md` (the taxonomy, the</span>
 <span class="sd">``(operation, code, status)`` classification, the 403 policy, ``ObjectArchived``)</span>
@@ -111,7 +264,7 @@
 <span class="sd">2. **Auth, config and transport errors are never translated to ``KeyError``.**</span>
 <span class="sd">   A missing permission must not look like a missing key.</span>
 <span class="sd">3. **Classification keys on ``(operation, code, status)``, never on exception</span>
-<span class="sd">   type.** HEAD responses have no body, so botocore&#39;s modelled exceptions</span>
+<span class="sd">   type.** HEAD responses have no body, so botocore's modelled exceptions</span>
 <span class="sd">   (``client.exceptions.NoSuchKey`` …) never fire for them.</span>
 
 <span class="sd">Everything classification-related here is pure: :func:`classify_client_error`</span>
@@ -119,13 +272,13 @@
 <span class="sd">so the bulk of error tests are tier-1 unit tests — including body-less HEAD</span>
 <span class="sd">errors, which moto cannot produce.</span>
 
-<span class="sd">&gt;&gt;&gt; classify_client_error(&#39;GetObject&#39;, &#39;NoSuchKey&#39;, 404).kind</span>
-<span class="sd">&#39;object_absent&#39;</span>
-<span class="sd">&gt;&gt;&gt; classify_client_error(&#39;HeadObject&#39;, &#39;404&#39;, 404).kind  # HEAD is ambiguous</span>
-<span class="sd">&#39;ambiguous_head&#39;</span>
-<span class="sd">&gt;&gt;&gt; classify_client_error(&#39;GetObject&#39;, &#39;AccessDenied&#39;, 403).kind</span>
-<span class="sd">&#39;access_denied&#39;</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&gt;&gt;&gt; classify_client_error('GetObject', 'NoSuchKey', 404).kind</span>
+<span class="sd">'object_absent'</span>
+<span class="sd">&gt;&gt;&gt; classify_client_error('HeadObject', '404', 404).kind  # HEAD is ambiguous</span>
+<span class="sd">'ambiguous_head'</span>
+<span class="sd">&gt;&gt;&gt; classify_client_error('GetObject', 'AccessDenied', 403).kind</span>
+<span class="sd">'access_denied'</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -140,66 +293,66 @@
 
 
 <div class="viewcode-block" id="S3Error">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3Error">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.S3Error">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base of every s3dol exception — ``except S3Error`` catches the package.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Base of every s3dol exception — ``except S3Error`` catches the package."""</span></div>
 
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_InformativeKeyError</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A ``KeyError`` whose message is not repr-mangled.</span>
+<span class="w">    </span><span class="sd">"""A ``KeyError`` whose message is not repr-mangled.</span>
 
 <span class="sd">    ``KeyError.__str__`` uses ``repr`` of its args, so a multi-line, helpful</span>
 <span class="sd">    message becomes one line full of ``\\n`` escapes. Every s3dol ``KeyError``</span>
 <span class="sd">    subclass therefore overrides ``__str__`` (ADR-0004 §5).</span>
 
-<span class="sd">    &gt;&gt;&gt; raw = KeyError(&#39;line one\\nline two&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; &#39;\\\\n&#39; in str(raw)  # stdlib mangles</span>
+<span class="sd">    &gt;&gt;&gt; raw = KeyError('line one\\nline two')</span>
+<span class="sd">    &gt;&gt;&gt; '\\\\n' in str(raw)  # stdlib mangles</span>
 <span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; ours = _InformativeKeyError(&#39;line one\\nline two&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; &#39;\\\\n&#39; in str(ours)</span>
+<span class="sd">    &gt;&gt;&gt; ours = _InformativeKeyError('line one\\nline two')</span>
+<span class="sd">    &gt;&gt;&gt; '\\\\n' in str(ours)</span>
 <span class="sd">    False</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="k">else</span> <span class="s2">""</span>
 
 
 <div class="viewcode-block" id="ObjectNotFound">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ObjectNotFound">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.ObjectNotFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ObjectNotFound</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The object is absent. The Mapping contract&#39;s ``KeyError``.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""The object is absent. The Mapping contract's ``KeyError``."""</span></div>
 
 
 
 <div class="viewcode-block" id="BucketNotFound">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.BucketNotFound">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.BucketNotFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BucketNotFound</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The bucket is absent.</span>
+<span class="w">    </span><span class="sd">"""The bucket is absent.</span>
 
 <span class="sd">    Still a ``KeyError``: for an object operation it is a key-space problem for</span>
 <span class="sd">    the caller; for a bucket operation it is the key of the endpoint mapping.</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">    """</span></div>
 
 
 
 <div class="viewcode-block" id="KeyNotValid">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.KeyNotValid">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.KeyNotValid">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">KeyNotValid</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The key is syntactically invalid (checked before the wire).</span>
+<span class="w">    </span><span class="sd">"""The key is syntactically invalid (checked before the wire).</span>
 
 <span class="sd">    Inherits from both ``KeyError`` and ``ValueError`` deliberately, so either</span>
 <span class="sd">    ``except`` works. Named ``KeyNotValid`` (not ``KeyValidationError``) because</span>
 <span class="sd">    dol already ships two *different* classes called ``KeyValidationError``</span>
 <span class="sd">    (ADR-0004 §5).</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">    """</span></div>
 
 
 
 <div class="viewcode-block" id="ObjectArchived">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ObjectArchived">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.ObjectArchived">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ObjectArchived</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="n">_InformativeKeyError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The object exists but is archived (e.g. Glacier) and cannot be read now.</span>
+<span class="w">    </span><span class="sd">"""The object exists but is archived (e.g. Glacier) and cannot be read now.</span>
 
 <span class="sd">    A ``KeyError``, deliberately and arguably (ADR-0004 §4): ``k in store``</span>
 <span class="sd">    stays ``True``, but ``store[k]`` fails as a ``KeyError`` so that</span>
@@ -207,7 +360,7 @@
 <span class="sd">    only the *defaulted accessors* degrade — ``dict(store)``, ``.items()`` and</span>
 <span class="sd">    ``Mapping.__eq__`` still raise. ``setdefault``/``pop`` are overridden in the</span>
 <span class="sd">    store to re-raise this instead of silently overwriting the archived object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -223,13 +376,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_restore</span> <span class="o">=</span> <span class="n">restore</span>
 
 <div class="viewcode-block" id="ObjectArchived.restore">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ObjectArchived.restore">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Standard&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Request restoration of the archived object (if a handle was bound).&quot;&quot;&quot;</span>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.ObjectArchived.restore">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">restore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Standard"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Request restoration of the archived object (if a handle was bound)."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restore</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NotSupported</span><span class="p">(</span>
-                <span class="s2">&quot;No restore capability was bound to this error. &quot;</span>
-                <span class="s2">&quot;Use s3dol.handles(store)[key].restore(...) instead.&quot;</span>
+                <span class="s2">"No restore capability was bound to this error. "</span>
+                <span class="s2">"Use s3dol.handles(store)[key].restore(...) instead."</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restore</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">,</span> <span class="n">tier</span><span class="o">=</span><span class="n">tier</span><span class="p">)</span></div>
 </div>
@@ -237,48 +390,48 @@
 
 
 <div class="viewcode-block" id="AccessDenied">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.AccessDenied">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.AccessDenied">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AccessDenied</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Permission denied. **Not** a ``KeyError`` — a missing permission must</span>
-<span class="sd">    not look like a missing key (ADR-0004 §1/§3).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Permission denied. **Not** a ``KeyError`` — a missing permission must</span>
+<span class="sd">    not look like a missing key (ADR-0004 §1/§3)."""</span></div>
 
 
 
 <div class="viewcode-block" id="CredentialsError">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.CredentialsError">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.CredentialsError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CredentialsError</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Credentials are missing, expired, or invalid.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Credentials are missing, expired, or invalid."""</span></div>
 
 
 
 <div class="viewcode-block" id="NotSupported">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.NotSupported">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.NotSupported">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NotSupported</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The operation is not supported by this provider (names both).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""The operation is not supported by this provider (names both)."""</span></div>
 
 
 
 <div class="viewcode-block" id="BucketNotEmpty">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.BucketNotEmpty">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.BucketNotEmpty">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BucketNotEmpty</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Refusal to delete a non-empty bucket. Use</span>
+<span class="w">    </span><span class="sd">"""Refusal to delete a non-empty bucket. Use</span>
 <span class="sd">    ``s3dol.delete_bucket(endpoint, name, force=True)`` for the explicit</span>
-<span class="sd">    cascading form (ADR-0010 §3).&quot;&quot;&quot;</span></div>
+<span class="sd">    cascading form (ADR-0010 §3)."""</span></div>
 
 
 
 <div class="viewcode-block" id="S3PartialFailure">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3PartialFailure">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.S3PartialFailure">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3PartialFailure</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A bulk operation partially failed (ADR-0010 §2).</span>
+<span class="w">    </span><span class="sd">"""A bulk operation partially failed (ADR-0010 §2).</span>
 
 <span class="sd">    Not an ``ExceptionGroup`` — the package supports Python 3.10.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        succeeded: keys the backend reported as deleted (absent keys are</span>
-<span class="sd">            reported as deleted too — S3&#39;s semantics, documented, not hidden).</span>
+<span class="sd">            reported as deleted too — S3's semantics, documented, not hidden).</span>
 <span class="sd">        failures: mapping of key -&gt; the error for that key.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">succeeded</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">failures</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -288,94 +441,94 @@
 
 
 <div class="viewcode-block" id="ConfigurationError">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.ConfigurationError">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.ConfigurationError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigurationError</span><span class="p">(</span><span class="n">S3Error</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A construction- or resolution-time misconfiguration (ADR-0012 D1).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""A construction- or resolution-time misconfiguration (ADR-0012 D1)."""</span></div>
 
 
 
 <div class="viewcode-block" id="PresetConflict">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.PresetConflict">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.PresetConflict">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PresetConflict</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An explicit argument contradicts a *pinned* (verified) preset value.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""An explicit argument contradicts a *pinned* (verified) preset value."""</span></div>
 
 
 
 <div class="viewcode-block" id="PresetHostMismatch">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.PresetHostMismatch">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.PresetHostMismatch">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PresetHostMismatch</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The resolved endpoint&#39;s host matches a *different* provider&#39;s patterns</span>
-<span class="sd">    than the preset you named (ADR-0012 C2).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""The resolved endpoint's host matches a *different* provider's patterns</span>
+<span class="sd">    than the preset you named (ADR-0012 C2)."""</span></div>
 
 
 
 <div class="viewcode-block" id="MissingEndpoint">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.MissingEndpoint">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.MissingEndpoint">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MissingEndpoint</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The named preset needs an endpoint (or endpoint parameters) that nothing</span>
-<span class="sd">    supplied (ADR-0012 C1).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""The named preset needs an endpoint (or endpoint parameters) that nothing</span>
+<span class="sd">    supplied (ADR-0012 C1)."""</span></div>
 
 
 
 <div class="viewcode-block" id="MissingPresetParam">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.MissingPresetParam">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.MissingPresetParam">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MissingPresetParam</span><span class="p">(</span><span class="n">MissingEndpoint</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A preset&#39;s endpoint template has an unbound required parameter, so the</span>
+<span class="w">    </span><span class="sd">"""A preset's endpoint template has an unbound required parameter, so the</span>
 <span class="sd">    row contributes no endpoint rung (ADR-0012 C1). A ``MissingEndpoint``, so</span>
-<span class="sd">    either ``except`` works.&quot;&quot;&quot;</span></div>
+<span class="sd">    either ``except`` works."""</span></div>
 
 
 
 <div class="viewcode-block" id="UnknownPresetParam">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.UnknownPresetParam">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.UnknownPresetParam">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UnknownPresetParam</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A parameter was bound that the preset&#39;s templates do not use.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""A parameter was bound that the preset's templates do not use."""</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidEndpoint">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.InvalidEndpoint">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.InvalidEndpoint">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidEndpoint</span><span class="p">(</span><span class="n">ConfigurationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An endpoint URL failed hygiene checks (userinfo/query/fragment —</span>
-<span class="sd">    ADR-0012 D4: a URL is the residual credential carrier).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""An endpoint URL failed hygiene checks (userinfo/query/fragment —</span>
+<span class="sd">    ADR-0012 D4: a URL is the residual credential carrier)."""</span></div>
 
 
 
 <span class="c1"># --------------------------------------------------------------------------- #</span>
 <span class="c1"># The warning tree (ADR-0012 D1). Strict mode is</span>
-<span class="c1"># ``filterwarnings(&#39;error&#39;, category=s3dol.errors.S3DolWarning)`` — there is</span>
+<span class="c1"># ``filterwarnings('error', category=s3dol.errors.S3DolWarning)`` — there is</span>
 <span class="c1"># deliberately no ``strict=`` kwarg.</span>
 <span class="c1"># --------------------------------------------------------------------------- #</span>
 
 
 <div class="viewcode-block" id="S3DolWarning">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3DolWarning">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.S3DolWarning">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3DolWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base of every s3dol warning.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Base of every s3dol warning."""</span></div>
 
 
 
 <div class="viewcode-block" id="S3DolResolutionChanged">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.S3DolResolutionChanged">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.S3DolResolutionChanged">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">S3DolResolutionChanged</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;v1 resolves this call differently than v0 would have (ADR-0012 D7).</span>
-<span class="sd">    Emitted by the compat shim; dies with it.&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""v1 resolves this call differently than v0 would have (ADR-0012 D7).</span>
+<span class="sd">    Emitted by the compat shim; dies with it."""</span></div>
 
 
 
 <div class="viewcode-block" id="AmbiguousResolution">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.AmbiguousResolution">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.AmbiguousResolution">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AmbiguousResolution</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolution is legal but ambiguous (e.g. a named preset whose endpoint,</span>
-<span class="sd">    supplied from the environment, matches no known host pattern).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Resolution is legal but ambiguous (e.g. a named preset whose endpoint,</span>
+<span class="sd">    supplied from the environment, matches no known host pattern)."""</span></div>
 
 
 
 <div class="viewcode-block" id="AnonymousFallback">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.AnonymousFallback">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.AnonymousFallback">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AnonymousFallback</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Anonymous access was used as a fallback (reserved for a future</span>
-<span class="sd">    ``anon=&#39;auto&#39;`` — ADR-0012 D5 defers that feature to v1.x).&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Anonymous access was used as a fallback (reserved for a future</span>
+<span class="sd">    ``anon='auto'`` — ADR-0012 D5 defers that feature to v1.x)."""</span></div>
 
 
 
@@ -385,59 +538,59 @@
 
 <span class="c1">#: Query parameters whose values are secrets (presigned-URL machinery).</span>
 <span class="n">_SECRET_QUERY_PARAMS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;X-Amz-Signature&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;X-Amz-Credential&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;X-Amz-Security-Token&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Signature&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AWSAccessKeyId&quot;</span><span class="p">,</span>
+    <span class="s2">"X-Amz-Signature"</span><span class="p">,</span>
+    <span class="s2">"X-Amz-Credential"</span><span class="p">,</span>
+    <span class="s2">"X-Amz-Security-Token"</span><span class="p">,</span>
+    <span class="s2">"Signature"</span><span class="p">,</span>
+    <span class="s2">"AWSAccessKeyId"</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_SECRET_PARAM_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;(?P&lt;name&gt;</span><span class="si">{}</span><span class="s2">)=[^&amp;\s]*&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="n">_SECRET_QUERY_PARAMS</span><span class="p">))),</span>
+    <span class="sa">r</span><span class="s2">"(?P&lt;name&gt;</span><span class="si">{}</span><span class="s2">)=[^&amp;\s]*"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">,</span> <span class="n">_SECRET_QUERY_PARAMS</span><span class="p">))),</span>
     <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="redact_url">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.redact_url">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.redact_url">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">redact_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A URL safe to display: userinfo, query and fragment removed.</span>
+<span class="w">    </span><span class="sd">"""A URL safe to display: userinfo, query and fragment removed.</span>
 
 <span class="sd">    A URL is the residual credential carrier (ADR-0012 D4). Endpoint hygiene</span>
 <span class="sd">    refuses those shapes for values *s3dol* is given, but an endpoint read</span>
 <span class="sd">    from ``AWS_ENDPOINT_URL_S3`` or an aws-config profile is not ours to</span>
 <span class="sd">    refuse — it must merely never be echoed intact.</span>
 
-<span class="sd">    &gt;&gt;&gt; redact_url(&#39;https://user:pw@minio.internal:9000/x?sig=abc#f&#39;)</span>
-<span class="sd">    &#39;https://REDACTED@minio.internal:9000/x?&lt;redacted&gt;&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; redact_url('https://user:pw@minio.internal:9000/x?sig=abc#f')</span>
+<span class="sd">    'https://REDACTED@minio.internal:9000/x?&lt;redacted&gt;'</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">url</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunsplit</span>
 
     <span class="n">parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">netloc</span> <span class="o">=</span> <span class="n">parts</span><span class="o">.</span><span class="n">netloc</span>
-    <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">netloc</span><span class="p">:</span>
-        <span class="n">netloc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;REDACTED@</span><span class="si">{</span><span class="n">netloc</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="s2">"@"</span> <span class="ow">in</span> <span class="n">netloc</span><span class="p">:</span>
+        <span class="n">netloc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"REDACTED@</span><span class="si">{</span><span class="n">netloc</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">'@'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">urlunsplit</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">parts</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">netloc</span><span class="p">,</span> <span class="n">parts</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;&lt;redacted&gt;&quot;</span> <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">query</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">parts</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">netloc</span><span class="p">,</span> <span class="n">parts</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">"&lt;redacted&gt;"</span> <span class="k">if</span> <span class="n">parts</span><span class="o">.</span><span class="n">query</span> <span class="k">else</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="redact">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.redact">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.redact">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">redact</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Redact signed-URL query secrets from ``text``.</span>
+<span class="w">    </span><span class="sd">"""Redact signed-URL query secrets from ``text``.</span>
 
 <span class="sd">    Error messages may name the operation, bucket, key, endpoint and code, but</span>
 <span class="sd">    never a credential, token, or signed URL — redaction is a tested function,</span>
 <span class="sd">    not a convention (ADR-0004 §7).</span>
 
-<span class="sd">    &gt;&gt;&gt; redact(&#39;https://b.s3.amazonaws.com/k?X-Amz-Signature=abc123&amp;x=1&#39;)</span>
-<span class="sd">    &#39;https://b.s3.amazonaws.com/k?X-Amz-Signature=REDACTED&amp;x=1&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_SECRET_PARAM_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">=REDACTED&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
+<span class="sd">    &gt;&gt;&gt; redact('https://b.s3.amazonaws.com/k?X-Amz-Signature=abc123&amp;x=1')</span>
+<span class="sd">    'https://b.s3.amazonaws.com/k?X-Amz-Signature=REDACTED&amp;x=1'</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">_SECRET_PARAM_RE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span><span class="si">}</span><span class="s2">=REDACTED"</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
 
 
 
@@ -448,28 +601,28 @@
 <span class="c1">#: Kinds a classified error can be. Layer B maps kinds to behaviour; in</span>
 <span class="c1">#: particular ``ambiguous_head`` triggers the one-``HeadBucket``</span>
 <span class="c1">#: disambiguation of ADR-0004 §2 (HEAD has no body, so a missing key and a</span>
-<span class="c1">#: missing bucket are both ``(&#39;404&#39;, 404)`` on real AWS).</span>
+<span class="c1">#: missing bucket are both ``('404', 404)`` on real AWS).</span>
 <span class="n">KINDS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;object_absent&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;bucket_absent&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ambiguous_head&quot;</span><span class="p">,</span>  <span class="c1"># HeadObject 404: missing key OR missing bucket</span>
-    <span class="s2">&quot;access_denied&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;credentials&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;invalid_key&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;archived&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;not_supported&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;wrong_region&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;delete_marker&quot;</span><span class="p">,</span>  <span class="c1"># 405 on HEAD of a delete marker (versioned bucket)</span>
-    <span class="s2">&quot;transient&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
+    <span class="s2">"object_absent"</span><span class="p">,</span>
+    <span class="s2">"bucket_absent"</span><span class="p">,</span>
+    <span class="s2">"ambiguous_head"</span><span class="p">,</span>  <span class="c1"># HeadObject 404: missing key OR missing bucket</span>
+    <span class="s2">"access_denied"</span><span class="p">,</span>
+    <span class="s2">"credentials"</span><span class="p">,</span>
+    <span class="s2">"invalid_key"</span><span class="p">,</span>
+    <span class="s2">"archived"</span><span class="p">,</span>
+    <span class="s2">"not_supported"</span><span class="p">,</span>
+    <span class="s2">"wrong_region"</span><span class="p">,</span>
+    <span class="s2">"delete_marker"</span><span class="p">,</span>  <span class="c1"># 405 on HEAD of a delete marker (versioned bucket)</span>
+    <span class="s2">"transient"</span><span class="p">,</span>
+    <span class="s2">"unknown"</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="Classified">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.Classified">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.Classified">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Classified</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The result of classifying a backend error.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The result of classifying a backend error."""</span>
 
     <span class="n">kind</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">exception_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># None =&gt; re-raise the original</span></div>
@@ -481,73 +634,73 @@
 <span class="n">Rule</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span>
 
 <span class="n">_KIND_TO_EXC</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;object_absent&quot;</span><span class="p">:</span> <span class="n">ObjectNotFound</span><span class="p">,</span>
-    <span class="s2">&quot;bucket_absent&quot;</span><span class="p">:</span> <span class="n">BucketNotFound</span><span class="p">,</span>
-    <span class="s2">&quot;ambiguous_head&quot;</span><span class="p">:</span> <span class="n">ObjectNotFound</span><span class="p">,</span>  <span class="c1"># resolved by Layer B before raising</span>
-    <span class="s2">&quot;access_denied&quot;</span><span class="p">:</span> <span class="n">AccessDenied</span><span class="p">,</span>
-    <span class="s2">&quot;credentials&quot;</span><span class="p">:</span> <span class="n">CredentialsError</span><span class="p">,</span>
-    <span class="s2">&quot;invalid_key&quot;</span><span class="p">:</span> <span class="n">KeyNotValid</span><span class="p">,</span>
-    <span class="s2">&quot;archived&quot;</span><span class="p">:</span> <span class="n">ObjectArchived</span><span class="p">,</span>
-    <span class="s2">&quot;not_supported&quot;</span><span class="p">:</span> <span class="n">NotSupported</span><span class="p">,</span>
-    <span class="s2">&quot;wrong_region&quot;</span><span class="p">:</span> <span class="n">ConfigurationError</span><span class="p">,</span>
-    <span class="s2">&quot;delete_marker&quot;</span><span class="p">:</span> <span class="n">ObjectNotFound</span><span class="p">,</span>
-    <span class="s2">&quot;transient&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># propagate; botocore retries</span>
-    <span class="s2">&quot;unknown&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># propagate untouched</span>
+    <span class="s2">"object_absent"</span><span class="p">:</span> <span class="n">ObjectNotFound</span><span class="p">,</span>
+    <span class="s2">"bucket_absent"</span><span class="p">:</span> <span class="n">BucketNotFound</span><span class="p">,</span>
+    <span class="s2">"ambiguous_head"</span><span class="p">:</span> <span class="n">ObjectNotFound</span><span class="p">,</span>  <span class="c1"># resolved by Layer B before raising</span>
+    <span class="s2">"access_denied"</span><span class="p">:</span> <span class="n">AccessDenied</span><span class="p">,</span>
+    <span class="s2">"credentials"</span><span class="p">:</span> <span class="n">CredentialsError</span><span class="p">,</span>
+    <span class="s2">"invalid_key"</span><span class="p">:</span> <span class="n">KeyNotValid</span><span class="p">,</span>
+    <span class="s2">"archived"</span><span class="p">:</span> <span class="n">ObjectArchived</span><span class="p">,</span>
+    <span class="s2">"not_supported"</span><span class="p">:</span> <span class="n">NotSupported</span><span class="p">,</span>
+    <span class="s2">"wrong_region"</span><span class="p">:</span> <span class="n">ConfigurationError</span><span class="p">,</span>
+    <span class="s2">"delete_marker"</span><span class="p">:</span> <span class="n">ObjectNotFound</span><span class="p">,</span>
+    <span class="s2">"transient"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># propagate; botocore retries</span>
+    <span class="s2">"unknown"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># propagate untouched</span>
 <span class="p">}</span>
 
 <span class="c1">#: The default classification table (ADR-0004 §2, measured against botocore).</span>
 <span class="n">DEFAULT_RULES</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Rule</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
     <span class="c1"># -- modelled codes (GET/DELETE have bodies, so codes are real words)</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;NoSuchKey&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;object_absent&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;NoSuchBucket&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;bucket_absent&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;NoSuchUpload&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;object_absent&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"NoSuchKey"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"object_absent"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"NoSuchBucket"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"bucket_absent"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"NoSuchUpload"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"object_absent"</span><span class="p">),</span>
     <span class="c1"># -- HEAD has no body: botocore synthesizes the code from the HTTP status.</span>
     <span class="c1">#    On real AWS, HeadObject-on-missing-key and HeadObject-on-missing-bucket</span>
-    <span class="c1">#    are BOTH (&#39;404&#39;, 404) — indistinguishable. moto returns a body</span>
-    <span class="c1">#    (Code=&#39;NoSuchBucket&#39;/&#39;NoSuchKey&#39;), which the modelled rows above catch,</span>
+    <span class="c1">#    are BOTH ('404', 404) — indistinguishable. moto returns a body</span>
+    <span class="c1">#    (Code='NoSuchBucket'/'NoSuchKey'), which the modelled rows above catch,</span>
     <span class="c1">#    so this row only fires on real, body-less responses.</span>
-    <span class="p">((</span><span class="s2">&quot;HeadObject&quot;</span><span class="p">,</span> <span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">),</span> <span class="s2">&quot;ambiguous_head&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="s2">&quot;HeadBucket&quot;</span><span class="p">,</span> <span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="mi">404</span><span class="p">),</span> <span class="s2">&quot;bucket_absent&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="s2">&quot;HeadObject&quot;</span><span class="p">,</span> <span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;ambiguous_head&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="s2">&quot;HeadBucket&quot;</span><span class="p">,</span> <span class="s2">&quot;404&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;bucket_absent&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="s2">"HeadObject"</span><span class="p">,</span> <span class="s2">"404"</span><span class="p">,</span> <span class="mi">404</span><span class="p">),</span> <span class="s2">"ambiguous_head"</span><span class="p">),</span>
+    <span class="p">((</span><span class="s2">"HeadBucket"</span><span class="p">,</span> <span class="s2">"404"</span><span class="p">,</span> <span class="mi">404</span><span class="p">),</span> <span class="s2">"bucket_absent"</span><span class="p">),</span>
+    <span class="p">((</span><span class="s2">"HeadObject"</span><span class="p">,</span> <span class="s2">"404"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"ambiguous_head"</span><span class="p">),</span>
+    <span class="p">((</span><span class="s2">"HeadBucket"</span><span class="p">,</span> <span class="s2">"404"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"bucket_absent"</span><span class="p">),</span>
     <span class="c1"># -- versioned-bucket delete marker: HEAD gives 405 Method Not Allowed</span>
-    <span class="p">((</span><span class="s2">&quot;HeadObject&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">405</span><span class="p">),</span> <span class="s2">&quot;delete_marker&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="s2">"HeadObject"</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">405</span><span class="p">),</span> <span class="s2">"delete_marker"</span><span class="p">),</span>
     <span class="c1"># -- wrong region</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">301</span><span class="p">),</span> <span class="s2">&quot;wrong_region&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;PermanentRedirect&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;wrong_region&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AuthorizationHeaderMalformed&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;wrong_region&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">301</span><span class="p">),</span> <span class="s2">"wrong_region"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"PermanentRedirect"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"wrong_region"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"AuthorizationHeaderMalformed"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"wrong_region"</span><span class="p">),</span>
     <span class="c1"># -- archived objects</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;InvalidObjectState&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;archived&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"InvalidObjectState"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"archived"</span><span class="p">),</span>
     <span class="c1"># -- clock skew / request expiry: 403s that are NOT permission problems.</span>
     <span class="c1">#    They must sit ABOVE the wildcard 403 rows, or deny_means_absent</span>
-    <span class="c1">#    would turn a skewed clock into &quot;every key is absent&quot;.</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;RequestTimeTooSkewed&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;RequestExpired&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AuthorizationQueryParametersError&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
+    <span class="c1">#    would turn a skewed clock into "every key is absent".</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"RequestTimeTooSkewed"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"RequestExpired"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"AuthorizationQueryParametersError"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
     <span class="c1"># -- credentials</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ExpiredToken&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;InvalidAccessKeyId&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SignatureDoesNotMatch&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;TokenRefreshRequired&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;credentials&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"ExpiredToken"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"InvalidAccessKeyId"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"SignatureDoesNotMatch"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"TokenRefreshRequired"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"credentials"</span><span class="p">),</span>
     <span class="c1"># -- permissions (see ADR-0004 §3 for the deny_means_absent policy)</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AccessDenied&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;access_denied&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AllAccessDisabled&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;access_denied&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;403&quot;</span><span class="p">,</span> <span class="mi">403</span><span class="p">),</span> <span class="s2">&quot;access_denied&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">403</span><span class="p">),</span> <span class="s2">&quot;access_denied&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"AccessDenied"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"access_denied"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"AllAccessDisabled"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"access_denied"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"403"</span><span class="p">,</span> <span class="mi">403</span><span class="p">),</span> <span class="s2">"access_denied"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">403</span><span class="p">),</span> <span class="s2">"access_denied"</span><span class="p">),</span>
     <span class="c1"># -- key validity that escaped the client-side check</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;KeyTooLongError&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;invalid_key&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"KeyTooLongError"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"invalid_key"</span><span class="p">),</span>
     <span class="c1"># -- throttling / transient: propagate, botocore retries</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SlowDown&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;transient&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;RequestTimeout&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;transient&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ServiceUnavailable&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;transient&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;InternalError&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;transient&quot;</span><span class="p">),</span>
-    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">503</span><span class="p">),</span> <span class="s2">&quot;transient&quot;</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"SlowDown"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"transient"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"RequestTimeout"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"transient"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"ServiceUnavailable"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"transient"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"InternalError"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">"transient"</span><span class="p">),</span>
+    <span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">503</span><span class="p">),</span> <span class="s2">"transient"</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1">#: Provider overrides live on the preset (ADR-0004 §6 — per-connection,</span>
 <span class="c1">#: explicit, inspectable; NOT process-global). E.g. Supabase returns 400 where</span>
 <span class="c1">#: AWS returns 404 on HeadBucket:</span>
-<span class="c1">#: ``((&#39;HeadBucket&#39;, None, 400), &#39;bucket_absent&#39;)``.</span>
+<span class="c1">#: ``(('HeadBucket', None, 400), 'bucket_absent')``.</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_match</span><span class="p">(</span><span class="n">rule_key</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -560,7 +713,7 @@
 
 
 <div class="viewcode-block" id="classify_client_error">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.classify_client_error">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.classify_client_error">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">classify_client_error</span><span class="p">(</span>
     <span class="n">operation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -568,40 +721,40 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">overrides</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Rule</span><span class="p">]</span> <span class="o">=</span> <span class="p">(),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Classified</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classify a backend error by ``(operation, code, status)``.</span>
+<span class="w">    </span><span class="sd">"""Classify a backend error by ``(operation, code, status)``.</span>
 
 <span class="sd">    ``overrides`` rows (typically from a preset) are consulted first, so a</span>
 <span class="sd">    provider divergence is a table row, never a code branch.</span>
 
-<span class="sd">    &gt;&gt;&gt; classify_client_error(&#39;HeadBucket&#39;, None, 400,</span>
-<span class="sd">    ...     overrides=(((&#39;HeadBucket&#39;, None, 400), &#39;bucket_absent&#39;),)).kind</span>
-<span class="sd">    &#39;bucket_absent&#39;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; classify_client_error('HeadBucket', None, 400,</span>
+<span class="sd">    ...     overrides=((('HeadBucket', None, 400), 'bucket_absent'),)).kind</span>
+<span class="sd">    'bucket_absent'</span>
+<span class="sd">    """</span>
     <span class="k">for</span> <span class="n">rules</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">overrides</span><span class="p">),</span> <span class="n">DEFAULT_RULES</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_match</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">Classified</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">exception_type</span><span class="o">=</span><span class="n">_KIND_TO_EXC</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kind</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Classified</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;unknown&quot;</span><span class="p">,</span> <span class="n">exception_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Classified</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">"unknown"</span><span class="p">,</span> <span class="n">exception_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="code_of">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.code_of">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.code_of">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">code_of</span><span class="p">(</span><span class="n">client_error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The ``Error.Code`` of a botocore ``ClientError`` (or ``None``).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The ``Error.Code`` of a botocore ``ClientError`` (or ``None``)."""</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">client_error</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;Error&quot;</span><span class="p">][</span><span class="s2">&quot;Code&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">client_error</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s2">"Error"</span><span class="p">][</span><span class="s2">"Code"</span><span class="p">]</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 
 <div class="viewcode-block" id="status_of">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.status_of">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.status_of">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">status_of</span><span class="p">(</span><span class="n">client_error</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The HTTP status of a botocore ``ClientError`` (or ``None``).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The HTTP status of a botocore ``ClientError`` (or ``None``)."""</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">client_error</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;ResponseMetadata&quot;</span><span class="p">][</span><span class="s2">&quot;HTTPStatusCode&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">client_error</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s2">"ResponseMetadata"</span><span class="p">][</span><span class="s2">"HTTPStatusCode"</span><span class="p">])</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -614,27 +767,27 @@
     <span class="n">bucket</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">detail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the standard error message: operation, bucket, key, endpoint,</span>
-<span class="sd">    code — and nothing secret (ADR-0004 §7).&quot;&quot;&quot;</span>
-    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2"> failed&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">"""Build the standard error message: operation, bucket, key, endpoint,</span>
+<span class="sd">    code — and nothing secret (ADR-0004 §7)."""</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2"> failed"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;bucket=</span><span class="si">{</span><span class="n">bucket</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"bucket=</span><span class="si">{</span><span class="n">bucket</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"key=</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;endpoint=</span><span class="si">{</span><span class="n">endpoint</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"endpoint=</span><span class="si">{</span><span class="n">endpoint</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;code=</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;: &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])])</span> <span class="k">if</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">else</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"code=</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">": "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])])</span> <span class="k">if</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">else</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">detail</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">redact</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="translate_client_error">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.translate_client_error">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.translate_client_error">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">translate_client_error</span><span class="p">(</span>
     <span class="n">error</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -646,41 +799,41 @@
     <span class="n">deny_means_absent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">head_ambiguity_resolver</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">S3Error</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Translate a botocore ``ClientError`` into the s3dol taxonomy.</span>
+<span class="w">    </span><span class="sd">"""Translate a botocore ``ClientError`` into the s3dol taxonomy.</span>
 
 <span class="sd">    Returns the replacement exception, or ``None`` meaning *propagate the</span>
 <span class="sd">    original* (transient/unknown — rule 2 of the module docstring).</span>
 
 <span class="sd">    ``head_ambiguity_resolver`` resolves the body-less ``HeadObject`` 404</span>
 <span class="sd">    (ADR-0004 §2): it returns ``True`` iff the bucket is known reachable, in</span>
-<span class="sd">    which case the miss really is the object&#39;s. It is only called for the</span>
+<span class="sd">    which case the miss really is the object's. It is only called for the</span>
 <span class="sd">    ambiguous case, so the common path costs nothing.</span>
 
 <span class="sd">    ``deny_means_absent=True`` classifies an object-op 403 as</span>
 <span class="sd">    ``ObjectNotFound`` — for deployments knowingly running the canonical</span>
 <span class="sd">    least-privilege policy that omits ``s3:ListBucket`` (ADR-0004 §3).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">code</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">code_of</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">status_of</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
     <span class="n">classified</span> <span class="o">=</span> <span class="n">classify_client_error</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">overrides</span><span class="o">=</span><span class="n">overrides</span><span class="p">)</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">classified</span><span class="o">.</span><span class="n">kind</span>
 
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;ambiguous_head&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"ambiguous_head"</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">head_ambiguity_resolver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># ADR-0004 §2: the body-less HeadObject 404 must NOT be resolved</span>
-            <span class="c1"># by guessing — &quot;the object is absent&quot; and &quot;the bucket is absent&quot;</span>
+            <span class="c1"># by guessing — "the object is absent" and "the bucket is absent"</span>
             <span class="c1"># are indistinguishable here on real AWS. With no disambiguator</span>
             <span class="c1"># bound we propagate the backend error untouched (loud) rather</span>
-            <span class="c1"># than manufacture an absence a caller&#39;s .get() would swallow.</span>
+            <span class="c1"># than manufacture an absence a caller's .get() would swallow.</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;object_absent&quot;</span> <span class="k">if</span> <span class="n">head_ambiguity_resolver</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;bucket_absent&quot;</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="s2">"object_absent"</span> <span class="k">if</span> <span class="n">head_ambiguity_resolver</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"bucket_absent"</span>
 
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;access_denied&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"access_denied"</span><span class="p">:</span>
         <span class="c1"># Only a genuine permission code may be read as absence. A 403 that</span>
         <span class="c1"># means something else (clock skew, expired request) is classified</span>
         <span class="c1"># above; this guard is the second belt.</span>
-        <span class="n">permission_code</span> <span class="o">=</span> <span class="n">code</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;AccessDenied&quot;</span><span class="p">,</span> <span class="s2">&quot;403&quot;</span><span class="p">,</span> <span class="s2">&quot;AllAccessDisabled&quot;</span><span class="p">)</span>
+        <span class="n">permission_code</span> <span class="o">=</span> <span class="n">code</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">"AccessDenied"</span><span class="p">,</span> <span class="s2">"403"</span><span class="p">,</span> <span class="s2">"AllAccessDisabled"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">deny_means_absent</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">permission_code</span><span class="p">:</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;object_absent&quot;</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">"object_absent"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">AccessDenied</span><span class="p">(</span>
                 <span class="n">_describe</span><span class="p">(</span>
@@ -690,23 +843,23 @@
                     <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
                     <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
                     <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
-                        <span class="s2">&quot;Permission denied. If this key may simply be absent, note &quot;</span>
-                        <span class="s2">&quot;that the canonical least-privilege policy (no s3:ListBucket) &quot;</span>
-                        <span class="s2">&quot;makes every miss a 403; opt into that reading with &quot;</span>
-                        <span class="s2">&quot;S3Connection(deny_means_absent=True).&quot;</span>
+                        <span class="s2">"Permission denied. If this key may simply be absent, note "</span>
+                        <span class="s2">"that the canonical least-privilege policy (no s3:ListBucket) "</span>
+                        <span class="s2">"makes every miss a 403; opt into that reading with "</span>
+                        <span class="s2">"S3Connection(deny_means_absent=True)."</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;transient&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"transient"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">exc_type</span> <span class="o">=</span> <span class="n">_KIND_TO_EXC</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span>
     <span class="n">detail</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;wrong_region&quot;</span><span class="p">:</span> <span class="s2">&quot;The bucket lives in a different region than the client.&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;delete_marker&quot;</span><span class="p">:</span> <span class="s2">&quot;The current version is a delete marker (versioned bucket).&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;credentials&quot;</span><span class="p">:</span> <span class="s2">&quot;Credentials are missing, expired, or invalid.&quot;</span><span class="p">,</span>
-    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="s2">"wrong_region"</span><span class="p">:</span> <span class="s2">"The bucket lives in a different region than the client."</span><span class="p">,</span>
+        <span class="s2">"delete_marker"</span><span class="p">:</span> <span class="s2">"The current version is a delete marker (versioned bucket)."</span><span class="p">,</span>
+        <span class="s2">"credentials"</span><span class="p">:</span> <span class="s2">"Credentials are missing, expired, or invalid."</span><span class="p">,</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="n">message</span> <span class="o">=</span> <span class="n">_describe</span><span class="p">(</span>
         <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span>
         <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span>
@@ -725,22 +878,22 @@
 
 
 <div class="viewcode-block" id="translating_s3_errors">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.translating_s3_errors">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.translating_s3_errors">[docs]</a>
 <span class="nd">@contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">translating_s3_errors</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">translate_kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generator/inline form of the seam, for code the decorator cannot wrap</span>
+<span class="w">    </span><span class="sd">"""Generator/inline form of the seam, for code the decorator cannot wrap</span>
 <span class="sd">    (``__iter__`` bodies: a decorated generator function returns its generator</span>
-<span class="sd">    before the body runs, so the decorator&#39;s ``except`` never fires).</span>
+<span class="sd">    before the body runs, so the decorator's ``except`` never fires).</span>
 
 <span class="sd">    Same contract as :func:`translate_s3_errors`; the store supplies</span>
 <span class="sd">    ``_error_context()``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span><span class="p">,</span> <span class="n">NoCredentialsError</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
     <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">&quot;_error_context&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)())</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="s2">"_error_context"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)())</span>
         <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">translate_kwargs</span><span class="p">)</span>
         <span class="n">replacement</span> <span class="o">=</span> <span class="n">translate_client_error</span><span class="p">(</span>
             <span class="n">error</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
@@ -750,31 +903,31 @@
         <span class="k">raise</span> <span class="n">replacement</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
     <span class="k">except</span> <span class="n">NoCredentialsError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">CredentialsError</span><span class="p">(</span>
-            <span class="s2">&quot;No AWS credentials found. Configure credentials (env vars, &quot;</span>
-            <span class="s2">&quot;~/.aws/credentials, SSO, or S3Connection(credentials=...)), &quot;</span>
-            <span class="s2">&quot;or pass anon=True for public data.&quot;</span>
+            <span class="s2">"No AWS credentials found. Configure credentials (env vars, "</span>
+            <span class="s2">"~/.aws/credentials, SSO, or S3Connection(credentials=...)), "</span>
+            <span class="s2">"or pass anon=True for public data."</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span></div>
 
 
 
 <div class="viewcode-block" id="translate_s3_errors">
-<a class="viewcode-back" href="../../module_docs/s3dol/errors.html#s3dol.translate_s3_errors">[docs]</a>
+<a class="viewcode-back" href="../../_autosummary/s3dol.errors.html#s3dol.translate_s3_errors">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">translate_s3_errors</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">key_arg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">translate_kwargs</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The one seam: decorate a Layer B method so botocore&#39;s ``ClientError``</span>
+<span class="w">    </span><span class="sd">"""The one seam: decorate a Layer B method so botocore's ``ClientError``</span>
 <span class="sd">    becomes the s3dol taxonomy (ADR-0004 §1).</span>
 
-<span class="sd">    ``key_arg`` names the decorated function&#39;s key *parameter* (resolved via</span>
-<span class="sd">    the call&#39;s kwargs/positionals — never an attribute, so the key is not lost</span>
-<span class="sd">    the way azuredol&#39;s ``key_arg=&#39;blob&#39;`` loses it). The store instance is</span>
+<span class="sd">    ``key_arg`` names the decorated function's key *parameter* (resolved via</span>
+<span class="sd">    the call's kwargs/positionals — never an attribute, so the key is not lost</span>
+<span class="sd">    the way azuredol's ``key_arg='blob'`` loses it). The store instance is</span>
 <span class="sd">    expected to provide ``_error_context()`` returning</span>
 <span class="sd">    ``dict(bucket=..., endpoint=..., overrides=..., deny_means_absent=...,</span>
 <span class="sd">    head_ambiguity_resolver=...)`` — Layer B owns that context.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
@@ -782,11 +935,11 @@
         <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">key_arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">key_arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;translate_s3_errors(key_arg=</span><span class="si">{</span><span class="n">key_arg</span><span class="si">!r}</span><span class="s2">) on &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">: that function has no such parameter &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(it has </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">). A silently unresolved &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;key_arg would drop the key from every error message and &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;disable the deny_means_absent conversion.&quot;</span>
+                <span class="sa">f</span><span class="s2">"translate_s3_errors(key_arg=</span><span class="si">{</span><span class="n">key_arg</span><span class="si">!r}</span><span class="s2">) on "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">: that function has no such parameter "</span>
+                <span class="sa">f</span><span class="s2">"(it has </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">). A silently unresolved "</span>
+                <span class="sa">f</span><span class="s2">"key_arg would drop the key from every error message and "</span>
+                <span class="sa">f</span><span class="s2">"disable the deny_means_absent conversion."</span>
             <span class="p">)</span>
 
         <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
@@ -801,7 +954,7 @@
                     <span class="n">bound</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                     <span class="n">bound</span><span class="o">.</span><span class="n">apply_defaults</span><span class="p">()</span>  <span class="c1"># a defaulted key is still the key</span>
                     <span class="n">key</span> <span class="o">=</span> <span class="n">bound</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key_arg</span><span class="p">)</span>
-                <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_error_context&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)())</span>
+                <span class="n">context</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_error_context"</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)())</span>
                 <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">translate_kwargs</span><span class="p">)</span>
                 <span class="n">replacement</span> <span class="o">=</span> <span class="n">translate_client_error</span><span class="p">(</span>
                     <span class="n">error</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span>
@@ -811,9 +964,9 @@
                 <span class="k">raise</span> <span class="n">replacement</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
             <span class="k">except</span> <span class="n">NoCredentialsError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">CredentialsError</span><span class="p">(</span>
-                    <span class="s2">&quot;No AWS credentials found. Configure credentials (env vars, &quot;</span>
-                    <span class="s2">&quot;~/.aws/credentials, SSO, or S3Connection(credentials=...)), &quot;</span>
-                    <span class="s2">&quot;or pass anon=True for public data.&quot;</span>
+                    <span class="s2">"No AWS credentials found. Configure credentials (env vars, "</span>
+                    <span class="s2">"~/.aws/credentials, SSO, or S3Connection(credentials=...)), "</span>
+                    <span class="s2">"or pass anon=True for public data."</span>
                 <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
 
         <span class="k">return</span> <span class="n">wrapper</span>
@@ -821,32 +974,396 @@
     <span class="k">return</span> <span class="n">decorator</span></div>
 
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+        </article>
       </div>
-    </section>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+</div><script src="../../_static/documentation_options.js?v=4ebf8126"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
-</body>
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    </body>
 </html>

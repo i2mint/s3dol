@@ -1,4 +1,0 @@
-s3dol.capabilities
-==================
-.. automodule:: s3dol.capabilities
-   :members:

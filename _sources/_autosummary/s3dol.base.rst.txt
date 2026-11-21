@@ -1,0 +1,39 @@
+s3dol.base
+==========
+
+.. automodule:: s3dol.base
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      MAX_KEY_BYTES
+      MAX_PRESIGN_EXPIRES
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      clamp_expires_in
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BucketCollection
+      BucketReader
+      BucketStore
+      EndpointCollection
+      EndpointReader
+      EndpointStore
+      ObjectHandle
+      ObjectInfo
+      S3Profiles
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      ObjectNotFoundForDelete
+   

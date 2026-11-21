@@ -1,4 +1,0 @@
-s3dol.tests.util
-================
-.. automodule:: s3dol.tests.util
-   :members:

@@ -1,0 +1,28 @@
+s3dol.values
+============
+
+.. automodule:: s3dol.values
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      BytesSource
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      as_fileobj
+      is_bytes_like
+      reject_str_value
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Chunks
+      Filepath
+      Streamable
+   

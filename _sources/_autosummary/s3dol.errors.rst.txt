@@ -1,0 +1,59 @@
+s3dol.errors
+============
+
+.. automodule:: s3dol.errors
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      KINDS
+      Rule
+      DEFAULT_RULES
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      classify_client_error
+      code_of
+      redact
+      redact_url
+      status_of
+      translate_client_error
+      translate_s3_errors
+      translating_s3_errors
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Classified
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AccessDenied
+      AmbiguousResolution
+      AnonymousFallback
+      BucketNotEmpty
+      BucketNotFound
+      ConfigurationError
+      CredentialsError
+      InvalidEndpoint
+      KeyNotValid
+      MissingEndpoint
+      MissingPresetParam
+      NotSupported
+      ObjectArchived
+      ObjectNotFound
+      PresetConflict
+      PresetHostMismatch
+      S3DolResolutionChanged
+      S3DolWarning
+      S3Error
+      S3PartialFailure
+      UnknownPresetParam
+   

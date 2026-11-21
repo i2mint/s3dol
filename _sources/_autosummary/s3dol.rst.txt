@@ -1,0 +1,88 @@
+﻿s3dol
+=====
+
+.. automodule:: s3dol
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      S3Store
+      delete_bucket
+      delete_many
+      diagnose
+      handles
+      info
+      prefixes
+      register_preset
+      resolve
+      s3_store
+      sub
+      urls
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BucketCollection
+      BucketHandles
+      BucketInfo
+      BucketReader
+      BucketStore
+      BucketUrls
+      CallableCredentials
+      Capabilities
+      Chunks
+      EndpointCollection
+      EndpointReader
+      EndpointStore
+      Filepath
+      ObjectHandle
+      ObjectInfo
+      Preset
+      ProfileCredentials
+      Resolution
+      S3Connection
+      S3Jsons
+      S3Pickles
+      S3Profiles
+      S3Texts
+      StaticCredentials
+      Streamable
+      S3Dol
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      AccessDenied
+      BucketNotEmpty
+      BucketNotFound
+      ConfigurationError
+      CredentialsError
+      KeyNotValid
+      NotSupported
+      ObjectArchived
+      ObjectNotFound
+      S3DolWarning
+      S3Error
+      S3PartialFailure
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   base
+   capabilities
+   connection
+   errors
+   presets
+   reads
+   recipes
+   store
+   testing
+   values
+   writes

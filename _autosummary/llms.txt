@@ -1,0 +1,23 @@
+# s3dol
+
+> s3 (through boto3) with a simple (dict-like or list-like) interface
+
+
+## Pages in this subsection
+
+- [s3dol](s3dol.html.md): s3dol — S3 and S3-compatible object storage behind a dict-like interface.
+- [s3dol.base](s3dol.base.html.md): Layer B — close-to-metal stores over one bucket or one endpoint.
+- [s3dol.capabilities](s3dol.capabilities.html.md): Keyed capabilities as sibling stores; non-keyed operations as free
+- [s3dol.connection](s3dol.connection.html.md): &#96;S3Connection&#96; — the credential + endpoint SSOT, and the pure resolver.
+- [s3dol.errors](s3dol.errors.html.md): The s3dol error taxonomy and the single error-translation seam.
+- [s3dol.presets](s3dol.presets.html.md): Provider presets: config rows, not subclasses.
+- [s3dol.reads](s3dol.reads.html.md): Read strategies (ADR-0005 §6): what &#96;s&#91;k&#93;&#96; returns.
+- [s3dol.recipes](s3dol.recipes.html.md): Layer C — the one-liner factory and codec facades. Composition ONLY.
+- [s3dol.store](s3dol.store.html.md): COMPAT SHIM — the v0 &#96;S3Store&#96;, forwarded onto the v1 machinery.
+- [s3dol.testing](s3dol.testing.html.md): &#96;s3dol.testing&#96; — a shipped in-memory fake and the exported conformance
+- [s3dol.values](s3dol.values.html.md): Value refs and the write domain (ADR-0005).
+- [s3dol.writes](s3dol.writes.html.md): Write strategies (ADR-0005 §5): how &#96;s&#91;k&#93; = v&#96; reaches the wire.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

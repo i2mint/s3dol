@@ -1,4 +1,0 @@
-s3dol.tests.test_presets
-========================
-.. automodule:: s3dol.tests.test_presets
-   :members:

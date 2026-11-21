@@ -1,4 +1,0 @@
-s3dol.tests.test_store_shim
-===========================
-.. automodule:: s3dol.tests.test_store_shim
-   :members:

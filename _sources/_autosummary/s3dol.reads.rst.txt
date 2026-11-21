@@ -1,0 +1,27 @@
+s3dol.reads
+===========
+
+.. automodule:: s3dol.reads
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_CHUNK_SIZE
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      bytes_reads
+      stream_reads
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BytesReads
+      ReadStrategy
+      StreamReads
+   

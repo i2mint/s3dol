@@ -1,0 +1,886 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="s3dol.errors.html.md">
+<link rel="describedby" href="../llms.txt" type="text/markdown">
+<link rel="alternate" type="text/markdown" href="s3dol.errors.html.md">
+<link rel="describedby" href="llms.txt"><link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="s3dol.presets" href="s3dol.presets.html"><link rel="prev" title="s3dol.connection" href="s3dol.connection.html">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
+        <title>s3dol.errors - s3dol</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f0f0f0;
+  --color-code-foreground: black;
+  --color-brand-primary: #006c35;
+  --color-brand-content: #006c35;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #6cd092;
+  --color-brand-content: #6cd092;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --color-brand-primary: #6cd092;
+  --color-brand-content: #6cd092;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">s3dol</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">s3dol</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html">API reference</a><input aria-label="Toggle navigation of API reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="s3dol.html">s3dol</a><input aria-label="Toggle navigation of s3dol" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="s3dol.base.html">s3dol.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.capabilities.html">s3dol.capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.connection.html">s3dol.connection</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">s3dol.errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.presets.html">s3dol.presets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.reads.html">s3dol.reads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.recipes.html">s3dol.recipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.store.html">s3dol.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.testing.html">s3dol.testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.values.html">s3dol.values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.writes.html">s3dol.writes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/_autosummary/s3dol.errors.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-s3dol.errors">
+<span id="s3dol-errors"></span><h1>s3dol.errors<a class="headerlink" href="#module-s3dol.errors" title="Link to this heading">¶</a></h1>
+<p>The s3dol error taxonomy and the single error-translation seam.</p>
+<p>Design record: <code class="code docutils literal notranslate"><span class="pre">misc/docs/decisions/0004-error-taxonomy.md</span></code> (the taxonomy, the
+<code class="docutils literal notranslate"><span class="pre">(operation,</span> <span class="pre">code,</span> <span class="pre">status)</span></code> classification, the 403 policy, <code class="docutils literal notranslate"><span class="pre">ObjectArchived</span></code>)
+and <code class="code docutils literal notranslate"><span class="pre">misc/docs/decisions/0012-credential-and-endpoint-resolution.md</span></code> (the
+<code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code> tree and the <code class="docutils literal notranslate"><span class="pre">S3DolWarning</span></code> tree).</p>
+<p>Three rules govern this module:</p>
+<ol class="arabic simple">
+<li><p><strong>One seam.</strong> <a class="reference internal" href="#s3dol.errors.translate_s3_errors" title="s3dol.errors.translate_s3_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">translate_s3_errors()</span></code></a> is the only place in the package
+that catches botocore exceptions. Everything else propagates.</p></li>
+<li><p>**Auth, config and transport errors are never translated to <code class="docutils literal notranslate"><span class="pre">KeyError</span></code>.**
+A missing permission must not look like a missing key.</p></li>
+<li><p>**Classification keys on <code class="docutils literal notranslate"><span class="pre">(operation,</span> <span class="pre">code,</span> <span class="pre">status)</span></code>, never on exception
+type.** HEAD responses have no body, so botocore’s modelled exceptions
+(<code class="docutils literal notranslate"><span class="pre">client.exceptions.NoSuchKey</span></code> …) never fire for them.</p></li>
+</ol>
+<p>Everything classification-related here is pure: <a class="reference internal" href="#s3dol.errors.classify_client_error" title="s3dol.errors.classify_client_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">classify_client_error()</span></code></a>
+takes plain values (or a synthesized <code class="docutils literal notranslate"><span class="pre">ClientError</span></code>) and touches no network,
+so the bulk of error tests are tier-1 unit tests — including body-less HEAD
+errors, which moto cannot produce.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">classify_client_error</span><span class="p">(</span><span class="s1">'GetObject'</span><span class="p">,</span> <span class="s1">'NoSuchKey'</span><span class="p">,</span> <span class="mi">404</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span>
+<span class="go">'object_absent'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_client_error</span><span class="p">(</span><span class="s1">'HeadObject'</span><span class="p">,</span> <span class="s1">'404'</span><span class="p">,</span> <span class="mi">404</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span>  <span class="c1"># HEAD is ambiguous</span>
+<span class="go">'ambiguous_head'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_client_error</span><span class="p">(</span><span class="s1">'GetObject'</span><span class="p">,</span> <span class="s1">'AccessDenied'</span><span class="p">,</span> <span class="mi">403</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span>
+<span class="go">'access_denied'</span>
+</pre></div>
+</div>
+<p class="rubric">Module Attributes</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.KINDS" title="s3dol.errors.KINDS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KINDS</span></code></a></p></td>
+<td><p>Kinds a classified error can be.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.Rule" title="s3dol.errors.Rule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rule</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">((operation,</span> <span class="pre">code,</span> <span class="pre">status),</span> <span class="pre">kind)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.DEFAULT_RULES" title="s3dol.errors.DEFAULT_RULES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_RULES</span></code></a></p></td>
+<td><p>The default classification table (ADR-0004 §2, measured against botocore).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Functions</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.classify_client_error" title="s3dol.errors.classify_client_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">classify_client_error</span></code></a>(operation, code, status, *)</p></td>
+<td><p>Classify a backend error by <code class="docutils literal notranslate"><span class="pre">(operation,</span> <span class="pre">code,</span> <span class="pre">status)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.code_of" title="s3dol.errors.code_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code_of</span></code></a>(client_error)</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">Error.Code</span></code> of a botocore <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.redact" title="s3dol.errors.redact"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redact</span></code></a>(text)</p></td>
+<td><p>Redact signed-URL query secrets from <code class="docutils literal notranslate"><span class="pre">text</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.redact_url" title="s3dol.errors.redact_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redact_url</span></code></a>(url)</p></td>
+<td><p>A URL safe to display: userinfo, query and fragment removed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.status_of" title="s3dol.errors.status_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_of</span></code></a>(client_error)</p></td>
+<td><p>The HTTP status of a botocore <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.translate_client_error" title="s3dol.errors.translate_client_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_client_error</span></code></a>(error, *, operation)</p></td>
+<td><p>Translate a botocore <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> into the s3dol taxonomy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.translate_s3_errors" title="s3dol.errors.translate_s3_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_s3_errors</span></code></a>(*, operation[, key_arg])</p></td>
+<td><p>The one seam: decorate a Layer B method so botocore's <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> becomes the s3dol taxonomy (ADR-0004 §1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.translating_s3_errors" title="s3dol.errors.translating_s3_errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translating_s3_errors</span></code></a>(store, *, operation[, key])</p></td>
+<td><p>Generator/inline form of the seam, for code the decorator cannot wrap (<code class="docutils literal notranslate"><span class="pre">__iter__</span></code> bodies: a decorated generator function returns its generator before the body runs, so the decorator's <code class="docutils literal notranslate"><span class="pre">except</span></code> never fires).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Classes</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.Classified" title="s3dol.errors.Classified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Classified</span></code></a>(kind[, exception_type])</p></td>
+<td><p>The result of classifying a backend error.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Exceptions</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.AccessDenied" title="s3dol.errors.AccessDenied"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccessDenied</span></code></a></p></td>
+<td><p>Permission denied.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.AmbiguousResolution" title="s3dol.errors.AmbiguousResolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AmbiguousResolution</span></code></a></p></td>
+<td><p>Resolution is legal but ambiguous (e.g. a named preset whose endpoint, supplied from the environment, matches no known host pattern).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.AnonymousFallback" title="s3dol.errors.AnonymousFallback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AnonymousFallback</span></code></a></p></td>
+<td><p>Anonymous access was used as a fallback (reserved for a future <code class="docutils literal notranslate"><span class="pre">anon='auto'</span></code> — ADR-0012 D5 defers that feature to v1.x).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.BucketNotEmpty" title="s3dol.errors.BucketNotEmpty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BucketNotEmpty</span></code></a></p></td>
+<td><p>Refusal to delete a non-empty bucket.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.BucketNotFound" title="s3dol.errors.BucketNotFound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BucketNotFound</span></code></a></p></td>
+<td><p>The bucket is absent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.ConfigurationError" title="s3dol.errors.ConfigurationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></p></td>
+<td><p>A construction- or resolution-time misconfiguration (ADR-0012 D1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.CredentialsError" title="s3dol.errors.CredentialsError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CredentialsError</span></code></a></p></td>
+<td><p>Credentials are missing, expired, or invalid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.InvalidEndpoint" title="s3dol.errors.InvalidEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvalidEndpoint</span></code></a></p></td>
+<td><p>An endpoint URL failed hygiene checks (userinfo/query/fragment — ADR-0012 D4: a URL is the residual credential carrier).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.KeyNotValid" title="s3dol.errors.KeyNotValid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KeyNotValid</span></code></a></p></td>
+<td><p>The key is syntactically invalid (checked before the wire).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.MissingEndpoint" title="s3dol.errors.MissingEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingEndpoint</span></code></a></p></td>
+<td><p>The named preset needs an endpoint (or endpoint parameters) that nothing supplied (ADR-0012 C1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.MissingPresetParam" title="s3dol.errors.MissingPresetParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MissingPresetParam</span></code></a></p></td>
+<td><p>A preset's endpoint template has an unbound required parameter, so the row contributes no endpoint rung (ADR-0012 C1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.NotSupported" title="s3dol.errors.NotSupported"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NotSupported</span></code></a></p></td>
+<td><p>The operation is not supported by this provider (names both).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.ObjectArchived" title="s3dol.errors.ObjectArchived"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectArchived</span></code></a>(message, *[, storage_class, ...])</p></td>
+<td><p>The object exists but is archived (e.g. Glacier) and cannot be read now.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.ObjectNotFound" title="s3dol.errors.ObjectNotFound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectNotFound</span></code></a></p></td>
+<td><p>The object is absent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.PresetConflict" title="s3dol.errors.PresetConflict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PresetConflict</span></code></a></p></td>
+<td><p>An explicit argument contradicts a <em>pinned</em> (verified) preset value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.PresetHostMismatch" title="s3dol.errors.PresetHostMismatch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PresetHostMismatch</span></code></a></p></td>
+<td><p>The resolved endpoint's host matches a <em>different</em> provider's patterns than the preset you named (ADR-0012 C2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.S3DolResolutionChanged" title="s3dol.errors.S3DolResolutionChanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3DolResolutionChanged</span></code></a></p></td>
+<td><p>v1 resolves this call differently than v0 would have (ADR-0012 D7).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.S3DolWarning" title="s3dol.errors.S3DolWarning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></p></td>
+<td><p>Base of every s3dol warning.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Error</span></code></a></p></td>
+<td><p>Base of every s3dol exception — <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">S3Error</span></code> catches the package.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.errors.S3PartialFailure" title="s3dol.errors.S3PartialFailure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3PartialFailure</span></code></a>(message, *, succeeded, failures)</p></td>
+<td><p>A bulk operation partially failed (ADR-0010 §2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.errors.UnknownPresetParam" title="s3dol.errors.UnknownPresetParam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnknownPresetParam</span></code></a></p></td>
+<td><p>A parameter was bound that the preset's templates do not use.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.AccessDenied">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">AccessDenied</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#AccessDenied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.AccessDenied" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
+<p>Permission denied. <strong>Not</strong> a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> — a missing permission must
+not look like a missing key (ADR-0004 §1/§3).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.AmbiguousResolution">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">AmbiguousResolution</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#AmbiguousResolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.AmbiguousResolution" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3DolWarning" title="s3dol.errors.S3DolWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></p>
+<p>Resolution is legal but ambiguous (e.g. a named preset whose endpoint,
+supplied from the environment, matches no known host pattern).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.AnonymousFallback">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">AnonymousFallback</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#AnonymousFallback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.AnonymousFallback" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3DolWarning" title="s3dol.errors.S3DolWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></p>
+<p>Anonymous access was used as a fallback (reserved for a future
+<code class="docutils literal notranslate"><span class="pre">anon='auto'</span></code> — ADR-0012 D5 defers that feature to v1.x).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.BucketNotEmpty">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">BucketNotEmpty</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#BucketNotEmpty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.BucketNotEmpty" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
+<p>Refusal to delete a non-empty bucket. Use
+<code class="docutils literal notranslate"><span class="pre">s3dol.delete_bucket(endpoint,</span> <span class="pre">name,</span> <span class="pre">force=True)</span></code> for the explicit
+cascading form (ADR-0010 §3).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.BucketNotFound">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">BucketNotFound</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#BucketNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.BucketNotFound" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_InformativeKeyError</span></code></p>
+<p>The bucket is absent.</p>
+<p>Still a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code>: for an object operation it is a key-space problem for
+the caller; for a bucket operation it is the key of the endpoint mapping.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.errors.Classified">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">Classified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exception_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#Classified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.Classified" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The result of classifying a backend error.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.ConfigurationError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">ConfigurationError</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#ConfigurationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.ConfigurationError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>A construction- or resolution-time misconfiguration (ADR-0012 D1).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.CredentialsError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">CredentialsError</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#CredentialsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.CredentialsError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
+<p>Credentials are missing, expired, or invalid.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.errors.DEFAULT_RULES">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_RULES</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(((None,</span> <span class="pre">'NoSuchKey',</span> <span class="pre">None),</span> <span class="pre">'object_absent'),</span> <span class="pre">((None,</span> <span class="pre">'NoSuchBucket',</span> <span class="pre">None),</span> <span class="pre">'bucket_absent'),</span> <span class="pre">((None,</span> <span class="pre">'NoSuchUpload',</span> <span class="pre">None),</span> <span class="pre">'object_absent'),</span> <span class="pre">(('HeadObject',</span> <span class="pre">'404',</span> <span class="pre">404),</span> <span class="pre">'ambiguous_head'),</span> <span class="pre">(('HeadBucket',</span> <span class="pre">'404',</span> <span class="pre">404),</span> <span class="pre">'bucket_absent'),</span> <span class="pre">(('HeadObject',</span> <span class="pre">'404',</span> <span class="pre">None),</span> <span class="pre">'ambiguous_head'),</span> <span class="pre">(('HeadBucket',</span> <span class="pre">'404',</span> <span class="pre">None),</span> <span class="pre">'bucket_absent'),</span> <span class="pre">(('HeadObject',</span> <span class="pre">None,</span> <span class="pre">405),</span> <span class="pre">'delete_marker'),</span> <span class="pre">((None,</span> <span class="pre">None,</span> <span class="pre">301),</span> <span class="pre">'wrong_region'),</span> <span class="pre">((None,</span> <span class="pre">'PermanentRedirect',</span> <span class="pre">None),</span> <span class="pre">'wrong_region'),</span> <span class="pre">((None,</span> <span class="pre">'AuthorizationHeaderMalformed',</span> <span class="pre">None),</span> <span class="pre">'wrong_region'),</span> <span class="pre">((None,</span> <span class="pre">'InvalidObjectState',</span> <span class="pre">None),</span> <span class="pre">'archived'),</span> <span class="pre">((None,</span> <span class="pre">'RequestTimeTooSkewed',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'RequestExpired',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'AuthorizationQueryParametersError',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'ExpiredToken',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'InvalidAccessKeyId',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'SignatureDoesNotMatch',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'TokenRefreshRequired',</span> <span class="pre">None),</span> <span class="pre">'credentials'),</span> <span class="pre">((None,</span> <span class="pre">'AccessDenied',</span> <span class="pre">None),</span> <span class="pre">'access_denied'),</span> <span class="pre">((None,</span> <span class="pre">'AllAccessDisabled',</span> <span class="pre">None),</span> <span class="pre">'access_denied'),</span> <span class="pre">((None,</span> <span class="pre">'403',</span> <span class="pre">403),</span> <span class="pre">'access_denied'),</span> <span class="pre">((None,</span> <span class="pre">None,</span> <span class="pre">403),</span> <span class="pre">'access_denied'),</span> <span class="pre">((None,</span> <span class="pre">'KeyTooLongError',</span> <span class="pre">None),</span> <span class="pre">'invalid_key'),</span> <span class="pre">((None,</span> <span class="pre">'SlowDown',</span> <span class="pre">None),</span> <span class="pre">'transient'),</span> <span class="pre">((None,</span> <span class="pre">'RequestTimeout',</span> <span class="pre">None),</span> <span class="pre">'transient'),</span> <span class="pre">((None,</span> <span class="pre">'ServiceUnavailable',</span> <span class="pre">None),</span> <span class="pre">'transient'),</span> <span class="pre">((None,</span> <span class="pre">'InternalError',</span> <span class="pre">None),</span> <span class="pre">'transient'),</span> <span class="pre">((None,</span> <span class="pre">None,</span> <span class="pre">503),</span> <span class="pre">'transient'))</span></span><a class="headerlink" href="#s3dol.errors.DEFAULT_RULES" title="Link to this definition">¶</a></dt>
+<dd><p>The default classification table (ADR-0004 §2, measured against botocore).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.InvalidEndpoint">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">InvalidEndpoint</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#InvalidEndpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.InvalidEndpoint" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.ConfigurationError" title="s3dol.errors.ConfigurationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></p>
+<p>An endpoint URL failed hygiene checks (userinfo/query/fragment —
+ADR-0012 D4: a URL is the residual credential carrier).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.errors.KINDS">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">KINDS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('object_absent',</span> <span class="pre">'bucket_absent',</span> <span class="pre">'ambiguous_head',</span> <span class="pre">'access_denied',</span> <span class="pre">'credentials',</span> <span class="pre">'invalid_key',</span> <span class="pre">'archived',</span> <span class="pre">'not_supported',</span> <span class="pre">'wrong_region',</span> <span class="pre">'delete_marker',</span> <span class="pre">'transient',</span> <span class="pre">'unknown')</span></span><a class="headerlink" href="#s3dol.errors.KINDS" title="Link to this definition">¶</a></dt>
+<dd><p>Kinds a classified error can be. Layer B maps kinds to behaviour; in
+particular <code class="docutils literal notranslate"><span class="pre">ambiguous_head</span></code> triggers the one-<code class="docutils literal notranslate"><span class="pre">HeadBucket</span></code>
+disambiguation of ADR-0004 §2 (HEAD has no body, so a missing key and a
+missing bucket are both <code class="docutils literal notranslate"><span class="pre">('404',</span> <span class="pre">404)</span></code> on real AWS).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.KeyNotValid">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">KeyNotValid</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#KeyNotValid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.KeyNotValid" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_InformativeKeyError</span></code>, <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>The key is syntactically invalid (checked before the wire).</p>
+<p>Inherits from both <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> and <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> deliberately, so either
+<code class="docutils literal notranslate"><span class="pre">except</span></code> works. Named <code class="docutils literal notranslate"><span class="pre">KeyNotValid</span></code> (not <code class="docutils literal notranslate"><span class="pre">KeyValidationError</span></code>) because
+dol already ships two <em>different</em> classes called <code class="docutils literal notranslate"><span class="pre">KeyValidationError</span></code>
+(ADR-0004 §5).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.MissingEndpoint">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">MissingEndpoint</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#MissingEndpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.MissingEndpoint" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.ConfigurationError" title="s3dol.errors.ConfigurationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></p>
+<p>The named preset needs an endpoint (or endpoint parameters) that nothing
+supplied (ADR-0012 C1).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.MissingPresetParam">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">MissingPresetParam</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#MissingPresetParam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.MissingPresetParam" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.MissingEndpoint" title="s3dol.errors.MissingEndpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">MissingEndpoint</span></code></a></p>
+<p>A preset’s endpoint template has an unbound required parameter, so the
+row contributes no endpoint rung (ADR-0012 C1). A <code class="docutils literal notranslate"><span class="pre">MissingEndpoint</span></code>, so
+either <code class="docutils literal notranslate"><span class="pre">except</span></code> works.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.NotSupported">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">NotSupported</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#NotSupported"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.NotSupported" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
+<p>The operation is not supported by this provider (names both).</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.ObjectArchived">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">ObjectArchived</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restore_status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#ObjectArchived"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.ObjectArchived" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_InformativeKeyError</span></code></p>
+<p>The object exists but is archived (e.g. Glacier) and cannot be read now.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">KeyError</span></code>, deliberately and arguably (ADR-0004 §4): <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">in</span> <span class="pre">store</span></code>
+stays <code class="docutils literal notranslate"><span class="pre">True</span></code>, but <code class="docutils literal notranslate"><span class="pre">store[k]</span></code> fails as a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> so that
+<code class="docutils literal notranslate"><span class="pre">store.get(k,</span> <span class="pre">default)</span></code> degrades to the not-available branch. Note that
+only the <em>defaulted accessors</em> degrade — <code class="docutils literal notranslate"><span class="pre">dict(store)</span></code>, <code class="docutils literal notranslate"><span class="pre">.items()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Mapping.__eq__</span></code> still raise. <code class="docutils literal notranslate"><span class="pre">setdefault</span></code>/<code class="docutils literal notranslate"><span class="pre">pop</span></code> are overridden in the
+store to re-raise this instead of silently overwriting the archived object.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3dol.errors.ObjectArchived.restore">
+<span class="sig-name descname"><span class="pre">restore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">tier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Standard'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#ObjectArchived.restore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.ObjectArchived.restore" title="Link to this definition">¶</a></dt>
+<dd><p>Request restoration of the archived object (if a handle was bound).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.ObjectNotFound">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">ObjectNotFound</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#ObjectNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.ObjectNotFound" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_InformativeKeyError</span></code></p>
+<p>The object is absent. The Mapping contract’s <code class="docutils literal notranslate"><span class="pre">KeyError</span></code>.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.PresetConflict">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">PresetConflict</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#PresetConflict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.PresetConflict" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.ConfigurationError" title="s3dol.errors.ConfigurationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></p>
+<p>An explicit argument contradicts a <em>pinned</em> (verified) preset value.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.PresetHostMismatch">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">PresetHostMismatch</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#PresetHostMismatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.PresetHostMismatch" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.ConfigurationError" title="s3dol.errors.ConfigurationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></p>
+<p>The resolved endpoint’s host matches a <em>different</em> provider’s patterns
+than the preset you named (ADR-0012 C2).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.errors.Rule">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">Rule</span></span><a class="headerlink" href="#s3dol.errors.Rule" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">((operation,</span> <span class="pre">code,</span> <span class="pre">status),</span> <span class="pre">kind)</span></code>. <code class="docutils literal notranslate"><span class="pre">None</span></code> is a wildcard.
+First match wins; more specific rows come first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Rule rows</p>
+</dd>
+</dl>
+<p>alias of <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>], <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.S3DolResolutionChanged">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">S3DolResolutionChanged</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#S3DolResolutionChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.S3DolResolutionChanged" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3DolWarning" title="s3dol.errors.S3DolWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></p>
+<p>v1 resolves this call differently than v0 would have (ADR-0012 D7).
+Emitted by the compat shim; dies with it.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.S3DolWarning">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">S3DolWarning</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#S3DolWarning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.S3DolWarning" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#UserWarning" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserWarning</span></code></a></p>
+<p>Base of every s3dol warning.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.S3Error">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">S3Error</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#S3Error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.S3Error" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#Exception" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Base of every s3dol exception — <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">S3Error</span></code> catches the package.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.S3PartialFailure">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">S3PartialFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">succeeded</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failures</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#S3PartialFailure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.S3PartialFailure" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
+<p>A bulk operation partially failed (ADR-0010 §2).</p>
+<p>Not an <code class="docutils literal notranslate"><span class="pre">ExceptionGroup</span></code> — the package supports Python 3.10.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.errors.S3PartialFailure.succeeded">
+<span class="sig-name descname"><span class="pre">succeeded</span></span><a class="headerlink" href="#s3dol.errors.S3PartialFailure.succeeded" title="Link to this definition">¶</a></dt>
+<dd><p>keys the backend reported as deleted (absent keys are
+reported as deleted too — S3’s semantics, documented, not hidden).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3dol.errors.S3PartialFailure.failures">
+<span class="sig-name descname"><span class="pre">failures</span></span><a class="headerlink" href="#s3dol.errors.S3PartialFailure.failures" title="Link to this definition">¶</a></dt>
+<dd><p>mapping of key -&gt; the error for that key.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.errors.UnknownPresetParam">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">UnknownPresetParam</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#UnknownPresetParam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.UnknownPresetParam" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#s3dol.errors.ConfigurationError" title="s3dol.errors.ConfigurationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></p>
+<p>A parameter was bound that the preset’s templates do not use.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.classify_client_error">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">classify_client_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#classify_client_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.classify_client_error" title="Link to this definition">¶</a></dt>
+<dd><p>Classify a backend error by <code class="docutils literal notranslate"><span class="pre">(operation,</span> <span class="pre">code,</span> <span class="pre">status)</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">overrides</span></code> rows (typically from a preset) are consulted first, so a
+provider divergence is a table row, never a code branch.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">classify_client_error</span><span class="p">(</span><span class="s1">'HeadBucket'</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">overrides</span><span class="o">=</span><span class="p">(((</span><span class="s1">'HeadBucket'</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span> <span class="s1">'bucket_absent'</span><span class="p">),))</span><span class="o">.</span><span class="n">kind</span>
+<span class="go">'bucket_absent'</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#s3dol.errors.Classified" title="s3dol.errors.Classified"><code class="xref py py-class docutils literal notranslate"><span class="pre">Classified</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.code_of">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">code_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_error</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#code_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.code_of" title="Link to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">Error.Code</span></code> of a botocore <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.redact">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">redact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#redact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.redact" title="Link to this definition">¶</a></dt>
+<dd><p>Redact signed-URL query secrets from <code class="docutils literal notranslate"><span class="pre">text</span></code>.</p>
+<p>Error messages may name the operation, bucket, key, endpoint and code, but
+never a credential, token, or signed URL — redaction is a tested function,
+not a convention (ADR-0004 §7).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">redact</span><span class="p">(</span><span class="s1">'https://b.s3.amazonaws.com/k?X-Amz-Signature=abc123&amp;x=1'</span><span class="p">)</span>
+<span class="go">'https://b.s3.amazonaws.com/k?X-Amz-Signature=REDACTED&amp;x=1'</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.redact_url">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">redact_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#redact_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.redact_url" title="Link to this definition">¶</a></dt>
+<dd><p>A URL safe to display: userinfo, query and fragment removed.</p>
+<p>A URL is the residual credential carrier (ADR-0012 D4). Endpoint hygiene
+refuses those shapes for values <em>s3dol</em> is given, but an endpoint read
+from <code class="docutils literal notranslate"><span class="pre">AWS_ENDPOINT_URL_S3</span></code> or an aws-config profile is not ours to
+refuse — it must merely never be echoed intact.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">redact_url</span><span class="p">(</span><span class="s1">'https://user:pw@minio.internal:9000/x?sig=abc#f'</span><span class="p">)</span>
+<span class="go">'https://REDACTED@minio.internal:9000/x?&lt;redacted&gt;'</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.status_of">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">status_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_error</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#status_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.status_of" title="Link to this definition">¶</a></dt>
+<dd><p>The HTTP status of a botocore <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.translate_client_error">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">translate_client_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overrides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deny_means_absent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head_ambiguity_resolver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#translate_client_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.translate_client_error" title="Link to this definition">¶</a></dt>
+<dd><p>Translate a botocore <code class="docutils literal notranslate"><span class="pre">ClientError</span></code> into the s3dol taxonomy.</p>
+<p>Returns the replacement exception, or <code class="docutils literal notranslate"><span class="pre">None</span></code> meaning *propagate the
+original* (transient/unknown — rule 2 of the module docstring).</p>
+<p><code class="docutils literal notranslate"><span class="pre">head_ambiguity_resolver</span></code> resolves the body-less <code class="docutils literal notranslate"><span class="pre">HeadObject</span></code> 404
+(ADR-0004 §2): it returns <code class="docutils literal notranslate"><span class="pre">True</span></code> iff the bucket is known reachable, in
+which case the miss really is the object’s. It is only called for the
+ambiguous case, so the common path costs nothing.</p>
+<p><code class="docutils literal notranslate"><span class="pre">deny_means_absent=True</span></code> classifies an object-op 403 as
+<code class="docutils literal notranslate"><span class="pre">ObjectNotFound</span></code> — for deployments knowingly running the canonical
+least-privilege policy that omits <code class="docutils literal notranslate"><span class="pre">s3:ListBucket</span></code> (ADR-0004 §3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.translate_s3_errors">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">translate_s3_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_arg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">translate_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#translate_s3_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.translate_s3_errors" title="Link to this definition">¶</a></dt>
+<dd><p>The one seam: decorate a Layer B method so botocore’s <code class="docutils literal notranslate"><span class="pre">ClientError</span></code>
+becomes the s3dol taxonomy (ADR-0004 §1).</p>
+<p><code class="docutils literal notranslate"><span class="pre">key_arg</span></code> names the decorated function’s key <em>parameter</em> (resolved via
+the call’s kwargs/positionals — never an attribute, so the key is not lost
+the way azuredol’s <code class="docutils literal notranslate"><span class="pre">key_arg='blob'</span></code> loses it). The store instance is
+expected to provide <code class="docutils literal notranslate"><span class="pre">_error_context()</span></code> returning
+<code class="docutils literal notranslate"><span class="pre">dict(bucket=...,</span> <span class="pre">endpoint=...,</span> <span class="pre">overrides=...,</span> <span class="pre">deny_means_absent=...,</span>
+<span class="pre">head_ambiguity_resolver=...)</span></code> — Layer B owns that context.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.errors.translating_s3_errors">
+<span class="sig-prename descclassname"><span class="pre">s3dol.errors.</span></span><span class="sig-name descname"><span class="pre">translating_s3_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">translate_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/errors.html#translating_s3_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.errors.translating_s3_errors" title="Link to this definition">¶</a></dt>
+<dd><p>Generator/inline form of the seam, for code the decorator cannot wrap
+(<code class="docutils literal notranslate"><span class="pre">__iter__</span></code> bodies: a decorated generator function returns its generator
+before the body runs, so the decorator’s <code class="docutils literal notranslate"><span class="pre">except</span></code> never fires).</p>
+<p>Same contract as <a class="reference internal" href="#s3dol.errors.translate_s3_errors" title="s3dol.errors.translate_s3_errors"><code class="xref py py-func docutils literal notranslate"><span class="pre">translate_s3_errors()</span></code></a>; the store supplies
+<code class="docutils literal notranslate"><span class="pre">_error_context()</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="s3dol.presets.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">s3dol.presets</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="s3dol.connection.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">s3dol.connection</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            Made with 
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">s3dol.errors</a><ul>
+<li><a class="reference internal" href="#s3dol.errors.AccessDenied"><code class="docutils literal notranslate"><span class="pre">AccessDenied</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.AmbiguousResolution"><code class="docutils literal notranslate"><span class="pre">AmbiguousResolution</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.AnonymousFallback"><code class="docutils literal notranslate"><span class="pre">AnonymousFallback</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.BucketNotEmpty"><code class="docutils literal notranslate"><span class="pre">BucketNotEmpty</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.BucketNotFound"><code class="docutils literal notranslate"><span class="pre">BucketNotFound</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.Classified"><code class="docutils literal notranslate"><span class="pre">Classified</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.ConfigurationError"><code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.CredentialsError"><code class="docutils literal notranslate"><span class="pre">CredentialsError</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.DEFAULT_RULES"><code class="docutils literal notranslate"><span class="pre">DEFAULT_RULES</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.InvalidEndpoint"><code class="docutils literal notranslate"><span class="pre">InvalidEndpoint</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.KINDS"><code class="docutils literal notranslate"><span class="pre">KINDS</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.KeyNotValid"><code class="docutils literal notranslate"><span class="pre">KeyNotValid</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.MissingEndpoint"><code class="docutils literal notranslate"><span class="pre">MissingEndpoint</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.MissingPresetParam"><code class="docutils literal notranslate"><span class="pre">MissingPresetParam</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.NotSupported"><code class="docutils literal notranslate"><span class="pre">NotSupported</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.ObjectArchived"><code class="docutils literal notranslate"><span class="pre">ObjectArchived</span></code></a><ul>
+<li><a class="reference internal" href="#s3dol.errors.ObjectArchived.restore"><code class="docutils literal notranslate"><span class="pre">ObjectArchived.restore()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#s3dol.errors.ObjectNotFound"><code class="docutils literal notranslate"><span class="pre">ObjectNotFound</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.PresetConflict"><code class="docutils literal notranslate"><span class="pre">PresetConflict</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.PresetHostMismatch"><code class="docutils literal notranslate"><span class="pre">PresetHostMismatch</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.Rule"><code class="docutils literal notranslate"><span class="pre">Rule</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.S3DolResolutionChanged"><code class="docutils literal notranslate"><span class="pre">S3DolResolutionChanged</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.S3DolWarning"><code class="docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.S3Error"><code class="docutils literal notranslate"><span class="pre">S3Error</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.S3PartialFailure"><code class="docutils literal notranslate"><span class="pre">S3PartialFailure</span></code></a><ul>
+<li><a class="reference internal" href="#s3dol.errors.S3PartialFailure.succeeded"><code class="docutils literal notranslate"><span class="pre">S3PartialFailure.succeeded</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.S3PartialFailure.failures"><code class="docutils literal notranslate"><span class="pre">S3PartialFailure.failures</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#s3dol.errors.UnknownPresetParam"><code class="docutils literal notranslate"><span class="pre">UnknownPresetParam</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.classify_client_error"><code class="docutils literal notranslate"><span class="pre">classify_client_error()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.code_of"><code class="docutils literal notranslate"><span class="pre">code_of()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.redact"><code class="docutils literal notranslate"><span class="pre">redact()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.redact_url"><code class="docutils literal notranslate"><span class="pre">redact_url()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.status_of"><code class="docutils literal notranslate"><span class="pre">status_of()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.translate_client_error"><code class="docutils literal notranslate"><span class="pre">translate_client_error()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.translate_s3_errors"><code class="docutils literal notranslate"><span class="pre">translate_s3_errors()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.errors.translating_s3_errors"><code class="docutils literal notranslate"><span class="pre">translating_s3_errors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=4ebf8126"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=fd10adb8"></script>
+    </body>
+</html>

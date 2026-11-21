@@ -1,0 +1,26 @@
+s3dol.connection
+================
+
+.. automodule:: s3dol.connection
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      load_aws_config
+      normalize_credentials
+      resolve
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      CallableCredentials
+      CredentialProvider
+      ProfileCredentials
+      Resolution
+      S3Connection
+      Sourced
+      StaticCredentials
+   

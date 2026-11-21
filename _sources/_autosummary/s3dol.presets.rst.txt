@@ -1,0 +1,30 @@
+s3dol.presets
+=============
+
+.. automodule:: s3dol.presets
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      CONFIG_KWARGS_ALLOWLIST
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      available_presets
+      detect_preset
+      get_preset
+      register
+      unregister
+      validate_endpoint_hygiene
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Capabilities
+      Preset
+   

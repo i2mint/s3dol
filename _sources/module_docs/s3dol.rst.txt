@@ -1,4 +1,0 @@
-s3dol
-=====
-.. automodule:: s3dol
-   :members:

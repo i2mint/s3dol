@@ -1,0 +1,32 @@
+s3dol.capabilities
+==================
+
+.. automodule:: s3dol.capabilities
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DELETE_MANY_CHUNK
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      delete_bucket
+      delete_many
+      handles
+      info
+      prefixes
+      sub
+      urls
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BucketHandles
+      BucketInfo
+      BucketUrls
+   

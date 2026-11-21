@@ -1,4 +1,0 @@
-s3dol.errors
-============
-.. automodule:: s3dol.errors
-   :members:

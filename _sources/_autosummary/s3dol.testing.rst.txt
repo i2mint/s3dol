@@ -1,0 +1,23 @@
+s3dol.testing
+=============
+
+.. automodule:: s3dol.testing
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      mock_s3
+      run_conformance
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      FakeBucketHandles
+      FakeBucketInfo
+      FakeBucketStore
+      FakeBucketUrls
+      FakeObjectHandle
+   

@@ -1,4 +1,0 @@
-s3dol._diagnose
-===============
-.. automodule:: s3dol._diagnose
-   :members:

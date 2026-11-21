@@ -1,4 +1,0 @@
-s3dol.presets
-=============
-.. automodule:: s3dol.presets
-   :members:

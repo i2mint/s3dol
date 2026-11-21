@@ -1,0 +1,27 @@
+s3dol.writes
+============
+
+.. automodule:: s3dol.writes
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_MULTIPART_THRESHOLD
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      simple_writes
+      transfer_writes
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SimpleWrites
+      TransferWrites
+      WriteStrategy
+   

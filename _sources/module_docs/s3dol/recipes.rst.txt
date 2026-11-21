@@ -1,4 +1,0 @@
-s3dol.recipes
-=============
-.. automodule:: s3dol.recipes
-   :members:

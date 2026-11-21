@@ -1,0 +1,12 @@
+s3dol.recipes
+=============
+
+.. automodule:: s3dol.recipes
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      s3_store
+   

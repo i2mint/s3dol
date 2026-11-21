@@ -1,4 +1,0 @@
-s3dol.tests.test_keyed_surface
-==============================
-.. automodule:: s3dol.tests.test_keyed_surface
-   :members:

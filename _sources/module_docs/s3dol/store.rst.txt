@@ -1,4 +1,0 @@
-s3dol.store
-===========
-.. automodule:: s3dol.store
-   :members:

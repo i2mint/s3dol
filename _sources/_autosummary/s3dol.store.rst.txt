@@ -1,0 +1,14 @@
+s3dol.store
+===========
+
+.. automodule:: s3dol.store
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      S3Store
+      dechunk_aws_chunked
+      detect_chunked_framing
+   
