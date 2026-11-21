@@ -1,8 +1,8 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-21T16:15:01.897410Z
-commit_sha,eb7a4bc18c289e28756080556e80f29bc90c9d6f
-commit_message,Merge b832bf9ce11ba9475890b77e8933b9c97ec7c6a9 into e2dfbb6b1e3a7bf5407e0478c6b1a0609c10487f
+timestamp,2026-11-21T16:18:16.276156Z
+commit_sha,8bcba08b1e0ae8d7bf23ff637e1b084d74085424
+commit_message,Use the encoder/decoder keywords of wrap_kvs (dol 0.4 deprecates X_of_Y) (#25)
 python_version,3.10
 metrics.umpyre_stats.num_functions,34112
 metrics.umpyre_stats.num_classes,7095
@@ -18,9 +18,9 @@ metrics.umpyre_stats.mean_lines_per_function,13.598088649155722
 metrics.umpyre_stats.files_analyzed,2460
 metrics.umpyre_stats.pypi_version,1.0.0
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-08-12T09:26:08Z
+metrics.workflow_status.last_success_timestamp,2026-11-21T16:15:10Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/31582856077
+metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/44923406574
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,7.284997463226318
+collection_duration_seconds,7.732199192047119
