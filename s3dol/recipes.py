@@ -109,15 +109,15 @@ def s3_store(
 
 S3Texts = wrap_kvs(
     BucketStore,
-    obj_of_data=lambda b: b.decode(),
-    data_of_obj=lambda s: s.encode(),
+    value_decoder=lambda b: b.decode(),
+    value_encoder=lambda s: s.encode(),
 )
 S3Texts.__doc__ = """``BucketStore`` whose values are ``str`` (utf-8 on the wire)."""
 
 S3Jsons = wrap_kvs(
     BucketStore,
-    obj_of_data=json.loads,
-    data_of_obj=lambda obj: json.dumps(obj).encode(),
+    value_decoder=json.loads,
+    value_encoder=lambda obj: json.dumps(obj).encode(),
 )
 S3Jsons.__doc__ = """``BucketStore`` whose values are JSON-able Python objects.
 
@@ -129,7 +129,7 @@ Note the canonical-form law (ADR-0005 N3): ``s[k] = v`` then ``s[k]`` gives
 def _pickle_codec_store():
     import pickle
 
-    return wrap_kvs(BucketStore, obj_of_data=pickle.loads, data_of_obj=pickle.dumps)
+    return wrap_kvs(BucketStore, value_decoder=pickle.loads, value_encoder=pickle.dumps)
 
 
 S3Pickles = _pickle_codec_store()

@@ -98,8 +98,8 @@ def reject_str_value(v):
         "A str value is ambiguous here: did you mean its utf-8 bytes, or a "
         "filepath?\n"
         "  content : s[k] = v.encode()   (or wrap the store: "
-        "dol.wrap_kvs(store, data_of_obj=lambda s: s.encode(), "
-        "obj_of_data=lambda b: b.decode()))\n"
+        "dol.wrap_kvs(store, value_encoder=lambda s: s.encode(), "
+        "value_decoder=lambda b: b.decode()))\n"
         "  filepath: s[k] = s3dol.Filepath(v)"
     )
 
