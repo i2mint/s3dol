@@ -1,21 +1,21 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-22T12:03:15.583859Z
-commit_sha,c46ad9afccf98b99d1c5eb9967876eff99ccbeb9
-commit_message,Merge d2b94e624d0e0a5fff1bb3a7b4e56bbcd16b32e4 into 8462af7fe3c2861809c34b84ed058fdb0ed02b4f
+timestamp,2026-11-22T12:03:26.965633Z
+commit_sha,d2b94e624d0e0a5fff1bb3a7b4e56bbcd16b32e4
+commit_message,s3dol.listed_info: per-key ObjectInfo from one LIST (#23)
 python_version,3.10
-metrics.umpyre_stats.num_functions,34375
-metrics.umpyre_stats.num_classes,7152
-metrics.umpyre_stats.total_lines,913425
-metrics.umpyre_stats.empty_lines,96843
-metrics.umpyre_stats.comment_lines,30983
-metrics.umpyre_stats.docs_lines,52748
-metrics.umpyre_stats.function_lines,467711
-metrics.umpyre_stats.empty_lines_ratio,0.10602184087363495
-metrics.umpyre_stats.comment_lines_ratio,0.033919588362481864
-metrics.umpyre_stats.function_lines_ratio,0.5120409447956865
-metrics.umpyre_stats.mean_lines_per_function,13.606138181818181
-metrics.umpyre_stats.files_analyzed,2473
+metrics.umpyre_stats.num_functions,34128
+metrics.umpyre_stats.num_classes,7100
+metrics.umpyre_stats.total_lines,908147
+metrics.umpyre_stats.empty_lines,95888
+metrics.umpyre_stats.comment_lines,30663
+metrics.umpyre_stats.docs_lines,51898
+metrics.umpyre_stats.function_lines,464092
+metrics.umpyre_stats.empty_lines_ratio,0.10558643039067464
+metrics.umpyre_stats.comment_lines_ratio,0.03376435753242592
+metrics.umpyre_stats.function_lines_ratio,0.511031804322428
+metrics.umpyre_stats.mean_lines_per_function,13.598570089076418
+metrics.umpyre_stats.files_analyzed,2462
 metrics.umpyre_stats.pypi_version,1.0.2
 metrics.workflow_status.last_run_status,success
 metrics.workflow_status.last_success_timestamp,2026-11-22T11:44:16Z
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,5.565444469451904
+collection_duration_seconds,9.15455150604248
