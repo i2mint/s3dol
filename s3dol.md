@@ -1,4 +1,4 @@
-> built 2026-11-21 16:18 UTC from 8bcba08 (master) · s3dol 1.0.0. Details: build_info.json
+> built 2026-11-22 11:43 UTC from f84928d (master) · s3dol 1.0.1. Details: build_info.json
 
 # index.html.md
 
@@ -1262,6 +1262,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 | [`handles`](_autosummary/s3dol.html.md#s3dol.handles)(store)                                       | The sibling store of [`ObjectHandle`](_autosummary/s3dol.html.md#s3dol.ObjectHandle)s: `handles(s)[k]`.                                                                                                                   |
 | [`info`](_autosummary/s3dol.html.md#s3dol.info)(store)                                          | The sibling store of [`ObjectInfo`](_autosummary/s3dol.html.md#s3dol.ObjectInfo): `info(s)[k]`.                                                                                                                         |
 | [`prefixes`](_autosummary/s3dol.html.md#s3dol.prefixes)(store)                                      | The 'directories' one level under the store's scope, \*\*relative to the caller's key space\*\* — one `ListObjectsV2(Delimiter='/')` reading `CommonPrefixes` (which v0 parsed and then called from nowhere; ADR-0009). |
+| [`presigned_upload`](_autosummary/s3dol.html.md#s3dol.presigned_upload)(store, \*, key_prefix, ...)         | A presigned POST form for ONE new object under `key_prefix`.                                                                                                                                                            |
 | [`register_preset`](_autosummary/s3dol.html.md#s3dol.register_preset)(preset, \*[, overwrite])             | Add a row.                                                                                                                                                                                                              |
 | [`resolve`](_autosummary/s3dol.html.md#s3dol.resolve)(spec, environ[, aws_config])                 | Pure resolution: no `os.environ`, no disk, no network (ADR-0012 D2).                                                                                                                                                    |
 | [`s3_store`](_autosummary/s3dol.html.md#s3dol.s3_store)(bucket, \*[, prefix, preset, ...])          | One bucket as a `MutableMapping[str, bytes]` (a `Mapping` when `readonly=True`).                                                                                                                                        |
@@ -1280,6 +1281,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 | [`CallableCredentials`](_autosummary/s3dol.html.md#s3dol.CallableCredentials)(fetch)                         | A picklable zero-arg callable returning a mapping with keys `access_key`/`secret_key` (aliases: `key`/`secret`), optional `token`, optional `expires_at`/`expiry_time` (ISO 8601).                                                            |
 | [`Capabilities`](_autosummary/s3dol.html.md#s3dol.Capabilities)([list_objects_v2, ...])               | What a backend supports.                                                                                                                                                                                                                      |
 | [`Chunks`](_autosummary/s3dol.html.md#s3dol.Chunks)(chunks[, consumed])                         | The value is the concatenation of an iterable of `bytes` chunks.                                                                                                                                                                              |
+| [`DailyByteBudget`](_autosummary/s3dol.html.md#s3dol.DailyByteBudget)(limit_bytes, \*[, ledger, today])  | A per-day byte budget (one instance per tenant); call it to reserve.                                                                                                                                                                          |
 | [`EndpointCollection`](_autosummary/s3dol.html.md#s3dol.EndpointCollection)([connection])                   | Bucket names at one endpoint.                                                                                                                                                                                                                 |
 | [`EndpointReader`](_autosummary/s3dol.html.md#s3dol.EndpointReader)([connection])                       |                                                                                                                                                                                                                                               |
 | [`EndpointStore`](_autosummary/s3dol.html.md#s3dol.EndpointStore)([connection])                        |                                                                                                                                                                                                                                               |
@@ -1313,6 +1315,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 | [`S3DolWarning`](_autosummary/s3dol.html.md#s3dol.S3DolWarning)                                       | Base of every s3dol warning.                                             |
 | [`S3Error`](_autosummary/s3dol.html.md#s3dol.S3Error)                                            | Base of every s3dol exception — `except S3Error` catches the package.    |
 | [`S3PartialFailure`](_autosummary/s3dol.html.md#s3dol.S3PartialFailure)(message, \*, succeeded, failures) | A bulk operation partially failed (ADR-0010 §2).                         |
+| [`UploadBudgetExceeded`](_autosummary/s3dol.html.md#s3dol.UploadBudgetExceeded)                               | The tenant's byte budget cannot cover this upload; no form was signed.   |
 
 ### *exception* s3dol.AccessDenied
 
@@ -1482,6 +1485,17 @@ A construction- or resolution-time misconfiguration (ADR-0012 D1).
 Bases: [`S3Error`](_autosummary/s3dol.errors.html.md#s3dol.errors.S3Error)
 
 Credentials are missing, expired, or invalid.
+
+### *class* s3dol.DailyByteBudget(limit_bytes, \*, ledger=None, today=<function DailyByteBudget.<lambda>>)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+A per-day byte budget (one instance per tenant); call it to reserve.
+
+`ledger` is any `MutableMapping[str, int]` (default: in-memory) keyed
+by day, so persistence is a one-argument swap (a `dol` store, a file…).
+`today` is the clock seam. Reservation is optimistic (the *maximum* the
+form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
 
 ### *class* s3dol.EndpointCollection(connection=None, \*\*bucket_kwargs)
 
@@ -1911,6 +1925,12 @@ that must be (re)opened at write time, e.g. an HTTP download. The factory
 is called once per write, so unlike [`Chunks`](_autosummary/s3dol.html.md#s3dol.Chunks) this ref IS safely
 re-writable (each write gets a fresh stream).
 
+### *exception* s3dol.UploadBudgetExceeded
+
+Bases: [`S3Error`](_autosummary/s3dol.errors.html.md#s3dol.errors.S3Error)
+
+The tenant’s byte budget cannot cover this upload; no form was signed.
+
 ### s3dol.delete_bucket(endpoint, name, , force=False)
 
 Delete bucket `name`. Refuses a non-empty bucket unless
@@ -1988,6 +2008,26 @@ express the scope raises — loud, not wrong.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
+### s3dol.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None)
+
+A presigned POST form for ONE new object under `key_prefix`.
+
+`content_type` is required: pass the one type to accept, or `None` to
+explicitly accept any (then a holder can store `text/html`: do not serve
+such objects from a trusted origin).
+
+`key_prefix` must end with the store’s delimiter (`tenant-7/` cannot
+match `tenant-77/`) and is in the *store’s* key space (the store’s own
+prefix is prepended, like every other s3dol key). The object key is
+server-generated (`PresignedUpload.key`). Returns `None` for an
+anonymous store (no signing capability, as [`s3dol.urls()`](_autosummary/s3dol.html.md#s3dol.urls) does).
+
+Raises [`ConfigurationError`](_autosummary/s3dol.html.md#s3dol.ConfigurationError) for a bad prefix, size range or
+`expires_in`, and [`UploadBudgetExceeded`](_autosummary/s3dol.html.md#s3dol.UploadBudgetExceeded) if `budget` refuses.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PresignedUpload`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)]
+
 ### s3dol.register_preset(preset, , overwrite=False)
 
 Add a row. Open-closed: adding a provider is adding a row.
@@ -2056,6 +2096,7 @@ The sibling store of presigned URLs: `urls(s)[k]`.
 | [`recipes`](_autosummary/s3dol.recipes.html.md#module-s3dol.recipes)           | Layer C — the one-liner factory and codec facades.                                                                                                                                                        |
 | [`store`](_autosummary/s3dol.store.html.md#module-s3dol.store)               | COMPAT SHIM — the v0 `S3Store`, forwarded onto the v1 machinery.                                                                                                                                          |
 | [`testing`](_autosummary/s3dol.testing.html.md#module-s3dol.testing)           | `s3dol.testing` — a shipped in-memory fake and the exported conformance suite (ADR-0008). Downstream users can test services that take a store as a dependency with **no network, no docker, no moto**::. |
+| [`uploads`](_autosummary/s3dol.uploads.html.md#module-s3dol.uploads)           | Direct-to-S3 browser uploads: a presigned POST scoped to a key prefix.                                                                                                                                    |
 | [`values`](_autosummary/s3dol.values.html.md#module-s3dol.values)             | Value refs and the write domain (ADR-0005).                                                                                                                                                               |
 | [`writes`](_autosummary/s3dol.writes.html.md#module-s3dol.writes)             | Write strategies (ADR-0005 §5): how `s[k] = v` reaches the wire.                                                                                                                                          |
 
@@ -2597,6 +2638,120 @@ stores — that is why it ships in the package rather than in `tests/`.
   [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
+# _autosummary/s3dol.uploads.html.md
+
+# s3dol.uploads
+
+Direct-to-S3 browser uploads: a presigned POST scoped to a key prefix.
+
+A browser can upload straight to S3 without the server relaying bytes: the
+server issues a presigned POST form whose signed policy pins
+
+- the **exact key** (server-generated `<prefix><random token>`: the client
+  never picks a filename, so it can neither overwrite a sibling object nor
+  smuggle `..` segments; a form holds one object, and re-posting with it only
+  overwrites that object, so the byte budget cannot be multiplied),
+- a **content-length range** (`min_bytes`..\`\`max_bytes\`\`),
+- the **content type** (optional), and
+- an **expiry** (the 7-day SigV4 cap; an STS session’s own expiry still ends it sooner).
+
+Before signing, an optional `budget` callable is asked to reserve the bytes
+(`budget(max_bytes)` raises [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded) to refuse, and may return a `release()` callable that is called if signing fails), so a
+daily per-tenant byte budget is enforced *before* any form exists.
+[`DailyByteBudget`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.DailyByteBudget) is the ready-made one; any callable works.
+
+The function is host-agnostic: it takes the store, the prefix and the limits
+as arguments, and the web app mounts it behind its own auth:
+
+```default
+form = s3dol.presigned_upload(
+    store, key_prefix='tenant-7/', max_bytes=5_000_000, content_type='image/png')
+form.url, form.fields      # hand both to the browser's <form>/FormData
+```
+
+```pycon
+>>> from s3dol.uploads import DailyByteBudget
+>>> budget = DailyByteBudget(100, today=lambda: '2026-01-01')
+>>> _ = budget(60); _ = budget(40)
+>>> budget(1)
+Traceback (most recent call last):
+  ...
+s3dol.uploads.UploadBudgetExceeded: daily upload budget exceeded: 100 of 100 bytes already reserved, 1 requested
+```
+
+### Module Attributes
+
+| [`DEFAULT_UPLOAD_EXPIRES_IN`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN)   | long enough to pick a file, short enough to not be a standing upload credential.   |
+|------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+
+### Functions
+
+| [`presigned_upload`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.presigned_upload)(store, \*, key_prefix, ...)   | A presigned POST form for ONE new object under `key_prefix`.   |
+|-------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+
+### Classes
+
+| [`DailyByteBudget`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.DailyByteBudget)(limit_bytes, \*[, ledger, today])   | A per-day byte budget (one instance per tenant); call it to reserve.   |
+|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [`PresignedUpload`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)(url[, fields, key, ...])            | What the browser needs: POST `fields` + a `file` part to `url`.        |
+
+### Exceptions
+
+| [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded)   | The tenant's byte budget cannot cover this upload; no form was signed.   |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------|
+
+### s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN *= 900*
+
+long enough to pick a file, short enough to
+not be a standing upload credential.
+
+* **Type:**
+  Default form lifetime (seconds)
+
+### *class* s3dol.uploads.DailyByteBudget(limit_bytes, \*, ledger=None, today=<function DailyByteBudget.<lambda>>)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+A per-day byte budget (one instance per tenant); call it to reserve.
+
+`ledger` is any `MutableMapping[str, int]` (default: in-memory) keyed
+by day, so persistence is a one-argument swap (a `dol` store, a file…).
+`today` is the clock seam. Reservation is optimistic (the *maximum* the
+form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
+
+### *class* s3dol.uploads.PresignedUpload(url, fields=dict(), key='', key_prefix='', max_bytes=0)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+What the browser needs: POST `fields` + a `file` part to `url`.
+
+### *exception* s3dol.uploads.UploadBudgetExceeded
+
+Bases: [`S3Error`](_autosummary/s3dol.errors.html.md#s3dol.errors.S3Error)
+
+The tenant’s byte budget cannot cover this upload; no form was signed.
+
+### s3dol.uploads.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None)
+
+A presigned POST form for ONE new object under `key_prefix`.
+
+`content_type` is required: pass the one type to accept, or `None` to
+explicitly accept any (then a holder can store `text/html`: do not serve
+such objects from a trusted origin).
+
+`key_prefix` must end with the store’s delimiter (`tenant-7/` cannot
+match `tenant-77/`) and is in the *store’s* key space (the store’s own
+prefix is prepended, like every other s3dol key). The object key is
+server-generated (`PresignedUpload.key`). Returns `None` for an
+anonymous store (no signing capability, as [`s3dol.urls()`](_autosummary/s3dol.html.md#s3dol.urls) does).
+
+Raises `ConfigurationError` for a bad prefix, size range or
+`expires_in`, and [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded) if `budget` refuses.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PresignedUpload`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)]
+
+
 # _autosummary/s3dol.values.html.md
 
 # s3dol.values
@@ -2813,18 +2968,16 @@ idiom of ADR-0005 §5: `BucketStore(..., writes=transfer_writes(...))`).
 
 # About this build
 
-This documentation was built on **2026-11-21 16:18 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/8bcba08b1e0ae8d7bf23ff637e1b084d74085424"><code>8bcba08</code></a> on branch <code>master</code>, for **s3dol 1.0.0** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 11:43 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/f84928d3021daa23ec7aceb913e07fbfcfe56746"><code>f84928d</code></a> on branch <code>master</code>, for **s3dol 1.0.1** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (1.0.0) is behind the latest release on PyPI (1.0.1): `pip install s3dol` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/s3dol/commit/8bcba08b1e0ae8d7bf23ff637e1b084d74085424"><code>8bcba08b1e0ae8d7bf23ff637e1b084d74085424</code></a> |
+| Commit              | <a href="https://github.com/i2mint/s3dol/commit/f84928d3021daa23ec7aceb913e07fbfcfe56746"><code>f84928d3021daa23ec7aceb913e07fbfcfe56746</code></a> |
 | Branch              | <code>master</code>                                                                                                                                 |
 | Tags at this commit | none                                                                                                                                                |
 | Working tree        | clean                                                                                                                                               |
@@ -2835,15 +2988,15 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/s3dol</code>                                                                  |
-| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/44923724642">44923724642</a>         |
+| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45018589346">45018589346</a>         |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>8bcba08b1e0ae8d7bf23ff637e1b084d74085424</code> (in the history of the built commit) |
+| Event commit | <code>f84928d3021daa23ec7aceb913e07fbfcfe56746</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.22  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -2862,14 +3015,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/s3dol/1.0.1/">1.0.1</a>, newer than the documented version (1.0.0).
+Latest release: <a href="https://pypi.org/project/s3dol/1.0.1/">1.0.1</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/s3dol && cd s3dol
-git checkout 8bcba08b1e0ae8d7bf23ff637e1b084d74085424
-pip install "epythet==0.2.22"
+git checkout f84928d3021daa23ec7aceb913e07fbfcfe56746
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

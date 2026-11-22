@@ -210,6 +210,7 @@
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/s3dol.recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/s3dol.store.html">s3dol.store</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/s3dol.testing.html">s3dol.testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/s3dol.uploads.html">s3dol.uploads</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/s3dol.values.html">s3dol.values</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_autosummary/s3dol.writes.html">s3dol.writes</a></li>
 </ul>
@@ -409,6 +410,12 @@
   <h2>D</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/s3dol.html#s3dol.DailyByteBudget">DailyByteBudget (class in s3dol)</a>
+
+        <ul>
+          <li><a href="_autosummary/s3dol.uploads.html#s3dol.uploads.DailyByteBudget">(class in s3dol.uploads)</a>
+</li>
+        </ul></li>
         <li><a href="_autosummary/s3dol.store.html#s3dol.store.dechunk_aws_chunked">dechunk_aws_chunked() (in module s3dol.store)</a>
 </li>
         <li><a href="_autosummary/s3dol.reads.html#s3dol.reads.DEFAULT_CHUNK_SIZE">DEFAULT_CHUNK_SIZE (in module s3dol.reads)</a>
@@ -417,20 +424,22 @@
 </li>
         <li><a href="_autosummary/s3dol.errors.html#s3dol.errors.DEFAULT_RULES">DEFAULT_RULES (in module s3dol.errors)</a>
 </li>
+        <li><a href="_autosummary/s3dol.uploads.html#s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN">DEFAULT_UPLOAD_EXPIRES_IN (in module s3dol.uploads)</a>
+</li>
         <li><a href="_autosummary/s3dol.html#s3dol.delete_bucket">delete_bucket() (in module s3dol)</a>
 
         <ul>
           <li><a href="_autosummary/s3dol.capabilities.html#s3dol.capabilities.delete_bucket">(in module s3dol.capabilities)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/s3dol.html#s3dol.delete_many">delete_many() (in module s3dol)</a>
 
         <ul>
           <li><a href="_autosummary/s3dol.capabilities.html#s3dol.capabilities.delete_many">(in module s3dol.capabilities)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/s3dol.capabilities.html#s3dol.capabilities.DELETE_MANY_CHUNK">DELETE_MANY_CHUNK (in module s3dol.capabilities)</a>
 </li>
         <li><a href="_autosummary/s3dol.store.html#s3dol.store.detect_chunked_framing">detect_chunked_framing() (in module s3dol.store)</a>
@@ -651,6 +660,8 @@
 </li>
           <li><a href="_autosummary/s3dol.testing.html#module-s3dol.testing">s3dol.testing</a>
 </li>
+          <li><a href="_autosummary/s3dol.uploads.html#module-s3dol.uploads">s3dol.uploads</a>
+</li>
           <li><a href="_autosummary/s3dol.values.html#module-s3dol.values">s3dol.values</a>
 </li>
           <li><a href="_autosummary/s3dol.writes.html#module-s3dol.writes">s3dol.writes</a>
@@ -748,20 +759,28 @@
 </li>
         <li><a href="_autosummary/s3dol.errors.html#s3dol.errors.PresetHostMismatch">PresetHostMismatch</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/s3dol.connection.html#s3dol.connection.S3Connection.presign_client">presign_client (s3dol.connection.S3Connection property)</a>
 
         <ul>
           <li><a href="_autosummary/s3dol.html#s3dol.S3Connection.presign_client">(s3dol.S3Connection property)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/s3dol.html#s3dol.Preset.presign_endpoint_url">presign_endpoint_url (s3dol.Preset attribute)</a>
 
         <ul>
           <li><a href="_autosummary/s3dol.presets.html#s3dol.presets.Preset.presign_endpoint_url">(s3dol.presets.Preset attribute)</a>
 </li>
         </ul></li>
+        <li><a href="_autosummary/s3dol.html#s3dol.presigned_upload">presigned_upload() (in module s3dol)</a>
+
+        <ul>
+          <li><a href="_autosummary/s3dol.uploads.html#s3dol.uploads.presigned_upload">(in module s3dol.uploads)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/s3dol.uploads.html#s3dol.uploads.PresignedUpload">PresignedUpload (class in s3dol.uploads)</a>
+</li>
         <li><a href="_autosummary/s3dol.html#s3dol.ProfileCredentials">ProfileCredentials (class in s3dol)</a>
 
         <ul>
@@ -943,6 +962,13 @@
 </li>
         </ul></li>
         <li>
+    s3dol.uploads
+
+        <ul>
+          <li><a href="_autosummary/s3dol.uploads.html#module-s3dol.uploads">module</a>
+</li>
+        </ul></li>
+        <li>
     s3dol.values
 
         <ul>
@@ -1080,14 +1106,16 @@
           <li><a href="_autosummary/s3dol.html#s3dol.BucketStore.update">(s3dol.BucketStore method)</a>
 </li>
         </ul></li>
+        <li><a href="_autosummary/s3dol.html#s3dol.UploadBudgetExceeded">UploadBudgetExceeded</a>, <a href="_autosummary/s3dol.uploads.html#s3dol.uploads.UploadBudgetExceeded">[1]</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/s3dol.base.html#s3dol.base.ObjectHandle.url">url() (s3dol.base.ObjectHandle method)</a>
 
         <ul>
           <li><a href="_autosummary/s3dol.html#s3dol.ObjectHandle.url">(s3dol.ObjectHandle method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/s3dol.base.html#s3dol.base.BucketReader.url_for">url_for() (s3dol.base.BucketReader method)</a>
 
         <ul>
@@ -1170,7 +1198,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=4ebf8126"></script>
+</div><script src="_static/documentation_options.js?v=e7fff540"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

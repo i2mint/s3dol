@@ -43,6 +43,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 | [`handles`](#s3dol.handles)(store)                                       | The sibling store of [`ObjectHandle`](#s3dol.ObjectHandle)s: `handles(s)[k]`.                                                                                                                   |
 | [`info`](#s3dol.info)(store)                                          | The sibling store of [`ObjectInfo`](#s3dol.ObjectInfo): `info(s)[k]`.                                                                                                                         |
 | [`prefixes`](#s3dol.prefixes)(store)                                      | The 'directories' one level under the store's scope, \*\*relative to the caller's key space\*\* — one `ListObjectsV2(Delimiter='/')` reading `CommonPrefixes` (which v0 parsed and then called from nowhere; ADR-0009). |
+| [`presigned_upload`](#s3dol.presigned_upload)(store, \*, key_prefix, ...)         | A presigned POST form for ONE new object under `key_prefix`.                                                                                                                                                            |
 | [`register_preset`](#s3dol.register_preset)(preset, \*[, overwrite])             | Add a row.                                                                                                                                                                                                              |
 | [`resolve`](#s3dol.resolve)(spec, environ[, aws_config])                 | Pure resolution: no `os.environ`, no disk, no network (ADR-0012 D2).                                                                                                                                                    |
 | [`s3_store`](#s3dol.s3_store)(bucket, \*[, prefix, preset, ...])          | One bucket as a `MutableMapping[str, bytes]` (a `Mapping` when `readonly=True`).                                                                                                                                        |
@@ -61,6 +62,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 | [`CallableCredentials`](#s3dol.CallableCredentials)(fetch)                         | A picklable zero-arg callable returning a mapping with keys `access_key`/`secret_key` (aliases: `key`/`secret`), optional `token`, optional `expires_at`/`expiry_time` (ISO 8601).                                                            |
 | [`Capabilities`](#s3dol.Capabilities)([list_objects_v2, ...])               | What a backend supports.                                                                                                                                                                                                                      |
 | [`Chunks`](#s3dol.Chunks)(chunks[, consumed])                         | The value is the concatenation of an iterable of `bytes` chunks.                                                                                                                                                                              |
+| [`DailyByteBudget`](#s3dol.DailyByteBudget)(limit_bytes, \*[, ledger, today])  | A per-day byte budget (one instance per tenant); call it to reserve.                                                                                                                                                                          |
 | [`EndpointCollection`](#s3dol.EndpointCollection)([connection])                   | Bucket names at one endpoint.                                                                                                                                                                                                                 |
 | [`EndpointReader`](#s3dol.EndpointReader)([connection])                       |                                                                                                                                                                                                                                               |
 | [`EndpointStore`](#s3dol.EndpointStore)([connection])                        |                                                                                                                                                                                                                                               |
@@ -94,6 +96,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 | [`S3DolWarning`](#s3dol.S3DolWarning)                                       | Base of every s3dol warning.                                             |
 | [`S3Error`](#s3dol.S3Error)                                            | Base of every s3dol exception — `except S3Error` catches the package.    |
 | [`S3PartialFailure`](#s3dol.S3PartialFailure)(message, \*, succeeded, failures) | A bulk operation partially failed (ADR-0010 §2).                         |
+| [`UploadBudgetExceeded`](#s3dol.UploadBudgetExceeded)                               | The tenant's byte budget cannot cover this upload; no form was signed.   |
 
 ### *exception* s3dol.AccessDenied
 
@@ -263,6 +266,17 @@ A construction- or resolution-time misconfiguration (ADR-0012 D1).
 Bases: [`S3Error`](s3dol.errors.html.md#s3dol.errors.S3Error)
 
 Credentials are missing, expired, or invalid.
+
+### *class* s3dol.DailyByteBudget(limit_bytes, \*, ledger=None, today=<function DailyByteBudget.<lambda>>)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+A per-day byte budget (one instance per tenant); call it to reserve.
+
+`ledger` is any `MutableMapping[str, int]` (default: in-memory) keyed
+by day, so persistence is a one-argument swap (a `dol` store, a file…).
+`today` is the clock seam. Reservation is optimistic (the *maximum* the
+form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
 
 ### *class* s3dol.EndpointCollection(connection=None, \*\*bucket_kwargs)
 
@@ -692,6 +706,12 @@ that must be (re)opened at write time, e.g. an HTTP download. The factory
 is called once per write, so unlike [`Chunks`](#s3dol.Chunks) this ref IS safely
 re-writable (each write gets a fresh stream).
 
+### *exception* s3dol.UploadBudgetExceeded
+
+Bases: [`S3Error`](s3dol.errors.html.md#s3dol.errors.S3Error)
+
+The tenant’s byte budget cannot cover this upload; no form was signed.
+
 ### s3dol.delete_bucket(endpoint, name, , force=False)
 
 Delete bucket `name`. Refuses a non-empty bucket unless
@@ -769,6 +789,26 @@ express the scope raises — loud, not wrong.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
+### s3dol.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None)
+
+A presigned POST form for ONE new object under `key_prefix`.
+
+`content_type` is required: pass the one type to accept, or `None` to
+explicitly accept any (then a holder can store `text/html`: do not serve
+such objects from a trusted origin).
+
+`key_prefix` must end with the store’s delimiter (`tenant-7/` cannot
+match `tenant-77/`) and is in the *store’s* key space (the store’s own
+prefix is prepended, like every other s3dol key). The object key is
+server-generated (`PresignedUpload.key`). Returns `None` for an
+anonymous store (no signing capability, as [`s3dol.urls()`](#s3dol.urls) does).
+
+Raises [`ConfigurationError`](#s3dol.ConfigurationError) for a bad prefix, size range or
+`expires_in`, and [`UploadBudgetExceeded`](#s3dol.UploadBudgetExceeded) if `budget` refuses.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PresignedUpload`](s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)]
+
 ### s3dol.register_preset(preset, , overwrite=False)
 
 Add a row. Open-closed: adding a provider is adding a row.
@@ -837,5 +877,6 @@ The sibling store of presigned URLs: `urls(s)[k]`.
 | [`recipes`](s3dol.recipes.html.md#module-s3dol.recipes)           | Layer C — the one-liner factory and codec facades.                                                                                                                                                        |
 | [`store`](s3dol.store.html.md#module-s3dol.store)               | COMPAT SHIM — the v0 `S3Store`, forwarded onto the v1 machinery.                                                                                                                                          |
 | [`testing`](s3dol.testing.html.md#module-s3dol.testing)           | `s3dol.testing` — a shipped in-memory fake and the exported conformance suite (ADR-0008). Downstream users can test services that take a store as a dependency with **no network, no docker, no moto**::. |
+| [`uploads`](s3dol.uploads.html.md#module-s3dol.uploads)           | Direct-to-S3 browser uploads: a presigned POST scoped to a key prefix.                                                                                                                                    |
 | [`values`](s3dol.values.html.md#module-s3dol.values)             | Value refs and the write domain (ADR-0005).                                                                                                                                                               |
 | [`writes`](s3dol.writes.html.md#module-s3dol.writes)             | Write strategies (ADR-0005 §5): how `s[k] = v` reaches the wire.                                                                                                                                          |

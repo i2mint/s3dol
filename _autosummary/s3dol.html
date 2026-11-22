@@ -214,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="s3dol.recipes.html">s3dol.recipes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="s3dol.store.html">s3dol.store</a></li>
 <li class="toctree-l3"><a class="reference internal" href="s3dol.testing.html">s3dol.testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3dol.uploads.html">s3dol.uploads</a></li>
 <li class="toctree-l3"><a class="reference internal" href="s3dol.values.html">s3dol.values</a></li>
 <li class="toctree-l3"><a class="reference internal" href="s3dol.writes.html">s3dol.writes</a></li>
 </ul>
@@ -309,19 +310,22 @@ working via <code class="docutils literal notranslate"><span class="pre">s3dol.s
 <tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.prefixes" title="s3dol.prefixes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prefixes</span></code></a>(store)</p></td>
 <td><p>The 'directories' one level under the store's scope, **relative to the caller's key space** — one <code class="docutils literal notranslate"><span class="pre">ListObjectsV2(Delimiter='/')</span></code> reading <code class="docutils literal notranslate"><span class="pre">CommonPrefixes</span></code> (which v0 parsed and then called from nowhere; ADR-0009).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.register_preset" title="s3dol.register_preset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_preset</span></code></a>(preset, *[, overwrite])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.presigned_upload" title="s3dol.presigned_upload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">presigned_upload</span></code></a>(store, *, key_prefix, ...)</p></td>
+<td><p>A presigned POST form for ONE new object under <code class="docutils literal notranslate"><span class="pre">key_prefix</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.register_preset" title="s3dol.register_preset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_preset</span></code></a>(preset, *[, overwrite])</p></td>
 <td><p>Add a row.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.resolve" title="s3dol.resolve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve</span></code></a>(spec, environ[, aws_config])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.resolve" title="s3dol.resolve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve</span></code></a>(spec, environ[, aws_config])</p></td>
 <td><p>Pure resolution: no <code class="docutils literal notranslate"><span class="pre">os.environ</span></code>, no disk, no network (ADR-0012 D2).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.s3_store" title="s3dol.s3_store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s3_store</span></code></a>(bucket, *[, prefix, preset, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.s3_store" title="s3dol.s3_store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s3_store</span></code></a>(bucket, *[, prefix, preset, ...])</p></td>
 <td><p>One bucket as a <code class="docutils literal notranslate"><span class="pre">MutableMapping[str,</span> <span class="pre">bytes]</span></code> (a <code class="docutils literal notranslate"><span class="pre">Mapping</span></code> when <code class="docutils literal notranslate"><span class="pre">readonly=True</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.sub" title="s3dol.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(store, prefix)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.sub" title="s3dol.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(store, prefix)</p></td>
 <td><p>A store scoped to <code class="docutils literal notranslate"><span class="pre">prefix</span></code>, <strong>in the caller's key space</strong> (D3).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.urls" title="s3dol.urls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">urls</span></code></a>(store, *[, expires_in, client_method])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.urls" title="s3dol.urls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">urls</span></code></a>(store, *[, expires_in, client_method])</p></td>
 <td><p>The sibling store of presigned URLs: <code class="docutils literal notranslate"><span class="pre">urls(s)[k]</span></code>.</p></td>
 </tr>
 </tbody>
@@ -358,55 +362,58 @@ working via <code class="docutils literal notranslate"><span class="pre">s3dol.s
 <tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.Chunks" title="s3dol.Chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chunks</span></code></a>(chunks[, consumed])</p></td>
 <td><p>The value is the concatenation of an iterable of <code class="docutils literal notranslate"><span class="pre">bytes</span></code> chunks.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.EndpointCollection" title="s3dol.EndpointCollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndpointCollection</span></code></a>([connection])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.DailyByteBudget" title="s3dol.DailyByteBudget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DailyByteBudget</span></code></a>(limit_bytes, *[, ledger, today])</p></td>
+<td><p>A per-day byte budget (one instance per tenant); call it to reserve.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.EndpointCollection" title="s3dol.EndpointCollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndpointCollection</span></code></a>([connection])</p></td>
 <td><p>Bucket names at one endpoint.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.EndpointReader" title="s3dol.EndpointReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndpointReader</span></code></a>([connection])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.EndpointReader" title="s3dol.EndpointReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndpointReader</span></code></a>([connection])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.EndpointStore" title="s3dol.EndpointStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndpointStore</span></code></a>([connection])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.EndpointStore" title="s3dol.EndpointStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndpointStore</span></code></a>([connection])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.Filepath" title="s3dol.Filepath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Filepath</span></code></a>(path)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.Filepath" title="s3dol.Filepath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Filepath</span></code></a>(path)</p></td>
 <td><p>The value <em>is the content of this file</em>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.ObjectHandle" title="s3dol.ObjectHandle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectHandle</span></code></a>(bucket, key, *[, connection])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.ObjectHandle" title="s3dol.ObjectHandle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectHandle</span></code></a>(bucket, key, *[, connection])</p></td>
 <td><p>One object, key bound <strong>at construction</strong> — which is what makes it immune to the delegation trap (a key codec over the store cannot corrupt a key that was resolved before the handle existed; ADR-0011 D1, following <code class="docutils literal notranslate"><span class="pre">azuredol.BlobHandle</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.ObjectInfo" title="s3dol.ObjectInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectInfo</span></code></a>(key[, size, last_modified, etag, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.ObjectInfo" title="s3dol.ObjectInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectInfo</span></code></a>(key[, size, last_modified, etag, ...])</p></td>
 <td><p>Object metadata — from <code class="docutils literal notranslate"><span class="pre">HeadObject</span></code> or from a LIST row (which already carries size/mtime/etag/storage class that v0 threw away; ADR-0009).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.Preset" title="s3dol.Preset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Preset</span></code></a>(name, addressing_style[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.Preset" title="s3dol.Preset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Preset</span></code></a>(name, addressing_style[, ...])</p></td>
 <td><p>One provider's facts.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.ProfileCredentials" title="s3dol.ProfileCredentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileCredentials</span></code></a>(profile)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.ProfileCredentials" title="s3dol.ProfileCredentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProfileCredentials</span></code></a>(profile)</p></td>
 <td><p>Credentials from a named profile — <em>credentials only</em>; the profile's other config is not selected by this (that is what <code class="docutils literal notranslate"><span class="pre">profile=</span></code> on the connection is for).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.Resolution" title="s3dol.Resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resolution</span></code></a>(endpoint_url, region_name, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.Resolution" title="s3dol.Resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resolution</span></code></a>(endpoint_url, region_name, ...)</p></td>
 <td><p>The result of <a class="reference internal" href="#s3dol.resolve" title="s3dol.resolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve()</span></code></a> — everything <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> prints and everything client-build consumes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.S3Connection" title="s3dol.S3Connection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Connection</span></code></a>([preset, endpoint_url, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3Connection" title="s3dol.S3Connection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Connection</span></code></a>([preset, endpoint_url, ...])</p></td>
 <td><p>A frozen, picklable connection spec.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3Jsons" title="s3dol.S3Jsons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Jsons</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.S3Jsons" title="s3dol.S3Jsons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Jsons</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.S3Pickles" title="s3dol.S3Pickles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Pickles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3Pickles" title="s3dol.S3Pickles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Pickles</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3Profiles" title="s3dol.S3Profiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Profiles</span></code></a>(*[, bucket_kwargs, readonly])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.S3Profiles" title="s3dol.S3Profiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Profiles</span></code></a>(*[, bucket_kwargs, readonly])</p></td>
 <td><p>AWS <strong>profile</strong> names -&gt; endpoint stores (the v0 <code class="docutils literal notranslate"><span class="pre">S3Dol</span></code>, renamed — its keys are verifiably profile names, never endpoints; ADR-0007 §1).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.S3Texts" title="s3dol.S3Texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Texts</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3Texts" title="s3dol.S3Texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Texts</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.StaticCredentials" title="s3dol.StaticCredentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StaticCredentials</span></code></a>(access_key, secret_key[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.StaticCredentials" title="s3dol.StaticCredentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StaticCredentials</span></code></a>(access_key, secret_key[, ...])</p></td>
 <td><p>An explicit key pair (optionally a session token).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.Streamable" title="s3dol.Streamable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Streamable</span></code></a>(open_stream)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.Streamable" title="s3dol.Streamable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Streamable</span></code></a>(open_stream)</p></td>
 <td><p>The value is whatever a zero-arg factory's stream yields — for sources that must be (re)opened at write time, e.g. an HTTP download.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3Dol" title="s3dol.S3Dol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Dol</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.S3Dol" title="s3dol.S3Dol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3Dol</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -451,6 +458,9 @@ working via <code class="docutils literal notranslate"><span class="pre">s3dol.s
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#s3dol.S3PartialFailure" title="s3dol.S3PartialFailure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3PartialFailure</span></code></a>(message, *, succeeded, failures)</p></td>
 <td><p>A bulk operation partially failed (ADR-0010 §2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.UploadBudgetExceeded" title="s3dol.UploadBudgetExceeded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a></p></td>
+<td><p>The tenant's byte budget cannot cover this upload; no form was signed.</p></td>
 </tr>
 </tbody>
 </table>
@@ -675,6 +685,19 @@ same one-shot ref twice is a documented error).</p>
 <span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.</span></span><span class="sig-name descname"><span class="pre">CredentialsError</span></span><a class="reference internal" href="../_modules/s3dol/errors.html#CredentialsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.CredentialsError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="s3dol.errors.html#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
 <p>Credentials are missing, expired, or invalid.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.DailyByteBudget">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.</span></span><span class="sig-name descname"><span class="pre">DailyByteBudget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit_bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">today</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">DailyByteBudget.&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/uploads.html#DailyByteBudget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.DailyByteBudget" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A per-day byte budget (one instance per tenant); call it to reserve.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ledger</span></code> is any <code class="docutils literal notranslate"><span class="pre">MutableMapping[str,</span> <span class="pre">int]</span></code> (default: in-memory) keyed
+by day, so persistence is a one-argument swap (a <code class="docutils literal notranslate"><span class="pre">dol</span></code> store, a file…).
+<code class="docutils literal notranslate"><span class="pre">today</span></code> is the clock seam. Reservation is optimistic (the <em>maximum</em> the
+form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.</p>
+<dl class="field-list simple">
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -1259,6 +1282,13 @@ re-writable (each write gets a fresh stream).</p>
 </dl>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.UploadBudgetExceeded">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.</span></span><span class="sig-name descname"><span class="pre">UploadBudgetExceeded</span></span><a class="reference internal" href="../_modules/s3dol/uploads.html#UploadBudgetExceeded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.UploadBudgetExceeded" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="s3dol.errors.html#s3dol.errors.S3Error" title="s3dol.errors.S3Error"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3Error</span></code></a></p>
+<p>The tenant’s byte budget cannot cover this upload; no form was signed.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="s3dol.delete_bucket">
 <span class="sig-prename descclassname"><span class="pre">s3dol.</span></span><span class="sig-name descname"><span class="pre">delete_bucket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/capabilities.html#delete_bucket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.delete_bucket" title="Link to this definition">¶</a></dt>
@@ -1352,6 +1382,27 @@ express the scope raises — loud, not wrong.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3dol.presigned_upload">
+<span class="sig-prename descclassname"><span class="pre">s3dol.</span></span><span class="sig-name descname"><span class="pre">presigned_upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expires_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/uploads.html#presigned_upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.presigned_upload" title="Link to this definition">¶</a></dt>
+<dd><p>A presigned POST form for ONE new object under <code class="docutils literal notranslate"><span class="pre">key_prefix</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">content_type</span></code> is required: pass the one type to accept, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to
+explicitly accept any (then a holder can store <code class="docutils literal notranslate"><span class="pre">text/html</span></code>: do not serve
+such objects from a trusted origin).</p>
+<p><code class="docutils literal notranslate"><span class="pre">key_prefix</span></code> must end with the store’s delimiter (<code class="docutils literal notranslate"><span class="pre">tenant-7/</span></code> cannot
+match <code class="docutils literal notranslate"><span class="pre">tenant-77/</span></code>) and is in the <em>store’s</em> key space (the store’s own
+prefix is prepended, like every other s3dol key). The object key is
+server-generated (<code class="docutils literal notranslate"><span class="pre">PresignedUpload.key</span></code>). Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> for an
+anonymous store (no signing capability, as <a class="reference internal" href="#s3dol.urls" title="s3dol.urls"><code class="xref py py-func docutils literal notranslate"><span class="pre">s3dol.urls()</span></code></a> does).</p>
+<p>Raises <a class="reference internal" href="#s3dol.ConfigurationError" title="s3dol.ConfigurationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a> for a bad prefix, size range or
+<code class="docutils literal notranslate"><span class="pre">expires_in</span></code>, and <a class="reference internal" href="#s3dol.UploadBudgetExceeded" title="s3dol.UploadBudgetExceeded"><code class="xref py py-class docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a> if <code class="docutils literal notranslate"><span class="pre">budget</span></code> refuses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="s3dol.uploads.html#s3dol.uploads.PresignedUpload" title="s3dol.uploads.PresignedUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">PresignedUpload</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1460,10 +1511,13 @@ cheap path is the unwrapped branch) and returns a different type.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="s3dol.testing.html#module-s3dol.testing" title="s3dol.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">s3dol.testing</span></code> — a shipped in-memory fake and the exported conformance suite (ADR-0008). Downstream users can test services that take a store as a dependency with <strong>no network, no docker, no moto</strong>::.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="s3dol.values.html#module-s3dol.values" title="s3dol.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="s3dol.uploads.html#module-s3dol.uploads" title="s3dol.uploads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uploads</span></code></a></p></td>
+<td><p>Direct-to-S3 browser uploads: a presigned POST scoped to a key prefix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="s3dol.values.html#module-s3dol.values" title="s3dol.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a></p></td>
 <td><p>Value refs and the write domain (ADR-0005).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="s3dol.writes.html#module-s3dol.writes" title="s3dol.writes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="s3dol.writes.html#module-s3dol.writes" title="s3dol.writes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writes</span></code></a></p></td>
 <td><p>Write strategies (ADR-0005 §5): how <code class="docutils literal notranslate"><span class="pre">s[k]</span> <span class="pre">=</span> <span class="pre">v</span></code> reaches the wire.</p></td>
 </tr>
 </tbody>
@@ -1548,6 +1602,7 @@ cheap path is the unwrapped branch) and returns a different type.</p></li>
 <li><a class="reference internal" href="#s3dol.Chunks"><code class="docutils literal notranslate"><span class="pre">Chunks</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.ConfigurationError"><code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.CredentialsError"><code class="docutils literal notranslate"><span class="pre">CredentialsError</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.DailyByteBudget"><code class="docutils literal notranslate"><span class="pre">DailyByteBudget</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.EndpointCollection"><code class="docutils literal notranslate"><span class="pre">EndpointCollection</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.EndpointReader"><code class="docutils literal notranslate"><span class="pre">EndpointReader</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.EndpointStore"><code class="docutils literal notranslate"><span class="pre">EndpointStore</span></code></a></li>
@@ -1622,12 +1677,14 @@ cheap path is the unwrapped branch) and returns a different type.</p></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#s3dol.Streamable"><code class="docutils literal notranslate"><span class="pre">Streamable</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.UploadBudgetExceeded"><code class="docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.delete_bucket"><code class="docutils literal notranslate"><span class="pre">delete_bucket()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.delete_many"><code class="docutils literal notranslate"><span class="pre">delete_many()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.diagnose"><code class="docutils literal notranslate"><span class="pre">diagnose()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.handles"><code class="docutils literal notranslate"><span class="pre">handles()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.prefixes"><code class="docutils literal notranslate"><span class="pre">prefixes()</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.presigned_upload"><code class="docutils literal notranslate"><span class="pre">presigned_upload()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.register_preset"><code class="docutils literal notranslate"><span class="pre">register_preset()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.resolve"><code class="docutils literal notranslate"><span class="pre">resolve()</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.s3_store"><code class="docutils literal notranslate"><span class="pre">s3_store()</span></code></a></li>
@@ -1644,7 +1701,7 @@ cheap path is the unwrapped branch) and returns a different type.</p></li>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=4ebf8126"></script>
+</div><script src="../_static/documentation_options.js?v=e7fff540"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

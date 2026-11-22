@@ -1,0 +1,31 @@
+s3dol.uploads
+=============
+
+.. automodule:: s3dol.uploads
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_UPLOAD_EXPIRES_IN
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      presigned_upload
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      DailyByteBudget
+      PresignedUpload
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      UploadBudgetExceeded
+   

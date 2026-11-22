@@ -1,36 +1,36 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-21T16:18:48Z",
+  "built_at": "2026-11-22T11:43:42Z",
   "package": {
     "name": "s3dol",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "display_name": "s3dol",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "8bcba08b1e0ae8d7bf23ff637e1b084d74085424",
-    "short_commit": "8bcba08",
+    "commit": "f84928d3021daa23ec7aceb913e07fbfcfe56746",
+    "short_commit": "f84928d",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/s3dol",
-    "commit_url": "https://github.com/i2mint/s3dol/commit/8bcba08b1e0ae8d7bf23ff637e1b084d74085424",
+    "commit_url": "https://github.com/i2mint/s3dol/commit/f84928d3021daa23ec7aceb913e07fbfcfe56746",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/s3dol",
-    "sha": "8bcba08b1e0ae8d7bf23ff637e1b084d74085424",
+    "sha": "f84928d3021daa23ec7aceb913e07fbfcfe56746",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "44923724642",
-    "run_url": "https://github.com/i2mint/s3dol/actions/runs/44923724642",
+    "run_id": "45018589346",
+    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45018589346",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.22",
+    "epythet": "0.2.23",
     "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.16"
@@ -55,21 +55,19 @@
     "docs_dir": "docsrc"
   },
   "site": {
-    "modules_documented": 12,
-    "objects_documented": 232
+    "modules_documented": 13,
+    "objects_documented": 240
   },
   "pypi": {
     "checked": true,
     "latest": "1.0.1",
-    "relation": "behind",
+    "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout 8bcba08b1e0ae8d7bf23ff637e1b084d74085424\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout f84928d3021daa23ec7aceb913e07fbfcfe56746\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": false,
-    "notes": [
-      "The documented version (1.0.0) is behind the latest release on PyPI (1.0.1): `pip install s3dol` gives newer code than these docs describe."
-    ]
+    "aligned": true,
+    "notes": []
   }
 }
