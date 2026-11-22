@@ -237,3 +237,34 @@ def test_delete_many_refuses_anonymous_writes():
 def test_delete_bucket_requires_an_endpoint_store():
     with pytest.raises(ConfigurationError, match="delete_bucket"):
         s3dol.delete_bucket(mock_s3(), "b", force=True)
+
+
+def test_listed_info_comes_from_one_listing_not_head_per_key():
+    store = mock_s3(data={"p/a": b"12", "p/b": b"345", "other": b"x"}, prefix="p")
+    heads, lists = [], []
+    real_head, real_list = store._op_head_object, store._op_list_pages
+    store._op_head_object = lambda _id: heads.append(_id) or real_head(_id)
+
+    def counting_list(**kw):
+        lists.append(kw)
+        return real_list(**kw)
+
+    store._op_list_pages = counting_list
+    sibling = store._make_sibling("listed_info")
+    sibling._op_head_object = store._op_head_object
+    sibling._op_list_pages = counting_list
+
+    assert sorted(sibling) == ["a", "b"]
+    assert sibling["a"].size == 2 and sibling["b"].size == 3
+    assert sibling["a"].etag and "a" in sibling and "zz" not in sibling
+    assert sibling["b"].key == "p/b"
+    assert len(lists) == 1 and heads == []
+    with pytest.raises(KeyError):
+        sibling["zz"]
+
+
+def test_listed_info_accessor_refuses_a_wrapped_store():
+    wrapped = KeyCodecs.prefixed("x/")(mock_s3(data={"p/f": b"v"}, prefix="p"))
+    with pytest.raises(ConfigurationError, match="listed_info"):
+        s3dol.listed_info(wrapped)
+    assert s3dol.listed_info(mock_s3(data={"k": b"vv"}))["k"].size == 2
