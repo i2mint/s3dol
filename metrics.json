@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.11709213256836,
-  "commit_message": "Merge c13c39ebf08796c8a16399109cf2d2e2bd162737 into 69b85374da6259f185e3edd7f061c1fd4e1f67d1",
-  "commit_sha": "1cf45ea0ef92b5924efa3713d89befc35fb57c9a",
+  "collection_duration_seconds": 9.070625305175781,
+  "commit_message": "Add presigned_upload: prefix-scoped presigned POST with server-generated key and a daily byte budget (#24)",
+  "commit_sha": "c13c39ebf08796c8a16399109cf2d2e2bd162737",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -42,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T11:40:51.642851Z",
+  "timestamp": "2026-11-22T11:40:54.088915Z",
   "workflow_status": {}
 }
