@@ -1,21 +1,21 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-22T11:40:46.842815Z
-commit_sha,c13c39ebf08796c8a16399109cf2d2e2bd162737
-commit_message,Add presigned_upload: prefix-scoped presigned POST with server-generated key and a daily byte budget (#24)
+timestamp,2026-11-22T11:40:51.642851Z
+commit_sha,1cf45ea0ef92b5924efa3713d89befc35fb57c9a
+commit_message,Merge c13c39ebf08796c8a16399109cf2d2e2bd162737 into 69b85374da6259f185e3edd7f061c1fd4e1f67d1
 python_version,3.10
-metrics.umpyre_stats.num_functions,34122
-metrics.umpyre_stats.num_classes,7098
-metrics.umpyre_stats.total_lines,908075
-metrics.umpyre_stats.empty_lines,95876
-metrics.umpyre_stats.comment_lines,30663
-metrics.umpyre_stats.docs_lines,51888
-metrics.umpyre_stats.function_lines,464053
-metrics.umpyre_stats.empty_lines_ratio,0.10558158742394626
-metrics.umpyre_stats.comment_lines_ratio,0.03376703466123393
-metrics.umpyre_stats.function_lines_ratio,0.5110293753269278
-metrics.umpyre_stats.mean_lines_per_function,13.599818299044605
-metrics.umpyre_stats.files_analyzed,2462
+metrics.umpyre_stats.num_functions,34369
+metrics.umpyre_stats.num_classes,7150
+metrics.umpyre_stats.total_lines,913353
+metrics.umpyre_stats.empty_lines,96831
+metrics.umpyre_stats.comment_lines,30983
+metrics.umpyre_stats.docs_lines,52738
+metrics.umpyre_stats.function_lines,467672
+metrics.umpyre_stats.empty_lines_ratio,0.10601706021658658
+metrics.umpyre_stats.comment_lines_ratio,0.033922262257856495
+metrics.umpyre_stats.function_lines_ratio,0.512038609387608
+metrics.umpyre_stats.mean_lines_per_function,13.607378742471413
+metrics.umpyre_stats.files_analyzed,2473
 metrics.umpyre_stats.pypi_version,1.0.1
 metrics.workflow_status.last_run_status,success
 metrics.workflow_status.last_success_timestamp,2026-11-21T16:19:24Z
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,8.53012466430664
+collection_duration_seconds,8.11709213256836
