@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.592698812484741,
-  "commit_message": "Merge d2b94e624d0e0a5fff1bb3a7b4e56bbcd16b32e4 into 8462af7fe3c2861809c34b84ed058fdb0ed02b4f",
-  "commit_sha": "c46ad9afccf98b99d1c5eb9967876eff99ccbeb9",
+  "collection_duration_seconds": 8.31828761100769,
+  "commit_message": "s3dol.listed_info: per-key ObjectInfo from one LIST (#23) (#27)",
+  "commit_sha": "535e39a4b0e998ded9977bdc06f5cea41925d421",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,19 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 30663,
-      "comment_lines_ratio": 0.03376435753242592,
-      "docs_lines": 51898,
-      "empty_lines": 95888,
-      "empty_lines_ratio": 0.10558643039067464,
-      "files_analyzed": 2462,
-      "function_lines": 464092,
-      "function_lines_ratio": 0.511031804322428,
-      "mean_lines_per_function": 13.598570089076418,
-      "num_classes": 7100,
-      "num_functions": 34128,
+      "comment_lines": 30983,
+      "comment_lines_ratio": 0.033919588362481864,
+      "docs_lines": 52748,
+      "empty_lines": 96843,
+      "empty_lines_ratio": 0.10602184087363495,
+      "files_analyzed": 2473,
+      "function_lines": 467711,
+      "function_lines_ratio": 0.5120409447956865,
+      "mean_lines_per_function": 13.606138181818181,
+      "num_classes": 7152,
+      "num_functions": 34375,
       "pypi_version": "1.0.2",
-      "total_lines": 908147
+      "total_lines": 913425
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -34,14 +34,14 @@
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-22T11:44:16Z",
+      "last_success_timestamp": "2026-11-22T12:03:35Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/i2mint/s3dol/actions/runs/45018744698",
+      "run_url": "https://github.com/i2mint/s3dol/actions/runs/45020228396",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T12:03:29.969051Z",
+  "timestamp": "2026-11-22T12:05:13.774429Z",
   "workflow_status": {}
 }
