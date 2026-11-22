@@ -43,6 +43,7 @@ _S3_FREE_TEST_STEMS = frozenset(
         "test_conformance",
         "test_base",
         "test_capabilities",
+        "test_uploads",
         "test_store_shim",
         "test_recipes",
     }

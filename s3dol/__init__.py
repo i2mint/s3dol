@@ -54,6 +54,9 @@ _LAZY_ATTRIBUTES = {
     "sub": "s3dol.capabilities",
     "prefixes": "s3dol.capabilities",
     "delete_many": "s3dol.capabilities",
+    "presigned_upload": "s3dol.uploads",
+    "DailyByteBudget": "s3dol.uploads",
+    "UploadBudgetExceeded": "s3dol.uploads",
     "delete_bucket": "s3dol.capabilities",
     # value refs (ADR-0005)
     "Filepath": "s3dol.values",
