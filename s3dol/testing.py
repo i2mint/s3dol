@@ -29,7 +29,12 @@ from typing import Callable, Optional
 from urllib.parse import quote
 
 from s3dol.base import BucketStore, ObjectInfo, clamp_expires_in
-from s3dol.capabilities import BucketHandles, BucketInfo, BucketUrls
+from s3dol.capabilities import (
+    BucketHandles,
+    BucketInfo,
+    BucketListedInfo,
+    BucketUrls,
+)
 from s3dol.errors import KeyNotValid, ObjectNotFound, S3Error
 from s3dol.values import as_fileobj, is_bytes_like, reject_str_value
 
@@ -173,6 +178,7 @@ class _FakeOps:
             "handles": FakeBucketHandles,
             "urls": FakeBucketUrls,
             "info": FakeBucketInfo,
+            "listed_info": FakeBucketListedInfo,
         }[kind]
         return sibling_class(
             **{**super()._sibling_kwargs(), **options}, backing=self._backing
@@ -293,6 +299,10 @@ class FakeBucketInfo(_FakeOps, BucketInfo):
             content_type="binary/octet-stream",
             storage_class="STANDARD",
         )
+
+
+class FakeBucketListedInfo(_FakeOps, BucketListedInfo):
+    pass
 
 
 def mock_s3(

@@ -7,7 +7,8 @@ A keyed capability is a Layer B ``KvReader`` over the **same key space** whose
     BucketStore                     k -> bytes
     BucketHandles  s3dol.handles(s) k -> ObjectHandle
     BucketUrls     s3dol.urls(s)    k -> presigned URL (str) | None
-    BucketInfo     s3dol.info(s)    k -> ObjectInfo
+    BucketInfo     s3dol.info(s)    k -> ObjectInfo (one HeadObject per key)
+    BucketListedInfo  s3dol.listed_info(s)  k -> ObjectInfo (one LIST, a snapshot)
 
 ``__getitem__`` is the one thing `dol` maps correctly at every wrapper depth,
 so sibling stores are correct *by construction*: no ``inner_most_key``, no
@@ -52,6 +53,7 @@ from s3dol.errors import (
     BucketNotEmpty,
     ConfigurationError,
     CredentialsError,
+    ObjectNotFound,
     S3PartialFailure,
     code_of,
     translate_s3_errors,
@@ -137,6 +139,56 @@ def _leaf_of(store, *, fn: str) -> _BucketBase:
     )
 
 
+class BucketListedInfo(BucketCollection, KvReader):
+    """``k -> ObjectInfo`` from the listing rows, not one ``HeadObject`` per key.
+
+    The first access (a lookup or an iteration) pages through ``ListObjectsV2``
+    once and keeps ``{key: ObjectInfo}`` (``size``, ``last_modified``, ``etag``,
+    ``storage_class``; ``content_type`` and the other HEAD-only fields stay
+    ``None``). It is **lazy and a snapshot**: later writes are not seen; make a
+    new ``listed_info(store)`` to refresh. A whole-bucket ETag comparison costs
+    one LIST per 1000 keys.
+    """
+
+    def _snapshot(self) -> dict:
+        snapshot = self.__dict__.get("_listed")
+        if snapshot is None:
+            snapshot = {}
+            with translating_s3_errors(self, operation="ListObjectsV2"):
+                for page in self._op_list_pages():
+                    self._mark_bucket_reachable()
+                    for entry in page.get("Contents", ()):
+                        _id = entry["Key"]
+                        if _id == self.prefix:
+                            continue  # the exact-prefix marker; see BucketCollection
+                        snapshot[self._key_of_id(_id)] = ObjectInfo(
+                            key=_id,
+                            size=entry.get("Size"),
+                            last_modified=entry.get("LastModified"),
+                            etag=entry.get("ETag"),
+                            storage_class=entry.get("StorageClass") or "STANDARD",
+                        )
+            self.__dict__["_listed"] = snapshot
+        return snapshot
+
+    def __getitem__(self, k) -> ObjectInfo:
+        try:
+            return self._snapshot()[k]
+        except KeyError:
+            raise ObjectNotFound(f"listed_info: no key {k!r} in the listing") from None
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._snapshot())
+
+    def __contains__(self, k) -> bool:
+        return k in self._snapshot()
+
+    def __getstate__(self):
+        state = super().__getstate__()
+        state.pop("_listed", None)
+        return state
+
+
 def handles(store) -> BucketHandles:
     """The sibling store of :class:`ObjectHandle`\\ s: ``handles(s)[k]``."""
     return _leaf_of(store, fn="handles")._make_sibling("handles")
@@ -154,6 +206,12 @@ def urls(
 def info(store) -> BucketInfo:
     """The sibling store of :class:`ObjectInfo`: ``info(s)[k]``."""
     return _leaf_of(store, fn="info")._make_sibling("info")
+
+
+def listed_info(store) -> BucketListedInfo:
+    """The sibling store of :class:`ObjectInfo` built from one paginated LIST:
+    ``listed_info(s)[k]`` (a lazy snapshot; see :class:`BucketListedInfo`)."""
+    return _leaf_of(store, fn="listed_info")._make_sibling("listed_info")
 
 
 # --------------------------------------------------------------------------- #

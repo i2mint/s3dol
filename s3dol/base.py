@@ -283,6 +283,7 @@ class _BucketBase:
             "handles": _capabilities.BucketHandles,
             "urls": _capabilities.BucketUrls,
             "info": _capabilities.BucketInfo,
+            "listed_info": _capabilities.BucketListedInfo,
         }[kind]
         return sibling_class(**{**self._sibling_kwargs(), **options})
 

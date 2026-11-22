@@ -26,7 +26,12 @@ from s3dol.base import (
     EndpointStore,
     S3Profiles,
 )
-from s3dol.capabilities import BucketHandles, BucketInfo, BucketUrls
+from s3dol.capabilities import (
+    BucketHandles,
+    BucketInfo,
+    BucketListedInfo,
+    BucketUrls,
+)
 
 #: The ONLY method allowed to take a key (guarded; see ADR-0011 D3b).
 KEYED_METHOD_ALLOWLIST = {"url_for"}
@@ -66,6 +71,7 @@ PUBLIC_INVENTORY = {
     BucketHandles: set(),
     BucketUrls: {"expires_in", "client_method"},
     BucketInfo: set(),
+    BucketListedInfo: set(),
     EndpointCollection: {"connection", "bucket_kwargs", "client",
                          "KeysView", "ValuesView", "ItemsView"},
     EndpointReader: set(),

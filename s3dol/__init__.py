@@ -11,7 +11,8 @@ wrapper would hand a method the unmapped key; ADR-0011)::
 
     s3dol.handles(s)['k']    # ObjectHandle (ranged reads, streams, metadata)
     s3dol.urls(s)['k']       # presigned URL
-    s3dol.info(s)['k']       # ObjectInfo
+    s3dol.info(s)['k']       # ObjectInfo (one HeadObject)
+    s3dol.listed_info(s)['k']  # ObjectInfo from one LIST (a snapshot)
 
 Non-keyed operations are free functions taking the store first::
 
@@ -50,6 +51,8 @@ _LAZY_ATTRIBUTES = {
     "handles": "s3dol.capabilities",
     "urls": "s3dol.capabilities",
     "info": "s3dol.capabilities",
+    "BucketListedInfo": "s3dol.capabilities",
+    "listed_info": "s3dol.capabilities",
     # free functions (ADR-0011 D3/D4)
     "sub": "s3dol.capabilities",
     "prefixes": "s3dol.capabilities",
