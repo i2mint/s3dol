@@ -17,6 +17,7 @@ s3dol.testing
    
       FakeBucketHandles
       FakeBucketInfo
+      FakeBucketListedInfo
       FakeBucketStore
       FakeBucketUrls
       FakeObjectHandle

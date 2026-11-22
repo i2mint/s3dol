@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T11:43:42Z",
+  "built_at": "2026-11-22T12:05:48Z",
   "package": {
     "name": "s3dol",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "display_name": "s3dol",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "f84928d3021daa23ec7aceb913e07fbfcfe56746",
-    "short_commit": "f84928d",
+    "commit": "535e39a4b0e998ded9977bdc06f5cea41925d421",
+    "short_commit": "535e39a",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/s3dol",
-    "commit_url": "https://github.com/i2mint/s3dol/commit/f84928d3021daa23ec7aceb913e07fbfcfe56746",
+    "commit_url": "https://github.com/i2mint/s3dol/commit/535e39a4b0e998ded9977bdc06f5cea41925d421",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/s3dol",
-    "sha": "f84928d3021daa23ec7aceb913e07fbfcfe56746",
+    "sha": "535e39a4b0e998ded9977bdc06f5cea41925d421",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45018589346",
-    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45018589346",
+    "run_id": "45020377938",
+    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45020377938",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -56,18 +56,20 @@
   },
   "site": {
     "modules_documented": 13,
-    "objects_documented": 240
+    "objects_documented": 245
   },
   "pypi": {
     "checked": true,
-    "latest": "1.0.1",
-    "relation": "same",
+    "latest": "1.0.3",
+    "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout f84928d3021daa23ec7aceb913e07fbfcfe56746\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout 535e39a4b0e998ded9977bdc06f5cea41925d421\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (1.0.2) is behind the latest release on PyPI (1.0.3): `pip install s3dol` gives newer code than these docs describe."
+    ]
   }
 }

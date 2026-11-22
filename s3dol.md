@@ -1,4 +1,4 @@
-> built 2026-11-22 11:43 UTC from f84928d (master) · s3dol 1.0.1. Details: build_info.json
+> built 2026-11-22 12:05 UTC from 535e39a (master) · s3dol 1.0.2. Details: build_info.json
 
 # index.html.md
 
@@ -421,7 +421,8 @@ A keyed capability is a Layer B `KvReader` over the **same key space** whose
 BucketStore                     k -> bytes
 BucketHandles  s3dol.handles(s) k -> ObjectHandle
 BucketUrls     s3dol.urls(s)    k -> presigned URL (str) | None
-BucketInfo     s3dol.info(s)    k -> ObjectInfo
+BucketInfo     s3dol.info(s)    k -> ObjectInfo (one HeadObject per key)
+BucketListedInfo  s3dol.listed_info(s)  k -> ObjectInfo (one LIST, a snapshot)
 ```
 
 `__getitem__` is the one thing `dol` maps correctly at every wrapper depth,
@@ -462,16 +463,18 @@ any wrapper depth”; only the sibling stores may claim that.
 | [`delete_many`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.delete_many)(store, keys)                     | Bulk delete (ADR-0010 §2; a free function per ADR-0011 D4 — keyed + destructive + delegated is the census's data-destroying shape).                                                                                     |
 | [`handles`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.handles)(store)                               | The sibling store of `ObjectHandle`s: `handles(s)[k]`.                                                                                                                                                                  |
 | [`info`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.info)(store)                                  | The sibling store of `ObjectInfo`: `info(s)[k]`.                                                                                                                                                                        |
+| [`listed_info`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.listed_info)(store)                           | The sibling store of `ObjectInfo` built from one paginated LIST: `listed_info(s)[k]` (a lazy snapshot; see [`BucketListedInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)).                                          |
 | [`prefixes`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.prefixes)(store)                              | The 'directories' one level under the store's scope, \*\*relative to the caller's key space\*\* — one `ListObjectsV2(Delimiter='/')` reading `CommonPrefixes` (which v0 parsed and then called from nowhere; ADR-0009). |
 | [`sub`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.sub)(store, prefix)                           | A store scoped to `prefix`, **in the caller's key space** (D3).                                                                                                                                                         |
 | [`urls`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.urls)(store, \*[, expires_in, client_method]) | The sibling store of presigned URLs: `urls(s)[k]`.                                                                                                                                                                      |
 
 ### Classes
 
-| [`BucketHandles`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketHandles)(bucket, \*[, connection, ...])      | `k -> ObjectHandle` (key bound at construction; zero round-trips).   |
-|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| [`BucketInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketInfo)(bucket, \*[, connection, prefix, ...]) | `k -> ObjectInfo` (one `HeadObject`).                                |
-| [`BucketUrls`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketUrls)(\*args[, expires_in, client_method])   | `k -> presigned URL` (zero object requests; `None` when anonymous).  |
+| [`BucketHandles`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketHandles)(bucket, \*[, connection, ...])      | `k -> ObjectHandle` (key bound at construction; zero round-trips).     |
+|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [`BucketInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketInfo)(bucket, \*[, connection, prefix, ...]) | `k -> ObjectInfo` (one `HeadObject`).                                  |
+| [`BucketListedInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)(bucket, \*[, connection, ...])   | `k -> ObjectInfo` from the listing rows, not one `HeadObject` per key. |
+| [`BucketUrls`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketUrls)(\*args[, expires_in, client_method])   | `k -> presigned URL` (zero object requests; `None` when anonymous).    |
 
 ### *class* s3dol.capabilities.BucketHandles(bucket, , connection=None, prefix='', delimiter='/', reads=None, writes=None, on_missing_bucket='assume', strict_delete=False)
 
@@ -484,6 +487,19 @@ Bases: [`BucketCollection`](_autosummary/s3dol.base.html.md#s3dol.base.BucketCol
 Bases: [`BucketCollection`](_autosummary/s3dol.base.html.md#s3dol.base.BucketCollection), `KvReader`
 
 `k -> ObjectInfo` (one `HeadObject`).
+
+### *class* s3dol.capabilities.BucketListedInfo(bucket, , connection=None, prefix='', delimiter='/', reads=None, writes=None, on_missing_bucket='assume', strict_delete=False)
+
+Bases: [`BucketCollection`](_autosummary/s3dol.base.html.md#s3dol.base.BucketCollection), `KvReader`
+
+`k -> ObjectInfo` from the listing rows, not one `HeadObject` per key.
+
+The first access (a lookup or an iteration) pages through `ListObjectsV2`
+once and keeps `{key: ObjectInfo}` (`size`, `last_modified`, `etag`,
+`storage_class`; `content_type` and the other HEAD-only fields stay
+`None`). It is **lazy and a snapshot**: later writes are not seen; make a
+new `listed_info(store)` to refresh. A whole-bucket ETag comparison costs
+one LIST per 1000 keys.
 
 ### *class* s3dol.capabilities.BucketUrls(\*args, expires_in=3600, client_method='get_object', \*\*kwargs)
 
@@ -539,6 +555,14 @@ The sibling store of `ObjectInfo`: `info(s)[k]`.
 
 * **Return type:**
   [`BucketInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketInfo)
+
+### s3dol.capabilities.listed_info(store)
+
+The sibling store of `ObjectInfo` built from one paginated LIST:
+`listed_info(s)[k]` (a lazy snapshot; see [`BucketListedInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)).
+
+* **Return type:**
+  [`BucketListedInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)
 
 ### s3dol.capabilities.prefixes(store)
 
@@ -1235,7 +1259,8 @@ wrapper would hand a method the unmapped key; ADR-0011):
 ```default
 s3dol.handles(s)['k']    # ObjectHandle (ranged reads, streams, metadata)
 s3dol.urls(s)['k']       # presigned URL
-s3dol.info(s)['k']       # ObjectInfo
+s3dol.info(s)['k']       # ObjectInfo (one HeadObject)
+s3dol.listed_info(s)['k']  # ObjectInfo from one LIST (a snapshot)
 ```
 
 Non-keyed operations are free functions taking the store first:
@@ -1254,20 +1279,21 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 
 ### Functions
 
-| [`S3Store`](_autosummary/s3dol.html.md#s3dol.S3Store)(bucket_name, \*[, make_bucket, path, ...])   | DEPRECATED — the v0 entry point, kept working until v2.                                                                                                                                                                 |
-|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`delete_bucket`](_autosummary/s3dol.html.md#s3dol.delete_bucket)(endpoint, name, \*[, force])           | Delete bucket `name`.                                                                                                                                                                                                   |
-| [`delete_many`](_autosummary/s3dol.html.md#s3dol.delete_many)(store, keys)                             | Bulk delete (ADR-0010 §2; a free function per ADR-0011 D4 — keyed + destructive + delegated is the census's data-destroying shape).                                                                                     |
-| [`diagnose`](_autosummary/s3dol.html.md#s3dol.diagnose)([connection, environ, aws_config, file])    | Print (and return) the resolution report.                                                                                                                                                                               |
-| [`handles`](_autosummary/s3dol.html.md#s3dol.handles)(store)                                       | The sibling store of [`ObjectHandle`](_autosummary/s3dol.html.md#s3dol.ObjectHandle)s: `handles(s)[k]`.                                                                                                                   |
-| [`info`](_autosummary/s3dol.html.md#s3dol.info)(store)                                          | The sibling store of [`ObjectInfo`](_autosummary/s3dol.html.md#s3dol.ObjectInfo): `info(s)[k]`.                                                                                                                         |
-| [`prefixes`](_autosummary/s3dol.html.md#s3dol.prefixes)(store)                                      | The 'directories' one level under the store's scope, \*\*relative to the caller's key space\*\* — one `ListObjectsV2(Delimiter='/')` reading `CommonPrefixes` (which v0 parsed and then called from nowhere; ADR-0009). |
-| [`presigned_upload`](_autosummary/s3dol.html.md#s3dol.presigned_upload)(store, \*, key_prefix, ...)         | A presigned POST form for ONE new object under `key_prefix`.                                                                                                                                                            |
-| [`register_preset`](_autosummary/s3dol.html.md#s3dol.register_preset)(preset, \*[, overwrite])             | Add a row.                                                                                                                                                                                                              |
-| [`resolve`](_autosummary/s3dol.html.md#s3dol.resolve)(spec, environ[, aws_config])                 | Pure resolution: no `os.environ`, no disk, no network (ADR-0012 D2).                                                                                                                                                    |
-| [`s3_store`](_autosummary/s3dol.html.md#s3dol.s3_store)(bucket, \*[, prefix, preset, ...])          | One bucket as a `MutableMapping[str, bytes]` (a `Mapping` when `readonly=True`).                                                                                                                                        |
-| [`sub`](_autosummary/s3dol.html.md#s3dol.sub)(store, prefix)                                   | A store scoped to `prefix`, **in the caller's key space** (D3).                                                                                                                                                         |
-| [`urls`](_autosummary/s3dol.html.md#s3dol.urls)(store, \*[, expires_in, client_method])         | The sibling store of presigned URLs: `urls(s)[k]`.                                                                                                                                                                      |
+| [`S3Store`](_autosummary/s3dol.html.md#s3dol.S3Store)(bucket_name, \*[, make_bucket, path, ...])   | DEPRECATED — the v0 entry point, kept working until v2.                                                                                                                                                                       |
+|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`delete_bucket`](_autosummary/s3dol.html.md#s3dol.delete_bucket)(endpoint, name, \*[, force])           | Delete bucket `name`.                                                                                                                                                                                                         |
+| [`delete_many`](_autosummary/s3dol.html.md#s3dol.delete_many)(store, keys)                             | Bulk delete (ADR-0010 §2; a free function per ADR-0011 D4 — keyed + destructive + delegated is the census's data-destroying shape).                                                                                           |
+| [`diagnose`](_autosummary/s3dol.html.md#s3dol.diagnose)([connection, environ, aws_config, file])    | Print (and return) the resolution report.                                                                                                                                                                                     |
+| [`handles`](_autosummary/s3dol.html.md#s3dol.handles)(store)                                       | The sibling store of [`ObjectHandle`](_autosummary/s3dol.html.md#s3dol.ObjectHandle)s: `handles(s)[k]`.                                                                                                                         |
+| [`info`](_autosummary/s3dol.html.md#s3dol.info)(store)                                          | The sibling store of [`ObjectInfo`](_autosummary/s3dol.html.md#s3dol.ObjectInfo): `info(s)[k]`.                                                                                                                               |
+| [`listed_info`](_autosummary/s3dol.html.md#s3dol.listed_info)(store)                                   | The sibling store of [`ObjectInfo`](_autosummary/s3dol.html.md#s3dol.ObjectInfo) built from one paginated LIST: `listed_info(s)[k]` (a lazy snapshot; see [`BucketListedInfo`](_autosummary/s3dol.html.md#s3dol.BucketListedInfo)). |
+| [`prefixes`](_autosummary/s3dol.html.md#s3dol.prefixes)(store)                                      | The 'directories' one level under the store's scope, \*\*relative to the caller's key space\*\* — one `ListObjectsV2(Delimiter='/')` reading `CommonPrefixes` (which v0 parsed and then called from nowhere; ADR-0009).       |
+| [`presigned_upload`](_autosummary/s3dol.html.md#s3dol.presigned_upload)(store, \*, key_prefix, ...)         | A presigned POST form for ONE new object under `key_prefix`.                                                                                                                                                                  |
+| [`register_preset`](_autosummary/s3dol.html.md#s3dol.register_preset)(preset, \*[, overwrite])             | Add a row.                                                                                                                                                                                                                    |
+| [`resolve`](_autosummary/s3dol.html.md#s3dol.resolve)(spec, environ[, aws_config])                 | Pure resolution: no `os.environ`, no disk, no network (ADR-0012 D2).                                                                                                                                                          |
+| [`s3_store`](_autosummary/s3dol.html.md#s3dol.s3_store)(bucket, \*[, prefix, preset, ...])          | One bucket as a `MutableMapping[str, bytes]` (a `Mapping` when `readonly=True`).                                                                                                                                              |
+| [`sub`](_autosummary/s3dol.html.md#s3dol.sub)(store, prefix)                                   | A store scoped to `prefix`, **in the caller's key space** (D3).                                                                                                                                                               |
+| [`urls`](_autosummary/s3dol.html.md#s3dol.urls)(store, \*[, expires_in, client_method])         | The sibling store of presigned URLs: `urls(s)[k]`.                                                                                                                                                                            |
 
 ### Classes
 
@@ -1275,6 +1301,7 @@ Everything here loads lazily (PEP 562): `import s3dol` does not import boto3.
 |-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`BucketHandles`](_autosummary/s3dol.html.md#s3dol.BucketHandles)(bucket, \*[, connection, ...])       | `k -> ObjectHandle` (key bound at construction; zero round-trips).                                                                                                                                                                            |
 | [`BucketInfo`](_autosummary/s3dol.html.md#s3dol.BucketInfo)(bucket, \*[, connection, prefix, ...])  | `k -> ObjectInfo` (one `HeadObject`).                                                                                                                                                                                                         |
+| [`BucketListedInfo`](_autosummary/s3dol.html.md#s3dol.BucketListedInfo)(bucket, \*[, connection, ...])    | `k -> ObjectInfo` from the listing rows, not one `HeadObject` per key.                                                                                                                                                                        |
 | [`BucketReader`](_autosummary/s3dol.html.md#s3dol.BucketReader)(bucket, \*[, connection, ...])        |                                                                                                                                                                                                                                               |
 | [`BucketStore`](_autosummary/s3dol.html.md#s3dol.BucketStore)(bucket, \*[, connection, prefix, ...]) |                                                                                                                                                                                                                                               |
 | [`BucketUrls`](_autosummary/s3dol.html.md#s3dol.BucketUrls)(\*args[, expires_in, client_method])    | `k -> presigned URL` (zero object requests; `None` when anonymous).                                                                                                                                                                           |
@@ -1342,6 +1369,19 @@ Bases: [`BucketCollection`](_autosummary/s3dol.base.html.md#s3dol.base.BucketCol
 Bases: [`BucketCollection`](_autosummary/s3dol.base.html.md#s3dol.base.BucketCollection), `KvReader`
 
 `k -> ObjectInfo` (one `HeadObject`).
+
+### *class* s3dol.BucketListedInfo(bucket, , connection=None, prefix='', delimiter='/', reads=None, writes=None, on_missing_bucket='assume', strict_delete=False)
+
+Bases: [`BucketCollection`](_autosummary/s3dol.base.html.md#s3dol.base.BucketCollection), `KvReader`
+
+`k -> ObjectInfo` from the listing rows, not one `HeadObject` per key.
+
+The first access (a lookup or an iteration) pages through `ListObjectsV2`
+once and keeps `{key: ObjectInfo}` (`size`, `last_modified`, `etag`,
+`storage_class`; `content_type` and the other HEAD-only fields stay
+`None`). It is **lazy and a snapshot**: later writes are not seen; make a
+new `listed_info(store)` to refresh. A whole-bucket ETag comparison costs
+one LIST per 1000 keys.
 
 ### *exception* s3dol.BucketNotEmpty
 
@@ -1994,6 +2034,14 @@ The sibling store of [`ObjectInfo`](_autosummary/s3dol.html.md#s3dol.ObjectInfo)
 * **Return type:**
   [`BucketInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketInfo)
 
+### s3dol.listed_info(store)
+
+The sibling store of [`ObjectInfo`](_autosummary/s3dol.html.md#s3dol.ObjectInfo) built from one paginated LIST:
+`listed_info(s)[k]` (a lazy snapshot; see [`BucketListedInfo`](_autosummary/s3dol.html.md#s3dol.BucketListedInfo)).
+
+* **Return type:**
+  [`BucketListedInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)
+
 ### s3dol.prefixes(store)
 
 The ‘directories’ one level under the store’s scope, \*\*relative to the
@@ -2576,6 +2624,7 @@ an \`\`endpoint_is_fetchable\`\` capability”* (ADR-0008).
 | [`FakeBucketHandles`](_autosummary/s3dol.testing.html.md#s3dol.testing.FakeBucketHandles)(\*args[, backing])               |                                                              |
 |-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
 | [`FakeBucketInfo`](_autosummary/s3dol.testing.html.md#s3dol.testing.FakeBucketInfo)(\*args[, backing])                  |                                                              |
+| [`FakeBucketListedInfo`](_autosummary/s3dol.testing.html.md#s3dol.testing.FakeBucketListedInfo)(\*args[, backing])            |                                                              |
 | [`FakeBucketStore`](_autosummary/s3dol.testing.html.md#s3dol.testing.FakeBucketStore)(\*args[, backing])                 | The real `BucketStore` over a dict backend.                  |
 | [`FakeBucketUrls`](_autosummary/s3dol.testing.html.md#s3dol.testing.FakeBucketUrls)(\*args[, backing])                  |                                                              |
 | [`FakeObjectHandle`](_autosummary/s3dol.testing.html.md#s3dol.testing.FakeObjectHandle)(bucket, key, \*, backing[, anon]) | The fake's per-object escape hatch (mirrors `ObjectHandle`). |
@@ -2587,6 +2636,10 @@ Bases: `_FakeOps`, [`BucketHandles`](_autosummary/s3dol.capabilities.html.md#s3d
 ### *class* s3dol.testing.FakeBucketInfo(\*args, backing=None, \*\*kwargs)
 
 Bases: `_FakeOps`, [`BucketInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketInfo)
+
+### *class* s3dol.testing.FakeBucketListedInfo(\*args, backing=None, \*\*kwargs)
+
+Bases: `_FakeOps`, [`BucketListedInfo`](_autosummary/s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)
 
 ### *class* s3dol.testing.FakeBucketStore(\*args, backing=None, \*\*kwargs)
 
@@ -2968,16 +3021,18 @@ idiom of ADR-0005 §5: `BucketStore(..., writes=transfer_writes(...))`).
 
 # About this build
 
-This documentation was built on **2026-11-22 11:43 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/f84928d3021daa23ec7aceb913e07fbfcfe56746"><code>f84928d</code></a> on branch <code>master</code>, for **s3dol 1.0.1** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 12:05 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/535e39a4b0e998ded9977bdc06f5cea41925d421"><code>535e39a</code></a> on branch <code>master</code>, for **s3dol 1.0.2** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (1.0.2) is behind the latest release on PyPI (1.0.3): `pip install s3dol` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/s3dol/commit/f84928d3021daa23ec7aceb913e07fbfcfe56746"><code>f84928d3021daa23ec7aceb913e07fbfcfe56746</code></a> |
+| Commit              | <a href="https://github.com/i2mint/s3dol/commit/535e39a4b0e998ded9977bdc06f5cea41925d421"><code>535e39a4b0e998ded9977bdc06f5cea41925d421</code></a> |
 | Branch              | <code>master</code>                                                                                                                                 |
 | Tags at this commit | none                                                                                                                                                |
 | Working tree        | clean                                                                                                                                               |
@@ -2988,9 +3043,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/s3dol</code>                                                                  |
-| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45018589346">45018589346</a>         |
+| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45020377938">45020377938</a>         |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>f84928d3021daa23ec7aceb913e07fbfcfe56746</code> (in the history of the built commit) |
+| Event commit | <code>535e39a4b0e998ded9977bdc06f5cea41925d421</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3015,13 +3070,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/s3dol/1.0.1/">1.0.1</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/s3dol/1.0.3/">1.0.3</a>, newer than the documented version (1.0.2).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/s3dol && cd s3dol
-git checkout f84928d3021daa23ec7aceb913e07fbfcfe56746
+git checkout 535e39a4b0e998ded9977bdc06f5cea41925d421
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

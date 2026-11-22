@@ -35,6 +35,7 @@ an \`\`endpoint_is_fetchable\`\` capability”* (ADR-0008).
 | [`FakeBucketHandles`](#s3dol.testing.FakeBucketHandles)(\*args[, backing])               |                                                              |
 |-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
 | [`FakeBucketInfo`](#s3dol.testing.FakeBucketInfo)(\*args[, backing])                  |                                                              |
+| [`FakeBucketListedInfo`](#s3dol.testing.FakeBucketListedInfo)(\*args[, backing])            |                                                              |
 | [`FakeBucketStore`](#s3dol.testing.FakeBucketStore)(\*args[, backing])                 | The real `BucketStore` over a dict backend.                  |
 | [`FakeBucketUrls`](#s3dol.testing.FakeBucketUrls)(\*args[, backing])                  |                                                              |
 | [`FakeObjectHandle`](#s3dol.testing.FakeObjectHandle)(bucket, key, \*, backing[, anon]) | The fake's per-object escape hatch (mirrors `ObjectHandle`). |
@@ -46,6 +47,10 @@ Bases: `_FakeOps`, [`BucketHandles`](s3dol.capabilities.html.md#s3dol.capabiliti
 ### *class* s3dol.testing.FakeBucketInfo(\*args, backing=None, \*\*kwargs)
 
 Bases: `_FakeOps`, [`BucketInfo`](s3dol.capabilities.html.md#s3dol.capabilities.BucketInfo)
+
+### *class* s3dol.testing.FakeBucketListedInfo(\*args, backing=None, \*\*kwargs)
+
+Bases: `_FakeOps`, [`BucketListedInfo`](s3dol.capabilities.html.md#s3dol.capabilities.BucketListedInfo)
 
 ### *class* s3dol.testing.FakeBucketStore(\*args, backing=None, \*\*kwargs)
 

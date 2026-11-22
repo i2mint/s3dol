@@ -10,7 +10,8 @@ A keyed capability is a Layer B `KvReader` over the **same key space** whose
 BucketStore                     k -> bytes
 BucketHandles  s3dol.handles(s) k -> ObjectHandle
 BucketUrls     s3dol.urls(s)    k -> presigned URL (str) | None
-BucketInfo     s3dol.info(s)    k -> ObjectInfo
+BucketInfo     s3dol.info(s)    k -> ObjectInfo (one HeadObject per key)
+BucketListedInfo  s3dol.listed_info(s)  k -> ObjectInfo (one LIST, a snapshot)
 ```
 
 `__getitem__` is the one thing `dol` maps correctly at every wrapper depth,
@@ -51,16 +52,18 @@ any wrapper depth”; only the sibling stores may claim that.
 | [`delete_many`](#s3dol.capabilities.delete_many)(store, keys)                     | Bulk delete (ADR-0010 §2; a free function per ADR-0011 D4 — keyed + destructive + delegated is the census's data-destroying shape).                                                                                     |
 | [`handles`](#s3dol.capabilities.handles)(store)                               | The sibling store of `ObjectHandle`s: `handles(s)[k]`.                                                                                                                                                                  |
 | [`info`](#s3dol.capabilities.info)(store)                                  | The sibling store of `ObjectInfo`: `info(s)[k]`.                                                                                                                                                                        |
+| [`listed_info`](#s3dol.capabilities.listed_info)(store)                           | The sibling store of `ObjectInfo` built from one paginated LIST: `listed_info(s)[k]` (a lazy snapshot; see [`BucketListedInfo`](#s3dol.capabilities.BucketListedInfo)).                                          |
 | [`prefixes`](#s3dol.capabilities.prefixes)(store)                              | The 'directories' one level under the store's scope, \*\*relative to the caller's key space\*\* — one `ListObjectsV2(Delimiter='/')` reading `CommonPrefixes` (which v0 parsed and then called from nowhere; ADR-0009). |
 | [`sub`](#s3dol.capabilities.sub)(store, prefix)                           | A store scoped to `prefix`, **in the caller's key space** (D3).                                                                                                                                                         |
 | [`urls`](#s3dol.capabilities.urls)(store, \*[, expires_in, client_method]) | The sibling store of presigned URLs: `urls(s)[k]`.                                                                                                                                                                      |
 
 ### Classes
 
-| [`BucketHandles`](#s3dol.capabilities.BucketHandles)(bucket, \*[, connection, ...])      | `k -> ObjectHandle` (key bound at construction; zero round-trips).   |
-|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| [`BucketInfo`](#s3dol.capabilities.BucketInfo)(bucket, \*[, connection, prefix, ...]) | `k -> ObjectInfo` (one `HeadObject`).                                |
-| [`BucketUrls`](#s3dol.capabilities.BucketUrls)(\*args[, expires_in, client_method])   | `k -> presigned URL` (zero object requests; `None` when anonymous).  |
+| [`BucketHandles`](#s3dol.capabilities.BucketHandles)(bucket, \*[, connection, ...])      | `k -> ObjectHandle` (key bound at construction; zero round-trips).     |
+|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [`BucketInfo`](#s3dol.capabilities.BucketInfo)(bucket, \*[, connection, prefix, ...]) | `k -> ObjectInfo` (one `HeadObject`).                                  |
+| [`BucketListedInfo`](#s3dol.capabilities.BucketListedInfo)(bucket, \*[, connection, ...])   | `k -> ObjectInfo` from the listing rows, not one `HeadObject` per key. |
+| [`BucketUrls`](#s3dol.capabilities.BucketUrls)(\*args[, expires_in, client_method])   | `k -> presigned URL` (zero object requests; `None` when anonymous).    |
 
 ### *class* s3dol.capabilities.BucketHandles(bucket, , connection=None, prefix='', delimiter='/', reads=None, writes=None, on_missing_bucket='assume', strict_delete=False)
 
@@ -73,6 +76,19 @@ Bases: [`BucketCollection`](s3dol.base.html.md#s3dol.base.BucketCollection), `Kv
 Bases: [`BucketCollection`](s3dol.base.html.md#s3dol.base.BucketCollection), `KvReader`
 
 `k -> ObjectInfo` (one `HeadObject`).
+
+### *class* s3dol.capabilities.BucketListedInfo(bucket, , connection=None, prefix='', delimiter='/', reads=None, writes=None, on_missing_bucket='assume', strict_delete=False)
+
+Bases: [`BucketCollection`](s3dol.base.html.md#s3dol.base.BucketCollection), `KvReader`
+
+`k -> ObjectInfo` from the listing rows, not one `HeadObject` per key.
+
+The first access (a lookup or an iteration) pages through `ListObjectsV2`
+once and keeps `{key: ObjectInfo}` (`size`, `last_modified`, `etag`,
+`storage_class`; `content_type` and the other HEAD-only fields stay
+`None`). It is **lazy and a snapshot**: later writes are not seen; make a
+new `listed_info(store)` to refresh. A whole-bucket ETag comparison costs
+one LIST per 1000 keys.
 
 ### *class* s3dol.capabilities.BucketUrls(\*args, expires_in=3600, client_method='get_object', \*\*kwargs)
 
@@ -128,6 +144,14 @@ The sibling store of `ObjectInfo`: `info(s)[k]`.
 
 * **Return type:**
   [`BucketInfo`](#s3dol.capabilities.BucketInfo)
+
+### s3dol.capabilities.listed_info(store)
+
+The sibling store of `ObjectInfo` built from one paginated LIST:
+`listed_info(s)[k]` (a lazy snapshot; see [`BucketListedInfo`](#s3dol.capabilities.BucketListedInfo)).
+
+* **Return type:**
+  [`BucketListedInfo`](#s3dol.capabilities.BucketListedInfo)
 
 ### s3dol.capabilities.prefixes(store)
 

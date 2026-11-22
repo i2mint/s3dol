@@ -304,13 +304,16 @@ an ``endpoint_is_fetchable`` capability”</em> (ADR-0008).</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#s3dol.testing.FakeBucketInfo" title="s3dol.testing.FakeBucketInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeBucketInfo</span></code></a>(*args[, backing])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.testing.FakeBucketStore" title="s3dol.testing.FakeBucketStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeBucketStore</span></code></a>(*args[, backing])</p></td>
-<td><p>The real <code class="docutils literal notranslate"><span class="pre">BucketStore</span></code> over a dict backend.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.testing.FakeBucketUrls" title="s3dol.testing.FakeBucketUrls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeBucketUrls</span></code></a>(*args[, backing])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.testing.FakeBucketListedInfo" title="s3dol.testing.FakeBucketListedInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeBucketListedInfo</span></code></a>(*args[, backing])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.testing.FakeObjectHandle" title="s3dol.testing.FakeObjectHandle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeObjectHandle</span></code></a>(bucket, key, *, backing[, anon])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.testing.FakeBucketStore" title="s3dol.testing.FakeBucketStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeBucketStore</span></code></a>(*args[, backing])</p></td>
+<td><p>The real <code class="docutils literal notranslate"><span class="pre">BucketStore</span></code> over a dict backend.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.testing.FakeBucketUrls" title="s3dol.testing.FakeBucketUrls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeBucketUrls</span></code></a>(*args[, backing])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.testing.FakeObjectHandle" title="s3dol.testing.FakeObjectHandle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FakeObjectHandle</span></code></a>(bucket, key, *, backing[, anon])</p></td>
 <td><p>The fake's per-object escape hatch (mirrors <code class="docutils literal notranslate"><span class="pre">ObjectHandle</span></code>).</p></td>
 </tr>
 </tbody>
@@ -328,6 +331,14 @@ an ``endpoint_is_fetchable`` capability”</em> (ADR-0008).</p>
 <dt class="sig sig-object py" id="s3dol.testing.FakeBucketInfo">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.testing.</span></span><span class="sig-name descname"><span class="pre">FakeBucketInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/testing.html#FakeBucketInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.testing.FakeBucketInfo" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_FakeOps</span></code>, <a class="reference internal" href="s3dol.capabilities.html#s3dol.capabilities.BucketInfo" title="s3dol.capabilities.BucketInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BucketInfo</span></code></a></p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3dol.testing.FakeBucketListedInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.testing.</span></span><span class="sig-name descname"><span class="pre">FakeBucketListedInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/testing.html#FakeBucketListedInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.testing.FakeBucketListedInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_FakeOps</span></code>, <a class="reference internal" href="s3dol.capabilities.html#s3dol.capabilities.BucketListedInfo" title="s3dol.capabilities.BucketListedInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BucketListedInfo</span></code></a></p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -451,6 +462,7 @@ stores — that is why it ships in the package rather than in <code class="docut
 <li><a class="reference internal" href="#">s3dol.testing</a><ul>
 <li><a class="reference internal" href="#s3dol.testing.FakeBucketHandles"><code class="docutils literal notranslate"><span class="pre">FakeBucketHandles</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.testing.FakeBucketInfo"><code class="docutils literal notranslate"><span class="pre">FakeBucketInfo</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.testing.FakeBucketListedInfo"><code class="docutils literal notranslate"><span class="pre">FakeBucketListedInfo</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.testing.FakeBucketStore"><code class="docutils literal notranslate"><span class="pre">FakeBucketStore</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.testing.FakeBucketUrls"><code class="docutils literal notranslate"><span class="pre">FakeBucketUrls</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.testing.FakeObjectHandle"><code class="docutils literal notranslate"><span class="pre">FakeObjectHandle</span></code></a></li>
@@ -467,7 +479,7 @@ stores — that is why it ships in the package rather than in <code class="docut
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=e7fff540"></script>
+</div><script src="../_static/documentation_options.js?v=c74e6fab"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -260,7 +260,8 @@
 <span class="sd">    BucketStore                     k -&gt; bytes</span>
 <span class="sd">    BucketHandles  s3dol.handles(s) k -&gt; ObjectHandle</span>
 <span class="sd">    BucketUrls     s3dol.urls(s)    k -&gt; presigned URL (str) | None</span>
-<span class="sd">    BucketInfo     s3dol.info(s)    k -&gt; ObjectInfo</span>
+<span class="sd">    BucketInfo     s3dol.info(s)    k -&gt; ObjectInfo (one HeadObject per key)</span>
+<span class="sd">    BucketListedInfo  s3dol.listed_info(s)  k -&gt; ObjectInfo (one LIST, a snapshot)</span>
 
 <span class="sd">``__getitem__`` is the one thing `dol` maps correctly at every wrapper depth,</span>
 <span class="sd">so sibling stores are correct *by construction*: no ``inner_most_key``, no</span>
@@ -305,6 +306,7 @@
     <span class="n">BucketNotEmpty</span><span class="p">,</span>
     <span class="n">ConfigurationError</span><span class="p">,</span>
     <span class="n">CredentialsError</span><span class="p">,</span>
+    <span class="n">ObjectNotFound</span><span class="p">,</span>
     <span class="n">S3PartialFailure</span><span class="p">,</span>
     <span class="n">code_of</span><span class="p">,</span>
     <span class="n">translate_s3_errors</span><span class="p">,</span>
@@ -399,6 +401,59 @@
     <span class="p">)</span>
 
 
+<div class="viewcode-block" id="BucketListedInfo">
+<a class="viewcode-back" href="../../_autosummary/s3dol.capabilities.html#s3dol.BucketListedInfo">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BucketListedInfo</span><span class="p">(</span><span class="n">BucketCollection</span><span class="p">,</span> <span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""``k -&gt; ObjectInfo`` from the listing rows, not one ``HeadObject`` per key.</span>
+
+<span class="sd">    The first access (a lookup or an iteration) pages through ``ListObjectsV2``</span>
+<span class="sd">    once and keeps ``{key: ObjectInfo}`` (``size``, ``last_modified``, ``etag``,</span>
+<span class="sd">    ``storage_class``; ``content_type`` and the other HEAD-only fields stay</span>
+<span class="sd">    ``None``). It is **lazy and a snapshot**: later writes are not seen; make a</span>
+<span class="sd">    new ``listed_info(store)`` to refresh. A whole-bucket ETag comparison costs</span>
+<span class="sd">    one LIST per 1000 keys.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_listed"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">snapshot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">snapshot</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">with</span> <span class="n">translating_s3_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s2">"ListObjectsV2"</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_op_list_pages</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_mark_bucket_reachable</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Contents"</span><span class="p">,</span> <span class="p">()):</span>
+                        <span class="n">_id</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"Key"</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">:</span>
+                            <span class="k">continue</span>  <span class="c1"># the exact-prefix marker; see BucketCollection</span>
+                        <span class="n">snapshot</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_key_of_id</span><span class="p">(</span><span class="n">_id</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ObjectInfo</span><span class="p">(</span>
+                            <span class="n">key</span><span class="o">=</span><span class="n">_id</span><span class="p">,</span>
+                            <span class="n">size</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Size"</span><span class="p">),</span>
+                            <span class="n">last_modified</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"LastModified"</span><span class="p">),</span>
+                            <span class="n">etag</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ETag"</span><span class="p">),</span>
+                            <span class="n">storage_class</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"StorageClass"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"STANDARD"</span><span class="p">,</span>
+                        <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">"_listed"</span><span class="p">]</span> <span class="o">=</span> <span class="n">snapshot</span>
+        <span class="k">return</span> <span class="n">snapshot</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectInfo</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">()[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ObjectNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">"listed_info: no key </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2"> in the listing"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">())</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__getstate__</span><span class="p">()</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"_listed"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span></div>
+
+
+
 <div class="viewcode-block" id="handles">
 <a class="viewcode-back" href="../../_autosummary/s3dol.capabilities.html#s3dol.handles">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">handles</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BucketHandles</span><span class="p">:</span>
@@ -424,6 +479,15 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BucketInfo</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""The sibling store of :class:`ObjectInfo`: ``info(s)[k]``."""</span>
     <span class="k">return</span> <span class="n">_leaf_of</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s2">"info"</span><span class="p">)</span><span class="o">.</span><span class="n">_make_sibling</span><span class="p">(</span><span class="s2">"info"</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="listed_info">
+<a class="viewcode-back" href="../../_autosummary/s3dol.capabilities.html#s3dol.listed_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">listed_info</span><span class="p">(</span><span class="n">store</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BucketListedInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The sibling store of :class:`ObjectInfo` built from one paginated LIST:</span>
+<span class="sd">    ``listed_info(s)[k]`` (a lazy snapshot; see :class:`BucketListedInfo`)."""</span>
+    <span class="k">return</span> <span class="n">_leaf_of</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">fn</span><span class="o">=</span><span class="s2">"listed_info"</span><span class="p">)</span><span class="o">.</span><span class="n">_make_sibling</span><span class="p">(</span><span class="s2">"listed_info"</span><span class="p">)</span></div>
 
 
 
@@ -725,7 +789,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=e7fff540"></script>
+</div><script src="../../_static/documentation_options.js?v=c74e6fab"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

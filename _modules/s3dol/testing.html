@@ -282,7 +282,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">quote</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BucketStore</span><span class="p">,</span> <span class="n">ObjectInfo</span><span class="p">,</span> <span class="n">clamp_expires_in</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.capabilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">BucketHandles</span><span class="p">,</span> <span class="n">BucketInfo</span><span class="p">,</span> <span class="n">BucketUrls</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.capabilities</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BucketHandles</span><span class="p">,</span>
+    <span class="n">BucketInfo</span><span class="p">,</span>
+    <span class="n">BucketListedInfo</span><span class="p">,</span>
+    <span class="n">BucketUrls</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeyNotValid</span><span class="p">,</span> <span class="n">ObjectNotFound</span><span class="p">,</span> <span class="n">S3Error</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.values</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_fileobj</span><span class="p">,</span> <span class="n">is_bytes_like</span><span class="p">,</span> <span class="n">reject_str_value</span>
 
@@ -426,6 +431,7 @@
             <span class="s2">"handles"</span><span class="p">:</span> <span class="n">FakeBucketHandles</span><span class="p">,</span>
             <span class="s2">"urls"</span><span class="p">:</span> <span class="n">FakeBucketUrls</span><span class="p">,</span>
             <span class="s2">"info"</span><span class="p">:</span> <span class="n">FakeBucketInfo</span><span class="p">,</span>
+            <span class="s2">"listed_info"</span><span class="p">:</span> <span class="n">FakeBucketListedInfo</span><span class="p">,</span>
         <span class="p">}[</span><span class="n">kind</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">sibling_class</span><span class="p">(</span>
             <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_sibling_kwargs</span><span class="p">(),</span> <span class="o">**</span><span class="n">options</span><span class="p">},</span> <span class="n">backing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_backing</span>
@@ -560,6 +566,13 @@
             <span class="n">content_type</span><span class="o">=</span><span class="s2">"binary/octet-stream"</span><span class="p">,</span>
             <span class="n">storage_class</span><span class="o">=</span><span class="s2">"STANDARD"</span><span class="p">,</span>
         <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="FakeBucketListedInfo">
+<a class="viewcode-back" href="../../_autosummary/s3dol.testing.html#s3dol.testing.FakeBucketListedInfo">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FakeBucketListedInfo</span><span class="p">(</span><span class="n">_FakeOps</span><span class="p">,</span> <span class="n">BucketListedInfo</span><span class="p">):</span>
+    <span class="k">pass</span></div>
 
 
 
@@ -726,7 +739,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=e7fff540"></script>
+</div><script src="../../_static/documentation_options.js?v=c74e6fab"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
