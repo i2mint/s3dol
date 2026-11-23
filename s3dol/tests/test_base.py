@@ -77,6 +77,20 @@ def test_key_of_id_raises_rather_than_slicing_a_non_matching_id():
         store._key_of_id("zzz/other")
 
 
+def test_a_provider_ignoring_prefix_aborts_iteration_not_skips(monkeypatch):
+    # i2mint/s3dol#22: an out-of-scope id raises KeyNotValid out of iteration.
+    # It is deliberately not dol's OutOfScopeKeyError, which dol layers skip:
+    # a provider that ignores Prefix is a fault to surface (ADR-0006 §1).
+    import dol.errors
+
+    store = mock_s3(data={"a/b": b"1"}, prefix="a/")
+    pages = [{"Contents": [{"Key": "a/b"}, {"Key": "zzz/other"}]}]
+    monkeypatch.setattr(store, "_op_list_pages", lambda **kw: iter(pages))
+    with pytest.raises(KeyNotValid, match="outside") as raised:
+        list(store)
+    assert not isinstance(raised.value, getattr(dol.errors, "OutOfScopeKeyError", ()))
+
+
 def test_exact_prefix_marker_is_hidden_from_its_own_scoped_view():
     # The documented wart: it would relativise to '', which is not a valid key.
     store = mock_s3(data={"a/": b"", "a/b": b"1"}, prefix="a/")
