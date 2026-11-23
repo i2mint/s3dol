@@ -1,8 +1,8 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-23T22:54:11.758410Z
-commit_sha,b7eddc1182073923e3b2148911b4ab59a9c4acd0
-commit_message,Merge fa1b6d70d360e1e6a1c3f59416d0cd9b48fc169f into aa9ac625e582d56d691c18f1b24370bfd3019d6e
+timestamp,2026-11-23T22:56:42.889409Z
+commit_sha,b9e09066bf2ceec4c48b478f077fc658971e456c
+commit_message,"ADR-0006: an out-of-scope id aborts iteration, by design; pin it with a test [skip publish] (#28)"
 python_version,3.10
 metrics.umpyre_stats.num_functions,34135
 metrics.umpyre_stats.num_classes,7129
@@ -18,9 +18,9 @@ metrics.umpyre_stats.mean_lines_per_function,13.64262487183243
 metrics.umpyre_stats.files_analyzed,2463
 metrics.umpyre_stats.pypi_version,1.0.3
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-11-22T12:06:26Z
+metrics.workflow_status.last_success_timestamp,2026-11-23T22:54:22Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/45020539999
+metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/45283824357
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,7.691792726516724
+collection_duration_seconds,8.137705087661743
