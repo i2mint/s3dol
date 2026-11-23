@@ -2,18 +2,16 @@
 
 # About this build
 
-This documentation was built on **2026-11-22 12:05 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/535e39a4b0e998ded9977bdc06f5cea41925d421"><code>535e39a</code></a> on branch <code>master</code>, for **s3dol 1.0.2** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-23 22:57 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/b9e09066bf2ceec4c48b478f077fc658971e456c"><code>b9e0906</code></a> on branch <code>master</code>, for **s3dol 1.0.3** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (1.0.2) is behind the latest release on PyPI (1.0.3): `pip install s3dol` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/s3dol/commit/535e39a4b0e998ded9977bdc06f5cea41925d421"><code>535e39a4b0e998ded9977bdc06f5cea41925d421</code></a> |
+| Commit              | <a href="https://github.com/i2mint/s3dol/commit/b9e09066bf2ceec4c48b478f077fc658971e456c"><code>b9e09066bf2ceec4c48b478f077fc658971e456c</code></a> |
 | Branch              | <code>master</code>                                                                                                                                 |
 | Tags at this commit | none                                                                                                                                                |
 | Working tree        | clean                                                                                                                                               |
@@ -24,15 +22,15 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/s3dol</code>                                                                  |
-| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45020377938">45020377938</a>         |
+| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45284200372">45284200372</a>         |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>535e39a4b0e998ded9977bdc06f5cea41925d421</code> (in the history of the built commit) |
+| Event commit | <code>b9e09066bf2ceec4c48b478f077fc658971e456c</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.23  |
+| epythet  | 0.2.25  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -51,14 +49,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/s3dol/1.0.3/">1.0.3</a>, newer than the documented version (1.0.2).
+Latest release: <a href="https://pypi.org/project/s3dol/1.0.3/">1.0.3</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/s3dol && cd s3dol
-git checkout 535e39a4b0e998ded9977bdc06f5cea41925d421
-pip install "epythet==0.2.23"
+git checkout b9e09066bf2ceec4c48b478f077fc658971e456c
+pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

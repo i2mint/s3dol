@@ -20,7 +20,7 @@
 - [s3dol.uploads](_autosummary/s3dol.uploads.html.md): Direct-to-S3 browser uploads: a presigned POST scoped to a key prefix.
 - [s3dol.values](_autosummary/s3dol.values.html.md): Value refs and the write domain (ADR-0005).
 - [s3dol.writes](_autosummary/s3dol.writes.html.md): Write strategies (ADR-0005 §5): how &#96;s&#91;k&#93; = v&#96; reaches the wire.
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 12:05 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-23 22:57 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
 
 ## Optional
 
