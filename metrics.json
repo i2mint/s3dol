@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.38688588142395,
-  "commit_message": "ADR-0006: an out-of-scope id aborts iteration, by design; pin it with a test [skip publish]",
-  "commit_sha": "fa1b6d70d360e1e6a1c3f59416d0cd9b48fc169f",
+  "collection_duration_seconds": 7.691792726516724,
+  "commit_message": "Merge fa1b6d70d360e1e6a1c3f59416d0cd9b48fc169f into aa9ac625e582d56d691c18f1b24370bfd3019d6e",
+  "commit_sha": "b7eddc1182073923e3b2148911b4ab59a9c4acd0",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -42,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-23T22:54:00.083551Z",
+  "timestamp": "2026-11-23T22:54:11.758410Z",
   "workflow_status": {}
 }
