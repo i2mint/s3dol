@@ -62,6 +62,8 @@ slicing a non-matching id. The server-side `Prefix` makes out-of-scope keys unre
 the common path; the raising `_key_of_id` is the belt to that suspenders, because a provider
 that ignores `Prefix` must not silently produce corrupt keys.
 
+**An out-of-scope id aborts iteration; it is not skipped** (decided 2026-11-23, [s3dol#22](https://github.com/i2mint/s3dol/issues/22)). Since dol#119, a `dol.base.Store` skips ids whose `_key_of_id` raises `dol.errors.OutOfScopeKeyError`. `S3Store` is not a `dol.base.Store`, and its `_key_of_id` raises s3dol's `KeyNotValid` on purpose: an id outside the prefix means the provider ignored `Prefix`, which is a fault to surface loudly, not a key to drop silently. So `list(store)` raises, and a dol layer stacked on top does not skip it either. Pinned by `test_a_provider_ignoring_prefix_aborts_iteration_not_skips`. To switch to skipping, raise an exception that subclasses both `KeyNotValid` and `OutOfScopeKeyError`, and catch it in `S3Store.__iter__` itself (dol's mark does not apply to a non-`Store` leaf).
+
 **If you additionally stack a `dol` prefix codec**, the only safe composition is:
 
 ```python
