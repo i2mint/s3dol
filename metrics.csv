@@ -1,26 +1,26 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-23T22:56:46.408807Z
-commit_sha,b9e09066bf2ceec4c48b478f077fc658971e456c
-commit_message,"ADR-0006: an out-of-scope id aborts iteration, by design; pin it with a test [skip publish] (#28)"
+timestamp,2026-11-24T00:52:21.049477Z
+commit_sha,8f30e8a15d3bd851838d2d9f228a369f73e0a829
+commit_message,Merge ceea6131101f813ef01fe679dd792e0adc39b324 into c01594c6cb52543d0d4b3a89baa450e10ad72e98
 python_version,3.10
-metrics.umpyre_stats.num_functions,34383
-metrics.umpyre_stats.num_classes,7181
-metrics.umpyre_stats.total_lines,922549
-metrics.umpyre_stats.empty_lines,97088
-metrics.umpyre_stats.comment_lines,31050
-metrics.umpyre_stats.docs_lines,53035
-metrics.umpyre_stats.function_lines,469285
-metrics.umpyre_stats.empty_lines_ratio,0.10523885452154845
-metrics.umpyre_stats.comment_lines_ratio,0.03365674885561634
-metrics.umpyre_stats.function_lines_ratio,0.5086830076234433
-metrics.umpyre_stats.mean_lines_per_function,13.648750836169038
-metrics.umpyre_stats.files_analyzed,2474
-metrics.umpyre_stats.pypi_version,1.0.3
+metrics.umpyre_stats.num_functions,34137
+metrics.umpyre_stats.num_classes,7129
+metrics.umpyre_stats.total_lines,917328
+metrics.umpyre_stats.empty_lines,96138
+metrics.umpyre_stats.comment_lines,30749
+metrics.umpyre_stats.docs_lines,52186
+metrics.umpyre_stats.function_lines,465715
+metrics.umpyre_stats.empty_lines_ratio,0.10480220815237298
+metrics.umpyre_stats.comment_lines_ratio,0.033520180349885756
+metrics.umpyre_stats.function_lines_ratio,0.5076864545724104
+metrics.umpyre_stats.mean_lines_per_function,13.642528634619328
+metrics.umpyre_stats.files_analyzed,2463
+metrics.umpyre_stats.pypi_version,1.0.4
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-11-23T22:54:22Z
+metrics.workflow_status.last_success_timestamp,2026-11-23T22:58:00Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/45283824357
+metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/45284482455
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,9.054474353790283
+collection_duration_seconds,5.803493976593018
