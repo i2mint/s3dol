@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 5.803493976593018,
-  "commit_message": "Merge ceea6131101f813ef01fe679dd792e0adc39b324 into c01594c6cb52543d0d4b3a89baa450e10ad72e98",
-  "commit_sha": "8f30e8a15d3bd851838d2d9f228a369f73e0a829",
+  "collection_duration_seconds": 8.885159730911255,
+  "commit_message": "test: s3_free marker and a loud summary of deselected modules (#29)",
+  "commit_sha": "ceea6131101f813ef01fe679dd792e0adc39b324",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,19 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 30749,
-      "comment_lines_ratio": 0.033520180349885756,
-      "docs_lines": 52186,
-      "empty_lines": 96138,
-      "empty_lines_ratio": 0.10480220815237298,
-      "files_analyzed": 2463,
-      "function_lines": 465715,
-      "function_lines_ratio": 0.5076864545724104,
-      "mean_lines_per_function": 13.642528634619328,
-      "num_classes": 7129,
-      "num_functions": 34137,
+      "comment_lines": 31052,
+      "comment_lines_ratio": 0.03365771281035182,
+      "docs_lines": 53037,
+      "empty_lines": 97094,
+      "empty_lines_ratio": 0.1052415937011561,
+      "files_analyzed": 2474,
+      "function_lines": 469309,
+      "function_lines_ratio": 0.5086908263980872,
+      "mean_lines_per_function": 13.648654936745674,
+      "num_classes": 7181,
+      "num_functions": 34385,
       "pypi_version": "1.0.4",
-      "total_lines": 917328
+      "total_lines": 922582
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -42,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-24T00:52:21.049477Z",
+  "timestamp": "2026-11-24T00:52:27.897057Z",
   "workflow_status": {}
 }
