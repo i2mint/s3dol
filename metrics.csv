@@ -1,26 +1,35 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-24T00:55:02.873170Z
-commit_sha,082d88ebf8e2670b7499f6e1ca13c253dace2e13
-commit_message,test: s3_free marker and a loud summary of deselected modules (#29) (#30)
+timestamp,2026-11-24T01:01:31.160315Z
+commit_sha,a396cdd2dcec21b01096a79a299b8a828657f7af
+commit_message,"presigned_upload: warn (or refuse) when a budgeted form targets a versioned bucket
+
+On a bucket with versioning enabled, each re-post of one form stores a new
+full version, so one budget reservation could store several times max_bytes.
+The docs now scope the guarantee to unversioned buckets, and when a budget is
+given presigned_upload reads the bucket's versioning status: it warns
+(VersionedBucketWarning) by default, refuses with on_versioned_bucket='raise',
+or skips the call with 'ignore'.
+
+Fixes #31"
 python_version,3.10
-metrics.umpyre_stats.num_functions,34385
-metrics.umpyre_stats.num_classes,7181
-metrics.umpyre_stats.total_lines,922582
-metrics.umpyre_stats.empty_lines,97094
-metrics.umpyre_stats.comment_lines,31052
-metrics.umpyre_stats.docs_lines,53037
-metrics.umpyre_stats.function_lines,469309
-metrics.umpyre_stats.empty_lines_ratio,0.1052415937011561
-metrics.umpyre_stats.comment_lines_ratio,0.03365771281035182
-metrics.umpyre_stats.function_lines_ratio,0.5086908263980872
-metrics.umpyre_stats.mean_lines_per_function,13.648654936745674
-metrics.umpyre_stats.files_analyzed,2474
+metrics.umpyre_stats.num_functions,34138
+metrics.umpyre_stats.num_classes,7130
+metrics.umpyre_stats.total_lines,917398
+metrics.umpyre_stats.empty_lines,96147
+metrics.umpyre_stats.comment_lines,30751
+metrics.umpyre_stats.docs_lines,52201
+metrics.umpyre_stats.function_lines,465760
+metrics.umpyre_stats.empty_lines_ratio,0.10480402180950907
+metrics.umpyre_stats.comment_lines_ratio,0.033519802746463365
+metrics.umpyre_stats.function_lines_ratio,0.5076967684690832
+metrics.umpyre_stats.mean_lines_per_function,13.643447184955182
+metrics.umpyre_stats.files_analyzed,2463
 metrics.umpyre_stats.pypi_version,1.0.4
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-11-24T00:52:37Z
+metrics.workflow_status.last_success_timestamp,2026-11-24T00:56:15Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/45300508680
+metrics.workflow_status.run_url,https://github.com/i2mint/s3dol/actions/runs/45301095104
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -36,4 +45,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,5.563724756240845
+collection_duration_seconds,5.2593348026275635

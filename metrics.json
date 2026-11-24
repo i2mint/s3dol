@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 5.563724756240845,
-  "commit_message": "test: s3_free marker and a loud summary of deselected modules (#29) (#30)",
-  "commit_sha": "082d88ebf8e2670b7499f6e1ca13c253dace2e13",
+  "collection_duration_seconds": 5.2593348026275635,
+  "commit_message": "presigned_upload: warn (or refuse) when a budgeted form targets a versioned bucket\n\nOn a bucket with versioning enabled, each re-post of one form stores a new\nfull version, so one budget reservation could store several times max_bytes.\nThe docs now scope the guarantee to unversioned buckets, and when a budget is\ngiven presigned_upload reads the bucket's versioning status: it warns\n(VersionedBucketWarning) by default, refuses with on_versioned_bucket='raise',\nor skips the call with 'ignore'.\n\nFixes #31",
+  "commit_sha": "a396cdd2dcec21b01096a79a299b8a828657f7af",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,19 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 31052,
-      "comment_lines_ratio": 0.03365771281035182,
-      "docs_lines": 53037,
-      "empty_lines": 97094,
-      "empty_lines_ratio": 0.1052415937011561,
-      "files_analyzed": 2474,
-      "function_lines": 469309,
-      "function_lines_ratio": 0.5086908263980872,
-      "mean_lines_per_function": 13.648654936745674,
-      "num_classes": 7181,
-      "num_functions": 34385,
+      "comment_lines": 30751,
+      "comment_lines_ratio": 0.033519802746463365,
+      "docs_lines": 52201,
+      "empty_lines": 96147,
+      "empty_lines_ratio": 0.10480402180950907,
+      "files_analyzed": 2463,
+      "function_lines": 465760,
+      "function_lines_ratio": 0.5076967684690832,
+      "mean_lines_per_function": 13.643447184955182,
+      "num_classes": 7130,
+      "num_functions": 34138,
       "pypi_version": "1.0.4",
-      "total_lines": 922582
+      "total_lines": 917398
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -34,14 +34,14 @@
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-24T00:52:37Z",
+      "last_success_timestamp": "2026-11-24T00:56:15Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/i2mint/s3dol/actions/runs/45300508680",
+      "run_url": "https://github.com/i2mint/s3dol/actions/runs/45301095104",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-24T00:55:02.873170Z",
+  "timestamp": "2026-11-24T01:01:31.160315Z",
   "workflow_status": {}
 }
