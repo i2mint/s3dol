@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-23T22:57:08Z",
+  "built_at": "2026-11-24T00:55:31Z",
   "package": {
     "name": "s3dol",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "display_name": "s3dol",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "b9e09066bf2ceec4c48b478f077fc658971e456c",
-    "short_commit": "b9e0906",
+    "commit": "082d88ebf8e2670b7499f6e1ca13c253dace2e13",
+    "short_commit": "082d88e",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/s3dol",
-    "commit_url": "https://github.com/i2mint/s3dol/commit/b9e09066bf2ceec4c48b478f077fc658971e456c",
+    "commit_url": "https://github.com/i2mint/s3dol/commit/082d88ebf8e2670b7499f6e1ca13c253dace2e13",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/s3dol",
-    "sha": "b9e09066bf2ceec4c48b478f077fc658971e456c",
+    "sha": "082d88ebf8e2670b7499f6e1ca13c253dace2e13",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45284200372",
-    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45284200372",
+    "run_id": "45300858052",
+    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45300858052",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,11 +60,11 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "1.0.3",
+    "latest": "1.0.4",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout b9e09066bf2ceec4c48b478f077fc658971e456c\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout 082d88ebf8e2670b7499f6e1ca13c253dace2e13\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

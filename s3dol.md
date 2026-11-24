@@ -1,4 +1,4 @@
-> built 2026-11-23 22:57 UTC from b9e0906 (master) · s3dol 1.0.3. Details: build_info.json
+> built 2026-11-24 00:55 UTC from 082d88e (master) · s3dol 1.0.4. Details: build_info.json
 
 # index.html.md
 
@@ -3021,7 +3021,7 @@ idiom of ADR-0005 §5: `BucketStore(..., writes=transfer_writes(...))`).
 
 # About this build
 
-This documentation was built on **2026-11-23 22:57 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/b9e09066bf2ceec4c48b478f077fc658971e456c"><code>b9e0906</code></a> on branch <code>master</code>, for **s3dol 1.0.3** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-24 00:55 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/082d88ebf8e2670b7499f6e1ca13c253dace2e13"><code>082d88e</code></a> on branch <code>master</code>, for **s3dol 1.0.4** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3030,7 +3030,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/s3dol/commit/b9e09066bf2ceec4c48b478f077fc658971e456c"><code>b9e09066bf2ceec4c48b478f077fc658971e456c</code></a> |
+| Commit              | <a href="https://github.com/i2mint/s3dol/commit/082d88ebf8e2670b7499f6e1ca13c253dace2e13"><code>082d88ebf8e2670b7499f6e1ca13c253dace2e13</code></a> |
 | Branch              | <code>master</code>                                                                                                                                 |
 | Tags at this commit | none                                                                                                                                                |
 | Working tree        | clean                                                                                                                                               |
@@ -3041,9 +3041,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/s3dol</code>                                                                  |
-| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45284200372">45284200372</a>         |
+| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45300858052">45300858052</a>         |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>b9e09066bf2ceec4c48b478f077fc658971e456c</code> (in the history of the built commit) |
+| Event commit | <code>082d88ebf8e2670b7499f6e1ca13c253dace2e13</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3068,13 +3068,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/s3dol/1.0.3/">1.0.3</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/s3dol/1.0.4/">1.0.4</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/s3dol && cd s3dol
-git checkout b9e09066bf2ceec4c48b478f077fc658971e456c
+git checkout 082d88ebf8e2670b7499f6e1ca13c253dace2e13
 pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
