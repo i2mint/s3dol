@@ -72,12 +72,26 @@ def _s3_endpoint_available(*, timeout_s=0.5):
         sock.close()
 
 
+#: Marker for a test (or a module, via ``pytestmark``) that needs no live S3
+#: endpoint. It is the preferred way to keep a new test: no edit to this file.
+S3_FREE_MARKER = "s3_free"
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", f"{S3_FREE_MARKER}: needs no live S3 endpoint (never deselected)"
+    )
+
+
 def _requires_s3(item):
     """Whether a collected item needs a live S3 endpoint to run.
 
     Every test under ``s3dol/tests`` exercises a real (LocalStack/S3) client
-    except the moto-mocked modules listed in :data:`_S3_FREE_TEST_STEMS`.
+    except items marked :data:`S3_FREE_MARKER` and the moto-mocked modules listed
+    in :data:`_S3_FREE_TEST_STEMS`.
     """
+    if item.get_closest_marker(S3_FREE_MARKER) is not None:
+        return False
     path = pathlib.Path(str(getattr(item, "path", None) or item.fspath))
     if path.stem in _S3_FREE_TEST_STEMS:
         return False
@@ -98,3 +112,22 @@ def pytest_collection_modifyitems(config, items):
     if deselected:
         config.hook.pytest_deselected(items=deselected)
         items[:] = kept
+        config._s3dol_deselected = deselected
+
+
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    """Say loudly which modules were dropped, so a new test is never hidden silently."""
+    deselected = getattr(config, "_s3dol_deselected", None)
+    if not deselected:
+        return
+    stems = sorted({pathlib.Path(str(i.path)).stem for i in deselected})
+    terminalreporter.section("s3dol: tests deselected (no S3 endpoint)", sep="!")
+    terminalreporter.write_line(
+        f"{len(deselected)} item(s) in {len(stems)} module(s) did not run: "
+        + ", ".join(stems)
+    )
+    terminalreporter.write_line(
+        f"If one of these needs no endpoint (moto-mocked), mark it "
+        f"@pytest.mark.{S3_FREE_MARKER} (or add pytestmark) instead of editing "
+        "this file's allow-list."
+    )
