@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.885159730911255,
-  "commit_message": "test: s3_free marker and a loud summary of deselected modules (#29)",
-  "commit_sha": "ceea6131101f813ef01fe679dd792e0adc39b324",
+  "collection_duration_seconds": 8.989957571029663,
+  "commit_message": "Merge ceea6131101f813ef01fe679dd792e0adc39b324 into c01594c6cb52543d0d4b3a89baa450e10ad72e98",
+  "commit_sha": "8f30e8a15d3bd851838d2d9f228a369f73e0a829",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -42,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-24T00:52:27.897057Z",
+  "timestamp": "2026-11-24T00:52:29.766085Z",
   "workflow_status": {}
 }
