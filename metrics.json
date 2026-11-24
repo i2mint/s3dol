@@ -1,5 +1,5 @@
 {
-  "collection_duration_seconds": 5.4747231006622314,
+  "collection_duration_seconds": 8.968349695205688,
   "commit_message": "presigned_upload: warn (or refuse) when a budgeted form targets a versioned bucket (#32)\n\nOn a bucket with versioning enabled, each re-post of one form stores a new\nfull version, so one budget reservation could store several times max_bytes.\nThe docs now scope the guarantee to unversioned buckets, and when a budget is\ngiven presigned_upload reads the bucket's versioning status: it warns\n(VersionedBucketWarning) by default, refuses with on_versioned_bucket='raise',\nor skips the call with 'ignore'.\n\nFixes #31",
   "commit_sha": "617983e4e1be1213df647c7a1842f5ee992de5a8",
   "metrics": {
@@ -11,19 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 30751,
-      "comment_lines_ratio": 0.033519802746463365,
-      "docs_lines": 52201,
-      "empty_lines": 96147,
-      "empty_lines_ratio": 0.10480402180950907,
-      "files_analyzed": 2463,
-      "function_lines": 465760,
-      "function_lines_ratio": 0.5076967684690832,
-      "mean_lines_per_function": 13.643447184955182,
-      "num_classes": 7130,
-      "num_functions": 34138,
+      "comment_lines": 31054,
+      "comment_lines_ratio": 0.03365732692282681,
+      "docs_lines": 53052,
+      "empty_lines": 97103,
+      "empty_lines_ratio": 0.10524336369508763,
+      "files_analyzed": 2474,
+      "function_lines": 469354,
+      "function_lines_ratio": 0.508701005362802,
+      "mean_lines_per_function": 13.649566684115628,
+      "num_classes": 7182,
+      "num_functions": 34386,
       "pypi_version": "1.0.5",
-      "total_lines": 917398
+      "total_lines": 922652
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -42,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-24T01:13:00.737481Z",
+  "timestamp": "2026-11-24T01:13:19.411188Z",
   "workflow_status": {}
 }
