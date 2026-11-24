@@ -14,7 +14,12 @@ import pytest
 import s3dol
 from s3dol.errors import ConfigurationError
 from s3dol.testing import mock_s3
-from s3dol.uploads import DailyByteBudget, UploadBudgetExceeded, presigned_upload
+from s3dol.uploads import (
+    DailyByteBudget,
+    UploadBudgetExceeded,
+    VersionedBucketWarning,
+    presigned_upload,
+)
 
 
 @pytest.fixture
@@ -27,9 +32,17 @@ def store(monkeypatch):
     from s3dol.base import BucketStore
     from s3dol.connection import S3Connection
 
-    return BucketStore(
-        "up-bucket", connection=S3Connection(region_name="us-east-1"), prefix="app"
-    )
+    from moto import mock_aws
+
+    # moto backs the one API call a budgeted form makes (GetBucketVersioning),
+    # so nothing leaves the machine; signing itself is local either way.
+    with mock_aws():
+        import boto3
+
+        boto3.client("s3", region_name="us-east-1").create_bucket(Bucket="up-bucket")
+        yield BucketStore(
+            "up-bucket", connection=S3Connection(region_name="us-east-1"), prefix="app"
+        )
 
 
 def _policy(form):
@@ -158,6 +171,73 @@ def test_budget_refuses_before_signing(store):
     assert budget.ledger == {"d1": 60}  # the refused request reserved nothing
     budget.today = lambda: "d2"  # a new day, a fresh allowance
     presigned_upload(store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget)
+
+
+def _enable_versioning(store):
+    store.connection.client.put_bucket_versioning(
+        Bucket="up-bucket", VersioningConfiguration={"Status": "Enabled"}
+    )
+
+
+def test_budgeted_form_on_versioned_bucket_warns(store):
+    # each re-post of one form stores a new version there: the budget no longer
+    # caps storage, so the caller must hear about it
+    _enable_versioning(store)
+    budget = DailyByteBudget(100, today=lambda: "d")
+    with pytest.warns(VersionedBucketWarning, match="versioning enabled"):
+        form = presigned_upload(
+            store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget
+        )
+    assert form is not None and budget.ledger == {"d": 60}
+
+
+def test_budgeted_form_on_versioned_bucket_can_be_refused(store):
+    _enable_versioning(store)
+    budget = DailyByteBudget(100, today=lambda: "d")
+    with pytest.raises(ConfigurationError, match="versioning enabled"):
+        presigned_upload(
+            store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget,
+            on_versioned_bucket="raise",
+        )
+    assert budget.ledger == {}  # refused before reserving
+
+
+def test_versioning_check_is_quiet_when_not_needed(store, recwarn):
+    budget = DailyByteBudget(1000, today=lambda: "d")
+    # unversioned bucket: no warning
+    presigned_upload(store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget)
+    _enable_versioning(store)
+    # no budget: nothing is promised, no check
+    presigned_upload(store, key_prefix="t/", max_bytes=60, content_type=None)
+    # explicitly ignored: no check
+    presigned_upload(
+        store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget,
+        on_versioned_bucket="ignore",
+    )
+    assert not [w for w in recwarn if issubclass(w.category, VersionedBucketWarning)]
+
+
+def test_unverifiable_versioning_is_skipped_unless_strict(store, monkeypatch):
+    def denied(**kw):
+        raise RuntimeError("AccessDenied")
+
+    monkeypatch.setattr(store.connection.client, "get_bucket_versioning", denied)
+    budget = DailyByteBudget(1000, today=lambda: "d")
+    assert presigned_upload(
+        store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget
+    )
+    with pytest.raises(ConfigurationError, match="could not read"):
+        presigned_upload(
+            store, key_prefix="t/", max_bytes=60, content_type=None, budget=budget,
+            on_versioned_bucket="raise",
+        )
+
+
+def test_bad_on_versioned_bucket_is_refused(store):
+    with pytest.raises(ConfigurationError, match="on_versioned_bucket"):
+        presigned_upload(
+            store, key_prefix="t/", max_bytes=9, content_type=None, on_versioned_bucket="nope"
+        )
 
 
 def test_expiry_is_capped_like_other_presigns(store):

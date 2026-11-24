@@ -5,8 +5,9 @@ server issues a presigned POST form whose signed policy pins
 
 - the **exact key** (server-generated ``<prefix><random token>``: the client
   never picks a filename, so it can neither overwrite a sibling object nor
-  smuggle ``..`` segments; a form holds one object, and re-posting with it only
-  overwrites that object, so the byte budget cannot be multiplied),
+  smuggle ``..`` segments; a form holds one object, and on an *unversioned*
+  bucket re-posting with it only overwrites that object, so the byte budget
+  cannot be multiplied; see "Versioned buckets" below),
 - a **content-length range** (``min_bytes``..``max_bytes``),
 - the **content type** (optional), and
 - an **expiry** (the 7-day SigV4 cap; an STS session's own expiry still ends it sooner).
@@ -15,6 +16,16 @@ Before signing, an optional ``budget`` callable is asked to reserve the bytes
 (``budget(max_bytes)`` raises :class:`UploadBudgetExceeded` to refuse, and may return a ``release()`` callable that is called if signing fails), so a
 daily per-tenant byte budget is enforced *before* any form exists.
 :class:`DailyByteBudget` is the ready-made one; any callable works.
+
+**Versioned buckets.** The budget caps what one form can store only when the
+bucket keeps one version per key. With versioning *Enabled*, every re-post of
+the same form within its expiry stores a new full version, so one reservation
+of ``max_bytes`` can buy ``N * max_bytes`` of storage. Use an unversioned
+bucket for uploads, or one with a lifecycle rule that expires noncurrent
+versions promptly. When a ``budget`` is given, :func:`presigned_upload` asks
+the bucket for its versioning status and, per ``on_versioned_bucket``, warns
+(the default, :class:`VersionedBucketWarning`), refuses
+(:class:`ConfigurationError`) or skips the check (``'ignore'``, no extra call).
 
 The function is host-agnostic: it takes the store, the prefix and the limits
 as arguments, and the web app mounts it behind its own auth::
@@ -38,12 +49,13 @@ from collections.abc import Callable, MutableMapping
 from dataclasses import dataclass, field
 import threading
 import uuid
+import warnings
 from datetime import datetime, timezone
 from typing import Optional
 
 from s3dol.base import clamp_expires_in
 from s3dol.capabilities import _leaf_of
-from s3dol.errors import ConfigurationError, S3Error
+from s3dol.errors import ConfigurationError, S3DolWarning, S3Error
 
 #: Default form lifetime (seconds): long enough to pick a file, short enough to
 #: not be a standing upload credential.
@@ -52,6 +64,15 @@ DEFAULT_UPLOAD_EXPIRES_IN = 900
 
 class UploadBudgetExceeded(S3Error):
     """The tenant's byte budget cannot cover this upload; no form was signed."""
+
+
+class VersionedBucketWarning(S3DolWarning):
+    """A budgeted upload form was signed for a bucket with versioning enabled."""
+
+
+#: What :func:`presigned_upload` does when a budget is given and the bucket
+#: has versioning enabled: warn, refuse, or skip the check (no API call).
+ON_VERSIONED_BUCKET_CHOICES = ("warn", "raise", "ignore")
 
 
 @dataclass(frozen=True)
@@ -71,7 +92,9 @@ class DailyByteBudget:
     ``ledger`` is any ``MutableMapping[str, int]`` (default: in-memory) keyed
     by day, so persistence is a one-argument swap (a ``dol`` store, a file...).
     ``today`` is the clock seam. Reservation is optimistic (the *maximum* the
-    form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
+    form allows), and a form holds exactly one key, so re-posting cannot multiply
+    the budget on an unversioned bucket (on a versioned one each re-post stores a
+    new version: see the module docstring).
     """
 
     def __init__(
@@ -124,6 +147,38 @@ def _check_prefix(key_prefix: str, delimiter: str) -> None:
         )
 
 
+def _check_versioning(leaf, on_versioned_bucket: str) -> None:
+    """Warn or refuse if ``leaf``'s bucket has versioning enabled.
+
+    Under ``'warn'`` a failed lookup (e.g. no ``s3:GetBucketVersioning``
+    permission) is skipped silently: the check is advisory. Under ``'raise'``
+    an unverifiable bucket is refused, since the guarantee cannot be shown.
+    """
+    try:
+        status = leaf.connection.client.get_bucket_versioning(Bucket=leaf.bucket).get(
+            "Status"
+        )
+    except Exception as exc:
+        if on_versioned_bucket == "raise":
+            raise ConfigurationError(
+                f"could not read the versioning status of bucket {leaf.bucket!r} "
+                f"({type(exc).__name__}), so the upload budget cannot be shown to "
+                f"hold; pass on_versioned_bucket='warn' or 'ignore' to sign anyway."
+            ) from exc
+        return
+    if status != "Enabled":
+        return
+    message = (
+        f"bucket {leaf.bucket!r} has versioning enabled: each re-post of this "
+        f"form within its expiry stores a new full version, so one budget "
+        f"reservation can store several times max_bytes. Use an unversioned "
+        f"bucket, or expire noncurrent versions with a lifecycle rule."
+    )
+    if on_versioned_bucket == "raise":
+        raise ConfigurationError(message)
+    warnings.warn(message, VersionedBucketWarning, stacklevel=3)
+
+
 def presigned_upload(
     store,
     *,
@@ -133,6 +188,7 @@ def presigned_upload(
     min_bytes: int = 0,
     expires_in: int = DEFAULT_UPLOAD_EXPIRES_IN,
     budget: Optional[Callable[[int], Optional[Callable[[], None]]]] = None,
+    on_versioned_bucket: str = "warn",
 ) -> Optional[PresignedUpload]:
     """A presigned POST form for ONE new object under ``key_prefix``.
 
@@ -146,8 +202,15 @@ def presigned_upload(
     server-generated (``PresignedUpload.key``). Returns ``None`` for an
     anonymous store (no signing capability, as :func:`s3dol.urls` does).
 
-    Raises :class:`ConfigurationError` for a bad prefix, size range or
-    ``expires_in``, and :class:`UploadBudgetExceeded` if ``budget`` refuses.
+    When ``budget`` is given, the bucket's versioning status is read first (one
+    ``GetBucketVersioning`` call): with versioning enabled a re-posted form
+    stores a new version each time, so ``on_versioned_bucket`` decides:
+    ``'warn'`` (default) emits :class:`VersionedBucketWarning`, ``'raise'``
+    refuses with :class:`ConfigurationError`, ``'ignore'`` skips the call.
+
+    Raises :class:`ConfigurationError` for a bad prefix, size range,
+    ``expires_in`` or ``on_versioned_bucket``, and :class:`UploadBudgetExceeded`
+    if ``budget`` refuses.
     """
     from botocore import UNSIGNED
 
@@ -166,9 +229,16 @@ def presigned_upload(
         raise ConfigurationError(
             f"expires_in must be a positive int, got {expires_in!r}"
         )
+    if on_versioned_bucket not in ON_VERSIONED_BUCKET_CHOICES:
+        raise ConfigurationError(
+            f"on_versioned_bucket must be one of {ON_VERSIONED_BUCKET_CHOICES}, "
+            f"got {on_versioned_bucket!r}"
+        )
     client = leaf.connection.presign_client
     if client.meta.config.signature_version is UNSIGNED:
         return None
+    if budget is not None and on_versioned_bucket != "ignore":
+        _check_versioning(leaf, on_versioned_bucket)  # refuse BEFORE reserving
     wire_prefix = leaf._id_of_key(key_prefix)
     key = wire_prefix + uuid.uuid4().hex
     release = budget(max_bytes) if budget is not None else None  # refuse BEFORE signing
