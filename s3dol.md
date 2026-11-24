@@ -1,4 +1,4 @@
-> built 2026-11-24 00:55 UTC from 082d88e (master) · s3dol 1.0.4. Details: build_info.json
+> built 2026-11-24 01:13 UTC from 617983e (master) · s3dol 1.0.5. Details: build_info.json
 
 # index.html.md
 
@@ -1535,7 +1535,9 @@ A per-day byte budget (one instance per tenant); call it to reserve.
 `ledger` is any `MutableMapping[str, int]` (default: in-memory) keyed
 by day, so persistence is a one-argument swap (a `dol` store, a file…).
 `today` is the clock seam. Reservation is optimistic (the *maximum* the
-form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
+form allows), and a form holds exactly one key, so re-posting cannot multiply
+the budget on an unversioned bucket (on a versioned one each re-post stores a
+new version: see the module docstring).
 
 ### *class* s3dol.EndpointCollection(connection=None, \*\*bucket_kwargs)
 
@@ -2056,7 +2058,7 @@ express the scope raises — loud, not wrong.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
-### s3dol.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None)
+### s3dol.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None, on_versioned_bucket='warn')
 
 A presigned POST form for ONE new object under `key_prefix`.
 
@@ -2070,8 +2072,15 @@ prefix is prepended, like every other s3dol key). The object key is
 server-generated (`PresignedUpload.key`). Returns `None` for an
 anonymous store (no signing capability, as [`s3dol.urls()`](_autosummary/s3dol.html.md#s3dol.urls) does).
 
-Raises [`ConfigurationError`](_autosummary/s3dol.html.md#s3dol.ConfigurationError) for a bad prefix, size range or
-`expires_in`, and [`UploadBudgetExceeded`](_autosummary/s3dol.html.md#s3dol.UploadBudgetExceeded) if `budget` refuses.
+When `budget` is given, the bucket’s versioning status is read first (one
+`GetBucketVersioning` call): with versioning enabled a re-posted form
+stores a new version each time, so `on_versioned_bucket` decides:
+`'warn'` (default) emits `VersionedBucketWarning`, `'raise'`
+refuses with [`ConfigurationError`](_autosummary/s3dol.html.md#s3dol.ConfigurationError), `'ignore'` skips the call.
+
+Raises [`ConfigurationError`](_autosummary/s3dol.html.md#s3dol.ConfigurationError) for a bad prefix, size range,
+`expires_in` or `on_versioned_bucket`, and [`UploadBudgetExceeded`](_autosummary/s3dol.html.md#s3dol.UploadBudgetExceeded)
+if `budget` refuses.
 
 * **Return type:**
   [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PresignedUpload`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)]
@@ -2702,8 +2711,9 @@ server issues a presigned POST form whose signed policy pins
 
 - the **exact key** (server-generated `<prefix><random token>`: the client
   never picks a filename, so it can neither overwrite a sibling object nor
-  smuggle `..` segments; a form holds one object, and re-posting with it only
-  overwrites that object, so the byte budget cannot be multiplied),
+  smuggle `..` segments; a form holds one object, and on an *unversioned*
+  bucket re-posting with it only overwrites that object, so the byte budget
+  cannot be multiplied; see “Versioned buckets” below),
 - a **content-length range** (`min_bytes`..\`\`max_bytes\`\`),
 - the **content type** (optional), and
 - an **expiry** (the 7-day SigV4 cap; an STS session’s own expiry still ends it sooner).
@@ -2712,6 +2722,16 @@ Before signing, an optional `budget` callable is asked to reserve the bytes
 (`budget(max_bytes)` raises [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded) to refuse, and may return a `release()` callable that is called if signing fails), so a
 daily per-tenant byte budget is enforced *before* any form exists.
 [`DailyByteBudget`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.DailyByteBudget) is the ready-made one; any callable works.
+
+**Versioned buckets.** The budget caps what one form can store only when the
+bucket keeps one version per key. With versioning *Enabled*, every re-post of
+the same form within its expiry stores a new full version, so one reservation
+of `max_bytes` can buy `N * max_bytes` of storage. Use an unversioned
+bucket for uploads, or one with a lifecycle rule that expires noncurrent
+versions promptly. When a `budget` is given, [`presigned_upload()`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.presigned_upload) asks
+the bucket for its versioning status and, per `on_versioned_bucket`, warns
+(the default, [`VersionedBucketWarning`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.VersionedBucketWarning)), refuses
+(`ConfigurationError`) or skips the check (`'ignore'`, no extra call).
 
 The function is host-agnostic: it takes the store, the prefix and the limits
 as arguments, and the web app mounts it behind its own auth:
@@ -2734,8 +2754,9 @@ s3dol.uploads.UploadBudgetExceeded: daily upload budget exceeded: 100 of 100 byt
 
 ### Module Attributes
 
-| [`DEFAULT_UPLOAD_EXPIRES_IN`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN)   | long enough to pick a file, short enough to not be a standing upload credential.   |
-|------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [`DEFAULT_UPLOAD_EXPIRES_IN`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN)   | long enough to pick a file, short enough to not be a standing upload credential.                                                                                                           |
+|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`ON_VERSIONED_BUCKET_CHOICES`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES) | What [`presigned_upload()`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.presigned_upload) does when a budget is given and the bucket has versioning enabled: warn, refuse, or skip the check (no API call). |
 
 ### Functions
 
@@ -2752,6 +2773,7 @@ s3dol.uploads.UploadBudgetExceeded: daily upload budget exceeded: 100 of 100 byt
 
 | [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded)   | The tenant's byte budget cannot cover this upload; no form was signed.   |
 |-------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| [`VersionedBucketWarning`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.VersionedBucketWarning) | A budgeted upload form was signed for a bucket with versioning enabled.  |
 
 ### s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN *= 900*
 
@@ -2770,7 +2792,14 @@ A per-day byte budget (one instance per tenant); call it to reserve.
 `ledger` is any `MutableMapping[str, int]` (default: in-memory) keyed
 by day, so persistence is a one-argument swap (a `dol` store, a file…).
 `today` is the clock seam. Reservation is optimistic (the *maximum* the
-form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
+form allows), and a form holds exactly one key, so re-posting cannot multiply
+the budget on an unversioned bucket (on a versioned one each re-post stores a
+new version: see the module docstring).
+
+### s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES *= ('warn', 'raise', 'ignore')*
+
+What [`presigned_upload()`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.presigned_upload) does when a budget is given and the bucket
+has versioning enabled: warn, refuse, or skip the check (no API call).
 
 ### *class* s3dol.uploads.PresignedUpload(url, fields=dict(), key='', key_prefix='', max_bytes=0)
 
@@ -2784,7 +2813,13 @@ Bases: [`S3Error`](_autosummary/s3dol.errors.html.md#s3dol.errors.S3Error)
 
 The tenant’s byte budget cannot cover this upload; no form was signed.
 
-### s3dol.uploads.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None)
+### *exception* s3dol.uploads.VersionedBucketWarning
+
+Bases: [`S3DolWarning`](_autosummary/s3dol.errors.html.md#s3dol.errors.S3DolWarning)
+
+A budgeted upload form was signed for a bucket with versioning enabled.
+
+### s3dol.uploads.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None, on_versioned_bucket='warn')
 
 A presigned POST form for ONE new object under `key_prefix`.
 
@@ -2798,8 +2833,15 @@ prefix is prepended, like every other s3dol key). The object key is
 server-generated (`PresignedUpload.key`). Returns `None` for an
 anonymous store (no signing capability, as [`s3dol.urls()`](_autosummary/s3dol.html.md#s3dol.urls) does).
 
-Raises `ConfigurationError` for a bad prefix, size range or
-`expires_in`, and [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded) if `budget` refuses.
+When `budget` is given, the bucket’s versioning status is read first (one
+`GetBucketVersioning` call): with versioning enabled a re-posted form
+stores a new version each time, so `on_versioned_bucket` decides:
+`'warn'` (default) emits [`VersionedBucketWarning`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.VersionedBucketWarning), `'raise'`
+refuses with `ConfigurationError`, `'ignore'` skips the call.
+
+Raises `ConfigurationError` for a bad prefix, size range,
+`expires_in` or `on_versioned_bucket`, and [`UploadBudgetExceeded`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.UploadBudgetExceeded)
+if `budget` refuses.
 
 * **Return type:**
   [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PresignedUpload`](_autosummary/s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)]
@@ -3021,7 +3063,7 @@ idiom of ADR-0005 §5: `BucketStore(..., writes=transfer_writes(...))`).
 
 # About this build
 
-This documentation was built on **2026-11-24 00:55 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/082d88ebf8e2670b7499f6e1ca13c253dace2e13"><code>082d88e</code></a> on branch <code>master</code>, for **s3dol 1.0.4** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-24 01:13 UTC** from commit <a href="https://github.com/i2mint/s3dol/commit/617983e4e1be1213df647c7a1842f5ee992de5a8"><code>617983e</code></a> on branch <code>master</code>, for **s3dol 1.0.5** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3030,7 +3072,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                     |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/s3dol/commit/082d88ebf8e2670b7499f6e1ca13c253dace2e13"><code>082d88ebf8e2670b7499f6e1ca13c253dace2e13</code></a> |
+| Commit              | <a href="https://github.com/i2mint/s3dol/commit/617983e4e1be1213df647c7a1842f5ee992de5a8"><code>617983e4e1be1213df647c7a1842f5ee992de5a8</code></a> |
 | Branch              | <code>master</code>                                                                                                                                 |
 | Tags at this commit | none                                                                                                                                                |
 | Working tree        | clean                                                                                                                                               |
@@ -3041,9 +3083,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/s3dol</code>                                                                  |
-| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45300858052">45300858052</a>         |
+| Run          | <a href="https://github.com/i2mint/s3dol/actions/runs/45303213940">45303213940</a>         |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>082d88ebf8e2670b7499f6e1ca13c253dace2e13</code> (in the history of the built commit) |
+| Event commit | <code>617983e4e1be1213df647c7a1842f5ee992de5a8</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3068,13 +3110,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/s3dol/1.0.4/">1.0.4</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/s3dol/1.0.5/">1.0.5</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/s3dol && cd s3dol
-git checkout 082d88ebf8e2670b7499f6e1ca13c253dace2e13
+git checkout 617983e4e1be1213df647c7a1842f5ee992de5a8
 pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

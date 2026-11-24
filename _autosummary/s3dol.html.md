@@ -292,7 +292,9 @@ A per-day byte budget (one instance per tenant); call it to reserve.
 `ledger` is any `MutableMapping[str, int]` (default: in-memory) keyed
 by day, so persistence is a one-argument swap (a `dol` store, a file…).
 `today` is the clock seam. Reservation is optimistic (the *maximum* the
-form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.
+form allows), and a form holds exactly one key, so re-posting cannot multiply
+the budget on an unversioned bucket (on a versioned one each re-post stores a
+new version: see the module docstring).
 
 ### *class* s3dol.EndpointCollection(connection=None, \*\*bucket_kwargs)
 
@@ -813,7 +815,7 @@ express the scope raises — loud, not wrong.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
-### s3dol.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None)
+### s3dol.presigned_upload(store, , key_prefix, max_bytes, content_type, min_bytes=0, expires_in=900, budget=None, on_versioned_bucket='warn')
 
 A presigned POST form for ONE new object under `key_prefix`.
 
@@ -827,8 +829,15 @@ prefix is prepended, like every other s3dol key). The object key is
 server-generated (`PresignedUpload.key`). Returns `None` for an
 anonymous store (no signing capability, as [`s3dol.urls()`](#s3dol.urls) does).
 
-Raises [`ConfigurationError`](#s3dol.ConfigurationError) for a bad prefix, size range or
-`expires_in`, and [`UploadBudgetExceeded`](#s3dol.UploadBudgetExceeded) if `budget` refuses.
+When `budget` is given, the bucket’s versioning status is read first (one
+`GetBucketVersioning` call): with versioning enabled a re-posted form
+stores a new version each time, so `on_versioned_bucket` decides:
+`'warn'` (default) emits `VersionedBucketWarning`, `'raise'`
+refuses with [`ConfigurationError`](#s3dol.ConfigurationError), `'ignore'` skips the call.
+
+Raises [`ConfigurationError`](#s3dol.ConfigurationError) for a bad prefix, size range,
+`expires_in` or `on_versioned_bucket`, and [`UploadBudgetExceeded`](#s3dol.UploadBudgetExceeded)
+if `budget` refuses.
 
 * **Return type:**
   [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`PresignedUpload`](s3dol.uploads.html.md#s3dol.uploads.PresignedUpload)]

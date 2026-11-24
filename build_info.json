@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-24T00:55:31Z",
+  "built_at": "2026-11-24T01:13:45Z",
   "package": {
     "name": "s3dol",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "display_name": "s3dol",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "082d88ebf8e2670b7499f6e1ca13c253dace2e13",
-    "short_commit": "082d88e",
+    "commit": "617983e4e1be1213df647c7a1842f5ee992de5a8",
+    "short_commit": "617983e",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/s3dol",
-    "commit_url": "https://github.com/i2mint/s3dol/commit/082d88ebf8e2670b7499f6e1ca13c253dace2e13",
+    "commit_url": "https://github.com/i2mint/s3dol/commit/617983e4e1be1213df647c7a1842f5ee992de5a8",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/s3dol",
-    "sha": "082d88ebf8e2670b7499f6e1ca13c253dace2e13",
+    "sha": "617983e4e1be1213df647c7a1842f5ee992de5a8",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45300858052",
-    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45300858052",
+    "run_id": "45303213940",
+    "run_url": "https://github.com/i2mint/s3dol/actions/runs/45303213940",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -56,15 +56,15 @@
   },
   "site": {
     "modules_documented": 13,
-    "objects_documented": 245
+    "objects_documented": 247
   },
   "pypi": {
     "checked": true,
-    "latest": "1.0.4",
+    "latest": "1.0.5",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout 082d88ebf8e2670b7499f6e1ca13c253dace2e13\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/s3dol && cd s3dol\ngit checkout 617983e4e1be1213df647c7a1842f5ee992de5a8\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

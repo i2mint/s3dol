@@ -267,8 +267,9 @@ server issues a presigned POST form whose signed policy pins</p>
 <ul class="simple">
 <li><p>the <strong>exact key</strong> (server-generated <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;&lt;random</span> <span class="pre">token&gt;</span></code>: the client
 never picks a filename, so it can neither overwrite a sibling object nor
-smuggle <code class="docutils literal notranslate"><span class="pre">..</span></code> segments; a form holds one object, and re-posting with it only
-overwrites that object, so the byte budget cannot be multiplied),</p></li>
+smuggle <code class="docutils literal notranslate"><span class="pre">..</span></code> segments; a form holds one object, and on an <em>unversioned</em>
+bucket re-posting with it only overwrites that object, so the byte budget
+cannot be multiplied; see “Versioned buckets” below),</p></li>
 <li><p>a <strong>content-length range</strong> (<code class="docutils literal notranslate"><span class="pre">min_bytes</span></code>..``max_bytes``),</p></li>
 <li><p>the <strong>content type</strong> (optional), and</p></li>
 <li><p>an <strong>expiry</strong> (the 7-day SigV4 cap; an STS session’s own expiry still ends it sooner).</p></li>
@@ -277,6 +278,15 @@ overwrites that object, so the byte budget cannot be multiplied),</p></li>
 (<code class="docutils literal notranslate"><span class="pre">budget(max_bytes)</span></code> raises <a class="reference internal" href="#s3dol.uploads.UploadBudgetExceeded" title="s3dol.uploads.UploadBudgetExceeded"><code class="xref py py-class docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a> to refuse, and may return a <code class="docutils literal notranslate"><span class="pre">release()</span></code> callable that is called if signing fails), so a
 daily per-tenant byte budget is enforced <em>before</em> any form exists.
 <a class="reference internal" href="#s3dol.uploads.DailyByteBudget" title="s3dol.uploads.DailyByteBudget"><code class="xref py py-class docutils literal notranslate"><span class="pre">DailyByteBudget</span></code></a> is the ready-made one; any callable works.</p>
+<p><strong>Versioned buckets.</strong> The budget caps what one form can store only when the
+bucket keeps one version per key. With versioning <em>Enabled</em>, every re-post of
+the same form within its expiry stores a new full version, so one reservation
+of <code class="docutils literal notranslate"><span class="pre">max_bytes</span></code> can buy <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">*</span> <span class="pre">max_bytes</span></code> of storage. Use an unversioned
+bucket for uploads, or one with a lifecycle rule that expires noncurrent
+versions promptly. When a <code class="docutils literal notranslate"><span class="pre">budget</span></code> is given, <a class="reference internal" href="#s3dol.uploads.presigned_upload" title="s3dol.uploads.presigned_upload"><code class="xref py py-func docutils literal notranslate"><span class="pre">presigned_upload()</span></code></a> asks
+the bucket for its versioning status and, per <code class="docutils literal notranslate"><span class="pre">on_versioned_bucket</span></code>, warns
+(the default, <a class="reference internal" href="#s3dol.uploads.VersionedBucketWarning" title="s3dol.uploads.VersionedBucketWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">VersionedBucketWarning</span></code></a>), refuses
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code>) or skips the check (<code class="docutils literal notranslate"><span class="pre">'ignore'</span></code>, no extra call).</p>
 <p>The function is host-agnostic: it takes the store, the prefix and the limits
 as arguments, and the web app mounts it behind its own auth:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">form</span> <span class="o">=</span> <span class="n">s3dol</span><span class="o">.</span><span class="n">presigned_upload</span><span class="p">(</span>
@@ -299,6 +309,9 @@ as arguments, and the web app mounts it behind its own auth:</p>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN" title="s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_UPLOAD_EXPIRES_IN</span></code></a></p></td>
 <td><p>long enough to pick a file, short enough to not be a standing upload credential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES" title="s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ON_VERSIONED_BUCKET_CHOICES</span></code></a></p></td>
+<td><p>What <a class="reference internal" href="#s3dol.uploads.presigned_upload" title="s3dol.uploads.presigned_upload"><code class="xref py py-func docutils literal notranslate"><span class="pre">presigned_upload()</span></code></a> does when a budget is given and the bucket has versioning enabled: warn, refuse, or skip the check (no API call).</p></td>
 </tr>
 </tbody>
 </table>
@@ -333,6 +346,9 @@ as arguments, and the web app mounts it behind its own auth:</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#s3dol.uploads.UploadBudgetExceeded" title="s3dol.uploads.UploadBudgetExceeded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a></p></td>
 <td><p>The tenant's byte budget cannot cover this upload; no form was signed.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#s3dol.uploads.VersionedBucketWarning" title="s3dol.uploads.VersionedBucketWarning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VersionedBucketWarning</span></code></a></p></td>
+<td><p>A budgeted upload form was signed for a bucket with versioning enabled.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -356,9 +372,18 @@ not be a standing upload credential.</p>
 <p><code class="docutils literal notranslate"><span class="pre">ledger</span></code> is any <code class="docutils literal notranslate"><span class="pre">MutableMapping[str,</span> <span class="pre">int]</span></code> (default: in-memory) keyed
 by day, so persistence is a one-argument swap (a <code class="docutils literal notranslate"><span class="pre">dol</span></code> store, a file…).
 <code class="docutils literal notranslate"><span class="pre">today</span></code> is the clock seam. Reservation is optimistic (the <em>maximum</em> the
-form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.</p>
+form allows), and a form holds exactly one key, so re-posting cannot multiply
+the budget on an unversioned bucket (on a versioned one each re-post stores a
+new version: see the module docstring).</p>
 <dl class="field-list simple">
 </dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES">
+<span class="sig-prename descclassname"><span class="pre">s3dol.uploads.</span></span><span class="sig-name descname"><span class="pre">ON_VERSIONED_BUCKET_CHOICES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('warn',</span> <span class="pre">'raise',</span> <span class="pre">'ignore')</span></span><a class="headerlink" href="#s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES" title="Link to this definition">¶</a></dt>
+<dd><p>What <a class="reference internal" href="#s3dol.uploads.presigned_upload" title="s3dol.uploads.presigned_upload"><code class="xref py py-func docutils literal notranslate"><span class="pre">presigned_upload()</span></code></a> does when a budget is given and the bucket
+has versioning enabled: warn, refuse, or skip the check (no API call).</p>
 </dd></dl>
 
 <dl class="py class">
@@ -377,9 +402,16 @@ form allows), and a form holds exactly one key, so re-posting cannot multiply th
 <p>The tenant’s byte budget cannot cover this upload; no form was signed.</p>
 </dd></dl>
 
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3dol.uploads.VersionedBucketWarning">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">s3dol.uploads.</span></span><span class="sig-name descname"><span class="pre">VersionedBucketWarning</span></span><a class="reference internal" href="../_modules/s3dol/uploads.html#VersionedBucketWarning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.uploads.VersionedBucketWarning" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="s3dol.errors.html#s3dol.errors.S3DolWarning" title="s3dol.errors.S3DolWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">S3DolWarning</span></code></a></p>
+<p>A budgeted upload form was signed for a bucket with versioning enabled.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="s3dol.uploads.presigned_upload">
-<span class="sig-prename descclassname"><span class="pre">s3dol.uploads.</span></span><span class="sig-name descname"><span class="pre">presigned_upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expires_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/uploads.html#presigned_upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.uploads.presigned_upload" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">s3dol.uploads.</span></span><span class="sig-name descname"><span class="pre">presigned_upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expires_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_versioned_bucket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'warn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/s3dol/uploads.html#presigned_upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#s3dol.uploads.presigned_upload" title="Link to this definition">¶</a></dt>
 <dd><p>A presigned POST form for ONE new object under <code class="docutils literal notranslate"><span class="pre">key_prefix</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">content_type</span></code> is required: pass the one type to accept, or <code class="docutils literal notranslate"><span class="pre">None</span></code> to
 explicitly accept any (then a holder can store <code class="docutils literal notranslate"><span class="pre">text/html</span></code>: do not serve
@@ -389,8 +421,14 @@ match <code class="docutils literal notranslate"><span class="pre">tenant-77/</s
 prefix is prepended, like every other s3dol key). The object key is
 server-generated (<code class="docutils literal notranslate"><span class="pre">PresignedUpload.key</span></code>). Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> for an
 anonymous store (no signing capability, as <a class="reference internal" href="s3dol.html#s3dol.urls" title="s3dol.urls"><code class="xref py py-func docutils literal notranslate"><span class="pre">s3dol.urls()</span></code></a> does).</p>
-<p>Raises <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code> for a bad prefix, size range or
-<code class="docutils literal notranslate"><span class="pre">expires_in</span></code>, and <a class="reference internal" href="#s3dol.uploads.UploadBudgetExceeded" title="s3dol.uploads.UploadBudgetExceeded"><code class="xref py py-class docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a> if <code class="docutils literal notranslate"><span class="pre">budget</span></code> refuses.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">budget</span></code> is given, the bucket’s versioning status is read first (one
+<code class="docutils literal notranslate"><span class="pre">GetBucketVersioning</span></code> call): with versioning enabled a re-posted form
+stores a new version each time, so <code class="docutils literal notranslate"><span class="pre">on_versioned_bucket</span></code> decides:
+<code class="docutils literal notranslate"><span class="pre">'warn'</span></code> (default) emits <a class="reference internal" href="#s3dol.uploads.VersionedBucketWarning" title="s3dol.uploads.VersionedBucketWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">VersionedBucketWarning</span></code></a>, <code class="docutils literal notranslate"><span class="pre">'raise'</span></code>
+refuses with <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code>, <code class="docutils literal notranslate"><span class="pre">'ignore'</span></code> skips the call.</p>
+<p>Raises <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigurationError</span></code> for a bad prefix, size range,
+<code class="docutils literal notranslate"><span class="pre">expires_in</span></code> or <code class="docutils literal notranslate"><span class="pre">on_versioned_bucket</span></code>, and <a class="reference internal" href="#s3dol.uploads.UploadBudgetExceeded" title="s3dol.uploads.UploadBudgetExceeded"><code class="xref py py-class docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a>
+if <code class="docutils literal notranslate"><span class="pre">budget</span></code> refuses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#s3dol.uploads.PresignedUpload" title="s3dol.uploads.PresignedUpload"><code class="xref py py-class docutils literal notranslate"><span class="pre">PresignedUpload</span></code></a>]</span></p>
@@ -454,8 +492,10 @@ anonymous store (no signing capability, as <a class="reference internal" href="s
 <li><a class="reference internal" href="#">s3dol.uploads</a><ul>
 <li><a class="reference internal" href="#s3dol.uploads.DEFAULT_UPLOAD_EXPIRES_IN"><code class="docutils literal notranslate"><span class="pre">DEFAULT_UPLOAD_EXPIRES_IN</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.uploads.DailyByteBudget"><code class="docutils literal notranslate"><span class="pre">DailyByteBudget</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.uploads.ON_VERSIONED_BUCKET_CHOICES"><code class="docutils literal notranslate"><span class="pre">ON_VERSIONED_BUCKET_CHOICES</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.uploads.PresignedUpload"><code class="docutils literal notranslate"><span class="pre">PresignedUpload</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.uploads.UploadBudgetExceeded"><code class="docutils literal notranslate"><span class="pre">UploadBudgetExceeded</span></code></a></li>
+<li><a class="reference internal" href="#s3dol.uploads.VersionedBucketWarning"><code class="docutils literal notranslate"><span class="pre">VersionedBucketWarning</span></code></a></li>
 <li><a class="reference internal" href="#s3dol.uploads.presigned_upload"><code class="docutils literal notranslate"><span class="pre">presigned_upload()</span></code></a></li>
 </ul>
 </li>
@@ -468,7 +508,7 @@ anonymous store (no signing capability, as <a class="reference internal" href="s
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=862d5a7d"></script>
+</div><script src="../_static/documentation_options.js?v=2f6d2e1b"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

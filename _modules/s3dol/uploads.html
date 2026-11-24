@@ -258,8 +258,9 @@
 
 <span class="sd">- the **exact key** (server-generated ``&lt;prefix&gt;&lt;random token&gt;``: the client</span>
 <span class="sd">  never picks a filename, so it can neither overwrite a sibling object nor</span>
-<span class="sd">  smuggle ``..`` segments; a form holds one object, and re-posting with it only</span>
-<span class="sd">  overwrites that object, so the byte budget cannot be multiplied),</span>
+<span class="sd">  smuggle ``..`` segments; a form holds one object, and on an *unversioned*</span>
+<span class="sd">  bucket re-posting with it only overwrites that object, so the byte budget</span>
+<span class="sd">  cannot be multiplied; see "Versioned buckets" below),</span>
 <span class="sd">- a **content-length range** (``min_bytes``..``max_bytes``),</span>
 <span class="sd">- the **content type** (optional), and</span>
 <span class="sd">- an **expiry** (the 7-day SigV4 cap; an STS session's own expiry still ends it sooner).</span>
@@ -268,6 +269,16 @@
 <span class="sd">(``budget(max_bytes)`` raises :class:`UploadBudgetExceeded` to refuse, and may return a ``release()`` callable that is called if signing fails), so a</span>
 <span class="sd">daily per-tenant byte budget is enforced *before* any form exists.</span>
 <span class="sd">:class:`DailyByteBudget` is the ready-made one; any callable works.</span>
+
+<span class="sd">**Versioned buckets.** The budget caps what one form can store only when the</span>
+<span class="sd">bucket keeps one version per key. With versioning *Enabled*, every re-post of</span>
+<span class="sd">the same form within its expiry stores a new full version, so one reservation</span>
+<span class="sd">of ``max_bytes`` can buy ``N * max_bytes`` of storage. Use an unversioned</span>
+<span class="sd">bucket for uploads, or one with a lifecycle rule that expires noncurrent</span>
+<span class="sd">versions promptly. When a ``budget`` is given, :func:`presigned_upload` asks</span>
+<span class="sd">the bucket for its versioning status and, per ``on_versioned_bucket``, warns</span>
+<span class="sd">(the default, :class:`VersionedBucketWarning`), refuses</span>
+<span class="sd">(:class:`ConfigurationError`) or skips the check (``'ignore'``, no extra call).</span>
 
 <span class="sd">The function is host-agnostic: it takes the store, the prefix and the limits</span>
 <span class="sd">as arguments, and the web app mounts it behind its own auth::</span>
@@ -291,12 +302,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">clamp_expires_in</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.capabilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">_leaf_of</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigurationError</span><span class="p">,</span> <span class="n">S3Error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">s3dol.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigurationError</span><span class="p">,</span> <span class="n">S3DolWarning</span><span class="p">,</span> <span class="n">S3Error</span>
 
 <span class="c1">#: Default form lifetime (seconds): long enough to pick a file, short enough to</span>
 <span class="c1">#: not be a standing upload credential.</span>
@@ -308,6 +320,18 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">UploadBudgetExceeded</span><span class="p">(</span><span class="n">S3Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""The tenant's byte budget cannot cover this upload; no form was signed."""</span></div>
 
+
+
+<div class="viewcode-block" id="VersionedBucketWarning">
+<a class="viewcode-back" href="../../_autosummary/s3dol.uploads.html#s3dol.VersionedBucketWarning">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VersionedBucketWarning</span><span class="p">(</span><span class="n">S3DolWarning</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A budgeted upload form was signed for a bucket with versioning enabled."""</span></div>
+
+
+
+<span class="c1">#: What :func:`presigned_upload` does when a budget is given and the bucket</span>
+<span class="c1">#: has versioning enabled: warn, refuse, or skip the check (no API call).</span>
+<span class="n">ON_VERSIONED_BUCKET_CHOICES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"warn"</span><span class="p">,</span> <span class="s2">"raise"</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PresignedUpload">
@@ -332,7 +356,9 @@
 <span class="sd">    ``ledger`` is any ``MutableMapping[str, int]`` (default: in-memory) keyed</span>
 <span class="sd">    by day, so persistence is a one-argument swap (a ``dol`` store, a file...).</span>
 <span class="sd">    ``today`` is the clock seam. Reservation is optimistic (the *maximum* the</span>
-<span class="sd">    form allows), and a form holds exactly one key, so re-posting cannot multiply the budget.</span>
+<span class="sd">    form allows), and a form holds exactly one key, so re-posting cannot multiply</span>
+<span class="sd">    the budget on an unversioned bucket (on a versioned one each re-post stores a</span>
+<span class="sd">    new version: see the module docstring).</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -386,6 +412,38 @@
         <span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_versioning</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">on_versioned_bucket</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Warn or refuse if ``leaf``'s bucket has versioning enabled.</span>
+
+<span class="sd">    Under ``'warn'`` a failed lookup (e.g. no ``s3:GetBucketVersioning``</span>
+<span class="sd">    permission) is skipped silently: the check is advisory. Under ``'raise'``</span>
+<span class="sd">    an unverifiable bucket is refused, since the guarantee cannot be shown.</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_bucket_versioning</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">leaf</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">"Status"</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">on_versioned_bucket</span> <span class="o">==</span> <span class="s2">"raise"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"could not read the versioning status of bucket </span><span class="si">{</span><span class="n">leaf</span><span class="o">.</span><span class="n">bucket</span><span class="si">!r}</span><span class="s2"> "</span>
+                <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">), so the upload budget cannot be shown to "</span>
+                <span class="sa">f</span><span class="s2">"hold; pass on_versioned_bucket='warn' or 'ignore' to sign anyway."</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s2">"Enabled"</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"bucket </span><span class="si">{</span><span class="n">leaf</span><span class="o">.</span><span class="n">bucket</span><span class="si">!r}</span><span class="s2"> has versioning enabled: each re-post of this "</span>
+        <span class="sa">f</span><span class="s2">"form within its expiry stores a new full version, so one budget "</span>
+        <span class="sa">f</span><span class="s2">"reservation can store several times max_bytes. Use an unversioned "</span>
+        <span class="sa">f</span><span class="s2">"bucket, or expire noncurrent versions with a lifecycle rule."</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">on_versioned_bucket</span> <span class="o">==</span> <span class="s2">"raise"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">VersionedBucketWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="presigned_upload">
 <a class="viewcode-back" href="../../_autosummary/s3dol.uploads.html#s3dol.presigned_upload">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">presigned_upload</span><span class="p">(</span>
@@ -397,6 +455,7 @@
     <span class="n">min_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">expires_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_UPLOAD_EXPIRES_IN</span><span class="p">,</span>
     <span class="n">budget</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">on_versioned_bucket</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"warn"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PresignedUpload</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""A presigned POST form for ONE new object under ``key_prefix``.</span>
 
@@ -410,8 +469,15 @@
 <span class="sd">    server-generated (``PresignedUpload.key``). Returns ``None`` for an</span>
 <span class="sd">    anonymous store (no signing capability, as :func:`s3dol.urls` does).</span>
 
-<span class="sd">    Raises :class:`ConfigurationError` for a bad prefix, size range or</span>
-<span class="sd">    ``expires_in``, and :class:`UploadBudgetExceeded` if ``budget`` refuses.</span>
+<span class="sd">    When ``budget`` is given, the bucket's versioning status is read first (one</span>
+<span class="sd">    ``GetBucketVersioning`` call): with versioning enabled a re-posted form</span>
+<span class="sd">    stores a new version each time, so ``on_versioned_bucket`` decides:</span>
+<span class="sd">    ``'warn'`` (default) emits :class:`VersionedBucketWarning`, ``'raise'``</span>
+<span class="sd">    refuses with :class:`ConfigurationError`, ``'ignore'`` skips the call.</span>
+
+<span class="sd">    Raises :class:`ConfigurationError` for a bad prefix, size range,</span>
+<span class="sd">    ``expires_in`` or ``on_versioned_bucket``, and :class:`UploadBudgetExceeded`</span>
+<span class="sd">    if ``budget`` refuses.</span>
 <span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">botocore</span><span class="w"> </span><span class="kn">import</span> <span class="n">UNSIGNED</span>
 
@@ -430,9 +496,16 @@
         <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">"expires_in must be a positive int, got </span><span class="si">{</span><span class="n">expires_in</span><span class="si">!r}</span><span class="s2">"</span>
         <span class="p">)</span>
+    <span class="k">if</span> <span class="n">on_versioned_bucket</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ON_VERSIONED_BUCKET_CHOICES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ConfigurationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"on_versioned_bucket must be one of </span><span class="si">{</span><span class="n">ON_VERSIONED_BUCKET_CHOICES</span><span class="si">}</span><span class="s2">, "</span>
+            <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">on_versioned_bucket</span><span class="si">!r}</span><span class="s2">"</span>
+        <span class="p">)</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">presign_client</span>
     <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">signature_version</span> <span class="ow">is</span> <span class="n">UNSIGNED</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">budget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">on_versioned_bucket</span> <span class="o">!=</span> <span class="s2">"ignore"</span><span class="p">:</span>
+        <span class="n">_check_versioning</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">on_versioned_bucket</span><span class="p">)</span>  <span class="c1"># refuse BEFORE reserving</span>
     <span class="n">wire_prefix</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">_id_of_key</span><span class="p">(</span><span class="n">key_prefix</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">wire_prefix</span> <span class="o">+</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
     <span class="n">release</span> <span class="o">=</span> <span class="n">budget</span><span class="p">(</span><span class="n">max_bytes</span><span class="p">)</span> <span class="k">if</span> <span class="n">budget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># refuse BEFORE signing</span>
@@ -489,7 +562,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=862d5a7d"></script>
+</div><script src="../../_static/documentation_options.js?v=2f6d2e1b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

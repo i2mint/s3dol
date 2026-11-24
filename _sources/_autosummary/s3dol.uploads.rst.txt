@@ -9,6 +9,7 @@ s3dol.uploads
    .. autosummary::
    
       DEFAULT_UPLOAD_EXPIRES_IN
+      ON_VERSIONED_BUCKET_CHOICES
    
    .. rubric:: Functions
 
@@ -28,4 +29,5 @@ s3dol.uploads
    .. autosummary::
    
       UploadBudgetExceeded
+      VersionedBucketWarning
    
